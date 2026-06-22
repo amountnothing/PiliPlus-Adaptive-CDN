@@ -12,9 +12,12 @@ sealed class DataSource {
 }
 
 class NetworkSource extends DataSource {
+  final int? bandwidth;
+
   NetworkSource({
     required super.videoSource,
     required super.audioSource,
+    this.bandwidth,
   });
 }
 
