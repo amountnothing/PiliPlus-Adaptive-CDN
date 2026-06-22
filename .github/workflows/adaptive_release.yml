@@ -172,13 +172,6 @@ jobs:
             mv "$file" "PiliPlus-Adaptive-CDN_android_${version}_${abi}.apk"
           done
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          archive: false
-          name: PiliPlus-Adaptive-CDN-Android
-          path: PiliPlus-Adaptive-CDN_android_*.apk
-
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
@@ -193,3 +186,9 @@ jobs:
             Includes AV1 preference, configurable buffering, stall detection,
             automatic CDN failover, and per-video failed-CDN exclusion.
           files: PiliPlus-Adaptive-CDN_android_*.apk
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: PiliPlus-Adaptive-CDN-Android
+          path: PiliPlus-Adaptive-CDN_android_*.apk
