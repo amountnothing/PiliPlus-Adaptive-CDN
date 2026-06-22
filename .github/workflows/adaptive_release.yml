@@ -17,12 +17,6 @@ on:
         description: "Optional release tag (current mode only)"
         required: false
         type: string
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/adaptive_release.yml"
-
 permissions:
   contents: write
 
@@ -65,6 +59,15 @@ jobs:
           if [[ "$mode" == "sync_upstream" ]]; then
             upstream_tag="$(gh api "repos/${UPSTREAM_REPOSITORY}/releases/latest" --jq '.tag_name')"
             release_tag="adaptive-${upstream_tag}"
+            tracked_upstream_tag="$(cat .github/upstream-release.txt 2>/dev/null || true)"
+
+            if [[ "$upstream_tag" == "$tracked_upstream_tag" ]]; then
+              echo "Upstream release ${upstream_tag} is the recorded baseline."
+              echo "should_build=false" >> "$GITHUB_OUTPUT"
+              echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
+              echo "upstream_tag=${upstream_tag}" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
 
             if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${release_tag}" >/dev/null 2>&1; then
               echo "Upstream release ${upstream_tag} was already published as ${release_tag}."
@@ -79,6 +82,12 @@ jobs:
             git remote add upstream "https://github.com/${UPSTREAM_REPOSITORY}.git"
             git fetch upstream --tags --force
             git merge --no-edit "$upstream_tag"
+
+            printf '%s\n' "$upstream_tag" > .github/upstream-release.txt
+            git add .github/upstream-release.txt
+            if ! git diff --cached --quiet; then
+              git commit -m "ci: record upstream release ${upstream_tag}"
+            fi
 
             if [[ -n "$(git status --porcelain)" ]]; then
               echo "Unexpected uncommitted files after upstream merge."
