@@ -5,6 +5,7 @@ import 'package:PiliPlus/pages/setting/widgets/popup_item.dart';
 import 'package:PiliPlus/pages/setting/widgets/select_dialog.dart';
 import 'package:PiliPlus/pages/setting/widgets/switch_item.dart';
 import 'package:PiliPlus/utils/storage.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart' hide PopupMenuItemSelected;
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -64,6 +65,7 @@ class SplitModel extends SettingsModel {
     contentPadding: contentPadding,
     titleStyle: titleStyle,
     isSplit: true,
+    enabledListenable: switchModel.enabledListenable,
   );
 }
 
@@ -112,6 +114,7 @@ class NormalModel extends SettingsModel {
   final ValueGetter<String>? getSubtitle;
   final Widget Function(ThemeData theme)? getTrailing;
   final void Function(BuildContext context, VoidCallback setState)? onTap;
+  final ValueListenable<bool>? enabledListenable;
 
   const NormalModel({
     super.subtitle,
@@ -123,6 +126,7 @@ class NormalModel extends SettingsModel {
     this.getSubtitle,
     this.getTrailing,
     this.onTap,
+    this.enabledListenable,
   }) : assert(title != null || getTitle != null);
 
   const NormalModel.split({
@@ -134,6 +138,7 @@ class NormalModel extends SettingsModel {
     this.getTitle,
     this.getSubtitle,
     this.getTrailing,
+    this.enabledListenable,
   }) : onTap = null,
        assert(title != null || getTitle != null);
 
@@ -153,6 +158,7 @@ class NormalModel extends SettingsModel {
     onTap: onTap,
     contentPadding: contentPadding,
     titleStyle: titleStyle,
+    enabledListenable: enabledListenable,
   );
 }
 
@@ -164,6 +170,7 @@ class SwitchModel extends SettingsModel {
   final ValueChanged<bool>? onChanged;
   final bool needReboot;
   final void Function(BuildContext context)? onTap;
+  final ValueListenable<bool>? enabledListenable;
 
   const SwitchModel({
     super.subtitle,
@@ -176,6 +183,7 @@ class SwitchModel extends SettingsModel {
     this.onChanged,
     this.needReboot = false,
     this.onTap,
+    this.enabledListenable,
   });
 
   const SwitchModel.split({
@@ -184,6 +192,7 @@ class SwitchModel extends SettingsModel {
     this.needReboot = false,
     this.onChanged,
     this.onTap,
+    this.enabledListenable,
   }) : title = null;
 
   @override
@@ -203,6 +212,7 @@ class SwitchModel extends SettingsModel {
     onTap: onTap,
     contentPadding: contentPadding,
     titleStyle: titleStyle,
+    enabledListenable: enabledListenable,
   );
 }
 

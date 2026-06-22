@@ -10,6 +10,7 @@ abstract final class VideoUtils {
   static bool disableAudioCDN = Pref.disableAudioCDN;
 
   static const _proxyTf = 'proxy-tf-all-ws.bilivideo.com';
+  static final Map<String, DateTime> _cdnCooldownUntil = {};
 
   static final _mirrorRegex = RegExp(
     r'^https?://(?:upos-\w+-(?!302)\w+|(?:upos|proxy)-tf-[^/]+)\.(?:bilivideo|akamaized)\.(?:com|net)/upgcxcode',
@@ -23,18 +24,28 @@ abstract final class VideoUtils {
     Iterable<String> urls, {
     CDNService? defaultCDNService,
     bool isAudio = false,
+    bool preferBackup = false,
   }) {
     defaultCDNService ??= cdnService;
 
+    final candidates = urls.toList(growable: false);
+    if (candidates.isEmpty) return '';
+
     if (defaultCDNService == CDNService.baseUrl) {
-      return urls.first;
+      return candidates.first;
     }
+
+    // Adaptive mode follows PiliPala by preferring the first backup URL while
+    // manual mode preserves PiliPlus's original API ordering.
+    final orderedUrls = preferBackup && candidates.length > 1
+        ? <String>[...candidates.skip(1), candidates.first]
+        : candidates;
 
     String? mcdnTf;
     String? mcdnUpgcxcode;
 
     String last = '';
-    for (final url in urls) {
+    for (final url in orderedUrls) {
       last = url;
       if (_mirrorRegex.hasMatch(url)) {
         final uri = Uri.parse(url);
@@ -87,6 +98,62 @@ abstract final class VideoUtils {
         : Uri.parse(mcdnUpgcxcode)
               .replace(host: defaultCDNService.host ?? CDNService.ali.host)
               .toString();
+  }
+
+  static List<String> getCdnCandidates(
+    Iterable<String> urls, {
+    bool isAudio = false,
+    CDNService? preferredService,
+  }) {
+    final sourceUrls = urls.toList(growable: false);
+    if (sourceUrls.isEmpty) return const [];
+
+    final services = <CDNService>[
+      preferredService ?? cdnService,
+      CDNService.backupUrl,
+      CDNService.baseUrl,
+      CDNService.ali,
+      CDNService.cos,
+      CDNService.hw,
+      CDNService.akamai,
+    ];
+    final candidates = <String>{};
+    for (final service in services) {
+      final candidate = getCdnUrl(
+        sourceUrls,
+        defaultCDNService: service,
+        isAudio: isAudio,
+        preferBackup: true,
+      );
+      if (candidate.isNotEmpty) candidates.add(candidate);
+    }
+    return candidates.toList(growable: false);
+  }
+
+  static String? cdnHost(String? url) {
+    if (url == null || url.isEmpty) return null;
+    return Uri.tryParse(url)?.host.toLowerCase();
+  }
+
+  static void markCdnFailed(String? url, {Duration? cooldown}) {
+    final host = cdnHost(url);
+    if (host == null || host.isEmpty) return;
+    _cdnCooldownUntil[host] = DateTime.now().add(
+      cooldown ??
+          Duration(
+            milliseconds: (Pref.adaptiveCdnCooldownSec * 1000).round(),
+          ),
+    );
+  }
+
+  static bool isCdnCoolingDown(String url) {
+    final host = cdnHost(url);
+    if (host == null || host.isEmpty) return false;
+    final until = _cdnCooldownUntil[host];
+    if (until == null) return false;
+    if (DateTime.now().isBefore(until)) return true;
+    _cdnCooldownUntil.remove(host);
+    return false;
   }
 
   static String getLiveCdnUrl(CodecItem e, {int index = 0}) {

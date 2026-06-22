@@ -1,4 +1,5 @@
 import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart' hide ListTile;
 
 class NormalItem extends StatefulWidget {
@@ -11,6 +12,7 @@ class NormalItem extends StatefulWidget {
   final void Function(BuildContext context, VoidCallback setState)? onTap;
   final EdgeInsetsGeometry? contentPadding;
   final TextStyle? titleStyle;
+  final ValueListenable<bool>? enabledListenable;
 
   const NormalItem({
     this.title,
@@ -22,6 +24,7 @@ class NormalItem extends StatefulWidget {
     this.onTap,
     this.contentPadding,
     this.titleStyle,
+    this.enabledListenable,
     super.key,
   }) : assert(title != null || getTitle != null);
 
@@ -32,6 +35,17 @@ class NormalItem extends StatefulWidget {
 class _NormalItemState extends State<NormalItem> {
   @override
   Widget build(BuildContext context) {
+    final enabledListenable = widget.enabledListenable;
+    if (enabledListenable != null) {
+      return ValueListenableBuilder<bool>(
+        valueListenable: enabledListenable,
+        builder: (context, enabled, _) => _build(context, enabled),
+      );
+    }
+    return _build(context, true);
+  }
+
+  Widget _build(BuildContext context, bool enabled) {
     late final theme = Theme.of(context);
     Widget? subtitle;
     if ((widget.subtitle ?? widget.getSubtitle?.call()) case final text?) {
@@ -44,12 +58,17 @@ class _NormalItemState extends State<NormalItem> {
     }
     return ListTile(
       contentPadding: widget.contentPadding,
-      onTap: widget.onTap == null
+      enabled: enabled,
+      onTap: !enabled || widget.onTap == null
           ? null
           : () => widget.onTap!(context, refresh),
       title: Text(
         widget.title ?? widget.getTitle!(),
-        style: widget.titleStyle ?? theme.textTheme.titleMedium!,
+        style:
+            widget.titleStyle ??
+            theme.textTheme.titleMedium!.copyWith(
+              color: enabled ? null : theme.colorScheme.outline,
+            ),
       ),
       subtitle: subtitle,
       leading: widget.leading,

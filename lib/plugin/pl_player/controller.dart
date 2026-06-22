@@ -26,6 +26,7 @@ import 'package:PiliPlus/plugin/pl_player/models/double_tap_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/duration.dart';
 import 'package:PiliPlus/plugin/pl_player/models/fullscreen_mode.dart';
 import 'package:PiliPlus/plugin/pl_player/models/heart_beat_type.dart';
+import 'package:PiliPlus/plugin/pl_player/models/hwdec_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/plugin/pl_player/models/video_fit_type.dart';
@@ -376,7 +377,11 @@ class PlPlayerController with BlockConfigMixin {
   late int? cacheVideoQa = PlatformUtils.isMobile ? null : Pref.defaultVideoQa;
   late int cacheAudioQa = Pref.defaultAudioQa;
   bool enableHeart = true;
-  late final String? hwdec = Pref.enableHA ? Pref.hardwareDecoding : null;
+  late final String? hwdec = Pref.adaptivePlayback
+      ? HwDecType.autoSafe.hwdec
+      : Pref.enableHA
+      ? Pref.hardwareDecoding
+      : null;
 
   late final progressType = Pref.btmProgressBehavior;
   late final enableQuickDouble = Pref.enableQuickDouble;
@@ -852,7 +857,11 @@ class PlPlayerController with BlockConfigMixin {
       if (isLive) {
         extras.addAll(liveBuffer);
       } else {
-        extras.addAll(buffer);
+        final bandwidth = dataSource is NetworkSource
+            ? dataSource.bandwidth
+            : null;
+        _buffer = Pref.initBuffer(_playbackSpeed.value, bandwidth);
+        extras.addAll(_buffer!);
       }
     }
 

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:math' show pow, sqrt;
+import 'dart:math' show max, min, pow, sqrt;
 
 import 'package:PiliPlus/common/widgets/gesture/horizontal_drag_gesture_recognizer.dart'
     show deviceTouchSlop;
@@ -252,6 +252,36 @@ abstract final class Pref {
   static String get secondDecode => _setting.get(
     SettingBoxKey.secondDecode,
     defaultValue: VideoDecodeFormatType.AV1.codes.first,
+  );
+
+  static bool get adaptivePlayback => _setting.get(
+    SettingBoxKey.adaptivePlayback,
+    defaultValue: false,
+  );
+
+  static double get adaptiveTargetBufferSec => _setting.get(
+    SettingBoxKey.adaptiveTargetBufferSec,
+    defaultValue: 25.0,
+  );
+
+  static double get adaptiveLowBufferSec => _setting.get(
+    SettingBoxKey.adaptiveLowBufferSec,
+    defaultValue: 6.0,
+  );
+
+  static double get adaptiveStallTimeoutSec => _setting.get(
+    SettingBoxKey.adaptiveStallTimeoutSec,
+    defaultValue: 3.0,
+  );
+
+  static double get adaptiveCdnCooldownSec => _setting.get(
+    SettingBoxKey.adaptiveCdnCooldownSec,
+    defaultValue: 30.0,
+  );
+
+  static double get adaptiveMaxCdnSwitches => _setting.get(
+    SettingBoxKey.adaptiveMaxCdnSwitches,
+    defaultValue: 3.0,
   );
 
   static String get hardwareDecoding => _setting.get(
@@ -803,15 +833,38 @@ abstract final class Pref {
   static double get bufferSec =>
       _setting.get(SettingBoxKey.bufferSec, defaultValue: 16.0);
 
-  static Map<String, String> initBuffer([double playbackSpeed = 1.0]) {
-    final bufSec = Pref.bufferSec * playbackSpeed;
-    final bufSiz = (Pref.bufferSize * 0x100000).toStringAsFixed(0);
+  static Map<String, String> initBuffer([
+    double playbackSpeed = 1.0,
+    int? bandwidth,
+  ]) {
+    if (!Pref.adaptivePlayback) {
+      final bufSec = Pref.bufferSec * playbackSpeed;
+      final bufSiz = (Pref.bufferSize * 0x100000).toStringAsFixed(0);
+      return {
+        'cache': 'yes',
+        'cache-secs': bufSec.toStringAsFixed(3),
+        'demuxer-hysteresis-secs': (bufSec / 1.5).toStringAsFixed(3),
+        'demuxer-max-bytes': bufSiz,
+        'demuxer-max-back-bytes': bufSiz,
+      };
+    }
+
+    final bufSec = max(Pref.adaptiveTargetBufferSec, 1.0) * playbackSpeed;
+    final configuredBytes = Pref.bufferSize * 0x100000;
+    final bitrateBytes = bandwidth == null || bandwidth <= 0
+        ? 0.0
+        : bandwidth * bufSec / 8 * 1.3;
+    final forwardBytes = max(
+      16 * 0x100000,
+      max(configuredBytes, bitrateBytes),
+    ).clamp(16 * 0x100000, 96 * 0x100000).round();
+    final backBytes = min(8 * 0x100000, max(4 * 0x100000, forwardBytes ~/ 4));
     return {
       'cache': 'yes',
       'cache-secs': bufSec.toStringAsFixed(3),
       'demuxer-hysteresis-secs': (bufSec / 1.5).toStringAsFixed(3),
-      'demuxer-max-bytes': bufSiz,
-      'demuxer-max-back-bytes': bufSiz,
+      'demuxer-max-bytes': forwardBytes.toString(),
+      'demuxer-max-back-bytes': backBytes.toString(),
     };
   }
 

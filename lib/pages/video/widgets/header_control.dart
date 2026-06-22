@@ -497,27 +497,44 @@ class HeaderControlState extends State<HeaderControl>
                 if (!isFileSource)
                   ListTile(
                     dense: true,
-                    title: const Text('CDN 设置', style: titleStyle),
+                    enabled: !Pref.adaptivePlayback,
+                    title: Text(
+                      'CDN 设置',
+                      style: Pref.adaptivePlayback
+                          ? titleStyle.copyWith(
+                              color: theme.colorScheme.outline,
+                            )
+                          : titleStyle,
+                    ),
                     leading: const Icon(MdiIcons.cloudPlusOutline, size: 20),
                     subtitle: Text(
-                      '当前：${VideoUtils.cdnService.desc}，无法播放请切换',
+                      Pref.adaptivePlayback
+                          ? '自适应播放已接管，当前手动值：${VideoUtils.cdnService.desc}'
+                          : '当前：${VideoUtils.cdnService.desc}，无法播放请切换',
                       style: subTitleStyle,
                     ),
-                    onTap: () async {
-                      Get.back();
-                      final result = await showDialog<CDNService>(
-                        context: context,
-                        builder: (context) => CdnSelectDialog(
-                          sample: videoInfo.dash?.video?.firstOrNull,
-                        ),
-                      );
-                      if (result != null) {
-                        VideoUtils.cdnService = result;
-                        setting.put(SettingBoxKey.CDNService, result.name);
-                        SmartDialog.showToast('已设置为 ${result.desc}，正在重载视频');
-                        videoDetailCtr.queryVideoUrl(fromReset: true);
-                      }
-                    },
+                    onTap: Pref.adaptivePlayback
+                        ? null
+                        : () async {
+                            Get.back();
+                            final result = await showDialog<CDNService>(
+                              context: context,
+                              builder: (context) => CdnSelectDialog(
+                                sample: videoInfo.dash?.video?.firstOrNull,
+                              ),
+                            );
+                            if (result != null) {
+                              VideoUtils.cdnService = result;
+                              setting.put(
+                                SettingBoxKey.CDNService,
+                                result.name,
+                              );
+                              SmartDialog.showToast(
+                                '已设置为 ${result.desc}，正在重载视频',
+                              );
+                              videoDetailCtr.queryVideoUrl(fromReset: true);
+                            }
+                          },
                   ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -622,14 +639,26 @@ class HeaderControlState extends State<HeaderControl>
                     ),
                   ListTile(
                     dense: true,
-                    onTap: () {
-                      Get.back();
-                      showSetDecodeFormats();
-                    },
+                    enabled: !Pref.adaptivePlayback,
+                    onTap: Pref.adaptivePlayback
+                        ? null
+                        : () {
+                            Get.back();
+                            showSetDecodeFormats();
+                          },
                     leading: const Icon(Icons.av_timer_outlined, size: 20),
-                    title: const Text('解码格式', style: titleStyle),
+                    title: Text(
+                      '解码格式',
+                      style: Pref.adaptivePlayback
+                          ? titleStyle.copyWith(
+                              color: theme.colorScheme.outline,
+                            )
+                          : titleStyle,
+                    ),
                     subtitle: Text(
-                      '当前解码格式 ${videoDetailCtr.currentDecodeFormats.description}',
+                      Pref.adaptivePlayback
+                          ? '自适应播放已接管，当前 ${videoDetailCtr.currentDecodeFormats.description}'
+                          : '当前解码格式 ${videoDetailCtr.currentDecodeFormats.description}',
                       style: subTitleStyle,
                     ),
                   ),

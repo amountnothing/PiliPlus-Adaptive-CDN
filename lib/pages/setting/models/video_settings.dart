@@ -10,6 +10,7 @@ import 'package:PiliPlus/pages/setting/widgets/ordered_multi_select_dialog.dart'
 import 'package:PiliPlus/pages/setting/widgets/select_dialog.dart';
 import 'package:PiliPlus/plugin/pl_player/models/audio_output_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/hwdec_type.dart';
+import 'package:PiliPlus/utils/adaptive_playback.dart';
 import 'package:PiliPlus/utils/filtering_text.dart';
 import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
@@ -24,11 +25,56 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 List<SettingsModel> get videoSettings => [
   const SwitchModel(
+    title: '自适应播放',
+    subtitle: 'AV1 优先、动态缓冲并在缓冲停滞时自动切换 CDN',
+    leading: Icon(Icons.auto_awesome_outlined),
+    setKey: SettingBoxKey.adaptivePlayback,
+    defaultVal: false,
+    onChanged: AdaptivePlayback.setEnabled,
+    needReboot: true,
+  ),
+  NormalModel(
+    title: '目标缓冲时长',
+    leading: const Icon(Icons.hourglass_top_rounded),
+    getSubtitle: () => '当前：${Pref.adaptiveTargetBufferSec}s',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveTargetBufferDialog,
+  ),
+  NormalModel(
+    title: '缓冲低水位',
+    leading: const Icon(Icons.water_outlined),
+    getSubtitle: () => '当前：${Pref.adaptiveLowBufferSec}s',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveLowBufferDialog,
+  ),
+  NormalModel(
+    title: '缓冲停滞判定',
+    leading: const Icon(Icons.timer_off_outlined),
+    getSubtitle: () => '连续 ${Pref.adaptiveStallTimeoutSec}s 无增长后切换',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveStallTimeoutDialog,
+  ),
+  NormalModel(
+    title: '故障 CDN 冷却',
+    leading: const Icon(Icons.ac_unit_outlined),
+    getSubtitle: () => '全局冷却 ${Pref.adaptiveCdnCooldownSec}s，当前视频内永久排除',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveCdnCooldownDialog,
+  ),
+  NormalModel(
+    title: '单视频最大切换次数',
+    leading: const Icon(Icons.swap_horiz_rounded),
+    getSubtitle: () => '当前：${Pref.adaptiveMaxCdnSwitches.round()} 次',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveMaxSwitchesDialog,
+  ),
+  SwitchModel(
     title: '开启硬解',
     subtitle: '以较低功耗播放视频，若异常卡死请关闭',
-    leading: Icon(Icons.flash_on_outlined),
+    leading: const Icon(Icons.flash_on_outlined),
     setKey: SettingBoxKey.enableHA,
     defaultVal: true,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
   const SwitchModel(
     title: '免登录1080P',
@@ -61,6 +107,7 @@ List<SettingsModel> get videoSettings => [
     getSubtitle: () =>
         '当前使用：${VideoUtils.cdnService.desc}，部分 CDN 可能失效，如无法播放请尝试切换',
     onTap: _showCDNDialog,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
   NormalModel(
     title: '直播 CDN 设置',
@@ -68,12 +115,13 @@ List<SettingsModel> get videoSettings => [
     getSubtitle: () => '当前使用：${Pref.liveCdnUrl ?? "默认"}',
     onTap: _showLiveCDNDialog,
   ),
-  const SwitchModel(
+  SwitchModel(
     title: 'CDN 测速',
-    leading: Icon(Icons.speed),
+    leading: const Icon(Icons.speed),
     subtitle: '测速通过模拟加载视频实现，注意流量消耗，结果仅供参考',
     setKey: SettingBoxKey.cdnSpeedTest,
     defaultVal: true,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
   SwitchModel(
     title: '音频不跟随 CDN 设置',
@@ -82,6 +130,7 @@ List<SettingsModel> get videoSettings => [
     setKey: SettingBoxKey.disableAudioCDN,
     defaultVal: false,
     onChanged: (value) => VideoUtils.disableAudioCDN = value,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
   NormalModel(
     title: '默认画质',
@@ -130,6 +179,7 @@ List<SettingsModel> get videoSettings => [
     getSubtitle: () =>
         '首选解码格式：${VideoDecodeFormatType.fromCode(Pref.defaultDecode).description}，请根据设备支持情况与需求调整',
     onTap: _showDecodeDialog,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
   NormalModel(
     title: '次选解码格式',
@@ -137,6 +187,7 @@ List<SettingsModel> get videoSettings => [
         '非杜比视频次选：${VideoDecodeFormatType.fromCode(Pref.secondDecode).description}，仍无则选择首个提供的解码格式',
     leading: const Icon(Icons.swap_horizontal_circle_outlined),
     onTap: _showSecondDecodeDialog,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
   if (kDebugMode || Platform.isAndroid)
     NormalModel(
@@ -151,6 +202,7 @@ List<SettingsModel> get videoSettings => [
     getSubtitle: () =>
         '当前：${Pref.bufferSize}MB。同时为前向和后向缓冲区大小。对于直播流，无后向缓冲大小，全部转给前向（此选项即mpv的--demuxer-max-bytes，--demuxer-max-back-bytes）',
     onTap: _showBufferSizeDialog,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
   NormalModel(
     title: '缓冲时长',
@@ -158,6 +210,7 @@ List<SettingsModel> get videoSettings => [
     getSubtitle: () =>
         '当前：${Pref.bufferSec}s。实际缓冲为二者最小值。对于直播流，该选项无效（此选项即mpv的--cache-secs）',
     onTap: _showBufferSecDialog,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
   NormalModel(
     title: '自动同步',
@@ -176,6 +229,7 @@ List<SettingsModel> get videoSettings => [
     leading: const Icon(Icons.memory_outlined),
     getSubtitle: () => '当前：${Pref.hardwareDecoding}（此项即mpv的--hwdec）',
     onTap: _showHwDecDialog,
+    enabledListenable: AdaptivePlayback.manualControlsEnabled,
   ),
 ];
 
@@ -510,6 +564,9 @@ void _showDecimalDialog(
   required double defVal,
   required String title,
   required String? suffix,
+  double? minValue,
+  double? maxValue,
+  bool integer = false,
 }) {
   String value = (GStorage.setting.get(key) ?? defVal).toString();
   showDialog(
@@ -535,7 +592,14 @@ void _showDecimalDialog(
         TextButton(
           onPressed: () async {
             try {
-              final val = double.parse(value);
+              var val = double.parse(value);
+              if ((minValue != null && val < minValue) ||
+                  (maxValue != null && val > maxValue)) {
+                throw FormatException(
+                  '请输入 ${minValue ?? "-∞"} 到 ${maxValue ?? "+∞"} 之间的数值',
+                );
+              }
+              if (integer) val = val.roundToDouble();
               Get.back();
               await GStorage.setting.put(key, val);
               setState();
@@ -549,6 +613,77 @@ void _showDecimalDialog(
     ),
   );
 }
+
+void _showAdaptiveTargetBufferDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveTargetBufferSec,
+  defVal: Pref.adaptiveTargetBufferSec,
+  title: '目标缓冲时长',
+  suffix: 's',
+  minValue: 10,
+  maxValue: 60,
+);
+
+void _showAdaptiveLowBufferDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveLowBufferSec,
+  defVal: Pref.adaptiveLowBufferSec,
+  title: '缓冲低水位',
+  suffix: 's',
+  minValue: 2,
+  maxValue: 15,
+);
+
+void _showAdaptiveStallTimeoutDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveStallTimeoutSec,
+  defVal: Pref.adaptiveStallTimeoutSec,
+  title: '缓冲停滞判定',
+  suffix: 's',
+  minValue: 2,
+  maxValue: 10,
+);
+
+void _showAdaptiveCdnCooldownDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveCdnCooldownSec,
+  defVal: Pref.adaptiveCdnCooldownSec,
+  title: '故障 CDN 冷却',
+  suffix: 's',
+  minValue: 0,
+  maxValue: 300,
+);
+
+void _showAdaptiveMaxSwitchesDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveMaxCdnSwitches,
+  defVal: Pref.adaptiveMaxCdnSwitches,
+  title: '单视频最大切换次数',
+  suffix: '次',
+  minValue: 1,
+  maxValue: 10,
+  integer: true,
+);
 
 void _showBufferSizeDialog(BuildContext context, VoidCallback setState) =>
     _showDecimalDialog(

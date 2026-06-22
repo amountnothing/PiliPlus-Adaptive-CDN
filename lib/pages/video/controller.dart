@@ -18,6 +18,7 @@ import 'package:PiliPlus/models/common/sponsor_block/post_segment_model.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_model.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/common/video/audio_quality.dart';
+import 'package:PiliPlus/models/common/video/cdn_type.dart';
 import 'package:PiliPlus/models/common/video/source_type.dart';
 import 'package:PiliPlus/models/common/video/subtitle_pref_type.dart';
 import 'package:PiliPlus/models/common/video/video_decode_type.dart';
@@ -128,6 +129,38 @@ class VideoDetailController extends GetxController
   late VideoItem firstVideo;
   String? videoUrl;
   String? audioUrl;
+  Duration get _targetForwardBuffer => Duration(
+    milliseconds: (Pref.adaptiveTargetBufferSec * 1000).round(),
+  );
+  Duration get _lowForwardBuffer {
+    final seconds = Pref.adaptiveLowBufferSec.clamp(
+      1.0,
+      Pref.adaptiveTargetBufferSec - 1,
+    );
+    return Duration(milliseconds: (seconds * 1000).round());
+  }
+
+  Duration get _bufferStallTimeout => Duration(
+    milliseconds: (Pref.adaptiveStallTimeoutSec * 1000).round(),
+  );
+  String get _preferredDecode => Pref.adaptivePlayback
+      ? VideoDecodeFormatType.AV1.codes.first
+      : cacheDecode;
+  String get _fallbackDecode => Pref.adaptivePlayback
+      ? VideoDecodeFormatType.AVC.codes.first
+      : cacheSecondDecode;
+
+  Timer? _cdnHealthTimer;
+  List<String> _videoCdnCandidates = const [];
+  List<String> _audioCdnCandidates = const [];
+  final Set<String> _failedCdnHosts = {};
+  int _videoCdnIndex = 0;
+  int _audioCdnIndex = 0;
+  int _adaptiveBandwidth = 0;
+  int _cdnSwitchCount = 0;
+  bool _switchingCdn = false;
+  Duration _lastBufferedPosition = Duration.zero;
+  DateTime _lastBufferProgressAt = DateTime.now();
   Duration? defaultST;
   Duration? playedTime;
   String get playedTimePos {
@@ -675,10 +708,10 @@ class VideoDetailController extends GetxController
 
     final currentDecodeFormats = this.currentDecodeFormats.codes;
     final defaultDecodeFormats = VideoDecodeFormatType.fromString(
-      cacheDecode,
+      _preferredDecode,
     ).codes;
     final secondDecodeFormats = VideoDecodeFormatType.fromString(
-      cacheSecondDecode,
+      _fallbackDecode,
     ).codes;
 
     VideoItem? video;
@@ -696,6 +729,165 @@ class VideoDetailController extends GetxController
     return video ?? videoList.first;
   }
 
+  bool _isCdnCandidateAvailable(String url) {
+    final host = VideoUtils.cdnHost(url);
+    return host != null &&
+        !_failedCdnHosts.contains(host) &&
+        !VideoUtils.isCdnCoolingDown(url);
+  }
+
+  int _initialCdnIndex(List<String> candidates) {
+    final available = candidates.indexWhere(_isCdnCandidateAvailable);
+    if (available >= 0) return available;
+    return candidates.indexWhere(
+      (url) => !_failedCdnHosts.contains(VideoUtils.cdnHost(url)),
+    );
+  }
+
+  int _nextCdnIndex(List<String> candidates, int current) {
+    if (candidates.length < 2) return -1;
+    for (var offset = 1; offset < candidates.length; offset++) {
+      final index = (current + offset) % candidates.length;
+      if (_isCdnCandidateAvailable(candidates[index])) return index;
+    }
+    return -1;
+  }
+
+  void _configureAdaptiveSources({
+    required Iterable<String> videoUrls,
+    Iterable<String>? audioUrls,
+    int? bandwidth,
+  }) {
+    if (!Pref.adaptivePlayback) {
+      _videoCdnCandidates = const [];
+      _audioCdnCandidates = const [];
+      _adaptiveBandwidth = bandwidth ?? 0;
+      videoUrl = VideoUtils.getCdnUrl(videoUrls);
+      audioUrl = audioUrls == null
+          ? ''
+          : VideoUtils.getCdnUrl(audioUrls, isAudio: true);
+      return;
+    }
+    _videoCdnCandidates = VideoUtils.getCdnCandidates(
+      videoUrls,
+      preferredService: CDNService.ali,
+    );
+    _audioCdnCandidates = audioUrls == null
+        ? const []
+        : VideoUtils.getCdnCandidates(
+            audioUrls,
+            isAudio: true,
+            preferredService: CDNService.ali,
+          );
+    _adaptiveBandwidth = bandwidth ?? 0;
+
+    final videoIndex = _initialCdnIndex(_videoCdnCandidates);
+    if (videoIndex >= 0) {
+      _videoCdnIndex = videoIndex;
+      videoUrl = _videoCdnCandidates[videoIndex];
+    }
+    final audioIndex = _initialCdnIndex(_audioCdnCandidates);
+    if (audioIndex >= 0) {
+      _audioCdnIndex = audioIndex;
+      audioUrl = _audioCdnCandidates[audioIndex];
+    } else if (_audioCdnCandidates.isEmpty) {
+      audioUrl = '';
+    }
+  }
+
+  void _startCdnHealthMonitor() {
+    _cdnHealthTimer?.cancel();
+    if (!Pref.adaptivePlayback ||
+        isFileSource ||
+        _videoCdnCandidates.length < 2) {
+      return;
+    }
+    _lastBufferedPosition = plPlayerController.buffered.value;
+    _lastBufferProgressAt = DateTime.now();
+    _cdnHealthTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => _checkCdnHealth(),
+    );
+  }
+
+  void _checkCdnHealth() {
+    if (_switchingCdn || plPlayerController.processing || isClosed) return;
+
+    final buffered = plPlayerController.buffered.value;
+    final position = plPlayerController.position;
+    final forwardBuffer = buffered > position
+        ? buffered - position
+        : Duration.zero;
+
+    if (buffered < _lastBufferedPosition ||
+        buffered - _lastBufferedPosition >= const Duration(milliseconds: 500)) {
+      _lastBufferedPosition = buffered;
+      _lastBufferProgressAt = DateTime.now();
+      return;
+    }
+
+    if (forwardBuffer >= _targetForwardBuffer) return;
+    final shouldBeLoading =
+        plPlayerController.isBuffering.value ||
+        (plPlayerController.playerStatus.isPlaying &&
+            forwardBuffer <= _lowForwardBuffer);
+    if (!shouldBeLoading ||
+        DateTime.now().difference(_lastBufferProgressAt) <
+            _bufferStallTimeout) {
+      return;
+    }
+    unawaited(_switchToNextCdn());
+  }
+
+  Future<void> _switchToNextCdn() async {
+    if (_switchingCdn ||
+        _cdnSwitchCount >= Pref.adaptiveMaxCdnSwitches.round() ||
+        videoUrl == null) {
+      return;
+    }
+    _switchingCdn = true;
+    try {
+      final failedHost = VideoUtils.cdnHost(videoUrl);
+      if (failedHost != null) _failedCdnHosts.add(failedHost);
+      VideoUtils.markCdnFailed(videoUrl);
+
+      final nextVideoIndex = _nextCdnIndex(
+        _videoCdnCandidates,
+        _videoCdnIndex,
+      );
+      if (nextVideoIndex < 0) {
+        _cdnHealthTimer?.cancel();
+        SmartDialog.showToast('当前视频没有更多可用 CDN');
+        return;
+      }
+
+      _videoCdnIndex = nextVideoIndex;
+      videoUrl = _videoCdnCandidates[nextVideoIndex];
+
+      if (audioUrl != null &&
+          failedHost != null &&
+          VideoUtils.cdnHost(audioUrl) == failedHost) {
+        final nextAudioIndex = _nextCdnIndex(
+          _audioCdnCandidates,
+          _audioCdnIndex,
+        );
+        if (nextAudioIndex >= 0) {
+          _audioCdnIndex = nextAudioIndex;
+          audioUrl = _audioCdnCandidates[nextAudioIndex];
+        }
+      }
+
+      _cdnSwitchCount += 1;
+      playedTime = plPlayerController.position;
+      _lastBufferedPosition = Duration.zero;
+      _lastBufferProgressAt = DateTime.now();
+      SmartDialog.showToast('CDN 缓冲停滞，正在切换节点');
+      await playerInit(autoplay: true);
+    } finally {
+      _switchingCdn = false;
+    }
+  }
+
   /// 更新画质、音质
   void updatePlayer() {
     final currentVideoQa = this.currentVideoQa.value;
@@ -711,16 +903,21 @@ class VideoDetailController extends GetxController
       currentDecodeFormats = VideoDecodeFormatType.fromString(video.codecs!);
     }
     firstVideo = video;
-    videoUrl = VideoUtils.getCdnUrl(firstVideo.playUrls);
 
     /// 根据currentAudioQa 重新设置audioUrl
+    AudioItem? firstAudio;
     if (currentAudioQa != null) {
-      final firstAudio = data.dash!.audio!.firstWhere(
+      firstAudio = data.dash!.audio!.firstWhere(
         (i) => i.id == currentAudioQa!.code,
         orElse: () => data.dash!.audio!.first,
       );
-      audioUrl = VideoUtils.getCdnUrl(firstAudio.playUrls, isAudio: true);
     }
+
+    _configureAdaptiveSources(
+      videoUrls: firstVideo.playUrls,
+      audioUrls: firstAudio?.playUrls,
+      bandwidth: firstVideo.bandWidth,
+    );
 
     playerInit();
   }
@@ -757,6 +954,7 @@ class VideoDetailController extends GetxController
           : NetworkSource(
               videoSource: videoUrl!,
               audioSource: audioUrl,
+              bandwidth: _adaptiveBandwidth,
             ),
       seekTo: seek,
       duration: data.timeLength == null
@@ -798,6 +996,7 @@ class VideoDetailController extends GetxController
     }
 
     defaultST = null;
+    _startCdnHealthMonitor();
   }
 
   bool isQuerying = false;
@@ -885,8 +1084,7 @@ class VideoDetailController extends GetxController
       }
       if (data.dash == null && data.durl != null) {
         final first = data.durl!.first;
-        videoUrl = VideoUtils.getCdnUrl(first.playUrls);
-        audioUrl = '';
+        _configureAdaptiveSources(videoUrls: first.playUrls);
 
         // 实际为FLV/MP4格式，但已被淘汰，这里仅做兜底处理
         final videoQuality = VideoQuality.fromCode(data.quality!);
@@ -944,9 +1142,9 @@ class VideoDetailController extends GetxController
           )
           .codecs!;
       // 默认从设置中取AV1
-      currentDecodeFormats = VideoDecodeFormatType.fromString(cacheDecode);
+      currentDecodeFormats = VideoDecodeFormatType.fromString(_preferredDecode);
       VideoDecodeFormatType secondDecodeFormats =
-          VideoDecodeFormatType.fromString(cacheSecondDecode);
+          VideoDecodeFormatType.fromString(_fallbackDecode);
       // 当前视频没有对应格式返回第一个
       int flag = 0;
       for (final e in supportDecodeFormats) {
@@ -972,8 +1170,6 @@ class VideoDetailController extends GetxController
       );
       _setVideoHeight();
 
-      videoUrl = VideoUtils.getCdnUrl(firstVideo.playUrls);
-
       /// 优先顺序 设置中指定质量 -> 当前可选的最高质量
       AudioItem? firstAudio;
       final audioList = data.dash?.audio;
@@ -991,13 +1187,15 @@ class VideoDetailController extends GetxController
           (e) => e.id == closestNumber,
           orElse: () => audioList.first,
         );
-        audioUrl = VideoUtils.getCdnUrl(firstAudio.playUrls, isAudio: true);
         if (firstAudio.id case final int id?) {
           currentAudioQa = AudioQuality.fromCode(id);
         }
-      } else {
-        audioUrl = '';
       }
+      _configureAdaptiveSources(
+        videoUrls: firstVideo.playUrls,
+        audioUrls: firstAudio?.playUrls,
+        bandwidth: firstVideo.bandWidth,
+      );
       await _initPlayerIfNeeded(autoFullScreenFlag);
     } else {
       _autoPlay.value = false;
@@ -1242,6 +1440,7 @@ class VideoDetailController extends GetxController
 
   @override
   void onClose() {
+    _cdnHealthTimer?.cancel();
     cid.close();
     if (isFileSource) {
       cacheLocalProgress();
@@ -1261,6 +1460,12 @@ class VideoDetailController extends GetxController
   }
 
   void onReset({bool isStein = false}) {
+    _cdnHealthTimer?.cancel();
+    _failedCdnHosts.clear();
+    _videoCdnCandidates = const [];
+    _audioCdnCandidates = const [];
+    _cdnSwitchCount = 0;
+    _switchingCdn = false;
     if (isFileSource) {
       cacheLocalProgress();
     }

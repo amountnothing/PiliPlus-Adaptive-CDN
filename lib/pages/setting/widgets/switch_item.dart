@@ -3,6 +3,7 @@ import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart' hide ListTile;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
@@ -18,6 +19,7 @@ class SetSwitchItem extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
   final TextStyle? titleStyle;
   final bool isSplit;
+  final ValueListenable<bool>? enabledListenable;
 
   const SetSwitchItem({
     super.key,
@@ -32,6 +34,7 @@ class SetSwitchItem extends StatefulWidget {
     this.contentPadding,
     this.titleStyle,
     this.isSplit = false,
+    this.enabledListenable,
   });
 
   @override
@@ -94,11 +97,22 @@ class _SetSwitchItemState extends State<SetSwitchItem> {
 
   @override
   Widget build(BuildContext context) {
+    final enabledListenable = widget.enabledListenable;
+    if (enabledListenable != null) {
+      return ValueListenableBuilder<bool>(
+        valueListenable: enabledListenable,
+        builder: (context, enabled, _) => _build(context, enabled),
+      );
+    }
+    return _build(context, true);
+  }
+
+  Widget _build(BuildContext context, bool enabled) {
     final theme = Theme.of(context);
     final titleStyle =
         widget.titleStyle ??
         theme.textTheme.titleMedium!.copyWith(
-          color: widget.onTap != null && !val
+          color: !enabled || (widget.onTap != null && !val)
               ? theme.colorScheme.outline
               : null,
         );
@@ -111,14 +125,18 @@ class _SetSwitchItemState extends State<SetSwitchItem> {
       alignment: .centerRight,
       child: Switch(
         value: val,
-        onChanged: switchChange,
+        onChanged: enabled ? switchChange : null,
       ),
     );
 
     Widget child(Widget? trailing) => ListTile(
       contentPadding: widget.contentPadding,
-      enabled: widget.onTap == null ? true : val,
-      onTap: widget.onTap == null ? switchChange : () => widget.onTap!(context),
+      enabled: enabled && (widget.onTap == null ? true : val),
+      onTap: !enabled
+          ? null
+          : widget.onTap == null
+          ? switchChange
+          : () => widget.onTap!(context),
       title: Text(widget.title, style: titleStyle),
       subtitle: widget.subtitle != null
           ? Text(widget.subtitle!, style: subTitleStyle)
