@@ -1,3 +1,9 @@
+> [!IMPORTANT]
+> **PiliPlus Adaptive CDN** 是面向海外及网络波动环境的 PiliPlus 改版。
+> 本项目优先尝试 AV1，并使用可配置的大缓冲、卡顿检测和 CDN 自动切换：某个 CDN 在当前视频中触发故障后会冷却 30 秒，且该视频内不再重复使用。开启“自适应播放”后，与其冲突的手动 CDN、解码和缓冲设置会灰显；关闭后恢复 PiliPlus 原有行为。
+>
+> GitHub Actions 会定期检查 [PiliPlus 上游 Release](https://github.com/bggRGjQaUbCoE/PiliPlus/releases)。发现新版本后会尝试合并上游并自动构建 Android Release；若存在代码冲突则停止更新，避免覆盖自适应播放逻辑。
+
 <div align="center">
     <img width="200" height="200" src="assets/images/logo/logo.png">
 </div>

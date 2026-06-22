@@ -1,0 +1,195 @@
+name: Adaptive CDN Release
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Build current code or sync the latest upstream release first"
+        required: true
+        default: current
+        type: choice
+        options:
+          - current
+          - sync_upstream
+      release_tag:
+        description: "Optional release tag (current mode only)"
+        required: false
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/adaptive_release.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: adaptive-cdn-release
+  cancel-in-progress: false
+
+env:
+  UPSTREAM_REPOSITORY: bggRGjQaUbCoE/PiliPlus
+
+jobs:
+  prepare:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.prepare.outputs.should_build }}
+      release_tag: ${{ steps.prepare.outputs.release_tag }}
+      upstream_tag: ${{ steps.prepare.outputs.upstream_tag }}
+    steps:
+      - name: Checkout downstream
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Resolve version and sync upstream when requested
+        id: prepare
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_MODE: ${{ inputs.mode }}
+          INPUT_RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+
+          mode="${INPUT_MODE:-current}"
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            mode="sync_upstream"
+          fi
+
+          if [[ "$mode" == "sync_upstream" ]]; then
+            upstream_tag="$(gh api "repos/${UPSTREAM_REPOSITORY}/releases/latest" --jq '.tag_name')"
+            release_tag="adaptive-${upstream_tag}"
+
+            if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${release_tag}" >/dev/null 2>&1; then
+              echo "Upstream release ${upstream_tag} was already published as ${release_tag}."
+              echo "should_build=false" >> "$GITHUB_OUTPUT"
+              echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
+              echo "upstream_tag=${upstream_tag}" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git remote add upstream "https://github.com/${UPSTREAM_REPOSITORY}.git"
+            git fetch upstream --tags --force
+            git merge --no-edit "$upstream_tag"
+
+            if [[ -n "$(git status --porcelain)" ]]; then
+              echo "Unexpected uncommitted files after upstream merge."
+              git status --short
+              exit 1
+            fi
+
+            git push origin HEAD:main
+          else
+            upstream_tag=""
+            release_tag="${INPUT_RELEASE_TAG:-}"
+            if [[ -z "$release_tag" ]]; then
+              release_tag="adaptive-current-${GITHUB_RUN_NUMBER}"
+            fi
+
+            if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${release_tag}" >/dev/null 2>&1; then
+              echo "Release ${release_tag} already exists."
+              exit 1
+            fi
+          fi
+
+          echo "should_build=true" >> "$GITHUB_OUTPUT"
+          echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
+          echo "upstream_tag=${upstream_tag}" >> "$GITHUB_OUTPUT"
+
+  android:
+    name: Build Android release
+    needs: prepare
+    if: needs.prepare.outputs.should_build == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout prepared main branch
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: |
+            android/*.gradle*
+            android/**/gradle-wrapper.properties
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Apply Android patch
+        shell: pwsh
+        run: lib/scripts/patch.ps1 android
+
+      - name: Configure optional release signing
+        shell: bash
+        env:
+          SIGN_KEYSTORE_BASE64: ${{ secrets.SIGN_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [[ -n "$SIGN_KEYSTORE_BASE64" ]]; then
+            echo "$SIGN_KEYSTORE_BASE64" | base64 --decode > android/app/key.jks
+            {
+              echo "storeFile=key.jks"
+              echo "storePassword=$KEYSTORE_PASSWORD"
+              echo "keyAlias=$KEY_ALIAS"
+              echo "keyPassword=$KEY_PASSWORD"
+            } > android/key.properties
+          fi
+
+      - name: Generate build metadata
+        shell: pwsh
+        run: lib/scripts/build.ps1 android
+
+      - name: Build split APKs
+        run: flutter build apk --release --split-per-abi --dart-define-from-file=pili_release.json --pub
+
+      - name: Rename APKs
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in build/app/outputs/flutter-apk/app-*-release.apk; do
+            abi="$(basename "$file" | sed -E 's/app-(.*)-release\.apk/\1/')"
+            mv "$file" "PiliPlus-Adaptive-CDN_android_${version}_${abi}.apk"
+          done
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          archive: false
+          name: PiliPlus-Adaptive-CDN-Android
+          path: PiliPlus-Adaptive-CDN_android_*.apk
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.prepare.outputs.release_tag }}
+          name: PiliPlus Adaptive CDN ${{ needs.prepare.outputs.release_tag }}
+          target_commitish: main
+          generate_release_notes: true
+          body: |
+            Adaptive CDN build based on PiliPlus.
+            Upstream release: ${{ needs.prepare.outputs.upstream_tag || 'current main' }}
+
+            Includes AV1 preference, configurable buffering, stall detection,
+            automatic CDN failover, and per-video failed-CDN exclusion.
+          files: PiliPlus-Adaptive-CDN_android_*.apk
