@@ -52,6 +52,7 @@ import 'package:PiliPlus/plugin/pl_player/models/heart_beat_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/accounts.dart';
+import 'package:PiliPlus/utils/adaptive_playback.dart';
 import 'package:PiliPlus/utils/connectivity_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
@@ -815,6 +816,20 @@ class VideoDetailController extends GetxController
 
     final buffered = plPlayerController.buffered.value;
     final position = plPlayerController.position;
+    final duration = plPlayerController.duration.value;
+
+    if (AdaptivePlayback.hasReachedContentEnd(
+      duration: duration,
+      position: position,
+      buffered: buffered,
+    )) {
+      // No more bytes are expected once the buffered/played edge reaches the
+      // media tail. Reset the stall clock so a later seek starts a fresh check.
+      _lastBufferedPosition = buffered;
+      _lastBufferProgressAt = DateTime.now();
+      return;
+    }
+
     final forwardBuffer = buffered > position
         ? buffered - position
         : Duration.zero;
@@ -842,7 +857,12 @@ class VideoDetailController extends GetxController
   Future<void> _switchToNextCdn() async {
     if (_switchingCdn ||
         _cdnSwitchCount >= Pref.adaptiveMaxCdnSwitches.round() ||
-        videoUrl == null) {
+        videoUrl == null ||
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: plPlayerController.duration.value,
+          position: plPlayerController.position,
+          buffered: plPlayerController.buffered.value,
+        )) {
       return;
     }
     _switchingCdn = true;

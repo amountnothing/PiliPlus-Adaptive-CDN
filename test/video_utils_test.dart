@@ -1,4 +1,5 @@
 import 'package:PiliPlus/models/common/video/cdn_type.dart';
+import 'package:PiliPlus/utils/adaptive_playback.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -75,6 +76,52 @@ void main() {
       VideoUtils.markCdnFailed(failed, cooldown: const Duration(seconds: 30));
 
       expect(VideoUtils.isCdnCoolingDown(failed), isTrue);
+    });
+  });
+
+  group('AdaptivePlayback.hasReachedContentEnd', () {
+    test('treats a fully buffered media tail as complete', () {
+      expect(
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: const Duration(seconds: 100),
+          position: const Duration(seconds: 80),
+          buffered: const Duration(seconds: 100),
+        ),
+        isTrue,
+      );
+    });
+
+    test('allows small segment and duration drift at the tail', () {
+      expect(
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: const Duration(seconds: 100),
+          position: const Duration(seconds: 98),
+          buffered: const Duration(milliseconds: 98500),
+        ),
+        isTrue,
+      );
+    });
+
+    test('does not hide a real stall before the media tail', () {
+      expect(
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: const Duration(seconds: 100),
+          position: const Duration(seconds: 90),
+          buffered: const Duration(seconds: 91),
+        ),
+        isFalse,
+      );
+    });
+
+    test('does not infer completion when duration is unknown', () {
+      expect(
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: Duration.zero,
+          position: const Duration(seconds: 100),
+          buffered: const Duration(seconds: 100),
+        ),
+        isFalse,
+      );
     });
   });
 }
