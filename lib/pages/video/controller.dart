@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:math' show min;
+import 'dart:math' show max, min;
 import 'dart:ui';
 
 import 'package:PiliPlus/common/style.dart';
@@ -142,6 +142,15 @@ class VideoDetailController extends GetxController
   Duration get _bufferStallTimeout => Duration(
     milliseconds: (Pref.adaptiveStallTimeoutSec * 1000).round(),
   );
+  Duration get _lowForwardBuffer => Duration(
+    milliseconds: (Pref.adaptiveLowBufferSec * 1000).round(),
+  );
+  Duration get _playbackStallInterval => Duration(
+    milliseconds: (Pref.adaptivePlaybackStallSec * 1000).round(),
+  );
+  int get _maxCdnSwitches => Pref.adaptiveTraverseAllCdns
+      ? max(1, _videoCdnCandidates.length - 1)
+      : Pref.adaptiveMaxCdnSwitches.round();
   String get _preferredDecode => Pref.adaptivePlayback
       ? VideoDecodeFormatType.AV1.codes.first
       : cacheDecode;
@@ -162,6 +171,10 @@ class VideoDetailController extends GetxController
   Duration _lastBufferedPosition = Duration.zero;
   DateTime _lastBufferProgressAt = DateTime.now();
   bool _bufferBelowTarget = false;
+  bool _lowBufferTriggered = true;
+  Duration _lastPlaybackPosition = Duration.zero;
+  DateTime _lastPlaybackProgressAt = DateTime.now();
+  DateTime _lastCdnSwitchAt = DateTime.fromMillisecondsSinceEpoch(0);
   Duration? defaultST;
   Duration? playedTime;
   String get playedTimePos {
@@ -811,8 +824,16 @@ class VideoDetailController extends GetxController
       return;
     }
     _lastBufferedPosition = plPlayerController.buffered.value;
-    _lastBufferProgressAt = DateTime.now();
+    final now = DateTime.now();
+    _lastBufferProgressAt = now;
     _bufferBelowTarget = false;
+    _lastPlaybackPosition = plPlayerController.position;
+    _lastPlaybackProgressAt = now;
+    _lastCdnSwitchAt = DateTime.fromMillisecondsSinceEpoch(0);
+    final forwardBuffer = _lastBufferedPosition > _lastPlaybackPosition
+        ? _lastBufferedPosition - _lastPlaybackPosition
+        : Duration.zero;
+    _lowBufferTriggered = forwardBuffer <= _lowForwardBuffer;
     _cdnHealthTimer = Timer.periodic(
       const Duration(seconds: 1),
       (_) => _checkCdnHealth(),
@@ -825,6 +846,7 @@ class VideoDetailController extends GetxController
     final buffered = plPlayerController.buffered.value;
     final position = plPlayerController.position;
     final duration = plPlayerController.duration.value;
+    final now = DateTime.now();
 
     if (AdaptivePlayback.hasReachedContentEnd(
       duration: duration,
@@ -834,19 +856,51 @@ class VideoDetailController extends GetxController
       // No more bytes are expected once the buffered/played edge reaches the
       // media tail. Reset the stall clock so a later seek starts a fresh check.
       _lastBufferedPosition = buffered;
-      _lastBufferProgressAt = DateTime.now();
+      _lastBufferProgressAt = now;
       _bufferBelowTarget = false;
+      _lowBufferTriggered = true;
+      _lastPlaybackPosition = position;
+      _lastPlaybackProgressAt = now;
       return;
     }
 
     final forwardBuffer = buffered > position
         ? buffered - position
         : Duration.zero;
+    final isTryingToPlay =
+        plPlayerController.playerStatus.isPlaying ||
+        plPlayerController.isBuffering.value;
+
+    final positionDelta = (position - _lastPlaybackPosition).inMilliseconds
+        .abs();
+    if (positionDelta >= 250) {
+      _lastPlaybackPosition = position;
+      _lastPlaybackProgressAt = now;
+    } else if (!isTryingToPlay) {
+      _lastPlaybackPosition = position;
+      _lastPlaybackProgressAt = now;
+    } else if (now.difference(_lastPlaybackProgressAt) >=
+            _playbackStallInterval &&
+        now.difference(_lastCdnSwitchAt) >= _playbackStallInterval) {
+      _lastCdnSwitchAt = now;
+      unawaited(_switchToNextCdn());
+      return;
+    }
 
     if (buffered < _lastBufferedPosition ||
         buffered - _lastBufferedPosition >= const Duration(milliseconds: 500)) {
       _lastBufferedPosition = buffered;
-      _lastBufferProgressAt = DateTime.now();
+      _lastBufferProgressAt = now;
+    }
+
+    final isLowBuffer = forwardBuffer <= _lowForwardBuffer;
+    if (!isLowBuffer) {
+      _lowBufferTriggered = false;
+    } else if (!_lowBufferTriggered && isTryingToPlay) {
+      _lowBufferTriggered = true;
+      _lastCdnSwitchAt = now;
+      unawaited(_switchToNextCdn());
+      return;
     }
 
     final targetFloor = _targetForwardBuffer - _targetBufferTolerance;
@@ -856,23 +910,20 @@ class VideoDetailController extends GetxController
     }
     if (!_bufferBelowTarget) {
       _bufferBelowTarget = true;
-      _lastBufferProgressAt = DateTime.now();
+      _lastBufferProgressAt = now;
       return;
     }
-    final shouldBeLoading =
-        plPlayerController.isBuffering.value ||
-        plPlayerController.playerStatus.isPlaying;
-    if (!shouldBeLoading ||
-        DateTime.now().difference(_lastBufferProgressAt) <
-            _bufferStallTimeout) {
+    if (!isTryingToPlay ||
+        now.difference(_lastBufferProgressAt) < _bufferStallTimeout) {
       return;
     }
+    _lastCdnSwitchAt = now;
     unawaited(_switchToNextCdn());
   }
 
   Future<void> _switchToNextCdn() async {
     if (_switchingCdn ||
-        _cdnSwitchCount >= Pref.adaptiveMaxCdnSwitches.round() ||
+        _cdnSwitchCount >= _maxCdnSwitches ||
         videoUrl == null ||
         AdaptivePlayback.hasReachedContentEnd(
           duration: plPlayerController.duration.value,
@@ -896,6 +947,9 @@ class VideoDetailController extends GetxController
         _lastBufferedPosition = plPlayerController.buffered.value;
         _lastBufferProgressAt = DateTime.now();
         _bufferBelowTarget = false;
+        _lowBufferTriggered =
+            _lastBufferedPosition - plPlayerController.position <=
+            _lowForwardBuffer;
         return;
       }
 
@@ -935,6 +989,7 @@ class VideoDetailController extends GetxController
       _lastBufferedPosition = Duration.zero;
       _lastBufferProgressAt = DateTime.now();
       _bufferBelowTarget = false;
+      _lowBufferTriggered = true;
       SmartDialog.showToast('CDN 缓冲停滞，正在切换节点');
       await playerInit(autoplay: true);
     } finally {
@@ -958,6 +1013,9 @@ class VideoDetailController extends GetxController
       _lastBufferedPosition = plPlayerController.buffered.value;
       _lastBufferProgressAt = DateTime.now();
       _bufferBelowTarget = false;
+      _lastCdnSwitchAt = DateTime.now();
+      final forwardBuffer = _lastBufferedPosition - plPlayerController.position;
+      _lowBufferTriggered = forwardBuffer <= _lowForwardBuffer;
       SmartDialog.showToast('CDN 下载停滞，已保留缓冲并切换节点');
     } else {
       audioUrl = nextUrl;
@@ -998,7 +1056,7 @@ class VideoDetailController extends GetxController
         cooldown: Duration(
           milliseconds: (Pref.adaptiveCdnCooldownSec * 1000).round(),
         ),
-        maxSwitches: Pref.adaptiveMaxCdnSwitches.round(),
+        maxSwitches: _maxCdnSwitches,
         onSwitch: _onRelaySwitch,
       );
     } else {

@@ -50,11 +50,25 @@ List<SettingsModel> get videoSettings => [
     onTap: _showAdaptiveSegmentToleranceDialog,
   ),
   NormalModel(
+    title: '低缓冲切换阈值',
+    leading: const Icon(Icons.water_outlined),
+    getSubtitle: () => '播放中缓冲首次降至 ${Pref.adaptiveLowBufferSec}s 时切换',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveLowBufferDialog,
+  ),
+  NormalModel(
     title: '缓冲停滞判定',
     leading: const Icon(Icons.timer_off_outlined),
     getSubtitle: () => '连续 ${Pref.adaptiveStallTimeoutSec}s 无增长后切换',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveStallTimeoutDialog,
+  ),
+  NormalModel(
+    title: '播放位置停滞判定',
+    leading: const Icon(Icons.play_disabled_outlined),
+    getSubtitle: () => '播放位置不动时每 ${Pref.adaptivePlaybackStallSec}s 切换一次',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptivePlaybackStallDialog,
   ),
   NormalModel(
     title: '故障 CDN 冷却',
@@ -66,9 +80,19 @@ List<SettingsModel> get videoSettings => [
   NormalModel(
     title: '单视频最大切换次数',
     leading: const Icon(Icons.swap_horiz_rounded),
-    getSubtitle: () => '当前：${Pref.adaptiveMaxCdnSwitches.round()} 次',
+    getSubtitle: () => Pref.adaptiveTraverseAllCdns
+        ? '遍历全部 CDN 已开启，此项暂不生效'
+        : '当前：${Pref.adaptiveMaxCdnSwitches.round()} 次',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveMaxSwitchesDialog,
+  ),
+  SwitchModel(
+    title: '遍历全部 CDN',
+    subtitle: '卡顿未恢复时按评分降序尝试所有候选 CDN',
+    leading: const Icon(Icons.format_list_numbered_rounded),
+    setKey: SettingBoxKey.adaptiveTraverseAllCdns,
+    defaultVal: true,
+    enabledListenable: AdaptivePlayback.enabled,
   ),
   NormalModel(
     title: 'CDN 稳定性评分',
@@ -651,6 +675,20 @@ void _showAdaptiveSegmentToleranceDialog(
   maxValue: 5,
 );
 
+void _showAdaptiveLowBufferDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveLowBufferSec,
+  defVal: Pref.adaptiveLowBufferSec,
+  title: '低缓冲切换阈值',
+  suffix: 's',
+  minValue: 2,
+  maxValue: 20,
+);
+
 void _showAdaptiveStallTimeoutDialog(
   BuildContext context,
   VoidCallback setState,
@@ -662,7 +700,21 @@ void _showAdaptiveStallTimeoutDialog(
   title: '缓冲停滞判定',
   suffix: 's',
   minValue: 2,
-  maxValue: 10,
+  maxValue: 30,
+);
+
+void _showAdaptivePlaybackStallDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptivePlaybackStallSec,
+  defVal: Pref.adaptivePlaybackStallSec,
+  title: '播放位置停滞判定',
+  suffix: 's',
+  minValue: 2,
+  maxValue: 15,
 );
 
 void _showAdaptiveCdnCooldownDialog(

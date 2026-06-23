@@ -268,9 +268,23 @@ class CdnRelaySession {
         iterator = StreamIterator<List<int>>(upstream);
         while (true) {
           final stopwatch = Stopwatch()..start();
-          final hasNext = await iterator.moveNext().timeout(stallTimeout);
+          final changed = Object();
+          final waiter = track.waitForChange(track.generation);
+          late final Object readResult;
+          try {
+            readResult = await Future.any<Object>([
+              iterator.moveNext().then<Object>((value) => value),
+              waiter.future.then<Object>((_) => changed),
+            ]).timeout(stallTimeout);
+          } finally {
+            waiter.cancel();
+          }
           stopwatch.stop();
           networkWait += stopwatch.elapsed;
+          if (identical(readResult, changed)) {
+            throw const _RelaySourceChanged();
+          }
+          final hasNext = readResult as bool;
           if (!hasNext) break;
           final chunk = iterator.current;
           response.add(chunk);
@@ -404,6 +418,8 @@ class CdnRelaySession {
   Future<void> dispose() async {
     if (_disposed) return;
     _disposed = true;
+    _video.interrupt();
+    _audio.interrupt();
     _owner._sessions.remove(_token);
     _client.close(force: true);
   }
@@ -427,12 +443,15 @@ class _RelayTrackState {
   List<String> candidates;
   int index;
   int switches = 0;
+  int generation = 0;
   int? expectedLength;
   final Set<String> failedHosts = {};
+  final Set<Completer<void>> _changeWaiters = {};
 
   String get currentUrl => candidates[index];
 
   void update(List<String> nextCandidates, int nextIndex) {
+    _notifyChanged();
     candidates = List<String>.of(nextCandidates);
     index = candidates.isEmpty ? 0 : nextIndex.clamp(0, candidates.length - 1);
     switches = 0;
@@ -462,11 +481,42 @@ class _RelayTrackState {
       if (VideoUtils.isCdnCoolingDown(next)) continue;
       index = candidates.indexOf(next);
       switches += 1;
+      _notifyChanged();
       onSwitch?.call(type, failedUrl, next);
       return true;
     }
     return false;
   }
+
+  _TrackChangeWaiter waitForChange(int observedGeneration) {
+    final completer = Completer<void>();
+    if (observedGeneration != generation) {
+      completer.complete();
+    } else {
+      _changeWaiters.add(completer);
+    }
+    return _TrackChangeWaiter(this, completer);
+  }
+
+  void interrupt() => _notifyChanged();
+
+  void _notifyChanged() {
+    generation += 1;
+    for (final waiter in _changeWaiters) {
+      if (!waiter.isCompleted) waiter.complete();
+    }
+    _changeWaiters.clear();
+  }
+}
+
+class _TrackChangeWaiter {
+  const _TrackChangeWaiter(this.owner, this.completer);
+
+  final _RelayTrackState owner;
+  final Completer<void> completer;
+
+  Future<void> get future => completer.future;
+  void cancel() => owner._changeWaiters.remove(completer);
 }
 
 class _ByteRange {

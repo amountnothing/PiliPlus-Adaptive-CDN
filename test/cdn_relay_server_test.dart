@@ -65,6 +65,47 @@ void main() {
       },
     );
 
+    test('controller switch interrupts a stalled CDN immediately', () async {
+      final payload = List<int>.generate(32, (index) => index);
+      final first = await _startUpstream(
+        payload,
+        stallAfterBytes: 8,
+        stallFor: const Duration(seconds: 2),
+      );
+      final second = await _startUpstream(payload);
+      upstreamServers.addAll([first, second]);
+
+      final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
+      final session = await relayServer.createSession(
+        videoCandidates: [
+          firstUrl,
+          'http://localhost:${second.port}/video.m4s',
+        ],
+        videoIndex: 0,
+        // Longer than the assertion below: this test must pass because the
+        // explicit switch interrupts the read, not because the relay times out.
+        stallTimeout: const Duration(seconds: 5),
+        cooldown: const Duration(seconds: 30),
+        maxSwitches: 3,
+      );
+
+      final client = HttpClient();
+      final request = await client.getUrl(Uri.parse(session.videoUrl));
+      final response = await request.close();
+      final bytesFuture = response.fold<List<int>>(
+        <int>[],
+        (buffer, chunk) => buffer..addAll(chunk),
+      );
+
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      expect(session.switchVideo(expectedUrl: firstUrl), isTrue);
+      final bytes = await bytesFuture.timeout(const Duration(seconds: 1));
+      client.close(force: true);
+
+      expect(bytes, payload);
+      expect(session.currentVideoSource, contains('localhost:${second.port}'));
+    });
+
     test('forwards byte ranges without changing the player URL', () async {
       final payload = List<int>.generate(32, (index) => index);
       final upstream = await _startUpstream(payload);

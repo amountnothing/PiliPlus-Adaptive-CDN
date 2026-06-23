@@ -261,17 +261,22 @@ abstract final class Pref {
 
   static double get adaptiveTargetBufferSec => _setting.get(
     SettingBoxKey.adaptiveTargetBufferSec,
-    defaultValue: 25.0,
+    defaultValue: 30.0,
   );
 
   static double get adaptiveLowBufferSec => _setting.get(
     SettingBoxKey.adaptiveLowBufferSec,
-    defaultValue: 6.0,
+    defaultValue: 10.0,
   );
 
   static double get adaptiveStallTimeoutSec => _setting.get(
     SettingBoxKey.adaptiveStallTimeoutSec,
-    defaultValue: 3.0,
+    defaultValue: 10.0,
+  );
+
+  static double get adaptivePlaybackStallSec => _setting.get(
+    SettingBoxKey.adaptivePlaybackStallSec,
+    defaultValue: 4.0,
   );
 
   static double get adaptiveSegmentToleranceSec => _setting.get(
@@ -287,6 +292,11 @@ abstract final class Pref {
   static double get adaptiveMaxCdnSwitches => _setting.get(
     SettingBoxKey.adaptiveMaxCdnSwitches,
     defaultValue: 3.0,
+  );
+
+  static bool get adaptiveTraverseAllCdns => _setting.get(
+    SettingBoxKey.adaptiveTraverseAllCdns,
+    defaultValue: true,
   );
 
   static String get hardwareDecoding => _setting.get(
