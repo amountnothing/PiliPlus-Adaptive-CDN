@@ -19,6 +19,7 @@ abstract final class SettingBoxKey {
       adaptiveTargetBufferSec = 'adaptiveTargetBufferSec',
       adaptiveLowBufferSec = 'adaptiveLowBufferSec',
       adaptiveStallTimeoutSec = 'adaptiveStallTimeoutSec',
+      adaptiveSegmentToleranceSec = 'adaptiveSegmentToleranceSec',
       adaptiveCdnCooldownSec = 'adaptiveCdnCooldownSec',
       adaptiveMaxCdnSwitches = 'adaptiveMaxCdnSwitches',
       hardwareDecoding = 'hardwareDecoding',
