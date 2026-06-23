@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:PiliPlus/services/cdn_score_service.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 
 enum CdnRelayTrack { video, audio }
@@ -218,6 +219,8 @@ class CdnRelaySession {
     while (!_disposed && attempts <= track.candidates.length) {
       final sourceUrl = track.currentUrl;
       StreamIterator<List<int>>? iterator;
+      var sourceBytes = 0;
+      var networkWait = Duration.zero;
       try {
         final upstream = await _openUpstream(
           request: request,
@@ -263,16 +266,36 @@ class CdnRelaySession {
         }
 
         iterator = StreamIterator<List<int>>(upstream);
-        while (await iterator.moveNext().timeout(stallTimeout)) {
+        while (true) {
+          final stopwatch = Stopwatch()..start();
+          final hasNext = await iterator.moveNext().timeout(stallTimeout);
+          stopwatch.stop();
+          networkWait += stopwatch.elapsed;
+          if (!hasNext) break;
           final chunk = iterator.current;
           response.add(chunk);
           bytesSent += chunk.length;
+          sourceBytes += chunk.length;
           // Respect mpv backpressure. A blocked local client is not a CDN stall.
           await response.flush();
           if (track.currentUrl != sourceUrl) {
             throw const _RelaySourceChanged();
           }
+          if (sourceBytes >= 4 * 1024 * 1024) {
+            CdnScoreService.recordSuccess(
+              sourceUrl,
+              bytes: sourceBytes,
+              networkWait: networkWait,
+            );
+            sourceBytes = 0;
+            networkWait = Duration.zero;
+          }
         }
+        CdnScoreService.recordSuccess(
+          sourceUrl,
+          bytes: sourceBytes,
+          networkWait: networkWait,
+        );
         await response.close();
         return;
       } on _RelaySourceChanged {
@@ -430,14 +453,14 @@ class _RelayTrackState {
     final failedHost = VideoUtils.cdnHost(failedUrl);
     if (failedHost != null) failedHosts.add(failedHost);
     VideoUtils.markCdnFailed(failedUrl, cooldown: cooldown);
+    CdnScoreService.recordFailure(failedUrl);
 
-    for (var offset = 1; offset < candidates.length; offset++) {
-      final nextIndex = (index + offset) % candidates.length;
-      final next = candidates[nextIndex];
+    for (final next in CdnScoreService.rankCandidates(candidates)) {
+      if (next == failedUrl) continue;
       final host = VideoUtils.cdnHost(next);
       if (host != null && failedHosts.contains(host)) continue;
       if (VideoUtils.isCdnCoolingDown(next)) continue;
-      index = nextIndex;
+      index = candidates.indexOf(next);
       switches += 1;
       onSwitch?.call(type, failedUrl, next);
       return true;
