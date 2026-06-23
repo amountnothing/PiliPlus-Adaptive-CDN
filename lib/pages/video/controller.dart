@@ -50,6 +50,7 @@ import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/plugin/pl_player/models/data_source.dart';
 import 'package:PiliPlus/plugin/pl_player/models/heart_beat_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
+import 'package:PiliPlus/services/cdn_score_service.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/services/cdn_relay_server.dart';
 import 'package:PiliPlus/utils/accounts.dart';
@@ -746,9 +747,12 @@ class VideoDetailController extends GetxController
 
   int _nextCdnIndex(List<String> candidates, int current) {
     if (candidates.length < 2) return -1;
-    for (var offset = 1; offset < candidates.length; offset++) {
-      final index = (current + offset) % candidates.length;
-      if (_isCdnCandidateAvailable(candidates[index])) return index;
+    final currentUrl = candidates[current];
+    for (final candidate in CdnScoreService.rankCandidates(candidates)) {
+      if (candidate == currentUrl) continue;
+      if (_isCdnCandidateAvailable(candidate)) {
+        return candidates.indexOf(candidate);
+      }
     }
     return -1;
   }
@@ -768,16 +772,20 @@ class VideoDetailController extends GetxController
           : VideoUtils.getCdnUrl(audioUrls, isAudio: true);
       return;
     }
-    _videoCdnCandidates = VideoUtils.getCdnCandidates(
-      videoUrls,
-      preferredService: CDNService.ali,
+    _videoCdnCandidates = CdnScoreService.rankCandidates(
+      VideoUtils.getCdnCandidates(
+        videoUrls,
+        preferredService: CDNService.ali,
+      ),
     );
     _audioCdnCandidates = audioUrls == null
         ? const []
-        : VideoUtils.getCdnCandidates(
-            audioUrls,
-            isAudio: true,
-            preferredService: CDNService.ali,
+        : CdnScoreService.rankCandidates(
+            VideoUtils.getCdnCandidates(
+              audioUrls,
+              isAudio: true,
+              preferredService: CDNService.ali,
+            ),
           );
     _adaptiveBandwidth = bandwidth ?? 0;
 
@@ -894,6 +902,7 @@ class VideoDetailController extends GetxController
       final failedHost = VideoUtils.cdnHost(videoUrl);
       if (failedHost != null) _failedCdnHosts.add(failedHost);
       VideoUtils.markCdnFailed(videoUrl);
+      CdnScoreService.recordFailure(videoUrl!);
 
       final nextVideoIndex = _nextCdnIndex(
         _videoCdnCandidates,

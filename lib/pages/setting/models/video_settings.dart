@@ -10,6 +10,7 @@ import 'package:PiliPlus/pages/setting/widgets/ordered_multi_select_dialog.dart'
 import 'package:PiliPlus/pages/setting/widgets/select_dialog.dart';
 import 'package:PiliPlus/plugin/pl_player/models/audio_output_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/hwdec_type.dart';
+import 'package:PiliPlus/services/cdn_score_service.dart';
 import 'package:PiliPlus/utils/adaptive_playback.dart';
 import 'package:PiliPlus/utils/filtering_text.dart';
 import 'package:PiliPlus/utils/storage.dart';
@@ -68,6 +69,13 @@ List<SettingsModel> get videoSettings => [
     getSubtitle: () => '当前：${Pref.adaptiveMaxCdnSwitches.round()} 次',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveMaxSwitchesDialog,
+  ),
+  NormalModel(
+    title: 'CDN 稳定性评分',
+    leading: const Icon(Icons.leaderboard_outlined),
+    getSubtitle: _cdnScoreSummary,
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showCdnScoresDialog,
   ),
   SwitchModel(
     title: '开启硬解',
@@ -685,6 +693,72 @@ void _showAdaptiveMaxSwitchesDialog(
   maxValue: 10,
   integer: true,
 );
+
+String _cdnScoreSummary() {
+  final entries = CdnScoreService.entries.entries.toList()
+    ..sort((a, b) => b.value.score.compareTo(a.value.score));
+  if (entries.isEmpty) return '暂无学习数据，新 CDN 初始 50 分';
+  return entries
+      .take(3)
+      .map((item) => '${item.key} ${item.value.score.toStringAsFixed(0)}')
+      .join(' · ');
+}
+
+Future<void> _showCdnScoresDialog(
+  BuildContext context,
+  VoidCallback setState,
+) async {
+  final entries = CdnScoreService.entries.entries.toList()
+    ..sort((a, b) => b.value.score.compareTo(a.value.score));
+  await showDialog<void>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('CDN 稳定性评分'),
+      content: SizedBox(
+        width: 520,
+        child: entries.isEmpty
+            ? const Text('暂无学习数据。所有新 CDN 均从 50 分开始。')
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: entries.length,
+                itemBuilder: (_, index) {
+                  final item = entries[index];
+                  final entry = item.value;
+                  return ListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(item.key),
+                    subtitle: Text(
+                      '成功 ${entry.successes} · 故障 ${entry.failures} · '
+                      '${entry.ewmaMbps.toStringAsFixed(1)} Mbps',
+                    ),
+                    trailing: Text(
+                      entry.score.toStringAsFixed(0),
+                      style: Theme.of(dialogContext).textTheme.titleMedium,
+                    ),
+                  );
+                },
+              ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: entries.isEmpty
+              ? null
+              : () async {
+                  await CdnScoreService.clear();
+                  if (dialogContext.mounted) Navigator.pop(dialogContext);
+                  setState();
+                },
+          child: const Text('重置评分'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(dialogContext),
+          child: const Text('关闭'),
+        ),
+      ],
+    ),
+  );
+}
 
 void _showBufferSizeDialog(BuildContext context, VoidCallback setState) =>
     _showDecimalDialog(
