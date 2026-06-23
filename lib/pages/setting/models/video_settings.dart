@@ -41,11 +41,12 @@ List<SettingsModel> get videoSettings => [
     onTap: _showAdaptiveTargetBufferDialog,
   ),
   NormalModel(
-    title: '缓冲低水位',
-    leading: const Icon(Icons.water_outlined),
-    getSubtitle: () => '当前：${Pref.adaptiveLowBufferSec}s',
+    title: '分段加载容差',
+    leading: const Icon(Icons.av_timer_outlined),
+    getSubtitle: () =>
+        '目标缓冲允许短暂低 ${Pref.adaptiveSegmentToleranceSec}s，避免分段间隔误判',
     enabledListenable: AdaptivePlayback.enabled,
-    onTap: _showAdaptiveLowBufferDialog,
+    onTap: _showAdaptiveSegmentToleranceDialog,
   ),
   NormalModel(
     title: '缓冲停滞判定',
@@ -628,18 +629,18 @@ void _showAdaptiveTargetBufferDialog(
   maxValue: 60,
 );
 
-void _showAdaptiveLowBufferDialog(
+void _showAdaptiveSegmentToleranceDialog(
   BuildContext context,
   VoidCallback setState,
 ) => _showDecimalDialog(
   context,
   setState,
-  key: SettingBoxKey.adaptiveLowBufferSec,
-  defVal: Pref.adaptiveLowBufferSec,
-  title: '缓冲低水位',
+  key: SettingBoxKey.adaptiveSegmentToleranceSec,
+  defVal: Pref.adaptiveSegmentToleranceSec,
+  title: '分段加载容差',
   suffix: 's',
-  minValue: 2,
-  maxValue: 15,
+  minValue: 0,
+  maxValue: 5,
 );
 
 void _showAdaptiveStallTimeoutDialog(

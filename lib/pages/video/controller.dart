@@ -51,6 +51,7 @@ import 'package:PiliPlus/plugin/pl_player/models/data_source.dart';
 import 'package:PiliPlus/plugin/pl_player/models/heart_beat_type.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
+import 'package:PiliPlus/services/cdn_relay_server.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/adaptive_playback.dart';
 import 'package:PiliPlus/utils/connectivity_utils.dart';
@@ -133,13 +134,9 @@ class VideoDetailController extends GetxController
   Duration get _targetForwardBuffer => Duration(
     milliseconds: (Pref.adaptiveTargetBufferSec * 1000).round(),
   );
-  Duration get _lowForwardBuffer {
-    final seconds = Pref.adaptiveLowBufferSec.clamp(
-      1.0,
-      Pref.adaptiveTargetBufferSec - 1,
-    );
-    return Duration(milliseconds: (seconds * 1000).round());
-  }
+  Duration get _targetBufferTolerance => Duration(
+    milliseconds: (Pref.adaptiveSegmentToleranceSec * 1000).round(),
+  );
 
   Duration get _bufferStallTimeout => Duration(
     milliseconds: (Pref.adaptiveStallTimeoutSec * 1000).round(),
@@ -160,8 +157,10 @@ class VideoDetailController extends GetxController
   int _adaptiveBandwidth = 0;
   int _cdnSwitchCount = 0;
   bool _switchingCdn = false;
+  CdnRelaySession? _cdnRelaySession;
   Duration _lastBufferedPosition = Duration.zero;
   DateTime _lastBufferProgressAt = DateTime.now();
+  bool _bufferBelowTarget = false;
   Duration? defaultST;
   Duration? playedTime;
   String get playedTimePos {
@@ -805,6 +804,7 @@ class VideoDetailController extends GetxController
     }
     _lastBufferedPosition = plPlayerController.buffered.value;
     _lastBufferProgressAt = DateTime.now();
+    _bufferBelowTarget = false;
     _cdnHealthTimer = Timer.periodic(
       const Duration(seconds: 1),
       (_) => _checkCdnHealth(),
@@ -827,6 +827,7 @@ class VideoDetailController extends GetxController
       // media tail. Reset the stall clock so a later seek starts a fresh check.
       _lastBufferedPosition = buffered;
       _lastBufferProgressAt = DateTime.now();
+      _bufferBelowTarget = false;
       return;
     }
 
@@ -838,14 +839,21 @@ class VideoDetailController extends GetxController
         buffered - _lastBufferedPosition >= const Duration(milliseconds: 500)) {
       _lastBufferedPosition = buffered;
       _lastBufferProgressAt = DateTime.now();
-      return;
     }
 
-    if (forwardBuffer >= _targetForwardBuffer) return;
+    final targetFloor = _targetForwardBuffer - _targetBufferTolerance;
+    if (forwardBuffer >= targetFloor) {
+      _bufferBelowTarget = false;
+      return;
+    }
+    if (!_bufferBelowTarget) {
+      _bufferBelowTarget = true;
+      _lastBufferProgressAt = DateTime.now();
+      return;
+    }
     final shouldBeLoading =
         plPlayerController.isBuffering.value ||
-        (plPlayerController.playerStatus.isPlaying &&
-            forwardBuffer <= _lowForwardBuffer);
+        plPlayerController.playerStatus.isPlaying;
     if (!shouldBeLoading ||
         DateTime.now().difference(_lastBufferProgressAt) <
             _bufferStallTimeout) {
@@ -867,6 +875,22 @@ class VideoDetailController extends GetxController
     }
     _switchingCdn = true;
     try {
+      if (_cdnRelaySession case final relay?) {
+        final switched = relay.switchVideo(
+          expectedUrl: videoUrl,
+          switchMatchingAudio: true,
+        );
+        if (!switched) {
+          _cdnHealthTimer?.cancel();
+          SmartDialog.showToast('当前视频没有更多可用 CDN');
+          return;
+        }
+        _lastBufferedPosition = plPlayerController.buffered.value;
+        _lastBufferProgressAt = DateTime.now();
+        _bufferBelowTarget = false;
+        return;
+      }
+
       final failedHost = VideoUtils.cdnHost(videoUrl);
       if (failedHost != null) _failedCdnHosts.add(failedHost);
       VideoUtils.markCdnFailed(videoUrl);
@@ -901,11 +925,89 @@ class VideoDetailController extends GetxController
       playedTime = plPlayerController.position;
       _lastBufferedPosition = Duration.zero;
       _lastBufferProgressAt = DateTime.now();
+      _bufferBelowTarget = false;
       SmartDialog.showToast('CDN 缓冲停滞，正在切换节点');
       await playerInit(autoplay: true);
     } finally {
       _switchingCdn = false;
     }
+  }
+
+  void _onRelaySwitch(
+    CdnRelayTrack track,
+    String failedUrl,
+    String nextUrl,
+  ) {
+    if (isClosed) return;
+    final failedHost = VideoUtils.cdnHost(failedUrl);
+    if (failedHost != null) _failedCdnHosts.add(failedHost);
+    if (track == CdnRelayTrack.video) {
+      videoUrl = nextUrl;
+      final index = _videoCdnCandidates.indexOf(nextUrl);
+      if (index >= 0) _videoCdnIndex = index;
+      _cdnSwitchCount += 1;
+      _lastBufferedPosition = plPlayerController.buffered.value;
+      _lastBufferProgressAt = DateTime.now();
+      _bufferBelowTarget = false;
+      SmartDialog.showToast('CDN 下载停滞，已保留缓冲并切换节点');
+    } else {
+      audioUrl = nextUrl;
+      final index = _audioCdnCandidates.indexOf(nextUrl);
+      if (index >= 0) _audioCdnIndex = index;
+    }
+  }
+
+  Future<(String, String?)> _relayPlaybackSources() async {
+    if (!Pref.adaptivePlayback || _videoCdnCandidates.length < 2) {
+      await _disposeCdnRelay();
+      return (videoUrl!, audioUrl);
+    }
+
+    final relayVideoCandidates = _videoCdnCandidates
+        .where(_isCdnCandidateAvailable)
+        .toList(growable: false);
+    final relayAudioCandidates = _audioCdnCandidates
+        .where(_isCdnCandidateAvailable)
+        .toList(growable: false);
+    if (relayVideoCandidates.length < 2) {
+      await _disposeCdnRelay();
+      return (videoUrl!, audioUrl);
+    }
+    final relayVideoIndex = relayVideoCandidates.indexOf(videoUrl!);
+    final relayAudioIndex = audioUrl == null
+        ? -1
+        : relayAudioCandidates.indexOf(audioUrl!);
+
+    final relay = _cdnRelaySession;
+    if (relay == null || relay.isDisposed) {
+      _cdnRelaySession = await CdnRelayServer.shared.createSession(
+        videoCandidates: relayVideoCandidates,
+        videoIndex: relayVideoIndex < 0 ? 0 : relayVideoIndex,
+        audioCandidates: relayAudioCandidates,
+        audioIndex: relayAudioIndex < 0 ? 0 : relayAudioIndex,
+        stallTimeout: _bufferStallTimeout,
+        cooldown: Duration(
+          milliseconds: (Pref.adaptiveCdnCooldownSec * 1000).round(),
+        ),
+        maxSwitches: Pref.adaptiveMaxCdnSwitches.round(),
+        onSwitch: _onRelaySwitch,
+      );
+    } else {
+      relay.updateSources(
+        videoCandidates: relayVideoCandidates,
+        videoIndex: relayVideoIndex < 0 ? 0 : relayVideoIndex,
+        audioCandidates: relayAudioCandidates,
+        audioIndex: relayAudioIndex < 0 ? 0 : relayAudioIndex,
+      );
+    }
+    final activeRelay = _cdnRelaySession!;
+    return (activeRelay.videoUrl, activeRelay.audioUrl);
+  }
+
+  Future<void> _disposeCdnRelay() async {
+    final relay = _cdnRelaySession;
+    _cdnRelaySession = null;
+    await relay?.dispose();
   }
 
   /// 更新画质、音质
@@ -963,6 +1065,9 @@ class VideoDetailController extends GetxController
     if (seek == null || seek == Duration.zero) {
       seek = getFirstSegment();
     }
+    final (playbackVideoUrl, playbackAudioUrl) = isFileSource
+        ? (videoUrl ?? '', audioUrl)
+        : await _relayPlaybackSources();
     await plPlayerController.setDataSource(
       isFileSource
           ? FileSource(
@@ -972,8 +1077,8 @@ class VideoDetailController extends GetxController
               hasDashAudio: entry.hasDashAudio,
             )
           : NetworkSource(
-              videoSource: videoUrl!,
-              audioSource: audioUrl,
+              videoSource: playbackVideoUrl,
+              audioSource: playbackAudioUrl,
               bandwidth: _adaptiveBandwidth,
             ),
       seekTo: seek,
@@ -1461,6 +1566,7 @@ class VideoDetailController extends GetxController
   @override
   void onClose() {
     _cdnHealthTimer?.cancel();
+    unawaited(_disposeCdnRelay());
     cid.close();
     if (isFileSource) {
       cacheLocalProgress();
@@ -1481,6 +1587,7 @@ class VideoDetailController extends GetxController
 
   void onReset({bool isStein = false}) {
     _cdnHealthTimer?.cancel();
+    unawaited(_disposeCdnRelay());
     _failedCdnHosts.clear();
     _videoCdnCandidates = const [];
     _audioCdnCandidates = const [];

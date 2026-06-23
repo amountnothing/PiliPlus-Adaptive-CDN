@@ -274,6 +274,11 @@ abstract final class Pref {
     defaultValue: 3.0,
   );
 
+  static double get adaptiveSegmentToleranceSec => _setting.get(
+    SettingBoxKey.adaptiveSegmentToleranceSec,
+    defaultValue: 2.0,
+  );
+
   static double get adaptiveCdnCooldownSec => _setting.get(
     SettingBoxKey.adaptiveCdnCooldownSec,
     defaultValue: 30.0,
