@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "PiliPlus Adaptive CDN for Web",
+  "version": "0.2.0",
+  "description": "为哔哩哔哩网页版提供动态 CDN 评分、缓冲监控和保留 MSE 缓冲的自动换源。",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "*://*.bilibili.com/*",
+    "*://*.bilivideo.com/*",
+    "*://*.bilivideo.cn/*",
+    "*://*.akamaized.net/*"
+  ],
+  "action": {
+    "default_title": "Adaptive CDN",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.bilibili.com/video/*",
+        "*://www.bilibili.com/bangumi/play/*"
+      ],
+      "js": ["core.js", "page.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "*://www.bilibili.com/video/*",
+        "*://www.bilibili.com/bangumi/play/*"
+      ],
+      "js": ["bridge.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

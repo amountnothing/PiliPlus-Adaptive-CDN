@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Adaptive CDN 设置</title>
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body class="options-page">
+    <main class="settings-shell">
+      <header>
+        <p class="eyebrow">PiliPlus Adaptive CDN for Web</p>
+        <h1>自适应播放设置</h1>
+        <p>所有阈值均为实验参数。扩展只使用当前视频网页接口实际返回的 CDN，不写死海外节点。</p>
+      </header>
+
+      <section class="settings-group">
+        <h2>总开关</h2>
+        <label class="setting toggle-row">
+          <span><strong>启用自适应 CDN</strong><small>关闭后不改写播放地址，也不监控卡顿。</small></span>
+          <input data-setting="enabled" type="checkbox" />
+        </label>
+        <label class="setting toggle-row">
+          <span><strong>优先 AV1</strong><small>仅在浏览器报告支持 AV1 时调整同清晰度编码顺序。</small></span>
+          <input data-setting="preferAv1" type="checkbox" />
+        </label>
+        <label class="setting toggle-row">
+          <span><strong>扩展 UPOS 候选</strong><small>把网页签名路径扩展到已验证支持 Range 与网页 CORS 的阿里、腾讯和华为节点。</small></span>
+          <input data-setting="expandKnownUpos" type="checkbox" />
+        </label>
+      </section>
+
+      <section class="settings-group">
+        <h2>缓冲与换源</h2>
+        <label class="setting"><span><strong>目标缓冲</strong><small>低于目标后开始观察缓冲增长。</small></span><input data-setting="targetBufferSec" type="number" min="5" max="120" step="1" /><em>秒</em></label>
+        <label class="setting"><span><strong>分段容差</strong><small>避免 DASH 分段边界造成误判。</small></span><input data-setting="segmentToleranceSec" type="number" min="0" max="10" step="0.5" /><em>秒</em></label>
+        <label class="setting"><span><strong>低缓冲阈值</strong><small>缓冲从高位首次下降至该值时换源。</small></span><input data-setting="lowBufferSec" type="number" min="2" max="30" step="1" /><em>秒</em></label>
+        <label class="setting"><span><strong>缓冲停滞判定</strong><small>非片尾且缓冲没有增长的持续时间。</small></span><input data-setting="bufferStallSec" type="number" min="2" max="60" step="1" /><em>秒</em></label>
+        <label class="setting"><span><strong>播放位置停滞判定</strong><small>位置不动时按该间隔继续换源。</small></span><input data-setting="positionStallSec" type="number" min="2" max="30" step="1" /><em>秒</em></label>
+        <label class="setting"><span><strong>片尾排除范围</strong><small>已下载至片尾时不把“无新数据”判作故障。</small></span><input data-setting="endToleranceSec" type="number" min="0" max="10" step="0.5" /><em>秒</em></label>
+      </section>
+
+      <section class="settings-group">
+        <h2>候选与评分</h2>
+        <label class="setting"><span><strong>故障 CDN 冷却</strong><small>故障节点在新视频中的临时冷却时间。</small></span><input data-setting="cooldownSec" type="number" min="0" max="600" step="5" /><em>秒</em></label>
+        <label class="setting toggle-row"><span><strong>遍历全部 CDN</strong><small>按评分降序尝试本视频接口返回的所有候选。</small></span><input data-setting="traverseAllCdns" type="checkbox" /></label>
+        <label class="setting"><span><strong>最大切换次数</strong><small>关闭“遍历全部 CDN”后生效。</small></span><input data-setting="maxSwitches" type="number" min="1" max="50" step="1" /><em>次</em></label>
+        <label class="setting"><span><strong>稳定播放奖励周期</strong><small>持续播放后小幅提高当前 CDN 分数。</small></span><input data-setting="stableRewardSec" type="number" min="10" max="300" step="5" /><em>秒</em></label>
+      </section>
+
+      <section class="settings-group">
+        <h2>CDN 稳定性评分</h2>
+        <div id="scores" class="score-list"><p>尚无评分记录。</p></div>
+        <button id="reset-scores" class="danger">重置评分</button>
+      </section>
+
+      <footer><span id="saved">设置会自动保存</span></footer>
+    </main>
+    <script src="core.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
