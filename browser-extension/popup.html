@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Adaptive CDN</title>
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body class="popup-page">
+    <main class="popup-card">
+      <div class="title-row">
+        <div>
+          <h1>Adaptive CDN</h1>
+          <p id="summary">正在读取播放器状态…</p>
+        </div>
+        <label class="switch" title="启用自适应 CDN">
+          <input id="enabled" type="checkbox" />
+          <span></span>
+        </label>
+      </div>
+
+      <section class="status-grid">
+        <div><span>当前 CDN</span><strong id="current-host">—</strong></div>
+        <div><span>前向缓冲</span><strong id="buffer">—</strong></div>
+        <div><span>切换次数</span><strong id="switches">0</strong></div>
+        <div><span>候选数量</span><strong id="candidate-count">0</strong></div>
+      </section>
+
+      <p class="reason" id="reason">等待播放地址</p>
+      <div class="button-row">
+        <button id="manual-switch" class="primary">切换到下一个 CDN</button>
+        <button id="open-options">设置</button>
+      </div>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -3,6 +3,8 @@
 > 本项目优先尝试 AV1，并默认以 30 秒为目标缓冲：非片尾缓冲连续 10 秒不增长，或播放中剩余缓冲首次降至 10 秒时切换 CDN；若播放位置仍然不动，则每 4 秒继续按评分降序尝试下一个 CDN，允许遍历全部候选。本地 Range 中继会让播放器保持同一个媒体地址，换 CDN 时继续使用已经下载的缓冲。故障 CDN 会冷却 30 秒，且当前视频内不再重复使用。上述阈值均可在“自适应播放”设置内调整；关闭后恢复 PiliPlus 原有行为。
 >
 > GitHub Actions 会定期检查 [PiliPlus 上游 Release](https://github.com/bggRGjQaUbCoE/PiliPlus/releases)。发现新版本后会尝试合并上游并自动构建 Android Release；若存在代码冲突则停止更新，避免覆盖自适应播放逻辑。
+>
+> 同仓库还提供 [Chromium 网页扩展](browser-extension/README.md)：它会读取每个网页视频实际返回的 DASH CDN 候选，在保留浏览器 MSE 缓冲的情况下切换后续 Range 请求。网页端不会套用 App 的固定 CDN 名单。
 
 <div align="center">
     <img width="200" height="200" src="assets/images/logo/logo.png">
