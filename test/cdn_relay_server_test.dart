@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:PiliPlus/services/cdn_relay_server.dart';
@@ -106,6 +107,61 @@ void main() {
       expect(session.currentVideoSource, contains('localhost:${second.port}'));
     });
 
+    test('manual pause suspends relay timeout and CDN penalties', () async {
+      final payload = List<int>.generate(32, (index) => index);
+      final upstreamStalled = Completer<void>();
+      final first = await _startUpstream(
+        payload,
+        stallAfterBytes: 8,
+        stallFor: const Duration(seconds: 3),
+        onStallStarted: () {
+          if (!upstreamStalled.isCompleted) upstreamStalled.complete();
+        },
+      );
+      final second = await _startUpstream(payload);
+      upstreamServers.addAll([first, second]);
+
+      final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
+      final switches = <(String, String)>[];
+      final session = await relayServer.createSession(
+        videoCandidates: [
+          firstUrl,
+          'http://localhost:${second.port}/video.m4s',
+        ],
+        videoIndex: 0,
+        stallTimeout: const Duration(milliseconds: 500),
+        cooldown: const Duration(seconds: 30),
+        maxSwitches: 3,
+        onSwitch: (track, failed, next) {
+          if (track == CdnRelayTrack.video) switches.add((failed, next));
+        },
+      );
+
+      final client = HttpClient();
+      final request = await client.getUrl(Uri.parse(session.videoUrl));
+      final responseFuture = request.close();
+
+      await upstreamStalled.future.timeout(const Duration(seconds: 1));
+      session.setPlaybackPaused(true);
+      await Future<void>.delayed(const Duration(milliseconds: 700));
+
+      expect(switches, isEmpty);
+      expect(session.currentVideoSource, firstUrl);
+
+      session.setPlaybackPaused(false);
+      final response = await responseFuture;
+      final bytesFuture = response.fold<List<int>>(
+        <int>[],
+        (buffer, chunk) => buffer..addAll(chunk),
+      );
+      final bytes = await bytesFuture.timeout(const Duration(seconds: 2));
+      client.close(force: true);
+
+      expect(bytes, payload);
+      expect(switches, hasLength(1));
+      expect(session.currentVideoSource, contains('localhost:${second.port}'));
+    });
+
     test('forwards byte ranges without changing the player URL', () async {
       final payload = List<int>.generate(32, (index) => index);
       final upstream = await _startUpstream(payload);
@@ -140,6 +196,7 @@ Future<HttpServer> _startUpstream(
   List<int> payload, {
   int? stallAfterBytes,
   Duration stallFor = Duration.zero,
+  void Function()? onStallStarted,
 }) async {
   final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
   server.listen((request) async {
@@ -172,6 +229,7 @@ Future<HttpServer> _startUpstream(
       response.add(body.sublist(0, firstLength));
       await response.flush();
       if (firstLength < body.length) {
+        onStallStarted?.call();
         await Future<void>.delayed(stallFor);
         response.add(body.sublist(firstLength));
       }

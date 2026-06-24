@@ -124,4 +124,26 @@ void main() {
       );
     });
   });
+
+  group('AdaptivePlayback.shouldAccumulateCdnStall', () {
+    test('ignores a stale buffering flag after a manual pause', () {
+      expect(
+        AdaptivePlayback.shouldAccumulateCdnStall(
+          isPlaying: false,
+          isBuffering: true,
+        ),
+        isFalse,
+      );
+    });
+
+    test('monitors an actively playing video', () {
+      expect(
+        AdaptivePlayback.shouldAccumulateCdnStall(
+          isPlaying: true,
+          isBuffering: false,
+        ),
+        isTrue,
+      );
+    });
+  });
 }

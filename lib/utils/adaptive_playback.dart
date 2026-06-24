@@ -16,6 +16,13 @@ abstract final class AdaptivePlayback {
     manualControlsEnabled.value = !value;
   }
 
+  /// Buffering can remain true briefly after a manual pause. CDN health
+  /// timers must follow the user's playback intent instead of that stale flag.
+  static bool shouldAccumulateCdnStall({
+    required bool isPlaying,
+    required bool isBuffering,
+  }) => isPlaying;
+
   /// Whether the player has already downloaded or reached the media tail.
   /// A small tolerance covers container duration and segment boundary drift.
   static bool hasReachedContentEnd({

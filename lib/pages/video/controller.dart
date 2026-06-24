@@ -847,6 +847,26 @@ class VideoDetailController extends GetxController
     final position = plPlayerController.position;
     final duration = plPlayerController.duration.value;
     final now = DateTime.now();
+    final shouldMonitor = AdaptivePlayback.shouldAccumulateCdnStall(
+      isPlaying: plPlayerController.playerStatus.isPlaying,
+      isBuffering: plPlayerController.isBuffering.value,
+    );
+    _cdnRelaySession?.setPlaybackPaused(!shouldMonitor);
+
+    if (!shouldMonitor) {
+      // A manual pause may leave isBuffering true for a short time. Do not
+      // inherit either the playback or download stall clock after resuming.
+      _lastBufferedPosition = buffered;
+      _lastBufferProgressAt = now;
+      _bufferBelowTarget = false;
+      final forwardBuffer = buffered > position
+          ? buffered - position
+          : Duration.zero;
+      _lowBufferTriggered = forwardBuffer <= _lowForwardBuffer;
+      _lastPlaybackPosition = position;
+      _lastPlaybackProgressAt = now;
+      return;
+    }
 
     if (AdaptivePlayback.hasReachedContentEnd(
       duration: duration,
@@ -867,16 +887,10 @@ class VideoDetailController extends GetxController
     final forwardBuffer = buffered > position
         ? buffered - position
         : Duration.zero;
-    final isTryingToPlay =
-        plPlayerController.playerStatus.isPlaying ||
-        plPlayerController.isBuffering.value;
 
     final positionDelta = (position - _lastPlaybackPosition).inMilliseconds
         .abs();
     if (positionDelta >= 250) {
-      _lastPlaybackPosition = position;
-      _lastPlaybackProgressAt = now;
-    } else if (!isTryingToPlay) {
       _lastPlaybackPosition = position;
       _lastPlaybackProgressAt = now;
     } else if (now.difference(_lastPlaybackProgressAt) >=
@@ -896,7 +910,7 @@ class VideoDetailController extends GetxController
     final isLowBuffer = forwardBuffer <= _lowForwardBuffer;
     if (!isLowBuffer) {
       _lowBufferTriggered = false;
-    } else if (!_lowBufferTriggered && isTryingToPlay) {
+    } else if (!_lowBufferTriggered) {
       _lowBufferTriggered = true;
       _lastCdnSwitchAt = now;
       unawaited(_switchToNextCdn());
@@ -913,8 +927,7 @@ class VideoDetailController extends GetxController
       _lastBufferProgressAt = now;
       return;
     }
-    if (!isTryingToPlay ||
-        now.difference(_lastBufferProgressAt) < _bufferStallTimeout) {
+    if (now.difference(_lastBufferProgressAt) < _bufferStallTimeout) {
       return;
     }
     _lastCdnSwitchAt = now;
