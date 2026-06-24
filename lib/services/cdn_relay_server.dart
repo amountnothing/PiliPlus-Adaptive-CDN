@@ -156,6 +156,8 @@ class CdnRelaySession {
   final _RelayTrackState _audio;
   final HttpClient _client = HttpClient();
   bool _disposed = false;
+  bool _playbackPaused = false;
+  Completer<void>? _resumeCompleter;
 
   bool get isDisposed => _disposed;
   String get videoUrl => _owner._uri(_token, CdnRelayTrack.video).toString();
@@ -165,6 +167,28 @@ class CdnRelaySession {
   String get currentVideoSource => _video.currentUrl;
   String? get currentAudioSource =>
       _audio.candidates.isEmpty ? null : _audio.currentUrl;
+
+  void setPlaybackPaused(bool paused) {
+    if (_disposed || _playbackPaused == paused) return;
+    _playbackPaused = paused;
+    if (paused) {
+      _resumeCompleter = Completer<void>();
+      // Wake a pending upstream read so it cannot expire and penalize the CDN
+      // while the user intentionally keeps the player paused.
+      _video.interrupt();
+      _audio.interrupt();
+    } else {
+      final completer = _resumeCompleter;
+      _resumeCompleter = null;
+      if (completer != null && !completer.isCompleted) completer.complete();
+    }
+  }
+
+  Future<void> _waitUntilPlaybackResumes() async {
+    while (_playbackPaused && !_disposed) {
+      await (_resumeCompleter?.future ?? Future<void>.value());
+    }
+  }
 
   void updateSources({
     required List<String> videoCandidates,
@@ -217,10 +241,14 @@ class CdnRelaySession {
     var attempts = 0;
 
     while (!_disposed && attempts <= track.candidates.length) {
+      await _waitUntilPlaybackResumes();
+      if (_disposed) break;
       final sourceUrl = track.currentUrl;
+      final sourceGeneration = track.generation;
       StreamIterator<List<int>>? iterator;
       var sourceBytes = 0;
       var networkWait = Duration.zero;
+      var countAttempt = true;
       try {
         final upstream = await _openUpstream(
           request: request,
@@ -230,6 +258,10 @@ class CdnRelaySession {
           bytesSent: bytesSent,
           end: parsedRange?.end,
         );
+        if (_playbackPaused || track.generation != sourceGeneration) {
+          await _cancelResponse(upstream);
+          throw const _RelaySourceChanged();
+        }
 
         final contentRange = _ContentRange.tryParse(
           upstream.headers.value(HttpHeaders.contentRangeHeader),
@@ -267,6 +299,9 @@ class CdnRelaySession {
 
         iterator = StreamIterator<List<int>>(upstream);
         while (true) {
+          if (_playbackPaused || track.generation != sourceGeneration) {
+            throw const _RelaySourceChanged();
+          }
           final stopwatch = Stopwatch()..start();
           final changed = Object();
           final waiter = track.waitForChange(track.generation);
@@ -315,6 +350,7 @@ class CdnRelaySession {
       } on _RelaySourceChanged {
         // The controller or another in-flight request already selected a new
         // upstream. Continue this same downstream response at the next byte.
+        countAttempt = !_playbackPaused;
       } on TimeoutException {
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
       } on SocketException {
@@ -328,7 +364,7 @@ class CdnRelaySession {
       } finally {
         await iterator?.cancel();
       }
-      attempts += 1;
+      if (countAttempt) attempts += 1;
     }
 
     if (!headersSent) response.statusCode = HttpStatus.badGateway;
@@ -418,6 +454,11 @@ class CdnRelaySession {
   Future<void> dispose() async {
     if (_disposed) return;
     _disposed = true;
+    final resumeCompleter = _resumeCompleter;
+    _resumeCompleter = null;
+    if (resumeCompleter != null && !resumeCompleter.isCompleted) {
+      resumeCompleter.complete();
+    }
     _video.interrupt();
     _audio.interrupt();
     _owner._sessions.remove(_token);
