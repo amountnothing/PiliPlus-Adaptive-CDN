@@ -112,10 +112,7 @@ abstract final class VideoUtils {
       preferredService ?? cdnService,
       CDNService.backupUrl,
       CDNService.baseUrl,
-      CDNService.ali,
-      CDNService.cos,
-      CDNService.hw,
-      CDNService.akamai,
+      ...CDNService.values,
     ];
     final candidates = <String>{};
     for (final service in services) {

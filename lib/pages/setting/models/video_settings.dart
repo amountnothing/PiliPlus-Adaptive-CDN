@@ -747,54 +747,65 @@ void _showAdaptiveMaxSwitchesDialog(
 );
 
 String _cdnScoreSummary() {
-  final entries = CdnScoreService.entries.entries.toList()
-    ..sort((a, b) => b.value.score.compareTo(a.value.score));
-  if (entries.isEmpty) return '暂无学习数据，新 CDN 初始 50 分';
+  final entries = _cdnScoreEntriesForDisplay();
   return entries
       .take(3)
       .map((item) => '${item.key} ${item.value.score.toStringAsFixed(0)}')
       .join(' · ');
 }
 
+List<MapEntry<String, CdnScoreEntry>> _cdnScoreEntriesForDisplay() {
+  final entries = Map<String, CdnScoreEntry>.of(CdnScoreService.entries);
+  for (final service in CDNService.values) {
+    final host = service.host;
+    if (host != null) entries.putIfAbsent(host, () => CdnScoreEntry.initial);
+  }
+  return entries.entries.toList()..sort((a, b) {
+    final scoreCompare = b.value.score.compareTo(a.value.score);
+    return scoreCompare != 0 ? scoreCompare : a.key.compareTo(b.key);
+  });
+}
+
 Future<void> _showCdnScoresDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final entries = CdnScoreService.entries.entries.toList()
-    ..sort((a, b) => b.value.score.compareTo(a.value.score));
+  final entries = _cdnScoreEntriesForDisplay();
+  final hasLearnedData = CdnScoreService.entries.isNotEmpty;
   await showDialog<void>(
     context: context,
     builder: (dialogContext) => AlertDialog(
       title: const Text('CDN 稳定性评分'),
       content: SizedBox(
         width: 520,
-        child: entries.isEmpty
-            ? const Text('暂无学习数据。所有新 CDN 均从 50 分开始。')
-            : ListView.builder(
-                shrinkWrap: true,
-                itemCount: entries.length,
-                itemBuilder: (_, index) {
-                  final item = entries[index];
-                  final entry = item.value;
-                  return ListTile(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(item.key),
-                    subtitle: Text(
-                      '成功 ${entry.successes} · 故障 ${entry.failures} · '
-                      '${entry.ewmaMbps.toStringAsFixed(1)} Mbps',
-                    ),
-                    trailing: Text(
-                      entry.score.toStringAsFixed(0),
-                      style: Theme.of(dialogContext).textTheme.titleMedium,
-                    ),
-                  );
-                },
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: entries.length,
+          itemBuilder: (_, index) {
+            final item = entries[index];
+            final entry = item.value;
+            final learned = entry.successes > 0 || entry.failures > 0;
+            return ListTile(
+              dense: true,
+              contentPadding: EdgeInsets.zero,
+              title: Text(item.key),
+              subtitle: Text(
+                learned
+                    ? '成功 ${entry.successes} · 故障 ${entry.failures} · '
+                          '${entry.ewmaMbps.toStringAsFixed(1)} Mbps'
+                    : '暂无学习数据 · 初始分',
               ),
+              trailing: Text(
+                entry.score.toStringAsFixed(0),
+                style: Theme.of(dialogContext).textTheme.titleMedium,
+              ),
+            );
+          },
+        ),
       ),
       actions: [
         TextButton(
-          onPressed: entries.isEmpty
+          onPressed: !hasLearnedData
               ? null
               : () async {
                   await CdnScoreService.clear();

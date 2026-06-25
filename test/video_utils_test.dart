@@ -53,7 +53,7 @@ void main() {
       );
     });
 
-    test('builds a small unique candidate pool', () {
+    test('builds a unique candidate pool from every known fixed CDN', () {
       final candidates = VideoUtils.getCdnCandidates(
         const [base, backup],
         preferredService: CDNService.ali,
@@ -65,6 +65,18 @@ void main() {
         candidates,
         contains(
           'https://upos-sz-mirrorali.bilivideo.com/upgcxcode/video.m4s?foo=bar',
+        ),
+      );
+      expect(
+        candidates,
+        contains(
+          'https://upos-sz-mirrorcosov.bilivideo.com/upgcxcode/video.m4s?foo=bar',
+        ),
+      );
+      expect(
+        candidates.where((url) => url.contains('/upgcxcode/')),
+        hasLength(
+          CDNService.values.where((service) => service.host != null).length,
         ),
       );
       expect(candidates.toSet(), hasLength(candidates.length));
