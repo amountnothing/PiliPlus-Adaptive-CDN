@@ -23,6 +23,32 @@ abstract final class AdaptivePlayback {
     required bool isBuffering,
   }) => isPlaying;
 
+  static bool shouldRecoverFrozenVideo({
+    required Duration? videoPts,
+    required Duration? lastVideoPts,
+    required Duration position,
+    required Duration lastPlaybackPosition,
+    required Duration forwardBuffer,
+    required Duration minForwardBuffer,
+    required Duration noFrameProgressFor,
+    required Duration freezeTimeout,
+    required bool isPlaying,
+    required bool isOnlyAudio,
+  }) {
+    if (!isPlaying || isOnlyAudio || videoPts == null || lastVideoPts == null) {
+      return false;
+    }
+    if (forwardBuffer < minForwardBuffer) return false;
+
+    final playbackAdvanced =
+        (position - lastPlaybackPosition).inMilliseconds.abs() >= 250;
+    final videoAdvanced =
+        videoPts - lastVideoPts >= const Duration(milliseconds: 250);
+    return playbackAdvanced &&
+        !videoAdvanced &&
+        noFrameProgressFor >= freezeTimeout;
+  }
+
   /// Whether the player has already downloaded or reached the media tail.
   /// A small tolerance covers container duration and segment boundary drift.
   static bool hasReachedContentEnd({

@@ -158,4 +158,83 @@ void main() {
       );
     });
   });
+
+  group('AdaptivePlayback.shouldRecoverFrozenVideo', () {
+    test('detects video pts stuck while playback and buffer advance', () {
+      expect(
+        AdaptivePlayback.shouldRecoverFrozenVideo(
+          videoPts: const Duration(seconds: 12),
+          lastVideoPts: const Duration(seconds: 12),
+          position: const Duration(seconds: 40),
+          lastPlaybackPosition: const Duration(seconds: 39),
+          forwardBuffer: const Duration(seconds: 25),
+          minForwardBuffer: const Duration(seconds: 10),
+          noFrameProgressFor: const Duration(seconds: 9),
+          freezeTimeout: const Duration(seconds: 8),
+          isPlaying: true,
+          isOnlyAudio: false,
+        ),
+        isTrue,
+      );
+    });
+
+    test('does not recover while paused, audio-only, or low buffer', () {
+      const args = (
+        videoPts: Duration(seconds: 12),
+        lastVideoPts: Duration(seconds: 12),
+        position: Duration(seconds: 40),
+        lastPlaybackPosition: Duration(seconds: 39),
+        forwardBuffer: Duration(seconds: 25),
+        minForwardBuffer: Duration(seconds: 10),
+        noFrameProgressFor: Duration(seconds: 9),
+        freezeTimeout: Duration(seconds: 8),
+      );
+
+      expect(
+        AdaptivePlayback.shouldRecoverFrozenVideo(
+          videoPts: args.videoPts,
+          lastVideoPts: args.lastVideoPts,
+          position: args.position,
+          lastPlaybackPosition: args.lastPlaybackPosition,
+          forwardBuffer: args.forwardBuffer,
+          minForwardBuffer: args.minForwardBuffer,
+          noFrameProgressFor: args.noFrameProgressFor,
+          freezeTimeout: args.freezeTimeout,
+          isPlaying: false,
+          isOnlyAudio: false,
+        ),
+        isFalse,
+      );
+      expect(
+        AdaptivePlayback.shouldRecoverFrozenVideo(
+          videoPts: args.videoPts,
+          lastVideoPts: args.lastVideoPts,
+          position: args.position,
+          lastPlaybackPosition: args.lastPlaybackPosition,
+          forwardBuffer: args.forwardBuffer,
+          minForwardBuffer: args.minForwardBuffer,
+          noFrameProgressFor: args.noFrameProgressFor,
+          freezeTimeout: args.freezeTimeout,
+          isPlaying: true,
+          isOnlyAudio: true,
+        ),
+        isFalse,
+      );
+      expect(
+        AdaptivePlayback.shouldRecoverFrozenVideo(
+          videoPts: args.videoPts,
+          lastVideoPts: args.lastVideoPts,
+          position: args.position,
+          lastPlaybackPosition: args.lastPlaybackPosition,
+          forwardBuffer: const Duration(seconds: 5),
+          minForwardBuffer: args.minForwardBuffer,
+          noFrameProgressFor: args.noFrameProgressFor,
+          freezeTimeout: args.freezeTimeout,
+          isPlaying: true,
+          isOnlyAudio: false,
+        ),
+        isFalse,
+      );
+    });
+  });
 }

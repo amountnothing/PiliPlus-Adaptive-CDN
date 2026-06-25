@@ -175,6 +175,10 @@ class VideoDetailController extends GetxController
   Duration _lastPlaybackPosition = Duration.zero;
   DateTime _lastPlaybackProgressAt = DateTime.now();
   DateTime _lastCdnSwitchAt = DateTime.fromMillisecondsSinceEpoch(0);
+  Duration? _lastVideoPts;
+  DateTime _lastVideoFrameProgressAt = DateTime.now();
+  DateTime _lastVideoFreezeRecoveryAt = DateTime.fromMillisecondsSinceEpoch(0);
+  int _videoFreezeRecoveryCount = 0;
   Duration? defaultST;
   Duration? playedTime;
   String get playedTimePos {
@@ -770,6 +774,63 @@ class VideoDetailController extends GetxController
     return -1;
   }
 
+  Duration? _readVideoPts() {
+    try {
+      final raw = plPlayerController.videoPlayerController?.getProperty(
+        'video-pts',
+      );
+      if (raw == null || raw.isEmpty || raw == 'no') return null;
+      final seconds = double.tryParse(raw);
+      if (seconds == null || !seconds.isFinite || seconds < 0) return null;
+      return Duration(milliseconds: (seconds * 1000).round());
+    } catch (_) {
+      return null;
+    }
+  }
+
+  AudioItem? _currentAudioItem() {
+    if (currentAudioQa case final qa?) {
+      return data.dash?.audio?.firstWhereOrNull((item) => item.id == qa.code);
+    }
+    return null;
+  }
+
+  bool _switchToAvcForFrozenVideo() {
+    final qa = currentVideoQa.value;
+    final videos = data.dash?.video;
+    if (qa == null || videos == null || videos.isEmpty) return false;
+    final avcFormats = VideoDecodeFormatType.fromString(
+      VideoDecodeFormatType.AVC.codes.first,
+    );
+    if (currentDecodeFormats == avcFormats) return false;
+
+    final avcVideo = videos
+        .where((item) => item.id == qa.code)
+        .firstWhereOrNull(
+          (item) =>
+              item.codecs != null &&
+              avcFormats.codes.any(item.codecs!.startsWith),
+        );
+    if (avcVideo == null || avcVideo.codecs == firstVideo.codecs) {
+      return false;
+    }
+
+    currentDecodeFormats = avcFormats;
+    firstVideo = avcVideo;
+    _setVideoHeight();
+    _configureAdaptiveSources(
+      videoUrls: firstVideo.playUrls,
+      audioUrls: _currentAudioItem()?.playUrls,
+      bandwidth: firstVideo.bandWidth,
+    );
+    return true;
+  }
+
+  void _resetVideoFrameHealth(DateTime now) {
+    _lastVideoPts = _readVideoPts();
+    _lastVideoFrameProgressAt = now;
+  }
+
   void _configureAdaptiveSources({
     required Iterable<String> videoUrls,
     Iterable<String>? audioUrls,
@@ -830,6 +891,8 @@ class VideoDetailController extends GetxController
     _lastPlaybackPosition = plPlayerController.position;
     _lastPlaybackProgressAt = now;
     _lastCdnSwitchAt = DateTime.fromMillisecondsSinceEpoch(0);
+    _resetVideoFrameHealth(now);
+    _videoFreezeRecoveryCount = 0;
     final forwardBuffer = _lastBufferedPosition > _lastPlaybackPosition
         ? _lastBufferedPosition - _lastPlaybackPosition
         : Duration.zero;
@@ -865,6 +928,7 @@ class VideoDetailController extends GetxController
       _lowBufferTriggered = forwardBuffer <= _lowForwardBuffer;
       _lastPlaybackPosition = position;
       _lastPlaybackProgressAt = now;
+      _resetVideoFrameHealth(now);
       return;
     }
 
@@ -881,16 +945,45 @@ class VideoDetailController extends GetxController
       _lowBufferTriggered = true;
       _lastPlaybackPosition = position;
       _lastPlaybackProgressAt = now;
+      _resetVideoFrameHealth(now);
       return;
     }
 
     final forwardBuffer = buffered > position
         ? buffered - position
         : Duration.zero;
+    final videoPts = _readVideoPts();
+    final lastVideoPts = _lastVideoPts;
+    if (videoPts == null ||
+        lastVideoPts == null ||
+        videoPts < lastVideoPts ||
+        videoPts - lastVideoPts >= const Duration(milliseconds: 250)) {
+      _lastVideoPts = videoPts;
+      _lastVideoFrameProgressAt = now;
+    }
 
     final positionDelta = (position - _lastPlaybackPosition).inMilliseconds
         .abs();
     if (positionDelta >= 250) {
+      if (AdaptivePlayback.shouldRecoverFrozenVideo(
+        videoPts: videoPts,
+        lastVideoPts: lastVideoPts,
+        position: position,
+        lastPlaybackPosition: _lastPlaybackPosition,
+        forwardBuffer: forwardBuffer,
+        minForwardBuffer: _lowForwardBuffer,
+        noFrameProgressFor: now.difference(_lastVideoFrameProgressAt),
+        freezeTimeout:
+            _playbackStallInterval + const Duration(seconds: 2) >
+                const Duration(seconds: 8)
+            ? _playbackStallInterval + const Duration(seconds: 2)
+            : const Duration(seconds: 8),
+        isPlaying: plPlayerController.playerStatus.isPlaying,
+        isOnlyAudio: plPlayerController.onlyPlayAudio.value,
+      )) {
+        unawaited(_recoverFrozenVideo());
+        return;
+      }
       _lastPlaybackPosition = position;
       _lastPlaybackProgressAt = now;
     } else if (now.difference(_lastPlaybackProgressAt) >=
@@ -932,6 +1025,51 @@ class VideoDetailController extends GetxController
     }
     _lastCdnSwitchAt = now;
     unawaited(_switchToNextCdn());
+  }
+
+  Future<void> _recoverFrozenVideo() async {
+    final now = DateTime.now();
+    if (_switchingCdn ||
+        videoUrl == null ||
+        now.difference(_lastVideoFreezeRecoveryAt) <
+            const Duration(seconds: 12) ||
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: plPlayerController.duration.value,
+          position: plPlayerController.position,
+          buffered: plPlayerController.buffered.value,
+        )) {
+      return;
+    }
+
+    _switchingCdn = true;
+    _lastVideoFreezeRecoveryAt = now;
+    try {
+      playedTime = plPlayerController.position;
+      _lastBufferedPosition = plPlayerController.buffered.value;
+      _lastBufferProgressAt = now;
+      _bufferBelowTarget = false;
+      _lastPlaybackPosition = plPlayerController.position;
+      _lastPlaybackProgressAt = now;
+      _resetVideoFrameHealth(now);
+
+      if (_videoFreezeRecoveryCount == 0 && _switchToAvcForFrozenVideo()) {
+        _videoFreezeRecoveryCount += 1;
+        SmartDialog.showToast('画面冻结，已切换到 AVC 解码');
+        await playerInit(autoplay: true);
+        return;
+      }
+
+      _videoFreezeRecoveryCount += 1;
+      SmartDialog.showToast('画面冻结，正在重建播放器');
+      final refreshed = plPlayerController.refreshPlayer();
+      if (refreshed != null) {
+        await refreshed;
+      } else {
+        await playerInit(autoplay: true);
+      }
+    } finally {
+      _switchingCdn = false;
+    }
   }
 
   Future<void> _switchToNextCdn() async {
