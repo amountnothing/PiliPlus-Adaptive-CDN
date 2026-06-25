@@ -16,7 +16,14 @@ typedef CdnRelaySwitchCallback =
     );
 
 /// A loopback HTTP range relay. The player keeps one stable local URL while
-/// upstream byte requests can move between byte-identical CDN mirrors.
+/// upstream byte requests can move between CDN mirrors.
+///
+/// Do not splice two different upstream CDNs into one downstream response after
+/// headers were sent. Some mirrors/proxies are not perfectly byte-identical at
+/// the demuxer boundary even when length matches, which can leave audio playing
+/// while video frames freeze. Once a response is active, switching a CDN closes
+/// that response and lets the player issue a fresh Range request to the same
+/// stable local URL.
 class CdnRelayServer {
   CdnRelayServer();
 
@@ -349,18 +356,44 @@ class CdnRelaySession {
         return;
       } on _RelaySourceChanged {
         // The controller or another in-flight request already selected a new
-        // upstream. Continue this same downstream response at the next byte.
+        // upstream. Before headers are sent we can retry internally. After the
+        // player has accepted this response, avoid byte-splicing CDN mirrors in
+        // one stream; close it so mpv retries with a fresh Range request.
         countAttempt = !_playbackPaused;
+        if (headersSent && sourceUrl != track.currentUrl) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } on TimeoutException {
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } on SocketException {
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } on HttpException {
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } on _RelaySourceMismatch {
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } catch (_) {
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } finally {
         await iterator?.cancel();
       }
@@ -382,6 +415,12 @@ class CdnRelaySession {
   static Future<void> _cancelResponse(HttpClientResponse response) async {
     final subscription = response.listen(null);
     await subscription.cancel();
+  }
+
+  static Future<void> _closeInterruptedResponse(HttpResponse response) async {
+    try {
+      await response.close();
+    } catch (_) {}
   }
 
   Future<HttpClientResponse> _openUpstream({
@@ -446,9 +485,11 @@ class CdnRelaySession {
       final value = upstream.headers.value(header);
       if (value != null) downstream.headers.set(header, value);
     }
-    if (upstream.contentLength >= 0) {
-      downstream.contentLength = upstream.contentLength;
-    }
+    // Do not forward Content-Length. The relay may intentionally close a
+    // response early after selecting a new CDN; leaving the response chunked
+    // avoids declaring a byte count that this single upstream response will no
+    // longer satisfy. The next player Range request continues through the same
+    // stable local URL.
   }
 
   Future<void> dispose() async {
