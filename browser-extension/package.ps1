@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 
 $extensionRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Split-Path -Parent $extensionRoot
-$output = Join-Path $repoRoot 'dist\PiliPlus-Adaptive-CDN-Web-0.2.2.zip'
+$output = Join-Path $repoRoot 'dist\PiliPlus-Adaptive-CDN-Web-0.2.3.zip'
 $staging = Join-Path $env:TEMP 'PiliPlus-Adaptive-CDN-Web-package'
 
 if (Test-Path -LiteralPath $staging) {
