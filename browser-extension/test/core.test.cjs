@@ -178,6 +178,47 @@ test("does not switch only because playback position is stuck", () => {
   assert.equal(Core.evaluateHealth(state, sample, {}, 0), null);
   assert.equal(Core.evaluateHealth(state, sample, {}, 30_000), null);
 });
+
+test("treats a seek jump like startup rebuffering instead of a CDN stall", () => {
+  const state = Core.createHealthState(0);
+  const settings = { lowBufferSec: 10, bufferStallSec: 4 };
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 10, buffered: 40, playing: true, ended: false },
+      settings,
+      0,
+    ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 70, buffered: 70, playing: true, ended: false },
+      settings,
+      1_000,
+    ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 70.5, buffered: 70, playing: true, ended: false },
+      settings,
+      4_999,
+    ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 71, buffered: 70, playing: true, ended: false },
+      settings,
+      5_000,
+    ),
+    "low-buffer",
+  );
+});
 test("does not classify the downloaded media tail as a CDN stall", () => {
   const state = Core.createHealthState(0);
   const sample = { duration: 100, position: 70, buffered: 99, playing: true, ended: false };

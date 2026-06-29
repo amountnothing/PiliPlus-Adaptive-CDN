@@ -254,6 +254,17 @@
     }
 
     const positionDelta = Math.abs(position - state.lastPosition);
+    const forward = Math.max(0, buffered - position);
+    if (positionDelta >= 2 && (buffered < state.lastBuffered || forward <= 1)) {
+      state.lastBuffered = buffered;
+      state.lastBufferProgressAt = now;
+      state.bufferBelowTarget = false;
+      state.lowBufferArmed = forward > settings.lowBufferSec;
+      state.lastPosition = position;
+      state.lastPositionProgressAt = now;
+      state.lastSwitchAt = now;
+      return null;
+    }
     if (positionDelta >= 0.25 || !trying) {
       state.lastPosition = position;
       state.lastPositionProgressAt = now;
@@ -265,7 +276,6 @@
       state.lastBufferProgressAt = now;
     }
 
-    const forward = Math.max(0, buffered - position);
     if (forward > settings.lowBufferSec) {
       state.lowBufferArmed = true;
     } else if (
