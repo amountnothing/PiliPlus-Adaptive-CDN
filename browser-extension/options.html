@@ -20,9 +20,14 @@
           <span><strong>启用自适应 CDN</strong><small>关闭后不改写播放地址，也不监控卡顿。</small></span>
           <input data-setting="enabled" type="checkbox" />
         </label>
-        <label class="setting toggle-row">
-          <span><strong>优先 AV1</strong><small>仅在浏览器报告支持 AV1 时调整同清晰度编码顺序。</small></span>
-          <input data-setting="preferAv1" type="checkbox" />
+        <label class="setting">
+          <span><strong>首选编码</strong><small>仅调整同清晰度编码顺序；实际能否使用取决于浏览器 MediaSource 支持。</small></span>
+          <select data-setting="preferredCodec">
+            <option value="av1">AV1</option>
+            <option value="hevc">HEVC/H.265</option>
+            <option value="avc">AVC/H.264</option>
+            <option value="default">网页默认</option>
+          </select>
         </label>
         <label class="setting toggle-row">
           <span><strong>扩展 UPOS 候选</strong><small>把网页签名路径扩展到已验证支持 Range 与网页 CORS 的阿里、腾讯和华为节点。</small></span>
@@ -33,10 +38,9 @@
       <section class="settings-group">
         <h2>缓冲与换源</h2>
         <label class="setting"><span><strong>目标缓冲</strong><small>低于目标后开始观察缓冲增长。</small></span><input data-setting="targetBufferSec" type="number" min="5" max="120" step="1" /><em>秒</em></label>
-        <label class="setting"><span><strong>分段容差</strong><small>避免 DASH 分段边界造成误判。</small></span><input data-setting="segmentToleranceSec" type="number" min="0" max="10" step="0.5" /><em>秒</em></label>
-        <label class="setting"><span><strong>低缓冲阈值</strong><small>缓冲从高位首次下降至该值时换源。</small></span><input data-setting="lowBufferSec" type="number" min="2" max="30" step="1" /><em>秒</em></label>
+        <label class="setting"><span><strong>回填触发容差</strong><small>浏览器不能强制播放器拉满缓冲；低于目标约该秒数后开始观察并换 CDN；默认 10 秒。</small></span><input data-setting="segmentToleranceSec" type="number" min="0" max="30" step="0.5" /><em>秒</em></label>
+        <label class="setting"><span><strong>低缓冲阈值</strong><small>缓冲低于该值时切换。</small></span><input data-setting="lowBufferSec" type="number" min="2" max="30" step="1" /><em>秒</em></label>
         <label class="setting"><span><strong>缓冲停滞判定</strong><small>非片尾且缓冲没有增长的持续时间。</small></span><input data-setting="bufferStallSec" type="number" min="2" max="60" step="1" /><em>秒</em></label>
-        <label class="setting"><span><strong>播放位置停滞判定</strong><small>位置不动时按该间隔继续换源。</small></span><input data-setting="positionStallSec" type="number" min="2" max="30" step="1" /><em>秒</em></label>
         <label class="setting"><span><strong>片尾排除范围</strong><small>已下载至片尾时不把“无新数据”判作故障。</small></span><input data-setting="endToleranceSec" type="number" min="0" max="10" step="0.5" /><em>秒</em></label>
       </section>
 

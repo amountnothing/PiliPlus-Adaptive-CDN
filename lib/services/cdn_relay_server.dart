@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -161,12 +162,17 @@ class CdnRelaySession {
   final Duration stallTimeout;
   final _RelayTrackState _video;
   final _RelayTrackState _audio;
+  final _NetworkImpairmentGuard _networkGuard = _NetworkImpairmentGuard();
   final HttpClient _client = HttpClient();
   bool _disposed = false;
   bool _playbackPaused = false;
+  bool _cdnSwitchPaused = false;
+  Duration _cdnSwitchPullGrace = Duration.zero;
+  DateTime _lastPlayerBytesAt = DateTime.fromMillisecondsSinceEpoch(0);
   Completer<void>? _resumeCompleter;
 
   bool get isDisposed => _disposed;
+  bool get isNetworkSwitchPaused => _networkGuard.isPaused;
   String get videoUrl => _owner._uri(_token, CdnRelayTrack.video).toString();
   String? get audioUrl => _audio.candidates.isEmpty
       ? null
@@ -174,6 +180,35 @@ class CdnRelaySession {
   String get currentVideoSource => _video.currentUrl;
   String? get currentAudioSource =>
       _audio.candidates.isEmpty ? null : _audio.currentUrl;
+
+  bool get isCdnSwitchPaused => _shouldPauseCdnSwitch;
+
+  void setCdnSwitchPullGrace(Duration grace) {
+    if (_disposed) return;
+    _cdnSwitchPullGrace = grace.isNegative ? Duration.zero : grace;
+  }
+
+  bool hasRecentPlayerBytes(Duration grace) {
+    if (grace <= Duration.zero) return false;
+    return DateTime.now().difference(_lastPlayerBytesAt) <= grace;
+  }
+
+  Duration get _remainingPullGrace {
+    final remaining =
+        _cdnSwitchPullGrace - DateTime.now().difference(_lastPlayerBytesAt);
+    return remaining > Duration.zero ? remaining : Duration.zero;
+  }
+
+  bool get _shouldPauseCdnSwitch =>
+      _cdnSwitchPaused || _remainingPullGrace > Duration.zero;
+
+  Duration get _readTimeout =>
+      _cdnSwitchPaused ? stallTimeout * 6 : stallTimeout;
+
+  void setCdnSwitchPaused(bool paused) {
+    if (_disposed || _cdnSwitchPaused == paused) return;
+    _cdnSwitchPaused = paused;
+  }
 
   void setPlaybackPaused(bool paused) {
     if (_disposed || _playbackPaused == paused) return;
@@ -214,7 +249,7 @@ class CdnRelaySession {
     final switched = _video.switchNext(expectedUrl: expectedUrl);
     if (switched && switchMatchingAudio && failedHost != null) {
       if (VideoUtils.cdnHost(currentAudioSource) == failedHost) {
-        _audio.switchNext();
+        _audio.switchNext(recordFailure: false);
       }
     }
     return switched;
@@ -265,6 +300,7 @@ class CdnRelaySession {
           bytesSent: bytesSent,
           end: parsedRange?.end,
         );
+        _lastPlayerBytesAt = DateTime.now();
         if (_playbackPaused || track.generation != sourceGeneration) {
           await _cancelResponse(upstream);
           throw const _RelaySourceChanged();
@@ -317,7 +353,7 @@ class CdnRelaySession {
             readResult = await Future.any<Object>([
               iterator.moveNext().then<Object>((value) => value),
               waiter.future.then<Object>((_) => changed),
-            ]).timeout(stallTimeout);
+            ]).timeout(_readTimeout);
           } finally {
             waiter.cancel();
           }
@@ -329,11 +365,13 @@ class CdnRelaySession {
           final hasNext = readResult as bool;
           if (!hasNext) break;
           final chunk = iterator.current;
+          _lastPlayerBytesAt = DateTime.now();
           response.add(chunk);
           bytesSent += chunk.length;
           sourceBytes += chunk.length;
           // Respect mpv backpressure. A blocked local client is not a CDN stall.
           await response.flush();
+          _lastPlayerBytesAt = DateTime.now();
           if (track.currentUrl != sourceUrl) {
             throw const _RelaySourceChanged();
           }
@@ -365,30 +403,125 @@ class CdnRelaySession {
           return;
         }
       } on TimeoutException {
+        if (_shouldPauseCdnSwitch) {
+          countAttempt = false;
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
+        if (_networkGuard.shouldPauseAfterFailure(
+          type: type,
+          url: sourceUrl,
+          bytes: sourceBytes,
+        )) {
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
         if (headersSent) {
           await _closeInterruptedResponse(response);
           return;
         }
       } on SocketException {
+        if (_shouldPauseCdnSwitch) {
+          countAttempt = false;
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
+        if (_networkGuard.shouldPauseAfterFailure(
+          type: type,
+          url: sourceUrl,
+          bytes: sourceBytes,
+        )) {
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
         if (headersSent) {
           await _closeInterruptedResponse(response);
           return;
         }
       } on HttpException {
+        if (_shouldPauseCdnSwitch) {
+          countAttempt = false;
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
+        if (_networkGuard.shouldPauseAfterFailure(
+          type: type,
+          url: sourceUrl,
+          bytes: sourceBytes,
+        )) {
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
         if (headersSent) {
           await _closeInterruptedResponse(response);
           return;
         }
       } on _RelaySourceMismatch {
+        if (_shouldPauseCdnSwitch) {
+          countAttempt = false;
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
+        if (_networkGuard.shouldPauseAfterFailure(
+          type: type,
+          url: sourceUrl,
+          bytes: sourceBytes,
+        )) {
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
         if (headersSent) {
           await _closeInterruptedResponse(response);
           return;
         }
       } catch (_) {
+        if (_shouldPauseCdnSwitch) {
+          countAttempt = false;
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
+        if (_networkGuard.shouldPauseAfterFailure(
+          type: type,
+          url: sourceUrl,
+          bytes: sourceBytes,
+        )) {
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          rethrow;
+        }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
         if (headersSent) {
           await _closeInterruptedResponse(response);
@@ -419,7 +552,8 @@ class CdnRelaySession {
 
   static Future<void> _closeInterruptedResponse(HttpResponse response) async {
     try {
-      await response.close();
+      final socket = await response.detachSocket();
+      socket.destroy();
     } catch (_) {}
   }
 
@@ -485,11 +619,11 @@ class CdnRelaySession {
       final value = upstream.headers.value(header);
       if (value != null) downstream.headers.set(header, value);
     }
-    // Do not forward Content-Length. The relay may intentionally close a
-    // response early after selecting a new CDN; leaving the response chunked
-    // avoids declaring a byte count that this single upstream response will no
-    // longer satisfy. The next player Range request continues through the same
-    // stable local URL.
+    // Do not forward Content-Length. A relay response may be intentionally
+    // interrupted after selecting a new CDN. Interrupted responses are aborted
+    // at the socket level instead of closed with a valid chunked EOF, so the
+    // player treats them as transfer failures and retries with a fresh Range
+    // request instead of decoding incomplete AV1 OBU / temporal-unit fragments.
   }
 
   Future<void> dispose() async {
@@ -547,14 +681,14 @@ class _RelayTrackState {
     return expectedLength == length;
   }
 
-  bool switchNext({String? expectedUrl}) {
+  bool switchNext({String? expectedUrl, bool recordFailure = true}) {
     if (expectedUrl != null && currentUrl != expectedUrl) return true;
     if (candidates.length < 2 || switches >= maxSwitches) return false;
     final failedUrl = currentUrl;
     final failedHost = VideoUtils.cdnHost(failedUrl);
     if (failedHost != null) failedHosts.add(failedHost);
     VideoUtils.markCdnFailed(failedUrl, cooldown: cooldown);
-    CdnScoreService.recordFailure(failedUrl);
+    if (recordFailure) CdnScoreService.recordFailure(failedUrl);
 
     for (final next in CdnScoreService.rankCandidates(candidates)) {
       if (next == failedUrl) continue;
@@ -599,6 +733,72 @@ class _TrackChangeWaiter {
 
   Future<void> get future => completer.future;
   void cancel() => owner._changeWaiters.remove(completer);
+}
+
+class _NetworkFailureSample {
+  const _NetworkFailureSample({
+    required this.at,
+    required this.host,
+    required this.type,
+  });
+
+  final DateTime at;
+  final String? host;
+  final CdnRelayTrack type;
+}
+
+class _NetworkImpairmentGuard {
+  static const _sampleWindow = Duration(seconds: 15);
+  static const _pauseDuration = Duration(seconds: 20);
+  static const _nearZeroBytes = 64 * 1024;
+
+  final Queue<_NetworkFailureSample> _samples = Queue();
+  DateTime _pauseUntil = DateTime.fromMillisecondsSinceEpoch(0);
+
+  bool get isPaused => DateTime.now().isBefore(_pauseUntil);
+
+  bool shouldPauseAfterFailure({
+    required CdnRelayTrack type,
+    required String url,
+    required int bytes,
+  }) {
+    final now = DateTime.now();
+    if (now.isBefore(_pauseUntil)) return true;
+    if (bytes >= _nearZeroBytes) {
+      _samples.clear();
+      return false;
+    }
+
+    final threshold = now.subtract(_sampleWindow);
+    while (_samples.isNotEmpty && _samples.first.at.isBefore(threshold)) {
+      _samples.removeFirst();
+    }
+
+    _samples.add(
+      _NetworkFailureSample(
+        at: now,
+        host: VideoUtils.cdnHost(url),
+        type: type,
+      ),
+    );
+
+    final hosts = <String>{};
+    final tracks = <CdnRelayTrack>{};
+    for (final sample in _samples) {
+      final host = sample.host;
+      if (host != null) hosts.add(host);
+      tracks.add(sample.type);
+    }
+
+    final looksGlobal =
+        _samples.length >= 3 &&
+        (_samples.length >= 4 || hosts.length >= 2 || tracks.length >= 2);
+    if (!looksGlobal) return false;
+
+    _samples.clear();
+    _pauseUntil = now.add(_pauseDuration);
+    return true;
+  }
 }
 
 class _ByteRange {

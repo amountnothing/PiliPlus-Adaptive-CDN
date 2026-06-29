@@ -40,8 +40,11 @@
   async function save() {
     const next = { ...settings };
     for (const control of controls) {
-      next[control.dataset.setting] =
-        control.type === "checkbox" ? control.checked : Number(control.value);
+      next[control.dataset.setting] = control.type === "checkbox"
+        ? control.checked
+        : control.tagName === "SELECT"
+          ? control.value
+          : Number(control.value);
     }
     settings = Core.normalizeSettings(next);
     await chrome.storage.local.set({ settings });

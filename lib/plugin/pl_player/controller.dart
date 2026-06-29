@@ -68,6 +68,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:window_manager/window_manager.dart';
 
 typedef PlayCallback = Future<void>? Function();
+typedef PlayerErrorCallback = bool Function(String event);
 
 class PlPlayerController with BlockConfigMixin {
   Player? _videoPlayerController;
@@ -126,6 +127,7 @@ class PlPlayerController with BlockConfigMixin {
   bool _isVertical = false;
 
   final Rx<VideoFitType> videoFit = Rx(.contain);
+  PlayerErrorCallback? onPlayerError;
 
   late final RxBool continuePlayInBackground =
       Pref.continuePlayInBackground.obs;
@@ -883,6 +885,12 @@ class PlPlayerController with BlockConfigMixin {
   }
 
   // 开始播放
+  Future<void> stopCurrentSource() async {
+    try {
+      await _videoPlayerController?.stop();
+    } catch (_) {}
+  }
+
   Future<void> _initializePlayer() async {
     if (_instance == null) return;
     // 设置倍速
@@ -998,8 +1006,10 @@ class PlPlayerController with BlockConfigMixin {
       if (kDebugMode)
         stream.log.listen(((PlayerLog log) {
           if (log.level == 'error' || log.level == 'fatal') {
+            final event = '${log.prefix}: ${log.text}'.trim();
+            if (onPlayerError?.call(event) ?? false) return;
             Utils.reportError(
-              '${log.level}: ${log.prefix}: ${log.text}\n${player.state.playlist}',
+              '${log.level}: $event\n${player.state.playlist}',
               null,
             );
           } else {
@@ -1054,6 +1064,7 @@ class PlPlayerController with BlockConfigMixin {
               event.startsWith("Can not open")) {
             return;
           }
+          if (onPlayerError?.call(event) ?? false) return;
           if (!kDebugMode) {
             Utils.reportError('$event\n${player.state.playlist}');
           }
@@ -1090,7 +1101,11 @@ class PlPlayerController with BlockConfigMixin {
     Future<void> seek() async {
       if (isSeek) {
         /// 拖动进度条调节时，不等待第一帧，防止抖动
-        await _videoPlayerController?.stream.buffer.first;
+        try {
+          await _videoPlayerController?.stream.buffer.first.timeout(
+            const Duration(seconds: 2),
+          );
+        } catch (_) {}
       }
       danmakuController?.clear();
       try {

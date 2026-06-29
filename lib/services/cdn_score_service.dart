@@ -43,7 +43,7 @@ class CdnScoreEntry {
 /// Persistent, host-based CDN reputation. Stability has a much stronger
 /// influence than raw throughput so a fast but stalling CDN is demoted quickly.
 abstract final class CdnScoreService {
-  static const _storageKey = 'adaptiveCdnScoresV1';
+  static const _storageKey = 'adaptiveCdnScoresV2';
   static final ValueNotifier<int> revision = ValueNotifier(0);
   static Map<String, CdnScoreEntry>? _entries;
   static Timer? _persistTimer;
@@ -99,7 +99,7 @@ abstract final class CdnScoreService {
     _changed();
   }
 
-  static void recordFailure(String url, {double penalty = 28}) {
+  static void recordFailure(String url, {double penalty = 14}) {
     final host = VideoUtils.cdnHost(url);
     if (host == null) return;
     final current = _ensureLoaded()[host] ?? CdnScoreEntry.initial;
