@@ -221,7 +221,7 @@ jobs:
             Adaptive CDN build based on PiliPlus.
             Upstream release: ${{ needs.prepare.outputs.upstream_tag || 'current main' }}
 
-            Includes AV1 preference, configurable buffering, stall detection,
+            Includes configurable decode preference, adaptive buffering,
             automatic CDN failover, and per-video failed-CDN exclusion.
           files: PiliPlus-Adaptive-CDN_android_*.apk
 

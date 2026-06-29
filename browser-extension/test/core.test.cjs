@@ -67,7 +67,7 @@ test("prefers AV1 only within the same quality", () => {
       { id: 32, codecs: "av01.0.08M.08" },
     ],
   };
-  Core.reorderVideoArrays(dash, true);
+  Core.reorderVideoArrays(dash, "av1", () => true);
   assert.deepEqual(
     dash.video.map((item) => [item.id, item.codecs.slice(0, 4)]),
     [
@@ -78,6 +78,22 @@ test("prefers AV1 only within the same quality", () => {
   );
 });
 
+
+test("supports selectable preferred codec and legacy AV1 toggle", () => {
+  assert.equal(Core.normalizeSettings({ preferredCodec: "avc" }).preferredCodec, "avc");
+  assert.equal(Core.normalizeSettings().segmentToleranceSec, 10);
+  assert.equal(Core.normalizeSettings({ preferAv1: false }).preferredCodec, "default");
+
+  const dash = {
+    video: [
+      { id: 80, codecs: "avc1.640028" },
+      { id: 80, codecs: "hev1.1.6.L120.90" },
+      { id: 80, codecs: "av01.0.08M.08" },
+    ],
+  };
+  Core.reorderVideoArrays(dash, "avc", () => true);
+  assert.equal(Core.codecFamily(dash.video[0].codecs), "avc");
+});
 test("switches after ten seconds without buffer growth below the target", () => {
   const state = Core.createHealthState(0);
   const settings = { lowBufferSec: 2 };
@@ -113,16 +129,55 @@ test("switches when a previously healthy buffer falls to ten seconds", () => {
   );
 });
 
-test("retries every four seconds while playback position remains stuck", () => {
+
+test("keeps retrying while buffer stays below the low watermark", () => {
+  const state = Core.createHealthState(0);
+  const settings = { lowBufferSec: 10, bufferStallSec: 4 };
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 10, buffered: 35, playing: true, ended: false },
+      settings,
+      0,
+    ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 25, buffered: 35, playing: true, ended: false },
+      settings,
+      1_000,
+    ),
+    "low-buffer",
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 25.5, buffered: 35, playing: true, ended: false },
+      settings,
+      4_999,
+    ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 26, buffered: 35, playing: true, ended: false },
+      settings,
+      5_000,
+    ),
+    "low-buffer",
+  );
+});
+
+
+test("does not switch only because playback position is stuck", () => {
   const state = Core.createHealthState(0);
   const sample = { duration: 100, position: 10, buffered: 50, playing: true, ended: false };
   assert.equal(Core.evaluateHealth(state, sample, {}, 0), null);
-  assert.equal(Core.evaluateHealth(state, sample, {}, 3_999), null);
-  assert.equal(Core.evaluateHealth(state, sample, {}, 4_000), "position-stall");
-  assert.equal(Core.evaluateHealth(state, sample, {}, 7_999), null);
-  assert.equal(Core.evaluateHealth(state, sample, {}, 8_000), "position-stall");
+  assert.equal(Core.evaluateHealth(state, sample, {}, 30_000), null);
 });
-
 test("does not classify the downloaded media tail as a CDN stall", () => {
   const state = Core.createHealthState(0);
   const sample = { duration: 100, position: 70, buffered: 99, playing: true, ended: false };

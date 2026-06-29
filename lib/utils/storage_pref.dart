@@ -259,6 +259,16 @@ abstract final class Pref {
     defaultValue: false,
   );
 
+  static String get adaptivePreferredDecode => _setting.get(
+    SettingBoxKey.adaptivePreferredDecode,
+    defaultValue: VideoDecodeFormatType.HEVC.codes.first,
+  );
+
+  static String get adaptiveRecoveryDecode => _setting.get(
+    SettingBoxKey.adaptiveRecoveryDecode,
+    defaultValue: VideoDecodeFormatType.AVC.codes.first,
+  );
+
   static double get adaptiveTargetBufferSec => _setting.get(
     SettingBoxKey.adaptiveTargetBufferSec,
     defaultValue: 30.0,
@@ -274,14 +284,9 @@ abstract final class Pref {
     defaultValue: 10.0,
   );
 
-  static double get adaptivePlaybackStallSec => _setting.get(
-    SettingBoxKey.adaptivePlaybackStallSec,
-    defaultValue: 4.0,
-  );
-
   static double get adaptiveSegmentToleranceSec => _setting.get(
     SettingBoxKey.adaptiveSegmentToleranceSec,
-    defaultValue: 2.0,
+    defaultValue: 10.0,
   );
 
   static double get adaptiveCdnCooldownSec => _setting.get(
@@ -864,7 +869,17 @@ abstract final class Pref {
       };
     }
 
-    final bufSec = max(Pref.adaptiveTargetBufferSec, 1.0) * playbackSpeed;
+    final targetSec = max(Pref.adaptiveTargetBufferSec, 1.0);
+    final bufSec = targetSec * playbackSpeed;
+    // Adaptive segment tolerance is the refill trigger margin. A 30s target
+    // with the default 10s tolerance refills around 20s, close to the old
+    // bufSec / 1.5 player behavior instead of forcing constant top-up.
+    final hysteresisSec =
+        max(
+          Pref.adaptiveLowBufferSec + Pref.adaptiveSegmentToleranceSec,
+          targetSec - Pref.adaptiveSegmentToleranceSec,
+        ) *
+        playbackSpeed;
     final configuredBytes = Pref.bufferSize * 0x100000;
     final bitrateBytes = bandwidth == null || bandwidth <= 0
         ? 0.0
@@ -872,12 +887,12 @@ abstract final class Pref {
     final forwardBytes = max(
       16 * 0x100000,
       max(configuredBytes, bitrateBytes),
-    ).clamp(16 * 0x100000, 96 * 0x100000).round();
-    final backBytes = min(8 * 0x100000, max(4 * 0x100000, forwardBytes ~/ 4));
+    ).clamp(16 * 0x100000, 128 * 0x100000).round();
+    final backBytes = min(4 * 0x100000, max(1 * 0x100000, forwardBytes ~/ 8));
     return {
       'cache': 'yes',
       'cache-secs': bufSec.toStringAsFixed(3),
-      'demuxer-hysteresis-secs': (bufSec / 1.5).toStringAsFixed(3),
+      'demuxer-hysteresis-secs': min(hysteresisSec, bufSec).toStringAsFixed(3),
       'demuxer-max-bytes': forwardBytes.toString(),
       'demuxer-max-back-bytes': backBytes.toString(),
     };

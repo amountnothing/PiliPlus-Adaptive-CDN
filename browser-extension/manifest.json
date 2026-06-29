@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "PiliPlus Adaptive CDN for Web",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "为哔哩哔哩网页版提供动态 CDN 评分、缓冲监控和保留 MSE 缓冲的自动换源。",
   "permissions": ["storage", "activeTab"],
   "host_permissions": [

@@ -7,13 +7,12 @@
 
   const DEFAULT_SETTINGS = Object.freeze({
     enabled: true,
-    preferAv1: true,
+    preferredCodec: "hevc",
     expandKnownUpos: true,
     targetBufferSec: 30,
-    segmentToleranceSec: 2,
+    segmentToleranceSec: 10,
     lowBufferSec: 10,
     bufferStallSec: 10,
-    positionStallSec: 4,
     endToleranceSec: 2,
     cooldownSec: 30,
     traverseAllCdns: true,
@@ -40,10 +39,9 @@
 
   const NUMBER_RANGES = Object.freeze({
     targetBufferSec: [5, 120],
-    segmentToleranceSec: [0, 10],
+    segmentToleranceSec: [0, 30],
     lowBufferSec: [2, 30],
     bufferStallSec: [2, 60],
-    positionStallSec: [2, 30],
     endToleranceSec: [0, 10],
     cooldownSec: [0, 600],
     maxSwitches: [1, 50],
@@ -59,6 +57,11 @@
     const output = { ...DEFAULT_SETTINGS };
     for (const key of ["enabled", "preferAv1", "expandKnownUpos", "traverseAllCdns"]) {
       if (typeof source[key] === "boolean") output[key] = source[key];
+    }
+    if (["av1", "hevc", "avc", "default"].includes(source.preferredCodec)) {
+      output.preferredCodec = source.preferredCodec;
+    } else if (source.preferAv1 === false) {
+      output.preferredCodec = "default";
     }
     for (const [key, [min, max]] of Object.entries(NUMBER_RANGES)) {
       const value = Number(source[key]);
@@ -186,19 +189,28 @@
     return /^av01/i.test(String(codec || ""));
   }
 
-  function reorderVideoArrays(rootValue, canPlayAv1) {
-    if (!canPlayAv1 || !rootValue || typeof rootValue !== "object") return;
+  function codecFamily(codec) {
+    const value = String(codec || "").toLowerCase();
+    if (value.startsWith("av01")) return "av1";
+    if (value.startsWith("hev1") || value.startsWith("hvc1")) return "hevc";
+    if (value.startsWith("avc1")) return "avc";
+    return "";
+  }
+
+  function reorderVideoArrays(rootValue, preferredCodec, canPlayCodec) {
+    if (preferredCodec === true) preferredCodec = "av1";
+    if (!preferredCodec || preferredCodec === "default" || !rootValue || typeof rootValue !== "object") return;
     const visited = new Set();
     function walk(value, depth) {
       if (!value || typeof value !== "object" || depth > 8 || visited.has(value)) return;
       visited.add(value);
-      if (
-        Array.isArray(value.video) &&
-        value.video.some((item) => isAv1Codec(item?.codecs))
-      ) {
+      if (Array.isArray(value.video) && value.video.some((item) => codecFamily(item?.codecs) === preferredCodec)) {
         value.video.sort((a, b) => {
           if (a?.id !== b?.id) return Number(b?.id || 0) - Number(a?.id || 0);
-          return Number(isAv1Codec(b?.codecs)) - Number(isAv1Codec(a?.codecs));
+          return (
+            Number(canPlayCodec?.(b?.codecs) && codecFamily(b?.codecs) === preferredCodec) -
+            Number(canPlayCodec?.(a?.codecs) && codecFamily(a?.codecs) === preferredCodec)
+          );
         });
       }
       for (const child of Object.values(value)) walk(child, depth + 1);
@@ -245,13 +257,8 @@
     if (positionDelta >= 0.25 || !trying) {
       state.lastPosition = position;
       state.lastPositionProgressAt = now;
-    } else if (
-      now - state.lastPositionProgressAt >= settings.positionStallSec * 1000 &&
-      now - state.lastSwitchAt >= settings.positionStallSec * 1000
-    ) {
-      state.lastSwitchAt = now;
-      return "position-stall";
     }
+
 
     if (buffered < state.lastBuffered || buffered - state.lastBuffered >= 0.25) {
       state.lastBuffered = buffered;
@@ -261,7 +268,10 @@
     const forward = Math.max(0, buffered - position);
     if (forward > settings.lowBufferSec) {
       state.lowBufferArmed = true;
-    } else if (state.lowBufferArmed && trying) {
+    } else if (
+      trying &&
+      (state.lowBufferArmed || now - state.lastSwitchAt >= settings.bufferStallSec * 1000)
+    ) {
       state.lowBufferArmed = false;
       state.lastSwitchAt = now;
       return "low-buffer";
@@ -302,6 +312,7 @@
     streamUrls,
     collectStreams,
     isAv1Codec,
+    codecFamily,
     reorderVideoArrays,
     createHealthState,
     evaluateHealth,

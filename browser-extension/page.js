@@ -43,9 +43,9 @@
     window.postMessage({ source: PAGE_SOURCE, type, payload }, "*");
   }
 
-  function canPlayAv1() {
-    if (!settings.preferAv1 || !window.MediaSource?.isTypeSupported) return false;
-    return window.MediaSource.isTypeSupported('video/mp4; codecs="av01.0.08M.08"');
+  function canPlayCodec(codec) {
+    if (!window.MediaSource?.isTypeSupported) return false;
+    return window.MediaSource.isTypeSupported(`video/mp4; codecs="${codec}"`);
   }
 
   function cleanExpiredState(now = Date.now()) {
@@ -133,7 +133,7 @@
     const streams = Core.collectStreams(value);
     if (!streams.length) return value;
     processedObjects.add(value);
-    Core.reorderVideoArrays(value, canPlayAv1());
+    Core.reorderVideoArrays(value, settings.preferredCodec, canPlayCodec);
     for (const stream of streams) registerStream(stream);
     lastReason = `已发现 ${new Set([...resources].flatMap((item) => item.urls.map(Core.hostOf))).size} 个 CDN`;
     emitStatus();
@@ -252,7 +252,6 @@
   function reasonLabel(reason) {
     return (
       {
-        "position-stall": "播放位置停滞",
         "buffer-stall": "缓冲停止增长",
         "low-buffer": "缓冲降至阈值",
         "network-error": "网络请求失败",

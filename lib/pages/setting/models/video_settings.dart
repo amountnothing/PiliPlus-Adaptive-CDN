@@ -24,15 +24,22 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-List<SettingsModel> get videoSettings => [
-  const SwitchModel(
-    title: '自适应播放',
-    subtitle: 'AV1 优先、动态缓冲并在缓冲停滞时自动切换 CDN',
-    leading: Icon(Icons.auto_awesome_outlined),
-    setKey: SettingBoxKey.adaptivePlayback,
-    defaultVal: false,
-    onChanged: AdaptivePlayback.setEnabled,
-    needReboot: true,
+List<SettingsModel> get _adaptivePlaybackSettings => [
+  NormalModel(
+    title: '自适应首选解码',
+    leading: const Icon(Icons.movie_filter_outlined),
+    getSubtitle: () =>
+        '当前：${VideoDecodeFormatType.fromCode(Pref.adaptivePreferredDecode).description}',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptivePreferredDecodeDialog,
+  ),
+  NormalModel(
+    title: '冻结恢复解码',
+    leading: const Icon(Icons.video_settings_outlined),
+    getSubtitle: () =>
+        '画面冻结/码流错误时尝试切到 ${VideoDecodeFormatType.fromCode(Pref.adaptiveRecoveryDecode).description}',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveRecoveryDecodeDialog,
   ),
   NormalModel(
     title: '目标缓冲时长',
@@ -42,34 +49,28 @@ List<SettingsModel> get videoSettings => [
     onTap: _showAdaptiveTargetBufferDialog,
   ),
   NormalModel(
-    title: '分段加载容差',
+    title: '回填触发容差',
     leading: const Icon(Icons.av_timer_outlined),
     getSubtitle: () =>
-        '目标缓冲允许短暂低 ${Pref.adaptiveSegmentToleranceSec}s，避免分段间隔误判',
+        '缓冲低于目标约 ${Pref.adaptiveSegmentToleranceSec}s 时回填；默认 10s',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveSegmentToleranceDialog,
   ),
   NormalModel(
     title: '低缓冲切换阈值',
     leading: const Icon(Icons.water_outlined),
-    getSubtitle: () => '播放中缓冲首次降至 ${Pref.adaptiveLowBufferSec}s 时切换',
+    getSubtitle: () => '播放中缓冲低于 ${Pref.adaptiveLowBufferSec}s 时切换',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveLowBufferDialog,
   ),
   NormalModel(
-    title: '缓冲停滞判定',
+    title: 'CDN 拉取超时',
     leading: const Icon(Icons.timer_off_outlined),
-    getSubtitle: () => '连续 ${Pref.adaptiveStallTimeoutSec}s 无增长后切换',
+    getSubtitle: () => 'CDN 实际拉取超过 ${Pref.adaptiveStallTimeoutSec}s 无响应后切换',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveStallTimeoutDialog,
   ),
-  NormalModel(
-    title: '播放位置停滞判定',
-    leading: const Icon(Icons.play_disabled_outlined),
-    getSubtitle: () => '播放位置不动时每 ${Pref.adaptivePlaybackStallSec}s 切换一次',
-    enabledListenable: AdaptivePlayback.enabled,
-    onTap: _showAdaptivePlaybackStallDialog,
-  ),
+
   NormalModel(
     title: '故障 CDN 冷却',
     leading: const Icon(Icons.ac_unit_outlined),
@@ -100,6 +101,25 @@ List<SettingsModel> get videoSettings => [
     getSubtitle: _cdnScoreSummary,
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showCdnScoresDialog,
+  ),
+];
+List<SettingsModel> get videoSettings => [
+  const SwitchModel(
+    title: '自适应播放',
+    subtitle: '可配置解码优先级、动态缓冲并在 CDN 拉取停滞时自动切换',
+    leading: Icon(Icons.auto_awesome_outlined),
+    setKey: SettingBoxKey.adaptivePlayback,
+    defaultVal: false,
+    onChanged: AdaptivePlayback.setEnabled,
+    needReboot: true,
+  ),
+  NormalModel(
+    title: '自适应播放详细设置',
+    leading: const Icon(Icons.tune_rounded),
+    getSubtitle: () =>
+        '${VideoDecodeFormatType.fromCode(Pref.adaptivePreferredDecode).description} 优先，冻结恢复 ${VideoDecodeFormatType.fromCode(Pref.adaptiveRecoveryDecode).description}',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _openAdaptivePlaybackSettings,
   ),
   SwitchModel(
     title: '开启硬解',
@@ -647,6 +667,71 @@ void _showDecimalDialog(
   );
 }
 
+void _openAdaptivePlaybackSettings(
+  BuildContext context,
+  VoidCallback setState,
+) {
+  Navigator.of(context)
+      .push(
+        MaterialPageRoute<void>(
+          builder: (context) => Scaffold(
+            appBar: AppBar(title: const Text('自适应播放详细设置')),
+            body: ListView.builder(
+              padding: EdgeInsets.only(
+                left: MediaQuery.viewPaddingOf(context).left,
+                right: MediaQuery.viewPaddingOf(context).right,
+                bottom: MediaQuery.viewPaddingOf(context).bottom + 100,
+              ),
+              itemCount: _adaptivePlaybackSettings.length,
+              itemBuilder: (context, index) =>
+                  _adaptivePlaybackSettings[index].widget,
+            ),
+          ),
+        ),
+      )
+      .then((_) => setState());
+}
+
+Future<void> _showAdaptivePreferredDecodeDialog(
+  BuildContext context,
+  VoidCallback setState,
+) async {
+  final res = await showDialog<String>(
+    context: context,
+    builder: (context) => SelectDialog<String>(
+      title: '自适应首选解码',
+      value: Pref.adaptivePreferredDecode,
+      values: VideoDecodeFormatType.values
+          .map((e) => (e.codes.first, e.description))
+          .toList(),
+    ),
+  );
+  if (res != null) {
+    await GStorage.setting.put(SettingBoxKey.adaptivePreferredDecode, res);
+    setState();
+  }
+}
+
+Future<void> _showAdaptiveRecoveryDecodeDialog(
+  BuildContext context,
+  VoidCallback setState,
+) async {
+  final res = await showDialog<String>(
+    context: context,
+    builder: (context) => SelectDialog<String>(
+      title: '冻结恢复解码',
+      value: Pref.adaptiveRecoveryDecode,
+      values: VideoDecodeFormatType.values
+          .map((e) => (e.codes.first, e.description))
+          .toList(),
+    ),
+  );
+  if (res != null) {
+    await GStorage.setting.put(SettingBoxKey.adaptiveRecoveryDecode, res);
+    setState();
+  }
+}
+
 void _showAdaptiveTargetBufferDialog(
   BuildContext context,
   VoidCallback setState,
@@ -669,10 +754,10 @@ void _showAdaptiveSegmentToleranceDialog(
   setState,
   key: SettingBoxKey.adaptiveSegmentToleranceSec,
   defVal: Pref.adaptiveSegmentToleranceSec,
-  title: '分段加载容差',
+  title: '回填触发容差',
   suffix: 's',
   minValue: 0,
-  maxValue: 5,
+  maxValue: 30,
 );
 
 void _showAdaptiveLowBufferDialog(
@@ -697,24 +782,10 @@ void _showAdaptiveStallTimeoutDialog(
   setState,
   key: SettingBoxKey.adaptiveStallTimeoutSec,
   defVal: Pref.adaptiveStallTimeoutSec,
-  title: '缓冲停滞判定',
+  title: 'CDN 拉取超时',
   suffix: 's',
   minValue: 2,
   maxValue: 30,
-);
-
-void _showAdaptivePlaybackStallDialog(
-  BuildContext context,
-  VoidCallback setState,
-) => _showDecimalDialog(
-  context,
-  setState,
-  key: SettingBoxKey.adaptivePlaybackStallSec,
-  defVal: Pref.adaptivePlaybackStallSec,
-  title: '播放位置停滞判定',
-  suffix: 's',
-  minValue: 2,
-  maxValue: 15,
 );
 
 void _showAdaptiveCdnCooldownDialog(
