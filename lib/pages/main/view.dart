@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:PiliPlus/common/assets.dart';
@@ -22,6 +23,7 @@ import 'package:PiliPlus/utils/mobile_observer.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
+import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -47,13 +49,26 @@ class _MainAppState extends PopScopeState<MainApp>
   late final _setting = GStorage.setting;
   late EdgeInsets _padding;
   late ThemeData theme;
+  StreamSubscription<int>? _selectedIndexSub;
 
   @override
-  bool get initCanPop => false;
+  bool get initCanPop => _allowSystemBack;
+
+  bool get _allowSystemBack =>
+      Platform.isAndroid &&
+      Pref.predictiveBackGesture &&
+      (_mainController.directExitOnBack || _mainController.selectedIndex.value == 0);
+
+  void _syncCanPop() {
+    canPopNotifier.value = _allowSystemBack;
+  }
 
   @override
   void initState() {
     super.initState();
+    _selectedIndexSub = _mainController.selectedIndex.listen((_) {
+      _syncCanPop();
+    });
     addObserverMobile(this);
     if (PlatformUtils.isDesktop) {
       windowManager
@@ -113,6 +128,7 @@ class _MainAppState extends PopScopeState<MainApp>
 
   @override
   void dispose() {
+    _selectedIndexSub?.cancel();
     if (PlatformUtils.isDesktop) {
       trayManager.removeListener(this);
       windowManager.removeListener(this);

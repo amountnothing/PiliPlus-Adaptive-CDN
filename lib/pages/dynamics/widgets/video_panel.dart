@@ -7,6 +7,7 @@ import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
+import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter/material.dart';
 
 Widget videoSeasonWidget(
@@ -33,6 +34,7 @@ Widget videoSeasonWidget(
   if (video == null) {
     return const SizedBox.shrink();
   }
+  final coverHeroTag = PageUtils.videoCoverHeroTag(item);
 
   EdgeInsets padding;
   if (floor == 1) {
@@ -51,11 +53,14 @@ Widget videoSeasonWidget(
             clipBehavior: Clip.none,
             children: [
               LayoutBuilder(
-                builder: (context, constraints) => NetworkImgLayer(
-                  width: constraints.maxWidth,
-                  height: constraints.maxWidth / Style.aspectRatio,
-                  src: cover,
-                  quality: 40,
+                builder: (context, constraints) => PageUtils.videoCoverHero(
+                  tag: coverHeroTag,
+                  child: NetworkImgLayer(
+                    width: constraints.maxWidth,
+                    height: constraints.maxWidth / Style.aspectRatio,
+                    src: cover,
+                    quality: 40,
+                  ),
                 ),
               ),
               if (video.badge?.text case final badge?)

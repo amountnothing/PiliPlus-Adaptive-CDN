@@ -50,6 +50,7 @@ class DetailItem extends StatelessWidget {
   final MultiSelectBase controller;
   final bool? checked;
   final ValueChanged<BiliDownloadEntryInfo>? onSelect;
+  String get coverHeroTag => PageUtils.videoCoverHeroTag(this);
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +127,7 @@ class DetailItem extends StatelessWidget {
               cover: entry.cover,
               title: entry.showTitle,
               isVertical: entry.pageData?.isVertical ?? false,
+              coverHeroTag: coverHeroTag,
               extraArguments: {
                 'sourceType': SourceType.file,
                 'entry': entry,
@@ -182,30 +184,33 @@ class DetailItem extends StatelessWidget {
                         } else {
                           cacheHeight = maxHeight.cacheSize(context);
                         }
-                        return cover.existsSync()
-                            ? ClipRRect(
-                                borderRadius: Style.mdRadius,
-                                child: Image.file(
-                                  cover,
+                        return PageUtils.videoCoverHero(
+                          tag: coverHeroTag,
+                          child: cover.existsSync()
+                              ? ClipRRect(
+                                  borderRadius: Style.mdRadius,
+                                  child: Image.file(
+                                    cover,
+                                    width: maxWidth,
+                                    height: maxHeight,
+                                    fit: BoxFit.cover,
+                                    cacheWidth: cacheWidth,
+                                    cacheHeight: cacheHeight,
+                                    colorBlendMode: NetworkImgLayer.reduce
+                                        ? BlendMode.modulate
+                                        : null,
+                                    color: NetworkImgLayer.reduce
+                                        ? NetworkImgLayer.reduceLuxColor
+                                        : null,
+                                  ),
+                                )
+                              : NetworkImgLayer(
+                                  src: entry.cover,
                                   width: maxWidth,
                                   height: maxHeight,
-                                  fit: BoxFit.cover,
-                                  cacheWidth: cacheWidth,
-                                  cacheHeight: cacheHeight,
-                                  colorBlendMode: NetworkImgLayer.reduce
-                                      ? BlendMode.modulate
-                                      : null,
-                                  color: NetworkImgLayer.reduce
-                                      ? NetworkImgLayer.reduceLuxColor
-                                      : null,
+                                  cacheWidth: entry.pageData?.cacheWidth,
                                 ),
-                              )
-                            : NetworkImgLayer(
-                                src: entry.cover,
-                                width: maxWidth,
-                                height: maxHeight,
-                                cacheWidth: entry.pageData?.cacheWidth,
-                              );
+                        );
                       },
                     ),
                   ),

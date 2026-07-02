@@ -24,6 +24,7 @@ import 'package:intl/intl.dart';
 class VideoCardV extends StatelessWidget {
   final BaseRcmdVideoItemModel videoItem;
   final VoidCallback? onRemove;
+  String get coverHeroTag => PageUtils.videoCoverHeroTag(videoItem);
 
   const VideoCardV({
     super.key,
@@ -62,6 +63,7 @@ class VideoCardV extends StatelessWidget {
             title: videoItem.title,
             isVertical: isVertical,
             dimension: dimension,
+            coverHeroTag: coverHeroTag,
           );
         }
         break;
@@ -90,47 +92,54 @@ class VideoCardV extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Card(
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            onTap: onPushDetail,
-            onLongPress: onLongPress,
-            onSecondaryTap: PlatformUtils.isMobile ? null : onLongPress,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AspectRatio(
-                  aspectRatio: Style.aspectRatio,
-                  child: LayoutBuilder(
-                    builder: (context, boxConstraints) {
-                      double maxWidth = boxConstraints.maxWidth;
-                      double maxHeight = boxConstraints.maxHeight;
-                      return Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          NetworkImgLayer(
-                            src: videoItem.cover,
-                            width: maxWidth,
-                            height: maxHeight,
-                            type: .emote,
-                          ),
-                          if (videoItem.duration > 0)
-                            PBadge(
-                              bottom: 6,
-                              right: 7,
-                              size: .small,
-                              type: .gray,
-                              text: DurationUtils.formatDuration(
-                                videoItem.duration,
+        PageUtils.videoCardHero(
+          tag: coverHeroTag,
+          snapshotTarget: true,
+          child: Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              onTap: onPushDetail,
+              onLongPress: onLongPress,
+              onSecondaryTap: PlatformUtils.isMobile ? null : onLongPress,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AspectRatio(
+                    aspectRatio: Style.aspectRatio,
+                    child: LayoutBuilder(
+                      builder: (context, boxConstraints) {
+                        double maxWidth = boxConstraints.maxWidth;
+                        double maxHeight = boxConstraints.maxHeight;
+                        return Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            PageUtils.videoCoverHero(
+                              tag: coverHeroTag,
+                              child: NetworkImgLayer(
+                                src: videoItem.cover,
+                                width: maxWidth,
+                                height: maxHeight,
+                                type: .emote,
                               ),
                             ),
-                        ],
-                      );
-                    },
+                            if (videoItem.duration > 0)
+                              PBadge(
+                                bottom: 6,
+                                right: 7,
+                                size: .small,
+                                type: .gray,
+                                text: DurationUtils.formatDuration(
+                                  videoItem.duration,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
-                content(context),
-              ],
+                  content(context, coverHeroTag),
+                ],
+              ),
             ),
           ),
         ),
@@ -150,76 +159,79 @@ class VideoCardV extends StatelessWidget {
     );
   }
 
-  Widget content(BuildContext context) {
+  Widget content(BuildContext context, Object heroTag) {
     final theme = Theme.of(context);
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(6, 5, 6, 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                "${videoItem.title}\n",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  height: 1.38,
+      child: PageUtils.videoBodyHero(
+        tag: heroTag,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(6, 5, 6, 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  "${videoItem.title}\n",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    height: 1.38,
+                  ),
                 ),
               ),
-            ),
-            videoStat(context, theme),
-            Row(
-              spacing: 2,
-              children: [
-                if (videoItem.goto == 'bangumi')
-                  PBadge(
-                    text: videoItem.pgcBadge,
-                    isStack: false,
-                    size: .small,
-                    type: .line_primary,
-                    fontSize: 9,
-                  ),
-                if (videoItem.rcmdReason != null)
-                  PBadge(
-                    text: videoItem.rcmdReason,
-                    isStack: false,
-                    size: .small,
-                    type: .secondary,
-                  ),
-                if (videoItem.goto == 'picture')
-                  const PBadge(
-                    text: '动态',
-                    isStack: false,
-                    size: .small,
-                    type: .line_primary,
-                    fontSize: 9,
-                  ),
-                if (videoItem.isFollowed)
-                  const PBadge(
-                    text: '已关注',
-                    isStack: false,
-                    size: .small,
-                    type: .secondary,
-                  ),
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    videoItem.owner.name.toString(),
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                    semanticsLabel: 'UP：${videoItem.owner.name}',
-                    style: TextStyle(
-                      height: 1.5,
-                      fontSize: theme.textTheme.labelMedium!.fontSize,
-                      color: theme.colorScheme.outline,
+              videoStat(context, theme),
+              Row(
+                spacing: 2,
+                children: [
+                  if (videoItem.goto == 'bangumi')
+                    PBadge(
+                      text: videoItem.pgcBadge,
+                      isStack: false,
+                      size: .small,
+                      type: .line_primary,
+                      fontSize: 9,
+                    ),
+                  if (videoItem.rcmdReason != null)
+                    PBadge(
+                      text: videoItem.rcmdReason,
+                      isStack: false,
+                      size: .small,
+                      type: .secondary,
+                    ),
+                  if (videoItem.goto == 'picture')
+                    const PBadge(
+                      text: '动态',
+                      isStack: false,
+                      size: .small,
+                      type: .line_primary,
+                      fontSize: 9,
+                    ),
+                  if (videoItem.isFollowed)
+                    const PBadge(
+                      text: '已关注',
+                      isStack: false,
+                      size: .small,
+                      type: .secondary,
+                    ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      videoItem.owner.name.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.clip,
+                      semanticsLabel: 'UP：${videoItem.owner.name}',
+                      style: TextStyle(
+                        height: 1.5,
+                        fontSize: theme.textTheme.labelMedium!.fontSize,
+                        color: theme.colorScheme.outline,
+                      ),
                     ),
                   ),
-                ),
-                if (videoItem.goto == 'av') const SizedBox(width: 10),
-              ],
-            ),
-          ],
+                  if (videoItem.goto == 'av') const SizedBox(width: 10),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

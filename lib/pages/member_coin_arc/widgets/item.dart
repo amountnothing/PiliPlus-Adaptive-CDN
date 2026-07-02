@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 
 class MemberCoinLikeItem extends StatelessWidget {
   final CoinLikeArcItem item;
+  String get coverHeroTag => PageUtils.videoCoverHeroTag(this);
 
   const MemberCoinLikeItem({
     super.key,
@@ -50,6 +51,7 @@ class MemberCoinLikeItem extends StatelessWidget {
                 cover: item.cover,
                 title: item.title,
                 dimension: res!.dimension,
+                coverHeroTag: coverHeroTag,
               );
             }
           }
@@ -68,11 +70,14 @@ class MemberCoinLikeItem extends StatelessWidget {
                   return Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      NetworkImgLayer(
-                        src: item.cover,
-                        width: maxWidth,
-                        height: maxHeight,
-                        type: .emote,
+                      PageUtils.videoCoverHero(
+                        tag: coverHeroTag,
+                        child: NetworkImgLayer(
+                          src: item.cover,
+                          width: maxWidth,
+                          height: maxHeight,
+                          type: .emote,
+                        ),
                       ),
                       if (item.isCooperation == true)
                         const PBadge(

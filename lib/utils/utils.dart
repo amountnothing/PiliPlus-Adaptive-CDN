@@ -1,6 +1,7 @@
 import 'dart:convert' show JsonEncoder, base64;
 import 'dart:math' show Random;
 
+import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:catcher_2/catcher_2.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -84,5 +85,14 @@ abstract final class Utils {
   /// to treat the exception as unhandled.
   static void reportError(Object exception, [StackTrace? stack]) {
     Catcher2.reportCheckedError(exception, stack);
+  }
+
+  static bool get logMode => Pref.logMode;
+
+  static void reportLog(Object message, [StackTrace? stack]) {
+    if (!logMode) {
+      return;
+    }
+    reportError(message is Object Function() ? message() : message, stack);
   }
 }

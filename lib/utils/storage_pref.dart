@@ -795,6 +795,16 @@ abstract final class Pref {
         defaultValue: Transition.native.index,
       )];
 
+  static bool get predictiveBackGesture => _setting.get(
+    SettingBoxKey.predictiveBackGesture,
+    defaultValue: false,
+  );
+
+  static bool get logMode => _setting.get(
+    SettingBoxKey.logMode,
+    defaultValue: false,
+  );
+
   static bool get enableQuickDouble =>
       _setting.get(SettingBoxKey.enableQuickDouble, defaultValue: true);
 

@@ -320,81 +320,90 @@ class ChatItem extends StatelessWidget {
               ),
             ),
             for (final i in content['sub_cards'])
-              GestureDetector(
-                onTap: () async {
-                  String? bvid = IdUtils.bvRegex
-                      .firstMatch(i['jump_url'])
-                      ?.group(0);
-                  if (bvid != null) {
-                    try {
-                      SmartDialog.showLoading();
-                      final res = await SearchHttp.ab2cWithDimension(
-                        bvid: bvid,
-                      );
-                      final cid = res?.cid;
-                      SmartDialog.dismiss();
-                      if (cid != null) {
-                        PageUtils.toVideoPage(
-                          bvid: bvid,
-                          cid: cid,
-                          cover: i['cover_url'],
-                          dimension: res!.dimension,
-                        );
+              Builder(
+                builder: (context) {
+                  final coverHeroTag = PageUtils.videoCoverHeroTag(i);
+                  return GestureDetector(
+                    onTap: () async {
+                      String? bvid = IdUtils.bvRegex
+                          .firstMatch(i['jump_url'])
+                          ?.group(0);
+                      if (bvid != null) {
+                        try {
+                          SmartDialog.showLoading();
+                          final res = await SearchHttp.ab2cWithDimension(
+                            bvid: bvid,
+                          );
+                          final cid = res?.cid;
+                          SmartDialog.dismiss();
+                          if (cid != null) {
+                            PageUtils.toVideoPage(
+                              bvid: bvid,
+                              cid: cid,
+                              cover: i['cover_url'],
+                              dimension: res!.dimension,
+                              coverHeroTag: coverHeroTag,
+                            );
+                          }
+                        } catch (err) {
+                          SmartDialog.dismiss();
+                          SmartDialog.showToast(err.toString());
+                        }
+                      } else {
+                        SmartDialog.showToast('未匹配到 BV 号');
+                        PageUtils.handleWebview(i['jump_url']);
                       }
-                    } catch (err) {
-                      SmartDialog.dismiss();
-                      SmartDialog.showToast(err.toString());
-                    }
-                  } else {
-                    SmartDialog.showToast('未匹配到 BV 号');
-                    PageUtils.handleWebview(i['jump_url']);
-                  }
+                    },
+                    child: Row(
+                      spacing: 6,
+                      children: [
+                        PageUtils.videoCoverHero(
+                          tag: coverHeroTag,
+                          child: NetworkImgLayer(
+                            width: 130,
+                            height: 73.125,
+                            src: i['cover_url'],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                i['field1'],
+                                maxLines: 2,
+                                style: TextStyle(
+                                  letterSpacing: 0.6,
+                                  height: 1.5,
+                                  color: textColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                i['field2'],
+                                style: TextStyle(
+                                  letterSpacing: 0.6,
+                                  height: 1.5,
+                                  color: textColor.withValues(alpha: 0.6),
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Text(
+                                i['field3'],
+                                style: TextStyle(
+                                  letterSpacing: 0.6,
+                                  height: 1.5,
+                                  color: textColor.withValues(alpha: 0.6),
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 },
-                child: Row(
-                  spacing: 6,
-                  children: [
-                    NetworkImgLayer(
-                      width: 130,
-                      height: 73.125,
-                      src: i['cover_url'],
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            i['field1'],
-                            maxLines: 2,
-                            style: TextStyle(
-                              letterSpacing: 0.6,
-                              height: 1.5,
-                              color: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            i['field2'],
-                            style: TextStyle(
-                              letterSpacing: 0.6,
-                              height: 1.5,
-                              color: textColor.withValues(alpha: 0.6),
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            i['field3'],
-                            style: TextStyle(
-                              letterSpacing: 0.6,
-                              height: 1.5,
-                              color: textColor.withValues(alpha: 0.6),
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
               ),
           ],
         ),
@@ -404,6 +413,7 @@ class ChatItem extends StatelessWidget {
 
   Widget msgTypeVideoCard_11(ThemeData theme, content, Color textColor) {
     String? attachMsg;
+    final coverHeroTag = PageUtils.videoCoverHeroTag(content);
     try {
       attachMsg = content['attach_msg']?['content'];
     } catch (_) {}
@@ -435,6 +445,7 @@ class ChatItem extends StatelessWidget {
                       cid: cid,
                       cover: content['cover'],
                       dimension: res!.dimension,
+                      coverHeroTag: coverHeroTag,
                     );
                   }
                 } catch (err) {
@@ -448,11 +459,14 @@ class ChatItem extends StatelessWidget {
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      NetworkImgLayer(
-                        type: ImageType.emote,
-                        width: constrains.maxWidth,
-                        height: constrains.maxWidth / Style.aspectRatio16x9,
-                        src: content['cover'],
+                      PageUtils.videoCoverHero(
+                        tag: coverHeroTag,
+                        child: NetworkImgLayer(
+                          type: ImageType.emote,
+                          width: constrains.maxWidth,
+                          height: constrains.maxWidth / Style.aspectRatio16x9,
+                          src: content['cover'],
+                        ),
                       ),
                       PBadge(
                         left: 6,

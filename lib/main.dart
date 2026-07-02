@@ -23,6 +23,7 @@ import 'package:PiliPlus/utils/json_file_handler.dart';
 import 'package:PiliPlus/utils/max_screen_size.dart';
 import 'package:PiliPlus/utils/path_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
+import 'package:PiliPlus/utils/predictive_back_progress.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
@@ -327,7 +328,9 @@ class MyApp extends StatelessWidget {
         child: child,
       );
     }
-    return child;
+    return Pref.predictiveBackGesture
+        ? _PredictiveBackGestureDispatcher(child: child)
+        : child;
   }
 
   /// from [DynamicColorBuilderState.initPlatformState]
@@ -374,6 +377,112 @@ class MyApp extends StatelessWidget {
     GStorage.setting.put(SettingBoxKey.dynamicColor, false);
     return false;
   }
+}
+
+class _PredictiveBackGestureDispatcher extends StatefulWidget {
+  const _PredictiveBackGestureDispatcher({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_PredictiveBackGestureDispatcher> createState() =>
+      _PredictiveBackGestureDispatcherState();
+}
+
+class _PredictiveBackGestureDispatcherState
+    extends State<_PredictiveBackGestureDispatcher>
+    with WidgetsBindingObserver {
+  PageRoute<dynamic>? _route;
+
+  @override
+  bool handleStartBackGesture(PredictiveBackEvent backEvent) {
+    if (_route != null || backEvent.isButtonEvent || SmartDialog.checkExist()) {
+      return false;
+    }
+    final route = Get.routing.route;
+    if (route is! PageRoute<dynamic> ||
+        !route.isCurrent ||
+        !route.popGestureEnabled) {
+      return false;
+    }
+    _route = route;
+    PredictiveBackProgress.start(backEvent.progress);
+    Utils.reportLog(() => 'PredictiveBack: start ${route.settings.name}');
+    route.handleStartBackGesture(progress: 1 - backEvent.progress);
+    return true;
+  }
+
+  @override
+  void handleUpdateBackGestureProgress(PredictiveBackEvent backEvent) {
+    final route = _route;
+    if (route == null) {
+      return;
+    }
+    PredictiveBackProgress.update(backEvent.progress);
+    route.handleUpdateBackGestureProgress(progress: 1 - backEvent.progress);
+  }
+
+  @override
+  void handleCancelBackGesture() {
+    final route = _route;
+    _route = null;
+    PredictiveBackProgress.reset();
+    Utils.reportLog(() => 'PredictiveBack: cancel ${route?.settings.name}');
+    route?.handleCancelBackGesture();
+  }
+
+  @override
+  void handleCommitBackGesture() {
+    final route = _route;
+    _route = null;
+    if (route == null) {
+      return;
+    }
+    PredictiveBackProgress.update(1);
+    Utils.reportLog(() => 'PredictiveBack: commit ${route.settings.name}');
+    final navigator = route.navigator;
+    navigator?.pop();
+    Future.delayed(
+      route.reverseTransitionDuration + const Duration(milliseconds: 120),
+      PredictiveBackProgress.reset,
+    );
+    final animation = route.animation;
+    if (animation == null || animation.isDismissed) {
+      navigator?.didStopUserGesture();
+      return;
+    }
+    late final AnimationStatusListener listener;
+    listener = (status) {
+      if (status == AnimationStatus.dismissed ||
+          status == AnimationStatus.completed) {
+        animation.removeStatusListener(listener);
+        navigator?.didStopUserGesture();
+      }
+    };
+    animation.addStatusListener(listener);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      NotificationListener<NavigationNotification>(
+        onNotification: (notification) {
+          SystemNavigator.setFrameworkHandlesBack(notification.canHandlePop);
+          return true;
+        },
+        child: widget.child,
+      );
 }
 
 class _CustomHttpOverrides extends HttpOverrides {

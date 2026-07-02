@@ -58,11 +58,16 @@ class FavSearchController
 
   @override
   // TODO: dimension
-  void onViewFav(FavDetailItemModel item, int? index) => PageUtils.toVideoPage(
+  void onViewFav(
+    FavDetailItemModel item,
+    int? index, {
+    String? coverHeroTag,
+  }) => PageUtils.toVideoPage(
     bvid: item.bvid,
     cid: item.ugc!.firstCid!,
     cover: item.cover,
     title: item.title,
+    coverHeroTag: coverHeroTag,
     extraArguments: {
       'sourceType': SourceType.fav,
       'mediaId': mediaId,

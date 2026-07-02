@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'dart:ui';
+import 'dart:ui' as ui show Image;
 
 import 'package:PiliPlus/common/widgets/fractionally_sized_box.dart';
 import 'package:PiliPlus/common/widgets/image_viewer/gallery_viewer.dart';
@@ -18,6 +20,7 @@ import 'package:PiliPlus/pages/common/publish/publish_route.dart';
 import 'package:PiliPlus/pages/contact/view.dart';
 import 'package:PiliPlus/pages/fav_panel/view.dart';
 import 'package:PiliPlus/pages/share/view.dart';
+import 'package:PiliPlus/pages/video/view.dart' show VideoDetailPageV;
 import 'package:PiliPlus/utils/android/android_helper.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
@@ -33,11 +36,200 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract final class PageUtils {
+  static const Curve _videoOpenCurve = Cubic(0.15, 1, 0.2, 1);
+  static final Map<Object, Rect> _videoCoverRects = {};
+  static final Map<Object, Rect> _loggedVideoCoverRects = {};
+  static final Map<Object, Rect> _videoCardRects = {};
+  static final Map<Object, Rect> _loggedVideoCardRects = {};
+  static final Map<Object, _VideoCardTarget? Function()>
+  _videoCardTargetReaders = {};
+  static final Map<Object, Future<void> Function()>
+  _videoCardSnapshotCapturers = {};
+  static final Map<Object, ui.Image> _videoCardSnapshots = {};
+  static final Map<Object, Widget> _videoCardWidgets = {};
+
+  static String videoCoverHeroTag(Object owner) =>
+      'video-cover-${identityHashCode(owner)}';
+
+  static String _rectLog(Rect? rect) => rect == null
+      ? 'null'
+      : 'l=${rect.left.toStringAsFixed(1)},t=${rect.top.toStringAsFixed(1)},w=${rect.width.toStringAsFixed(1)},h=${rect.height.toStringAsFixed(1)}';
+
+  static String _sizeLog(Size? size) => size == null
+      ? 'null'
+      : 'w=${size.width.toStringAsFixed(1)},h=${size.height.toStringAsFixed(1)}';
+
+  static Rect? _contextRect(BuildContext context) {
+    final renderObject = context.findRenderObject();
+    if (renderObject is! RenderBox || !renderObject.hasSize) {
+      return null;
+    }
+    return renderObject.localToGlobal(Offset.zero) & renderObject.size;
+  }
+
+  static _VideoCardTarget? _currentVideoCardTarget(Object? tag) {
+    if (tag == null) {
+      return null;
+    }
+    final target = _videoCardTargetReaders[tag]?.call();
+    if (target != null && !target.rect.isEmpty) {
+      _videoCardRects[tag] = target.rect;
+      return target;
+    }
+    final rect = _videoCardRects[tag] ?? _videoCoverRects[tag];
+    return rect == null ? null : _VideoCardTarget(rect: rect);
+  }
+
+  static Future<void>? _captureVideoCardSnapshot(Object? tag) =>
+      tag == null ? null : _videoCardSnapshotCapturers[tag]?.call();
+
+  static void _releaseVideoCardSnapshot(Object? tag) {
+    if (tag == null) {
+      return;
+    }
+    _videoCardSnapshots.remove(tag)?.dispose();
+  }
+
+  static void _trackVideoCoverRect(Object tag, BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) {
+        return;
+      }
+      final renderObject = context.findRenderObject();
+      if (renderObject is! RenderBox || !renderObject.hasSize) {
+        return;
+      }
+      final topLeft = renderObject.localToGlobal(Offset.zero);
+      final rect = topLeft & renderObject.size;
+      _videoCoverRects[tag] = rect;
+      if (!Utils.logMode) {
+        return;
+      }
+      final loggedRect = _loggedVideoCoverRects[tag];
+      if (loggedRect == null ||
+          (loggedRect.center - rect.center).distanceSquared > 1 ||
+          (loggedRect.size.width - rect.size.width).abs() > 1 ||
+          (loggedRect.size.height - rect.size.height).abs() > 1) {
+        _loggedVideoCoverRects[tag] = rect;
+        Utils.reportLog(
+          () => 'VideoOpenAnim: coverRect tag=$tag rect=${_rectLog(rect)}',
+        );
+      }
+    });
+  }
+
+  static void _trackVideoCardRect(Object tag, BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) {
+        return;
+      }
+      final renderObject = context.findRenderObject();
+      if (renderObject is! RenderBox || !renderObject.hasSize) {
+        return;
+      }
+      final topLeft = renderObject.localToGlobal(Offset.zero);
+      final rect = topLeft & renderObject.size;
+      _videoCardRects[tag] = rect;
+      if (!Utils.logMode) {
+        return;
+      }
+      final loggedRect = _loggedVideoCardRects[tag];
+      if (loggedRect == null ||
+          (loggedRect.center - rect.center).distanceSquared > 1 ||
+          (loggedRect.size.width - rect.size.width).abs() > 1 ||
+          (loggedRect.size.height - rect.size.height).abs() > 1) {
+        _loggedVideoCardRects[tag] = rect;
+        Utils.reportLog(
+          () => 'VideoBackAnim: cardRect tag=$tag rect=${_rectLog(rect)}',
+        );
+      }
+    });
+  }
+
+  static double _videoPageSlideFrom(Object? coverHeroTag) {
+    if (coverHeroTag == null) {
+      Utils.reportLog(() => 'VideoOpenAnim: slideFrom fallback noCoverHeroTag');
+      return 1;
+    }
+    final rect = _videoCoverRects[coverHeroTag];
+    final context = Get.context ?? Get.key.currentContext;
+    final screenWidth = context == null
+        ? PlatformDispatcher.instance.views.first.physicalSize.width /
+              PlatformDispatcher.instance.views.first.devicePixelRatio
+        : MediaQuery.maybeSizeOf(context)?.width ?? 0;
+    if (rect == null || screenWidth <= 0) {
+      Utils.reportLog(
+        () =>
+            'VideoOpenAnim: slideFrom fallback tag=$coverHeroTag rect=${_rectLog(rect)} screenWidth=${screenWidth.toStringAsFixed(1)}',
+      );
+      return 1;
+    }
+    final slideFrom = rect.center.dx < screenWidth / 2 ? -1.0 : 1.0;
+    Utils.reportLog(
+      () =>
+          'VideoOpenAnim: slideFrom tag=$coverHeroTag rect=${_rectLog(rect)} screenWidth=${screenWidth.toStringAsFixed(1)} slideFrom=$slideFrom',
+    );
+    return slideFrom;
+  }
+
+  static Widget videoCoverHero({
+    required Object tag,
+    required Widget child,
+    BorderRadius? borderRadius,
+  }) => Hero(
+    tag: tag,
+    transitionOnUserGestures: true,
+    createRectTween: (begin, end) =>
+        _VideoHeroRectTween(label: 'cover:$tag', begin: begin, end: end),
+    flightShuttleBuilder:
+        (context, animation, flightDirection, fromHeroContext, toHeroContext) {
+          Utils.reportLog(
+            () =>
+                'VideoOpenAnim: coverHeroFlight tag=$tag direction=$flightDirection fromSize=${_sizeLog(fromHeroContext.size)} toSize=${_sizeLog(toHeroContext.size)} fromRect=${_rectLog(_contextRect(fromHeroContext))} toRect=${_rectLog(_contextRect(toHeroContext))}',
+          );
+          return flightDirection == HeroFlightDirection.push
+              ? _heroChild(fromHeroContext)
+              : const SizedBox.shrink();
+        },
+    child: _TrackedVideoCoverHero(
+      tag: tag,
+      child: borderRadius == null
+          ? child
+          : ClipRRect(borderRadius: borderRadius, child: child),
+    ),
+  );
+
+  static Widget videoBodyHero({
+    required Object tag,
+    required Widget child,
+  }) => child;
+
+  static Widget videoCardHero({
+    required Object tag,
+    required Widget child,
+    bool snapshotTarget = false,
+  }) => _TrackedVideoCardRect(
+    tag: tag,
+    snapshotTarget: snapshotTarget,
+    child: child,
+  );
+
+  static Widget videoPageHero({
+    required Object tag,
+    required Widget child,
+  }) => child;
+
+  static Widget _heroChild(BuildContext context) {
+    final widget = context.widget;
+    return widget is Hero ? widget.child : widget;
+  }
+
   static RelativeRect menuPosition(Offset offset) {
     return .fromLTRB(offset.dx, offset.dy, offset.dx, 0);
   }
@@ -224,6 +416,7 @@ abstract final class PageUtils {
   static Future<void> pushDynDetail(
     DynamicItemModel item, {
     bool isPush = false,
+    String? coverHeroTag,
   }) async {
     feedBack();
 
@@ -295,6 +488,7 @@ abstract final class PageUtils {
               bvid: bvid,
               cid: cid,
               cover: cover,
+              coverHeroTag: coverHeroTag,
               dimension: res!.dimension,
             );
           }
@@ -357,6 +551,7 @@ abstract final class PageUtils {
             bvid: bvid,
             cid: cid,
             cover: cover,
+            coverHeroTag: coverHeroTag,
             dimension: res!.dimension,
           );
         }
@@ -564,10 +759,13 @@ abstract final class PageUtils {
     String? title,
     int? progress, // milliseconds
     Map? extraArguments,
+    String? coverHeroTag,
     bool off = false,
     bool isVertical = false,
     Dimension? dimension,
   }) {
+    final openSlideFrom = _videoPageSlideFrom(coverHeroTag);
+    final snapshotFuture = off ? null : _captureVideoCardSnapshot(coverHeroTag);
     final arguments = {
       'aid': aid ?? IdUtils.bv2av(bvid!),
       'bvid': bvid ?? IdUtils.av2bv(aid!),
@@ -581,21 +779,34 @@ abstract final class PageUtils {
       'videoType': videoType,
       'isVertical': dimension?.isVertical ?? isVertical,
       'heroTag': Utils.makeHeroTag(cid),
+      'coverHeroTag': ?coverHeroTag,
+      'openSlideFrom': openSlideFrom,
       ...?extraArguments,
     };
-    if (off) {
-      return Get.offNamed(
-        '/videoV',
-        arguments: arguments,
-        preventDuplicates: false,
-      );
-    } else {
-      return Get.toNamed(
-        '/videoV',
-        arguments: arguments,
-        preventDuplicates: false,
+    Future<void>? pushRoute() {
+      if (off) {
+        return Get.offNamed(
+          '/videoV',
+          arguments: arguments,
+          preventDuplicates: false,
+        );
+      }
+      return Get.key.currentState?.push<void>(
+        _SlowVideoGetPageRoute(
+          settings: RouteSettings(name: '/videoV', arguments: arguments),
+          routeName: '/videoV',
+          coverHeroTag: coverHeroTag,
+          page: () => const VideoDetailPageV(),
+        ),
       );
     }
+
+    if (snapshotFuture != null) {
+      return snapshotFuture.whenComplete(() async {
+        await pushRoute();
+      });
+    }
+    return pushRoute();
   }
 
   static final _pgcRegex = RegExp(r'(ep|ss)(\d+)');
@@ -812,6 +1023,482 @@ abstract final class PageUtils {
         parameters: parameters,
         preventDuplicates: false,
       );
+    }
+  }
+}
+
+class _SlowVideoGetPageRoute<T> extends GetPageRoute<T> {
+  _SlowVideoGetPageRoute({
+    super.settings,
+    super.routeName,
+    super.page,
+    this.coverHeroTag,
+  });
+
+  final Object? coverHeroTag;
+  bool _loggedPushTransition = false;
+  bool _backGestureActive = false;
+  bool _loggedBackTransition = false;
+
+  @override
+  bool get opaque => !_backGestureActive;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 360);
+
+  @override
+  Duration get reverseTransitionDuration => const Duration(milliseconds: 360);
+
+  @override
+  void handleStartBackGesture({double progress = 0.0}) {
+    _backGestureActive = true;
+    if (overlayEntries.isNotEmpty) {
+      overlayEntries.first.opaque = false;
+    }
+    Utils.reportLog(
+      () =>
+          'VideoBackAnim: routeBackStart route=$routeName progress=${progress.toStringAsFixed(3)} routeOpaque=$opaque targetPageIsBackground=true',
+    );
+    changedInternalState();
+    super.handleStartBackGesture(progress: progress);
+  }
+
+  @override
+  void handleCancelBackGesture() {
+    _backGestureActive = false;
+    _loggedBackTransition = false;
+    Utils.reportLog(
+      () =>
+          'VideoBackAnim: routeBackCancel route=$routeName routeOpaque=$opaque',
+    );
+    changedInternalState();
+    super.handleCancelBackGesture();
+  }
+
+  @override
+  void handleCommitBackGesture() {
+    _backGestureActive = false;
+    super.handleCommitBackGesture();
+  }
+
+  @override
+  void dispose() {
+    PageUtils._releaseVideoCardSnapshot(coverHeroTag);
+    super.dispose();
+  }
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    if (_backGestureActive || animation.status == AnimationStatus.reverse) {
+      final target = PageUtils._currentVideoCardTarget(coverHeroTag);
+      final targetCard = coverHeroTag == null
+          ? null
+          : PageUtils._videoCardWidgets[coverHeroTag];
+      if (Utils.logMode && !_loggedBackTransition) {
+        _loggedBackTransition = true;
+        Utils.reportLog(
+          () =>
+              'VideoBackAnim: routeTransition route=$routeName status=${animation.status} value=${animation.value.toStringAsFixed(3)} routeOpaque=$opaque coverHeroTag=$coverHeroTag targetRect=${PageUtils._rectLog(target?.rect)} visibleRect=${PageUtils._rectLog(target?.visibleRect)} targetPageIsBackground=true noGrayBlackOverlay=true sourceSnapshot=true',
+        );
+      }
+      return _PredictiveVideoBackTransition(
+        animation: animation,
+        target: target,
+        targetCard: targetCard,
+        child: child,
+      );
+    }
+    _loggedBackTransition = false;
+    if (Utils.logMode && !_loggedPushTransition) {
+      _loggedPushTransition = true;
+      Utils.reportLog(
+        () =>
+            'VideoOpenAnim: routeTransition route=$routeName status=${animation.status}',
+      );
+    }
+    return child;
+  }
+}
+
+class _PredictiveVideoBackTransition extends StatelessWidget {
+  const _PredictiveVideoBackTransition({
+    required this.animation,
+    required this.target,
+    required this.targetCard,
+    required this.child,
+  });
+
+  final Animation<double> animation;
+  final _VideoCardTarget? target;
+  final Widget? targetCard;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final fullTarget = target?.rect;
+    if (fullTarget == null || fullTarget.isEmpty) {
+      return child;
+    }
+    final visibleTarget = target?.visibleRect ?? fullTarget;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final sourceSize = Size(
+          constraints.maxWidth,
+          constraints.maxHeight,
+        );
+        if (sourceSize.isEmpty) {
+          return child;
+        }
+        return AnimatedBuilder(
+          animation: animation,
+          child: SnapshotWidget(
+            controller: SnapshotController(allowSnapshotting: true),
+            mode: SnapshotMode.permissive,
+            child: HeroMode(
+              enabled: false,
+              child: child,
+            ),
+          ),
+          builder: (context, snapshot) {
+            final raw = (1 - animation.value).clamp(0.0, 1.0);
+            final progress = PageUtils._videoOpenCurve.transform(raw);
+            final scale = lerpDouble(
+              1,
+              fullTarget.width / sourceSize.width,
+              progress,
+            )!;
+            final visibleHeight = lerpDouble(
+              sourceSize.height,
+              fullTarget.height / scale,
+              progress,
+            )!;
+            final heightFactor = (visibleHeight / sourceSize.height).clamp(
+              0.0,
+              1.0,
+            );
+            final fadeSize = heightFactor >= 0.999
+                ? 0.0
+                : min(0.10, heightFactor);
+            final fadeStart = (heightFactor - fadeSize).clamp(0.0, 1.0);
+            final snapshotOpacity = (1 - ((progress - 0.66) / 0.34)).clamp(
+              0.0,
+              1.0,
+            );
+            final left = lerpDouble(0, fullTarget.left, progress)!;
+            final top = lerpDouble(0, fullTarget.top, progress)!;
+            final radius = Radius.circular(lerpDouble(0, 24, progress)!);
+            final targetCardOpacity = ((progress - 0.66) / 0.34).clamp(
+              0.0,
+              1.0,
+            );
+            final targetCardScale =
+                (sourceSize.width * scale) / fullTarget.width;
+            final visibleOffset = visibleTarget.topLeft - fullTarget.topLeft;
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned(
+                  left: left,
+                  top: top,
+                  width: sourceSize.width * scale,
+                  height: visibleHeight * scale,
+                  child: Opacity(
+                    opacity: snapshotOpacity,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(radius),
+                      child: ClipRect(
+                        child: OverflowBox(
+                          alignment: Alignment.topCenter,
+                          minWidth: sourceSize.width,
+                          maxWidth: sourceSize.width,
+                          minHeight: sourceSize.height,
+                          maxHeight: sourceSize.height,
+                          child: Transform.scale(
+                            alignment: Alignment.topCenter,
+                            scale: scale,
+                            child: SizedBox(
+                              width: sourceSize.width,
+                              height: sourceSize.height,
+                              child: SizedBox(
+                                width: sourceSize.width,
+                                height: sourceSize.height,
+                                child: ShaderMask(
+                                  shaderCallback: (rect) => LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: const [
+                                      Colors.white,
+                                      Colors.white,
+                                      Colors.transparent,
+                                    ],
+                                    stops: [0, fadeStart, heightFactor],
+                                  ).createShader(rect),
+                                  blendMode: BlendMode.dstIn,
+                                  child: snapshot,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                if (targetCard != null && targetCardOpacity > 0)
+                  Positioned(
+                    left: left + visibleOffset.dx * targetCardScale,
+                    top: top + visibleOffset.dy * targetCardScale,
+                    width: visibleTarget.width * targetCardScale,
+                    height: visibleTarget.height * targetCardScale,
+                    child: Opacity(
+                      opacity: targetCardOpacity,
+                      child: ClipRect(
+                        child: OverflowBox(
+                          alignment: Alignment.topLeft,
+                          minWidth: fullTarget.width * targetCardScale,
+                          maxWidth: fullTarget.width * targetCardScale,
+                          minHeight: fullTarget.height * targetCardScale,
+                          maxHeight: fullTarget.height * targetCardScale,
+                          child: Transform.translate(
+                            offset: Offset(
+                              -visibleOffset.dx * targetCardScale,
+                              -visibleOffset.dy * targetCardScale,
+                            ),
+                            child: Transform.scale(
+                              alignment: Alignment.topLeft,
+                              scale: targetCardScale,
+                              child: SizedBox(
+                                width: fullTarget.width,
+                                height: fullTarget.height,
+                                child: HeroMode(
+                                  enabled: false,
+                                  child: targetCard!,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _TrackedVideoCoverHero extends StatelessWidget {
+  const _TrackedVideoCoverHero({
+    required this.tag,
+    required this.child,
+  });
+
+  final Object tag;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    PageUtils._trackVideoCoverRect(tag, context);
+    return child;
+  }
+}
+
+class _TrackedVideoCardRect extends StatefulWidget {
+  const _TrackedVideoCardRect({
+    required this.tag,
+    required this.child,
+    required this.snapshotTarget,
+  });
+
+  final Object tag;
+  final Widget child;
+  final bool snapshotTarget;
+
+  @override
+  State<_TrackedVideoCardRect> createState() => _TrackedVideoCardRectState();
+}
+
+class _TrackedVideoCardRectState extends State<_TrackedVideoCardRect> {
+  final _snapshotKey = GlobalKey();
+  bool _capturingSnapshot = false;
+
+  _VideoCardTarget? _readTarget() {
+    if (!mounted) {
+      return null;
+    }
+    final renderObject = context.findRenderObject();
+    if (renderObject is! RenderBox || !renderObject.hasSize) {
+      return null;
+    }
+    final rect = renderObject.localToGlobal(Offset.zero) & renderObject.size;
+    var visibleRect = rect;
+    Object? parent = renderObject.parent;
+    while (parent is RenderObject) {
+      if (parent is RenderBox && parent.hasSize) {
+        visibleRect = visibleRect.intersect(
+          parent.localToGlobal(Offset.zero) & parent.size,
+        );
+      }
+      parent = parent.parent;
+    }
+    final screenSize = MediaQuery.maybeSizeOf(context);
+    if (screenSize != null) {
+      visibleRect = visibleRect.intersect(Offset.zero & screenSize);
+    }
+    return _VideoCardTarget(
+      rect: rect,
+      visibleRect: visibleRect.isEmpty ? Rect.zero : visibleRect,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    PageUtils._videoCardTargetReaders[widget.tag] = _readTarget;
+    if (widget.snapshotTarget) {
+      PageUtils._videoCardSnapshotCapturers[widget.tag] = _captureSnapshot;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant _TrackedVideoCardRect oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.tag != widget.tag) {
+      PageUtils._videoCardTargetReaders.remove(oldWidget.tag);
+      PageUtils._videoCardSnapshotCapturers.remove(oldWidget.tag);
+    }
+    PageUtils._videoCardTargetReaders[widget.tag] = _readTarget;
+    if (widget.snapshotTarget) {
+      PageUtils._videoCardSnapshotCapturers[widget.tag] = _captureSnapshot;
+    } else {
+      PageUtils._videoCardSnapshotCapturers.remove(widget.tag);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    PageUtils._videoCardWidgets[widget.tag] = widget.snapshotTarget
+        ? _CapturedVideoCardTarget(tag: widget.tag, fallback: widget.child)
+        : widget.child;
+    PageUtils._trackVideoCardRect(widget.tag, context);
+    return widget.snapshotTarget
+        ? RepaintBoundary(key: _snapshotKey, child: widget.child)
+        : widget.child;
+  }
+
+  @override
+  void dispose() {
+    PageUtils._videoCardTargetReaders.remove(widget.tag);
+    PageUtils._videoCardSnapshotCapturers.remove(widget.tag);
+    super.dispose();
+  }
+
+  Future<void> _captureSnapshot() async {
+    if (_capturingSnapshot) {
+      return;
+    }
+    final renderObject = _snapshotKey.currentContext?.findRenderObject();
+    if (renderObject is! RenderRepaintBoundary) {
+      return;
+    }
+    final tag = widget.tag;
+    _capturingSnapshot = true;
+    final pixelRatio =
+        (View.of(context).devicePixelRatio.clamp(1.0, 2.0) as num).toDouble();
+    try {
+      final image = await renderObject.toImage(pixelRatio: pixelRatio);
+      final oldSnapshot = PageUtils._videoCardSnapshots[tag];
+      PageUtils._videoCardSnapshots[tag] = image;
+      oldSnapshot?.dispose();
+    } catch (err) {
+      Utils.reportLog(() => 'VideoBackAnim: captureCardSnapshot failed $err');
+    } finally {
+      _capturingSnapshot = false;
+    }
+  }
+}
+
+class _CapturedVideoCardTarget extends StatelessWidget {
+  const _CapturedVideoCardTarget({
+    required this.tag,
+    required this.fallback,
+  });
+
+  final Object tag;
+  final Widget fallback;
+
+  @override
+  Widget build(BuildContext context) {
+    final snapshot = PageUtils._videoCardSnapshots[tag];
+    if (snapshot == null) {
+      return fallback;
+    }
+    return RawImage(
+      image: snapshot,
+      fit: BoxFit.fill,
+    );
+  }
+}
+
+class _VideoCardTarget {
+  const _VideoCardTarget({
+    required this.rect,
+    Rect? visibleRect,
+  }) : visibleRect = visibleRect ?? rect;
+
+  final Rect rect;
+  final Rect visibleRect;
+}
+
+class _VideoHeroRectTween extends RectTween {
+  _VideoHeroRectTween({
+    required this.label,
+    super.begin,
+    super.end,
+  });
+
+  final String label;
+  final Set<double> _loggedSamples = <double>{};
+
+  @override
+  Rect? lerp(double t) {
+    final begin = this.begin;
+    final end = this.end;
+    if (begin == null || end == null) {
+      return super.lerp(t);
+    }
+    final progress = PageUtils._videoOpenCurve.transform(t);
+    final rect = Rect.lerp(begin, end, progress)!;
+    _logSample(t, progress, rect);
+    return rect;
+  }
+
+  void _logSample(double raw, double progress, Rect rect) {
+    if (!Utils.logMode) {
+      return;
+    }
+    for (final sample in const [0.0, 0.25, 0.5, 0.75, 1.0]) {
+      final reached = sample == 0.0
+          ? raw <= 0.02
+          : sample == 1.0
+          ? raw >= 0.98
+          : raw >= sample;
+      if (!reached || !_loggedSamples.add(sample)) {
+        continue;
+      }
+      Utils.reportLog(
+        () =>
+            'VideoOpenAnim: heroRectSample label=$label sample=${sample.toStringAsFixed(2)} raw=${raw.toStringAsFixed(3)} curveProgress=${progress.toStringAsFixed(3)} begin=${PageUtils._rectLog(begin)} end=${PageUtils._rectLog(end)} rect=${PageUtils._rectLog(rect)}',
+      );
+      break;
     }
   }
 }

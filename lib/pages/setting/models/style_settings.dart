@@ -107,6 +107,14 @@ List<SettingsModel> get styleSettings => [
     getSubtitle: () => '当前：${Pref.pageTransition.name}',
     onTap: _showTransitionDialog,
   ),
+  if (Platform.isAndroid)
+    const SwitchModel(
+      title: '预测返回手势',
+      subtitle: 'Android 13+ 生效；视频卡片返回时跟随原 Hero 动画',
+      leading: Icon(Icons.swipe_left_alt_outlined),
+      setKey: SettingBoxKey.predictiveBackGesture,
+      defaultVal: false,
+    ),
   const SwitchModel(
     title: '优化平板导航栏',
     leading: Icon(Icons.auto_fix_high),

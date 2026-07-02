@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 // 视频卡片 - 垂直布局
 class VideoCardVMemberHome extends StatelessWidget {
   final SpaceArchiveItem videoItem;
+  String get coverHeroTag => PageUtils.videoCoverHeroTag(this);
 
   const VideoCardVMemberHome({
     super.key,
@@ -60,6 +61,7 @@ class VideoCardVMemberHome extends StatelessWidget {
             cover: videoItem.cover,
             title: videoItem.title,
             dimension: dimension,
+            coverHeroTag: coverHeroTag,
           );
         }
         break;
@@ -97,11 +99,14 @@ class VideoCardVMemberHome extends StatelessWidget {
                   return Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      NetworkImgLayer(
-                        src: videoItem.cover,
-                        width: maxWidth,
-                        height: maxHeight,
-                        type: .emote,
+                      PageUtils.videoCoverHero(
+                        tag: coverHeroTag,
+                        child: NetworkImgLayer(
+                          src: videoItem.cover,
+                          width: maxWidth,
+                          height: maxHeight,
+                          type: .emote,
+                        ),
                       ),
                       if (videoItem.duration > 0)
                         PBadge(

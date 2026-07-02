@@ -103,216 +103,231 @@ class _UgcIntroPanelState extends State<UgcIntroPanel> {
           bool isLoading = videoDetail.bvid == null;
           int? mid = videoDetail.owner?.mid;
           return SliverToBoxAdapter(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                if (isLoading) {
-                  return;
-                }
-                feedBack();
-                introController.expandableCtr.toggle();
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {},
-                    child: Row(
-                      children: [
-                        if (videoDetail.staff.isNullOrEmpty) ...[
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: _buildAvatar(
-                                theme,
-                                () {
-                                  if (mid != null) {
-                                    feedBack();
-                                    if (!isPortrait &&
-                                        introController.horizontalMemberPage) {
-                                      widget.onShowMemberPage(mid);
-                                    } else {
-                                      Get.toNamed(
-                                        '/member?mid=$mid&from_view_aid=${videoDetailCtr.aid}',
-                                      );
+            child: _videoBodyHero(
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  if (isLoading) {
+                    return;
+                  }
+                  feedBack();
+                  introController.expandableCtr.toggle();
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {},
+                      child: Row(
+                        children: [
+                          if (videoDetail.staff.isNullOrEmpty) ...[
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: _buildAvatar(
+                                  theme,
+                                  () {
+                                    if (mid != null) {
+                                      feedBack();
+                                      if (!isPortrait &&
+                                          introController
+                                              .horizontalMemberPage) {
+                                        widget.onShowMemberPage(mid);
+                                      } else {
+                                        Get.toNamed(
+                                          '/member?mid=$mid&from_view_aid=${videoDetailCtr.aid}',
+                                        );
+                                      }
                                     }
-                                  }
-                                },
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                          followButton(context, theme),
-                        ] else
-                          Expanded(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              physics: ReloadScrollPhysics(
-                                controller: introController,
-                              ),
-                              child: Row(
-                                spacing: 25,
-                                children: videoDetail.staff!
-                                    .map(
-                                      (e) => _buildStaff(
-                                        theme,
-                                        isPortrait,
-                                        mid,
-                                        e,
-                                      ),
-                                    )
-                                    .toList(),
+                            followButton(context, theme),
+                          ] else
+                            Expanded(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                physics: ReloadScrollPhysics(
+                                  controller: introController,
+                                ),
+                                child: Row(
+                                  spacing: 25,
+                                  children: videoDetail.staff!
+                                      .map(
+                                        (e) => _buildStaff(
+                                          theme,
+                                          isPortrait,
+                                          mid,
+                                          e,
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
                               ),
                             ),
-                          ),
-                        if (isHorizontal) ...[
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: actionGrid(
-                              context,
-                              isLoading,
-                              videoDetail,
-                              introController,
+                          if (isHorizontal) ...[
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: actionGrid(
+                                context,
+                                isLoading,
+                                videoDetail,
+                                introController,
+                              ),
                             ),
-                          ),
+                          ],
                         ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    if (isLoading)
+                      _buildVideoTitle(theme, videoDetail)
+                    else if (isHorizontal && PlatformUtils.isDesktop)
+                      SelectionArea(
+                        child: _buildVideoTitle(
+                          theme,
+                          videoDetail,
+                          isExpand: true,
+                        ),
+                      )
+                    else
+                      ExpandablePanel(
+                        controller: introController.expandableCtr,
+                        collapsed: _buildTitle(theme, videoDetail),
+                        expanded: _buildTitle(
+                          theme,
+                          videoDetail,
+                          isExpand: true,
+                        ),
+                        theme: expandTheme,
+                      ),
+                    const SizedBox(height: 8),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        _buildInfo(theme, videoDetail),
+                        if (introController.enableAi) _aiBtn,
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  if (isLoading)
-                    _buildVideoTitle(theme, videoDetail)
-                  else if (isHorizontal && PlatformUtils.isDesktop)
-                    SelectionArea(
-                      child: _buildVideoTitle(
-                        theme,
-                        videoDetail,
-                        isExpand: true,
-                      ),
-                    )
-                  else
-                    ExpandablePanel(
-                      controller: introController.expandableCtr,
-                      collapsed: _buildTitle(theme, videoDetail),
-                      expanded: _buildTitle(theme, videoDetail, isExpand: true),
-                      theme: expandTheme,
-                    ),
-                  const SizedBox(height: 8),
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      _buildInfo(theme, videoDetail),
-                      if (introController.enableAi) _aiBtn,
-                    ],
-                  ),
-                  if (introController.showArgueMsg &&
-                      videoDetail.argueInfo?.argueMsg?.isNotEmpty == true) ...[
-                    const SizedBox(height: 2),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Padding(
-                              padding: const .only(right: 2),
-                              child: Icon(
-                                size: 13,
-                                Icons.error_outline,
-                                color: theme.colorScheme.outline,
+                    if (introController.showArgueMsg &&
+                        videoDetail.argueInfo?.argueMsg?.isNotEmpty ==
+                            true) ...[
+                      const SizedBox(height: 2),
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Padding(
+                                padding: const .only(right: 2),
+                                child: Icon(
+                                  size: 13,
+                                  Icons.error_outline,
+                                  color: theme.colorScheme.outline,
+                                ),
                               ),
                             ),
-                          ),
-                          TextSpan(
-                            text: '${videoDetail.argueInfo!.argueMsg}',
-                          ),
-                        ],
-                      ),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: theme.colorScheme.outline,
-                      ),
-                    ),
-                  ],
-                  if (isHorizontal && PlatformUtils.isDesktop)
-                    ..._infos(theme, videoDetail)
-                  else
-                    ExpandablePanel(
-                      controller: introController.expandableCtr,
-                      collapsed: const SizedBox.shrink(),
-                      expanded: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: _infos(theme, videoDetail),
-                      ),
-                      theme: expandTheme,
-                    ),
-                  Obx(
-                    () => introController.status.value
-                        ? const SizedBox.shrink()
-                        : Center(
-                            child: TextButton.icon(
-                              icon: const Icon(Icons.refresh),
-                              onPressed: () {
-                                introController
-                                  ..status.value = true
-                                  ..queryVideoIntro();
-                                if (videoDetailCtr.videoUrl.isNullOrEmpty &&
-                                    !videoDetailCtr.isQuerying) {
-                                  videoDetailCtr.queryVideoUrl();
-                                }
-                              },
-                              label: const Text("点此重新加载"),
+                            TextSpan(
+                              text: '${videoDetail.argueInfo!.argueMsg}',
                             ),
-                          ),
-                  ),
-                  // 点赞收藏转发 布局样式2
-                  if (!isHorizontal) ...[
-                    const SizedBox(height: 8),
-                    actionGrid(
-                      context,
-                      isLoading,
-                      videoDetail,
-                      introController,
+                          ],
+                        ),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: theme.colorScheme.outline,
+                        ),
+                      ),
+                    ],
+                    if (isHorizontal && PlatformUtils.isDesktop)
+                      ..._infos(theme, videoDetail)
+                    else
+                      ExpandablePanel(
+                        controller: introController.expandableCtr,
+                        collapsed: const SizedBox.shrink(),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: _infos(theme, videoDetail),
+                        ),
+                        theme: expandTheme,
+                      ),
+                    Obx(
+                      () => introController.status.value
+                          ? const SizedBox.shrink()
+                          : Center(
+                              child: TextButton.icon(
+                                icon: const Icon(Icons.refresh),
+                                onPressed: () {
+                                  introController
+                                    ..status.value = true
+                                    ..queryVideoIntro();
+                                  if (videoDetailCtr.videoUrl.isNullOrEmpty &&
+                                      !videoDetailCtr.isQuerying) {
+                                    videoDetailCtr.queryVideoUrl();
+                                  }
+                                },
+                                label: const Text("点此重新加载"),
+                              ),
+                            ),
                     ),
+                    // 点赞收藏转发 布局样式2
+                    if (!isHorizontal) ...[
+                      const SizedBox(height: 8),
+                      actionGrid(
+                        context,
+                        isLoading,
+                        videoDetail,
+                        introController,
+                      ),
+                    ],
+                    // 合集
+                    if (!isLoading &&
+                        videoDetail.ugcSeason != null &&
+                        (isPortrait ||
+                            !videoDetailCtr
+                                .plPlayerController
+                                .horizontalSeasonPanel))
+                      Obx(
+                        () => SeasonPanel(
+                          key: ValueKey(introController.videoDetail.value),
+                          heroTag: widget.heroTag,
+                          showEpisodes: widget.showEpisodes,
+                          ugcIntroController: introController,
+                        ),
+                      ),
+                    if (!isLoading &&
+                        videoDetail.pages != null &&
+                        videoDetail.pages!.length > 1 &&
+                        (isPortrait ||
+                            !videoDetailCtr
+                                .plPlayerController
+                                .horizontalSeasonPanel))
+                      Obx(
+                        () => PagesPanel(
+                          key: ValueKey(introController.videoDetail.value),
+                          heroTag: widget.heroTag,
+                          ugcIntroController: introController,
+                          bvid: introController.bvid,
+                          showEpisodes: widget.showEpisodes,
+                        ),
+                      ),
                   ],
-                  // 合集
-                  if (!isLoading &&
-                      videoDetail.ugcSeason != null &&
-                      (isPortrait ||
-                          !videoDetailCtr
-                              .plPlayerController
-                              .horizontalSeasonPanel))
-                    Obx(
-                      () => SeasonPanel(
-                        key: ValueKey(introController.videoDetail.value),
-                        heroTag: widget.heroTag,
-                        showEpisodes: widget.showEpisodes,
-                        ugcIntroController: introController,
-                      ),
-                    ),
-                  if (!isLoading &&
-                      videoDetail.pages != null &&
-                      videoDetail.pages!.length > 1 &&
-                      (isPortrait ||
-                          !videoDetailCtr
-                              .plPlayerController
-                              .horizontalSeasonPanel))
-                    Obx(
-                      () => PagesPanel(
-                        key: ValueKey(introController.videoDetail.value),
-                        heroTag: widget.heroTag,
-                        ugcIntroController: introController,
-                        bvid: introController.bvid,
-                        showEpisodes: widget.showEpisodes,
-                      ),
-                    ),
-                ],
+                ),
               ),
             ),
           );
         },
       ),
     );
+  }
+
+  Widget _videoBodyHero(Widget child) {
+    final coverHeroTag = videoDetailCtr.coverHeroTag;
+    return coverHeroTag == null
+        ? child
+        : PageUtils.videoBodyHero(tag: coverHeroTag, child: child);
   }
 
   Widget _buildTitle(

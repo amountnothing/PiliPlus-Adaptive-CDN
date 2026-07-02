@@ -88,6 +88,7 @@ class VideoDetailController extends GetxController
   int? seasonId;
   int? pgcType;
   late final String heroTag;
+  late final String? coverHeroTag;
   late final RxString cover;
 
   // 视频类型 默认投稿视频
@@ -164,6 +165,7 @@ class VideoDetailController extends GetxController
   DateTime _lastBufferProgressAt = DateTime.now();
   bool _lowBufferTriggered = true;
   Duration _lastPlaybackPosition = Duration.zero;
+  DateTime _lastSeekRebufferAt = DateTime.fromMillisecondsSinceEpoch(0);
   Duration? _lastVideoPts;
   DateTime _lastVideoFrameProgressAt = DateTime.now();
   DateTime _lastVideoFreezeRecoveryAt = DateTime.fromMillisecondsSinceEpoch(0);
@@ -437,6 +439,7 @@ class VideoDetailController extends GetxController
     seasonId = args['seasonId'];
     pgcType = args['pgcType'];
     heroTag = args['heroTag'];
+    coverHeroTag = args['coverHeroTag'];
     cover = RxString(args['cover'] ?? '');
     isVertical = RxBool(args['isVertical'] ?? false);
 
@@ -920,6 +923,10 @@ class VideoDetailController extends GetxController
     )) {
       return true;
     }
+    if (event.toLowerCase().contains('seek failed') &&
+        now.difference(_lastSeekRebufferAt) <= _bufferStallTimeout) {
+      return true;
+    }
 
     _lastPlayerErrorRecoveryAt = now;
     unawaited(
@@ -1063,9 +1070,22 @@ class VideoDetailController extends GetxController
     }
     if (_deferAdaptiveCdnSwitchForNetwork(now: now)) return;
 
+    final positionDelta = (position - _lastPlaybackPosition).inMilliseconds
+        .abs();
     final forwardBuffer = buffered > position
         ? buffered - position
         : Duration.zero;
+    if (positionDelta >= const Duration(seconds: 2).inMilliseconds &&
+        (buffered < _lastBufferedPosition ||
+            forwardBuffer <= const Duration(seconds: 1))) {
+      _resetAdaptiveCdnAfterSeek(
+        buffered: buffered,
+        position: position,
+        now: now,
+      );
+      return;
+    }
+
     final relay = _cdnRelaySession;
     if (relay != null) {
       final pullGrace = _bufferStallTimeout;
@@ -1083,8 +1103,6 @@ class VideoDetailController extends GetxController
       _lastVideoFrameProgressAt = now;
     }
 
-    final positionDelta = (position - _lastPlaybackPosition).inMilliseconds
-        .abs();
     if (positionDelta >= 250) {
       if (AdaptivePlayback.shouldRecoverFrozenVideo(
         videoPts: videoPts,
@@ -1118,6 +1136,24 @@ class VideoDetailController extends GetxController
       unawaited(_switchToNextCdn());
       return;
     }
+  }
+
+  void _resetAdaptiveCdnAfterSeek({
+    required Duration buffered,
+    required Duration position,
+    required DateTime now,
+  }) {
+    _lastSeekRebufferAt = now;
+    _lastBufferedPosition = buffered;
+    _lastBufferProgressAt = now;
+    _lastPlaybackPosition = position;
+    _lowBufferTriggered =
+        (buffered > position ? buffered - position : Duration.zero) <=
+        _lowForwardBuffer;
+    _resetVideoFrameHealth(now);
+    _cdnRelaySession
+      ?..setCdnSwitchPullGrace(_bufferStallTimeout)
+      ..setCdnSwitchPaused(false);
   }
 
   Future<void> _recoverFrozenVideo() async {
@@ -1545,6 +1581,7 @@ class VideoDetailController extends GetxController
       bvid: bvid,
       epid: epId,
       seasonId: seasonId,
+      qn: plPlayerController.cacheVideoQa,
       tryLook: plPlayerController.tryLook,
       videoType: _actualVideoType ?? videoType,
       language: currLang.value,

@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 class SubVideoCardH extends StatelessWidget {
   final SubDetailItemModel videoItem;
   final int? searchType;
+  String get coverHeroTag => PageUtils.videoCoverHeroTag(this);
 
   const SubVideoCardH({
     super.key,
@@ -44,6 +45,7 @@ class SubVideoCardH extends StatelessWidget {
               cover: videoItem.cover,
               title: videoItem.title,
               dimension: res!.dimension,
+              coverHeroTag: coverHeroTag,
             );
           }
         },
@@ -66,10 +68,13 @@ class SubVideoCardH extends StatelessWidget {
                     return Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        NetworkImgLayer(
-                          src: videoItem.cover,
-                          width: maxWidth,
-                          height: maxHeight,
+                        PageUtils.videoCoverHero(
+                          tag: coverHeroTag,
+                          child: NetworkImgLayer(
+                            src: videoItem.cover,
+                            width: maxWidth,
+                            height: maxHeight,
+                          ),
                         ),
                         PBadge(
                           text: DurationUtils.formatDuration(

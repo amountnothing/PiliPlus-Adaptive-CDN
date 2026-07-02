@@ -97,6 +97,7 @@ class PLVideoPlayer extends StatefulWidget {
     this.danmuWidget,
     this.showEpisodes,
     this.showViewPoints,
+    this.loadingCover,
     this.fill = Colors.black,
     this.alignment = Alignment.center,
     super.key,
@@ -120,6 +121,7 @@ class PLVideoPlayer extends StatefulWidget {
   ])?
   showEpisodes;
   final VoidCallback? showViewPoints;
+  final Widget? loadingCover;
   final Color fill;
   final Alignment alignment;
 
@@ -1909,6 +1911,12 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
           if (plPlayerController.dataStatus.loading ||
               (plPlayerController.isBuffering.value &&
                   plPlayerController.playerStatus.isPlaying)) {
+            if (plPlayerController.dataStatus.loading &&
+                widget.loadingCover != null) {
+              return Positioned.fill(
+                child: IgnorePointer(child: widget.loadingCover!),
+              );
+            }
             return Center(
               child: GestureDetector(
                 onTap: plPlayerController.refreshPlayer,
