@@ -78,12 +78,13 @@ class _LaterViewChildPageState extends State<LaterViewChildPage>
                     index: index,
                     videoItem: videoItem,
                     ctr: _laterController,
-                    onViewLater: (cid) {
+                    onViewLater: (cid, coverHeroTag) {
                       PageUtils.toVideoPage(
                         bvid: videoItem.bvid,
                         cid: cid,
                         cover: videoItem.pic,
                         title: videoItem.title,
+                        coverHeroTag: coverHeroTag,
                         dimension: videoItem.dimension,
                         extraArguments: _baseCtr.isPlayAll.value
                             ? {

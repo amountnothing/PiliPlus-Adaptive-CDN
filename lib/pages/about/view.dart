@@ -23,6 +23,8 @@ import 'package:PiliPlus/utils/login_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/storage.dart';
+import 'package:PiliPlus/utils/storage_key.dart';
+import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/update.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -43,6 +45,7 @@ class _AboutPageState extends State<AboutPage> {
   final currentVersion =
       '${BuildConfig.versionName}+${BuildConfig.versionCode}';
   RxString cacheSize = ''.obs;
+  late bool logMode = Pref.logMode;
 
   late int _pressCount = 0;
 
@@ -192,16 +195,36 @@ Commit Hash: ${BuildConfig.commitHash}''',
             trailing: Icon(Icons.arrow_forward, size: 16, color: outline),
           ),
           ListTile(
-            onTap: () => Get.toNamed('/logs'),
-            onLongPress: LoggerUtils.clearLogs,
-            onSecondaryTap: PlatformUtils.isMobile
-                ? null
-                : LoggerUtils.clearLogs,
-            leading: const Icon(Icons.bug_report_outlined),
-            title: const Text('错误日志'),
-            subtitle: Text('长按清除日志', style: subTitleStyle),
-            trailing: Icon(Icons.arrow_forward, size: 16, color: outline),
+            onTap: () => _setLogMode(!logMode),
+            leading: const Icon(Icons.receipt_long_outlined),
+            title: const Text('日志模式'),
+            subtitle: Text('开启后调试信息也会写入内置日志', style: subTitleStyle),
+            trailing: Switch(value: logMode, onChanged: _setLogMode),
           ),
+          if (logMode)
+            ListTile(
+              onTap: () => Get.toNamed('/logs'),
+              onLongPress: LoggerUtils.clearLogs,
+              onSecondaryTap: PlatformUtils.isMobile
+                  ? null
+                  : LoggerUtils.clearLogs,
+              leading: const Icon(Icons.bug_report_outlined),
+              title: const Text('日志'),
+              subtitle: Text('长按清除日志', style: subTitleStyle),
+              trailing: Icon(Icons.arrow_forward, size: 16, color: outline),
+            ),
+          if (!logMode)
+            ListTile(
+              onTap: () => Get.toNamed('/logs'),
+              onLongPress: LoggerUtils.clearLogs,
+              onSecondaryTap: PlatformUtils.isMobile
+                  ? null
+                  : LoggerUtils.clearLogs,
+              leading: const Icon(Icons.bug_report_outlined),
+              title: const Text('错误日志'),
+              subtitle: Text('长按清除日志', style: subTitleStyle),
+              trailing: Icon(Icons.arrow_forward, size: 16, color: outline),
+            ),
           ListTile(
             onTap: () {
               if (cacheSize.value.isNotEmpty) {
@@ -304,5 +327,11 @@ Commit Hash: ${BuildConfig.commitHash}''',
         ],
       ),
     );
+  }
+
+  void _setLogMode(bool value) {
+    setState(() => logMode = value);
+    GStorage.setting.put(SettingBoxKey.logMode, value);
+    SmartDialog.showToast(value ? '已开启日志模式' : '已关闭日志模式');
   }
 }

@@ -53,10 +53,13 @@ class _PopularPreciousPageState extends State<PopularPreciousPage>
             final item = response[index];
             return VideoCardH(
               videoItem: item,
-              onTap: () {
+              onTapWithHero: (coverHeroTag) {
                 PageUtils.toVideoPage(
                   bvid: item.bvid,
                   cid: item.cid!,
+                  cover: item.cover,
+                  title: item.title,
+                  coverHeroTag: coverHeroTag,
                   dimension: item.dimension,
                   extraArguments: {
                     'sourceType': SourceType.playlist,
