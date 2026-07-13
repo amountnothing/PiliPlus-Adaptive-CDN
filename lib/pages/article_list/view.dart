@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
@@ -39,6 +40,7 @@ class _ArticleListPageState extends State<ArticleListPage> with GridMixin {
       child: refreshIndicator(
         onRefresh: _controller.onRefresh,
         child: CustomScrollView(
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             Obx(() => _buildHeader(theme, _controller.list.value)),
@@ -179,7 +181,7 @@ class _ArticleListPageState extends State<ArticleListPage> with GridMixin {
                               '${DateFormatUtils.dateFormat(item.updateTime)}更新',
                         ),
                         divider,
-                        TextSpan(text: '文集号: ${item.id}'),
+                        TextSpan(text: '文集 ${item.id}'),
                       ],
                       style: style,
                     ),

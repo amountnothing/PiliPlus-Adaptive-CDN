@@ -52,6 +52,7 @@ class _MemberCoinArcPageState extends State<MemberCoinArcPage> {
       body: refreshIndicator(
         onRefresh: _ctr.onRefresh,
         child: CustomScrollView(
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             SliverPadding(

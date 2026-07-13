@@ -36,6 +36,7 @@ class _LiveFollowPageState extends State<LiveFollowPage> {
       body: refreshIndicator(
         onRefresh: _controller.onRefresh,
         child: CustomScrollView(
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             SliverPadding(

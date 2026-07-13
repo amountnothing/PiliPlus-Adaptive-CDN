@@ -60,6 +60,7 @@ class _PgcPageState extends State<PgcPage> with AutomaticKeepAliveClientMixin {
       onRefresh: controller.onRefresh,
       child: CustomScrollView(
         controller: controller.scrollController,
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           _buildFollow(theme),
@@ -139,14 +140,14 @@ class _PgcPageState extends State<PgcPage> with AutomaticKeepAliveClientMixin {
                                 (item) {
                                   return Tab(
                                     text:
-                                        '${item.date} ${item.isToday == 1 ? '今天' : '周${const [
+                                        '${item.date} ${item.isToday == 1 ? '今天' : '${const [
+                                                '一',
                                                 '一',
                                                 '二',
                                                 '三',
                                                 '四',
                                                 '五',
                                                 '六',
-                                                '日',
                                               ][item.dayOfWeek! - 1]}'}',
                                   );
                                 },

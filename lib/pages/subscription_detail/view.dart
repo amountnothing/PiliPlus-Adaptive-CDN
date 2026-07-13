@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
@@ -56,6 +57,7 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
         onRefresh: _subDetailController.onRefresh,
         child: CustomScrollView(
           controller: _subDetailController.scrollController,
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             _appBar(theme, padding),
@@ -146,7 +148,7 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
             style: theme.textTheme.titleMedium,
           ),
           Text(
-            '共${info.mediaCount}条视频',
+            '${info.mediaCount}条视频',
             style: theme.textTheme.labelMedium,
           ),
         ],
@@ -195,7 +197,7 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text('共${info.mediaCount}条视频', style: style),
+                    Text('${info.mediaCount}条视频', style: style),
                     const SizedBox(height: 4),
                     Text(
                       '${NumUtils.numFormat(info.viewCount ?? info.cntInfo?.play)}次播放',

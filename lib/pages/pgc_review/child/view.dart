@@ -69,6 +69,7 @@ class _PgcReviewChildPageState extends State<PgcReviewChildPage>
       onRefresh: _controller.onRefresh,
       child: CustomScrollView(
         controller: _controller.scrollController,
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           _buildHeader(theme),

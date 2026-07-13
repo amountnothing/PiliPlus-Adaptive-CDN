@@ -30,6 +30,9 @@
   let lastRewardAt = Date.now();
   let lastRewardPosition = 0;
   let health = Core.createHealthState(Date.now());
+  let frameVideo = null;
+  let lastVideoFrameAt = Date.now();
+  let lastVideoFramePosition = 0;
 
   const resources = new Set();
   const aliases = new Map();
@@ -241,6 +244,8 @@
     switchCount += 1;
     health.lastSwitchAt = Date.now();
     health.lastBufferProgressAt = Date.now();
+    health.lowBufferSince = 0;
+    health.lowBufferPeak = 0;
     abortInflightMedia();
     const hosts = [...new Set(targets.map((item) => Core.hostOf(item.currentUrl)).filter(Boolean))];
     lastReason = `${reasonLabel(reason)} → ${hosts.join(" / ")}`;
@@ -256,6 +261,7 @@
         "low-buffer": "缓冲降至阈值",
         "network-error": "网络请求失败",
         "http-error": "CDN 返回错误",
+        "video-frame-stall": "画面卡住，已暂停音频和进度",
         manual: "手动切换",
       }[reason] || reason
     );
@@ -386,6 +392,20 @@
     return video.buffered.length ? video.buffered.end(video.buffered.length - 1) : position;
   }
 
+  function trackVideoFrames(video) {
+    if (frameVideo === video || !video.requestVideoFrameCallback) return;
+    frameVideo = video;
+    lastVideoFrameAt = Date.now();
+    lastVideoFramePosition = video.currentTime || 0;
+    const next = (_, metadata) => {
+      if (frameVideo !== video) return;
+      lastVideoFrameAt = Date.now();
+      lastVideoFramePosition = Number(metadata.mediaTime) || video.currentTime || 0;
+      video.requestVideoFrameCallback(next);
+    };
+    video.requestVideoFrameCallback(next);
+  }
+
   function rewardStablePlayback(video, now) {
     if (video.paused || video.ended) return;
     if (
@@ -406,6 +426,23 @@
     const video = document.querySelector("video");
     if (!video) return;
     const now = Date.now();
+    trackVideoFrames(video);
+    if (
+      Core.shouldPauseForVideoFrameStall(
+        {
+          playing: !video.paused,
+          seeking: video.seeking,
+          position: video.currentTime || 0,
+          lastFramePosition: lastVideoFramePosition,
+          lastFrameAt: lastVideoFrameAt,
+        },
+        now,
+      )
+    ) {
+      video.pause();
+      switchCdn("video-frame-stall");
+      return;
+    }
     const end = bufferedEnd(video);
     lastBufferSeconds = Math.max(0, end - video.currentTime);
     const reason = Core.evaluateHealth(
@@ -433,6 +470,9 @@
     switchCount = 0;
     lastReason = "等待播放地址";
     lastBufferSeconds = 0;
+    frameVideo = null;
+    lastVideoFrameAt = Date.now();
+    lastVideoFramePosition = 0;
     sessionPath = location.pathname;
     health = Core.createHealthState(Date.now());
     lastRewardAt = Date.now();

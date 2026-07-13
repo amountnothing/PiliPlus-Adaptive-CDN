@@ -57,6 +57,7 @@ class _LivePageState extends State<LivePage>
         onRefresh: controller.onRefresh,
         child: CustomScrollView(
           controller: controller.scrollController,
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             SliverPadding(
@@ -280,7 +281,6 @@ class _LivePageState extends State<LivePage>
                       ),
                     ),
                     TextSpan(
-                      text: '人正在直播',
                       style: TextStyle(
                         fontSize: 13,
                         color: theme.colorScheme.outline,
@@ -315,6 +315,7 @@ class _LivePageState extends State<LivePage>
         child: CustomScrollView(
           scrollDirection: Axis.horizontal,
           controller: controller.followController,
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             SliverFixedExtentList.builder(
