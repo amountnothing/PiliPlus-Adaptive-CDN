@@ -79,6 +79,8 @@ import 'package:media_kit/media_kit.dart' hide Subtitle;
 
 class VideoDetailController extends GetxController
     with GetTickerProviderStateMixin, BlockMixin {
+  static int _activeVideoPageCount = 0;
+
   /// 路由传参
   late final Map args;
   late String bvid;
@@ -139,6 +141,12 @@ class VideoDetailController extends GetxController
   Duration get _lowForwardBuffer => Duration(
     milliseconds: (Pref.adaptiveLowBufferSec * 1000).round(),
   );
+  Duration get _lowBufferStutterWindow => Duration(
+    milliseconds: (Pref.adaptiveLowBufferStutterWindowSec * 1000).round(),
+  );
+  Duration get _lowBufferStutterMinGrowth => Duration(
+    milliseconds: (Pref.adaptiveLowBufferStutterMinGrowthSec * 1000).round(),
+  );
   int get _maxCdnSwitches => Pref.adaptiveTraverseAllCdns
       ? max(1, _videoCdnCandidates.length - 1)
       : Pref.adaptiveMaxCdnSwitches.round();
@@ -158,12 +166,18 @@ class VideoDetailController extends GetxController
   int _adaptiveBandwidth = 0;
   int _cdnSwitchCount = 0;
   bool _switchingCdn = false;
+  bool _relayStallPaused = false;
+  bool _resumeAfterRelayStall = false;
+  int _relayStallPauseGeneration = 0;
   CdnRelaySession? _cdnRelaySession;
   final List<CdnRelaySession> _retiredCdnRelays = [];
   final List<Timer> _retiredCdnRelayTimers = [];
   Duration _lastBufferedPosition = Duration.zero;
   DateTime _lastBufferProgressAt = DateTime.now();
-  bool _lowBufferTriggered = true;
+  bool _lowBufferTriggered = false;
+  DateTime? _lowBufferStutterSince;
+  Duration _lowBufferStutterStart = Duration.zero;
+  DateTime? _lowBufferGraceUntil;
   Duration _lastPlaybackPosition = Duration.zero;
   DateTime _lastSeekRebufferAt = DateTime.fromMillisecondsSinceEpoch(0);
   Duration? _lastVideoPts;
@@ -421,6 +435,7 @@ class VideoDetailController extends GetxController
   @override
   void onInit() {
     super.onInit();
+    _activeVideoPageCount += 1;
     plPlayerController.onPlayerError = _onPlayerError;
     args = Get.arguments;
     videoType = args['videoType'];
@@ -885,7 +900,8 @@ class VideoDetailController extends GetxController
     final forwardBuffer = _lastBufferedPosition > _lastPlaybackPosition
         ? _lastBufferedPosition - _lastPlaybackPosition
         : Duration.zero;
-    _lowBufferTriggered = forwardBuffer <= _lowForwardBuffer;
+    _resetLowBufferWatch(now, forwardBuffer);
+    _startLowBufferGrace(now);
     _cdnHealthTimer = Timer.periodic(
       const Duration(seconds: 1),
       (_) => _checkCdnHealth(),
@@ -986,7 +1002,6 @@ class VideoDetailController extends GetxController
     bool forceRelayRebuild = false,
     bool forcePlayerRebuild = false,
   }) async {
-    if (_deferAdaptiveCdnSwitchForNetwork()) return;
     if (forceRelayRebuild) {
       await _rebuildRelayAndPlayer(
         delayOldRelay: true,
@@ -1015,10 +1030,11 @@ class VideoDetailController extends GetxController
     try {
       playedTime = plPlayerController.position;
       _lastBufferedPosition = Duration.zero;
-      _lastBufferProgressAt = DateTime.now();
+      final now = DateTime.now();
+      _lastBufferProgressAt = now;
       _lastPlaybackPosition = playedTime ?? Duration.zero;
       _resetVideoFrameHealth(_lastBufferProgressAt);
-      _lowBufferTriggered = true;
+      _resetLowBufferWatch(now, Duration.zero);
       if (stopCurrentSource) await plPlayerController.stopCurrentSource();
       await _disposeCdnRelay(delayed: delayOldRelay);
       await playerInit(autoplay: true);
@@ -1034,11 +1050,24 @@ class VideoDetailController extends GetxController
     final position = plPlayerController.position;
     final duration = plPlayerController.duration.value;
     final now = DateTime.now();
-    final shouldMonitor = AdaptivePlayback.shouldAccumulateCdnStall(
-      isPlaying: plPlayerController.playerStatus.isPlaying,
-      isBuffering: plPlayerController.isBuffering.value,
-    );
+    if (_cdnRelaySession?.isStalled == true) {
+      _pauseForRelayStallIfBuffering();
+    }
+    final shouldMonitor =
+        _relayStallPaused ||
+        AdaptivePlayback.shouldAccumulateCdnStall(
+          isPlaying: plPlayerController.playerStatus.isPlaying,
+          isBuffering: plPlayerController.isBuffering.value,
+        );
     _cdnRelaySession?.setPlaybackPaused(!shouldMonitor);
+
+    if (_relayStallPaused) {
+      _lastBufferedPosition = buffered;
+      _lastBufferProgressAt = now;
+      _lastPlaybackPosition = position;
+      _resetVideoFrameHealth(now);
+      return;
+    }
 
     if (!shouldMonitor) {
       // A manual pause may leave isBuffering true for a short time. Do not
@@ -1048,7 +1077,7 @@ class VideoDetailController extends GetxController
       final forwardBuffer = buffered > position
           ? buffered - position
           : Duration.zero;
-      _lowBufferTriggered = forwardBuffer <= _lowForwardBuffer;
+      _resetLowBufferWatch(now, forwardBuffer);
       _lastPlaybackPosition = position;
       _resetVideoFrameHealth(now);
       return;
@@ -1063,13 +1092,11 @@ class VideoDetailController extends GetxController
       // media tail. Reset the stall clock so a later seek starts a fresh check.
       _lastBufferedPosition = buffered;
       _lastBufferProgressAt = now;
-      _lowBufferTriggered = true;
+      _resetLowBufferWatch(now, Duration.zero);
       _lastPlaybackPosition = position;
       _resetVideoFrameHealth(now);
       return;
     }
-    if (_deferAdaptiveCdnSwitchForNetwork(now: now)) return;
-
     final positionDelta = (position - _lastPlaybackPosition).inMilliseconds
         .abs();
     final forwardBuffer = buffered > position
@@ -1086,13 +1113,6 @@ class VideoDetailController extends GetxController
       return;
     }
 
-    final relay = _cdnRelaySession;
-    if (relay != null) {
-      final pullGrace = _bufferStallTimeout;
-      relay
-        ..setCdnSwitchPullGrace(pullGrace)
-        ..setCdnSwitchPaused(false);
-    }
     final videoPts = _readVideoPts();
     final lastVideoPts = _lastVideoPts;
     if (videoPts == null ||
@@ -1128,14 +1148,68 @@ class VideoDetailController extends GetxController
       _lastBufferProgressAt = now;
     }
 
-    final isLowBuffer = forwardBuffer <= _lowForwardBuffer;
-    if (!isLowBuffer) {
-      _lowBufferTriggered = false;
-    } else if (!_lowBufferTriggered) {
-      _lowBufferTriggered = true;
+    if (_shouldSwitchForPersistentLowBuffer(now, forwardBuffer)) {
       unawaited(_switchToNextCdn());
       return;
     }
+  }
+
+  void _resetLowBufferWatch(DateTime now, Duration forwardBuffer) {
+    _lowBufferTriggered = false;
+    if (forwardBuffer <= _lowForwardBuffer) {
+      _lowBufferStutterSince = now;
+      _lowBufferStutterStart = forwardBuffer;
+    } else {
+      _lowBufferStutterSince = null;
+      _lowBufferStutterStart = Duration.zero;
+    }
+  }
+
+  void _resetLowBufferWatchAfterCdnSwitch(DateTime now) {
+    // Treat the new CDN like startup: the next health tick gets a fresh
+    // low-buffer recovery window instead of inheriting the failed CDN's timer.
+    _lowBufferTriggered = false;
+    _lowBufferStutterSince = null;
+    _lowBufferStutterStart = Duration.zero;
+    _lastBufferProgressAt = now;
+    _startLowBufferGrace(now);
+  }
+
+  void _startLowBufferGrace(DateTime now) {
+    _lowBufferGraceUntil = now.add(const Duration(seconds: 6));
+  }
+
+  bool _shouldSwitchForPersistentLowBuffer(
+    DateTime now,
+    Duration forwardBuffer,
+  ) {
+    final graceUntil = _lowBufferGraceUntil;
+    if (graceUntil != null && now.isBefore(graceUntil)) {
+      _resetLowBufferWatch(now, forwardBuffer);
+      return false;
+    }
+    if (forwardBuffer > _lowForwardBuffer) {
+      _resetLowBufferWatch(now, forwardBuffer);
+      return false;
+    }
+
+    _lowBufferStutterSince ??= now;
+    if (_lowBufferStutterSince == now) {
+      _lowBufferStutterStart = forwardBuffer;
+    }
+    final netGrowth = forwardBuffer - _lowBufferStutterStart;
+    if (_lowBufferTriggered ||
+        now.difference(_lowBufferStutterSince!) < _lowBufferStutterWindow) {
+      return false;
+    }
+    if (netGrowth > _lowBufferStutterMinGrowth) {
+      _lowBufferStutterSince = now;
+      _lowBufferStutterStart = forwardBuffer;
+      return false;
+    }
+
+    _lowBufferTriggered = true;
+    return true;
   }
 
   void _resetAdaptiveCdnAfterSeek({
@@ -1147,13 +1221,12 @@ class VideoDetailController extends GetxController
     _lastBufferedPosition = buffered;
     _lastBufferProgressAt = now;
     _lastPlaybackPosition = position;
-    _lowBufferTriggered =
-        (buffered > position ? buffered - position : Duration.zero) <=
-        _lowForwardBuffer;
+    _resetLowBufferWatch(
+      now,
+      buffered > position ? buffered - position : Duration.zero,
+    );
+    _startLowBufferGrace(now);
     _resetVideoFrameHealth(now);
-    _cdnRelaySession
-      ?..setCdnSwitchPullGrace(_bufferStallTimeout)
-      ..setCdnSwitchPaused(false);
   }
 
   Future<void> _recoverFrozenVideo() async {
@@ -1205,7 +1278,6 @@ class VideoDetailController extends GetxController
     bool stopCurrentSourceOnRebuild = false,
   }) async {
     if (_switchingCdn ||
-        _deferAdaptiveCdnSwitchForNetwork() ||
         _cdnSwitchCount >= _maxCdnSwitches ||
         videoUrl == null ||
         AdaptivePlayback.hasReachedContentEnd(
@@ -1239,10 +1311,8 @@ class VideoDetailController extends GetxController
           if (audioIndex >= 0) _audioCdnIndex = audioIndex;
         }
         _lastBufferedPosition = plPlayerController.buffered.value;
-        _lastBufferProgressAt = DateTime.now();
-        _lowBufferTriggered =
-            _lastBufferedPosition - plPlayerController.position <=
-            _lowForwardBuffer;
+        final now = DateTime.now();
+        _resetLowBufferWatchAfterCdnSwitch(now);
         if (rebuildPlayer) {
           playedTime = plPlayerController.position;
           if (stopCurrentSourceOnRebuild) {
@@ -1290,8 +1360,8 @@ class VideoDetailController extends GetxController
       _cdnSwitchCount += 1;
       playedTime = plPlayerController.position;
       _lastBufferedPosition = Duration.zero;
-      _lastBufferProgressAt = DateTime.now();
-      _lowBufferTriggered = true;
+      final now = DateTime.now();
+      _resetLowBufferWatchAfterCdnSwitch(now);
       SmartDialog.showToast(
         'CDN 缓冲停滞，正在切换节点',
       );
@@ -1300,18 +1370,6 @@ class VideoDetailController extends GetxController
     } finally {
       _switchingCdn = false;
     }
-  }
-
-  bool _deferAdaptiveCdnSwitchForNetwork({DateTime? now}) {
-    final relay = _cdnRelaySession;
-    if (relay == null || !relay.isNetworkSwitchPaused) return false;
-    final checkedAt = now ?? DateTime.now();
-    _lastBufferedPosition = plPlayerController.buffered.value;
-    _lastBufferProgressAt = checkedAt;
-    _lowBufferTriggered = true;
-    _lastPlaybackPosition = plPlayerController.position;
-    _resetVideoFrameHealth(checkedAt);
-    return true;
   }
 
   void _onRelaySwitch(
@@ -1328,15 +1386,42 @@ class VideoDetailController extends GetxController
       if (index >= 0) _videoCdnIndex = index;
       _cdnSwitchCount += 1;
       _lastBufferedPosition = plPlayerController.buffered.value;
-      _lastBufferProgressAt = DateTime.now();
-      final forwardBuffer = _lastBufferedPosition - plPlayerController.position;
-      _lowBufferTriggered = forwardBuffer <= _lowForwardBuffer;
+      final now = DateTime.now();
+      _resetLowBufferWatchAfterCdnSwitch(now);
       SmartDialog.showToast('CDN 下载停滞，已保留缓冲并切换节点');
     } else {
       audioUrl = nextUrl;
       final index = _audioCdnCandidates.indexOf(nextUrl);
       if (index >= 0) _audioCdnIndex = index;
     }
+  }
+
+  void _onRelayStall(bool stalled) {
+    if (isClosed) return;
+    if (stalled) {
+      _pauseForRelayStallIfBuffering();
+      return;
+    }
+    if (!_relayStallPaused) return;
+    _relayStallPaused = false;
+    final shouldResume =
+        _resumeAfterRelayStall &&
+        !_switchingCdn &&
+        _relayStallPauseGeneration == plPlayerController.manualPauseGeneration;
+    _resumeAfterRelayStall = false;
+    if (shouldResume) unawaited(plPlayerController.play());
+  }
+
+  void _pauseForRelayStallIfBuffering() {
+    if (_relayStallPaused ||
+        !plPlayerController.isBuffering.value ||
+        !plPlayerController.playerStatus.isPlaying) {
+      return;
+    }
+    _relayStallPaused = true;
+    _resumeAfterRelayStall = true;
+    _relayStallPauseGeneration = plPlayerController.manualPauseGeneration;
+    unawaited(plPlayerController.pause(isInterrupt: true));
   }
 
   Future<(String, String?)> _relayPlaybackSources() async {
@@ -1373,6 +1458,7 @@ class VideoDetailController extends GetxController
         ),
         maxSwitches: _maxCdnSwitches,
         onSwitch: _onRelaySwitch,
+        onStall: _onRelayStall,
       );
     } else {
       relay.updateSources(
@@ -1471,6 +1557,7 @@ class VideoDetailController extends GetxController
     bool? autoplay,
     bool autoFullScreenFlag = false,
   }) async {
+    plPlayerController.onPlayerError = _onPlayerError;
     Duration? seek = defaultST ?? playedTime;
     if (seek == null || seek == Duration.zero) {
       seek = getFirstSegment();
@@ -1976,9 +2063,18 @@ class VideoDetailController extends GetxController
 
   @override
   void onClose() {
+    final hasUnderlyingVideoPage =
+        _activeVideoPageCount > 1 && !plPlayerController.isCloseAll;
     _cdnHealthTimer?.cancel();
     plPlayerController.onPlayerError = null;
-    unawaited(plPlayerController.stopCurrentSource());
+    if (hasUnderlyingVideoPage) {
+      Utils.reportLog(
+        () =>
+            'VideoPageStack: skip stopCurrentSource on stacked video close count=$_activeVideoPageCount',
+      );
+    } else {
+      unawaited(plPlayerController.stopCurrentSource());
+    }
     unawaited(_disposeAllCdnRelays());
     cid.close();
     if (isFileSource) {
@@ -1995,6 +2091,7 @@ class VideoDetailController extends GetxController
       ..dispose();
     subtitles.clear();
     vttSubtitles.clear();
+    _activeVideoPageCount = max(0, _activeVideoPageCount - 1);
     super.onClose();
   }
 

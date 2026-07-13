@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
@@ -29,11 +30,13 @@ class _MusicRecommendPageState extends State<MusicRecommendPage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final padding = MediaQuery.viewPaddingOf(context);
+
     return Material(
       color: theme.colorScheme.surface,
       child: refreshIndicator(
         onRefresh: _controller.onRefresh,
         child: CustomScrollView(
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             _buildAppBar(theme, padding),
@@ -101,7 +104,7 @@ class _MusicRecommendPageState extends State<MusicRecommendPage>
                 return count == null
                     ? const SizedBox.shrink()
                     : Text(
-                        '共$count条视频',
+                        '$count条视频',
                         style: theme.textTheme.labelMedium,
                       );
               }),

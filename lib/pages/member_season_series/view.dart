@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -45,6 +46,7 @@ class _SeasonSeriesPageState extends State<SeasonSeriesPage>
   Widget build(BuildContext context) {
     super.build(context);
     return CustomScrollView(
+      scrollCacheExtent: Style.feedCacheExtent,
       slivers: [
         SliverPadding(
           padding: EdgeInsets.only(

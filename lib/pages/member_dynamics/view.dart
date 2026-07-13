@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -47,7 +48,7 @@ class _MemberDynamicsPageState extends State<MemberDynamicsPage>
     return widget.mid == null
         ? Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: AppBar(title: const Text('我的动态')),
+
             body: Padding(
               padding: EdgeInsets.only(
                 left: padding.left,
@@ -62,6 +63,7 @@ class _MemberDynamicsPageState extends State<MemberDynamicsPage>
   Widget _buildBody(EdgeInsets padding) => refreshIndicator(
     onRefresh: _memberDynamicController.onRefresh,
     child: CustomScrollView(
+      scrollCacheExtent: Style.feedCacheExtent,
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
         SliverPadding(

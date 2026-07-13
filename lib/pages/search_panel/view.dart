@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -46,6 +47,7 @@ abstract class CommonSearchPanelState<
       onRefresh: controller.onRefresh,
       child: CustomScrollView(
         controller: controller.scrollController,
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           ?buildHeader(theme),

@@ -87,7 +87,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
         RouteAwareMixin,
         WidgetsBindingObserver,
         SingleTickerProviderStateMixin {
-  final heroTag = Get.arguments['heroTag'];
+  final heroTag = (Get.arguments as Map?)?['heroTag'];
 
   late final VideoDetailController videoDetailController;
   late final VideoReplyController _videoReplyController;
@@ -154,7 +154,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
     super.initState();
 
     _openSlideFrom =
-        (Get.arguments['openSlideFrom'] as num?)?.toDouble() ?? 1.0;
+        ((Get.arguments as Map?)?['openSlideFrom'] as num?)?.toDouble() ?? 1.0;
     _openPageAnimCtr =
         AnimationController(
           vsync: this,
@@ -281,6 +281,9 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
       return;
     }
     if (PredictiveBackProgress.active.value) {
+      if (ModalRoute.of(context)?.isCurrent != true) {
+        return;
+      }
       if (!_pausedForPredictiveBack && ctr.playerStatus.isPlaying) {
         _pausedForPredictiveBack = true;
         ctr.pause();
@@ -484,7 +487,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
   }
 
   @override
-  // 离开当前页面时
+  // 离开当前页面
   void didPushNext() {
     super.didPushNext();
     isShowing = false;
@@ -512,7 +515,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
   }
 
   @override
-  // 返回当前页面时
+  // 返回当前页面
   void didPopNext() {
     super.didPopNext();
 
@@ -1150,6 +1153,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                               key: const PageStorageKey(CommonIntroController),
                               controller:
                                   videoDetailController.effectiveIntroScrollCtr,
+                              scrollCacheExtent: Style.feedCacheExtent,
                               slivers: [
                                 RelatedVideoPanel(
                                   key: videoRelatedKey,
@@ -1876,6 +1880,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
       controller: needCtr
           ? videoDetailController.effectiveIntroScrollCtr
           : null,
+      scrollCacheExtent: Style.feedCacheExtent,
       physics: !needCtr
           ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
           : null,
@@ -1909,6 +1914,7 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
         controller: needCtr
             ? videoDetailController.effectiveIntroScrollCtr
             : null,
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: !needCtr
             ? const AlwaysScrollableScrollPhysics(
                 parent: ClampingScrollPhysics(),

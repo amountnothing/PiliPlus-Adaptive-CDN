@@ -107,7 +107,7 @@ test("switches after ten seconds without buffer growth below the target", () => 
   );
 });
 
-test("switches when a previously healthy buffer falls to ten seconds", () => {
+test("switches when low buffer fails to recover aggressively", () => {
   const state = Core.createHealthState(0);
   assert.equal(
     Core.evaluateHealth(
@@ -125,12 +125,21 @@ test("switches when a previously healthy buffer falls to ten seconds", () => {
       {},
       1_000,
     ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 30, buffered: 40, playing: true, ended: false },
+      {},
+      6_000,
+    ),
     "low-buffer",
   );
 });
 
 
-test("keeps retrying while buffer stays below the low watermark", () => {
+test("keeps retrying when low buffer stays unrecovered", () => {
   const state = Core.createHealthState(0);
   const settings = { lowBufferSec: 10, bufferStallSec: 4 };
   assert.equal(
@@ -149,7 +158,7 @@ test("keeps retrying while buffer stays below the low watermark", () => {
       settings,
       1_000,
     ),
-    "low-buffer",
+    null,
   );
   assert.equal(
     Core.evaluateHealth(
@@ -165,7 +174,34 @@ test("keeps retrying while buffer stays below the low watermark", () => {
       state,
       { duration: 100, position: 26, buffered: 35, playing: true, ended: false },
       settings,
-      5_000,
+      6_000,
+    ),
+    "low-buffer",
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 26.5, buffered: 35, playing: true, ended: false },
+      settings,
+      10_999,
+    ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 31, buffered: 40, playing: true, ended: false },
+      settings,
+      11_000,
+    ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 36, buffered: 45, playing: true, ended: false },
+      settings,
+      16_000,
     ),
     "low-buffer",
   );
@@ -177,6 +213,23 @@ test("does not switch only because playback position is stuck", () => {
   const sample = { duration: 100, position: 10, buffered: 50, playing: true, ended: false };
   assert.equal(Core.evaluateHealth(state, sample, {}, 0), null);
   assert.equal(Core.evaluateHealth(state, sample, {}, 30_000), null);
+});
+
+test("pauses the whole video when audio advances without new frames", () => {
+  assert.equal(
+    Core.shouldPauseForVideoFrameStall(
+      { playing: true, seeking: false, position: 12, lastFramePosition: 11.4, lastFrameAt: 0 },
+      1_500,
+    ),
+    true,
+  );
+  assert.equal(
+    Core.shouldPauseForVideoFrameStall(
+      { playing: true, seeking: false, position: 12, lastFramePosition: 11.4, lastFrameAt: 1 },
+      1_500,
+    ),
+    false,
+  );
 });
 
 test("treats a seek jump like startup rebuffering instead of a CDN stall", () => {
@@ -215,6 +268,15 @@ test("treats a seek jump like startup rebuffering instead of a CDN stall", () =>
       { duration: 100, position: 71, buffered: 70, playing: true, ended: false },
       settings,
       5_000,
+    ),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(
+      state,
+      { duration: 100, position: 71.5, buffered: 70, playing: true, ended: false },
+      settings,
+      6_000,
     ),
     "low-buffer",
   );

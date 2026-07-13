@@ -1,4 +1,5 @@
 import 'package:PiliPlus/common/widgets/appbar/appbar.dart';
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/pop_scope.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
@@ -41,6 +42,7 @@ abstract class CommonSearchPageState<S extends StatefulWidget, R, T>
       body: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         controller: controller.scrollController,
+        scrollCacheExtent: Style.feedCacheExtent,
         slivers: [
           ViewSliverSafeArea(
             sliver: Obx(() => _buildBody(controller.loadingState.value)),

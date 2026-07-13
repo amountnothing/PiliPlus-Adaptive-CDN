@@ -1,4 +1,5 @@
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/common/widgets/flutter/pop_scope.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
@@ -102,6 +103,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
             body: refreshIndicator(
               onRefresh: _favDetailController.onRefresh,
               child: CustomScrollView(
+                scrollCacheExtent: Style.feedCacheExtent,
                 physics: const AlwaysScrollableScrollPhysics(),
                 controller: _favDetailController.scrollController,
                 slivers: [
@@ -144,7 +146,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
                 Obx(
                   () {
                     return Text(
-                      '已选: ${_favDetailController.checkedCount}',
+                      '已选 ${_favDetailController.checkedCount}',
                       style: const TextStyle(fontSize: 15),
                     );
                   },
@@ -164,7 +166,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
                   style: theme.textTheme.titleMedium,
                 ),
                 Text(
-                  '共${_favDetailController.folderInfo.value.mediaCount}条视频',
+                  '${_favDetailController.folderInfo.value.mediaCount}条视频',
                   style: theme.textTheme.labelMedium,
                 ),
               ],
@@ -452,7 +454,7 @@ class _FavDetailPageState extends State<FavDetailPage> with GridMixin {
                             const SizedBox(height: 4),
                           ],
                           Text(
-                            '共${folderInfo.mediaCount}条视频 · '
+                            '${folderInfo.mediaCount}条视频 · '
                             '${BiliUtils.isPublicFavText(folderInfo.attr)}',
                             style: style,
                           ),

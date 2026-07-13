@@ -26,6 +26,10 @@ import 'package:share_plus/share_plus.dart';
 
 abstract final class ImageUtils {
   static bool silentDownImg = Pref.silentDownImg;
+  static const imageHeaders = {
+    'user-agent': Constants.userAgentApp,
+    'referer': 'https://www.bilibili.com/',
+  };
   static final _albumPath = Platform.isAndroid
       ? 'Pictures/${Constants.appName}'
       : Constants.appName;
@@ -249,6 +253,59 @@ abstract final class ImageUtils {
       }
     }
     return src.http2https;
+  }
+
+  static void prefetchFeedCovers(Iterable<Object?> items, {int limit = 10}) {
+    final urls = <String>{};
+    for (final item in items) {
+      _collectFeedCovers(item, urls);
+      if (urls.length >= limit) break;
+    }
+    for (final url in urls.take(limit)) {
+      unawaited(() async {
+        try {
+          await CacheManager.manager.getSingleFile(
+            url,
+            headers: imageHeaders,
+          );
+        } catch (_) {}
+      }());
+    }
+  }
+
+  static void _collectFeedCovers(Object? item, Set<String> urls) {
+    void add(String? url, [int quality = 1]) {
+      if (url?.isNotEmpty == true) urls.add(thumbnailUrl(url, quality));
+    }
+
+    if (item == null) return;
+    final dyn = item as dynamic;
+    try {
+      add(dyn.cover as String?);
+    } catch (_) {}
+    try {
+      add(dyn.pic as String?);
+    } catch (_) {}
+    try {
+      add(dyn.face as String?);
+    } catch (_) {}
+    try {
+      final major = dyn.modules?.moduleDynamic?.major;
+      add(major?.archive?.cover as String?, 40);
+      add(major?.ugcSeason?.cover as String?, 40);
+      add(major?.pgc?.cover as String?, 40);
+      add(major?.courses?.cover as String?, 40);
+      add(major?.live?.cover as String?, 40);
+      add(major?.liveRcmd?.cover as String?, 40);
+      final pics = major?.opus?.pics;
+      if (pics is Iterable) {
+        for (final pic in pics.take(3)) {
+          try {
+            add((pic as dynamic).url as String?, 40);
+          } catch (_) {}
+        }
+      }
+    } catch (_) {}
   }
 
   static Future<SaveResult?> saveByteImg({

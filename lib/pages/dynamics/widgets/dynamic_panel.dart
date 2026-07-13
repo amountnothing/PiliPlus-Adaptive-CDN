@@ -125,13 +125,11 @@ class DynamicPanel extends StatelessWidget {
         ),
       ),
     );
-    final card =
-        !isSave &&
-            !isDetail &&
-            const {
-              'DYNAMIC_TYPE_AV',
-              'DYNAMIC_TYPE_UGC_SEASON',
-            }.contains(item.type)
+    final isVideoCard = const {
+      'DYNAMIC_TYPE_AV',
+      'DYNAMIC_TYPE_UGC_SEASON',
+    }.contains(item.type);
+    Widget card = !isSave && !isDetail && isVideoCard
         ? PageUtils.videoCardHero(
             tag: coverHeroTag,
             snapshotTarget: true,

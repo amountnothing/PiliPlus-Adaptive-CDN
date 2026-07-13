@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'dart:ui' as ui show Image;
 
 import 'package:PiliPlus/common/widgets/fractionally_sized_box.dart';
+import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/image_viewer/gallery_viewer.dart';
 import 'package:PiliPlus/common/widgets/image_viewer/hero_dialog_route.dart';
 import 'package:PiliPlus/grpc/im.dart';
@@ -11,6 +12,7 @@ import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/http/search.dart';
 import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/common/image_preview_type.dart';
+import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/models/common/video/video_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/models_new/pgc/pgc_info_model/episode.dart';
@@ -53,7 +55,6 @@ abstract final class PageUtils {
   _videoCardSnapshotCapturers = {};
   static final Map<Object, ui.Image> _videoCardSnapshots = {};
   static final Map<Object, Widget> _videoCardWidgets = {};
-
   static String videoCoverHeroTag(Object owner) =>
       'video-cover-${identityHashCode(owner)}';
 
@@ -67,10 +68,28 @@ abstract final class PageUtils {
 
   static Rect? _contextRect(BuildContext context) {
     final renderObject = context.findRenderObject();
-    if (renderObject is! RenderBox || !renderObject.hasSize) {
+    if (renderObject is! RenderBox ||
+        !renderObject.attached ||
+        !renderObject.hasSize) {
       return null;
     }
     return renderObject.localToGlobal(Offset.zero) & renderObject.size;
+  }
+
+  static NetworkImgLayer? _networkImage(BuildContext context) {
+    NetworkImgLayer? result;
+
+    void visit(Element element) {
+      if (result != null) return;
+      if (element.widget case final NetworkImgLayer image) {
+        result = image;
+        return;
+      }
+      element.visitChildren(visit);
+    }
+
+    if (context case final Element element) visit(element);
+    return result;
   }
 
   static _VideoCardTarget? _currentVideoCardTarget(Object? tag) {
@@ -193,9 +212,18 @@ abstract final class PageUtils {
             () =>
                 'VideoOpenAnim: coverHeroFlight tag=$tag direction=$flightDirection fromSize=${_sizeLog(fromHeroContext.size)} toSize=${_sizeLog(toHeroContext.size)} fromRect=${_rectLog(_contextRect(fromHeroContext))} toRect=${_rectLog(_contextRect(toHeroContext))}',
           );
-          return flightDirection == HeroFlightDirection.push
+          if (flightDirection != HeroFlightDirection.push) {
+            return const SizedBox.shrink();
+          }
+          final fromImage = _networkImage(fromHeroContext);
+          final toImage = _networkImage(toHeroContext);
+          return fromImage == null || toImage == null
               ? _heroChild(fromHeroContext)
-              : const SizedBox.shrink();
+              : _VideoCoverFlight(
+                  animation: animation,
+                  from: fromImage,
+                  to: toImage,
+                );
         },
     child: _TrackedVideoCoverHero(
       tag: tag,
@@ -1156,12 +1184,14 @@ class _PredictiveVideoBackTransition extends StatelessWidget {
         }
         return AnimatedBuilder(
           animation: animation,
-          child: SnapshotWidget(
-            controller: SnapshotController(allowSnapshotting: true),
-            mode: SnapshotMode.permissive,
-            child: HeroMode(
-              enabled: false,
-              child: child,
+          child: RepaintBoundary(
+            child: SnapshotWidget(
+              controller: SnapshotController(allowSnapshotting: true),
+              mode: SnapshotMode.permissive,
+              child: HeroMode(
+                enabled: false,
+                child: child,
+              ),
             ),
           ),
           builder: (context, snapshot) {
@@ -1210,6 +1240,7 @@ class _PredictiveVideoBackTransition extends StatelessWidget {
                   child: Opacity(
                     opacity: snapshotOpacity,
                     child: ClipRRect(
+                      clipBehavior: Clip.hardEdge,
                       borderRadius: BorderRadius.all(radius),
                       child: ClipRect(
                         child: OverflowBox(
@@ -1220,6 +1251,7 @@ class _PredictiveVideoBackTransition extends StatelessWidget {
                           maxHeight: sourceSize.height,
                           child: Transform.scale(
                             alignment: Alignment.topCenter,
+                            filterQuality: FilterQuality.low,
                             scale: scale,
                             child: SizedBox(
                               width: sourceSize.width,
@@ -1271,13 +1303,14 @@ class _PredictiveVideoBackTransition extends StatelessWidget {
                             ),
                             child: Transform.scale(
                               alignment: Alignment.topLeft,
+                              filterQuality: FilterQuality.low,
                               scale: targetCardScale,
                               child: SizedBox(
                                 width: fullTarget.width,
                                 height: fullTarget.height,
                                 child: HeroMode(
                                   enabled: false,
-                                  child: targetCard!,
+                                  child: RepaintBoundary(child: targetCard!),
                                 ),
                               ),
                             ),
@@ -1335,14 +1368,16 @@ class _TrackedVideoCardRectState extends State<_TrackedVideoCardRect> {
       return null;
     }
     final renderObject = context.findRenderObject();
-    if (renderObject is! RenderBox || !renderObject.hasSize) {
+    if (renderObject is! RenderBox ||
+        !renderObject.attached ||
+        !renderObject.hasSize) {
       return null;
     }
     final rect = renderObject.localToGlobal(Offset.zero) & renderObject.size;
     var visibleRect = rect;
     Object? parent = renderObject.parent;
     while (parent is RenderObject) {
-      if (parent is RenderBox && parent.hasSize) {
+      if (parent is RenderBox && parent.attached && parent.hasSize) {
         visibleRect = visibleRect.intersect(
           parent.localToGlobal(Offset.zero) & parent.size,
         );
@@ -1444,8 +1479,60 @@ class _CapturedVideoCardTarget extends StatelessWidget {
     return RawImage(
       image: snapshot,
       fit: BoxFit.fill,
+      filterQuality: FilterQuality.low,
     );
   }
+}
+
+class _VideoCoverFlight extends StatelessWidget {
+  const _VideoCoverFlight({
+    required this.animation,
+    required this.from,
+    required this.to,
+  });
+
+  final Animation<double> animation;
+  final NetworkImgLayer from;
+  final NetworkImgLayer to;
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: animation,
+    builder: (context, _) => LayoutBuilder(
+      builder: (context, constraints) {
+        final progress = animation.value;
+        final width = constraints.hasBoundedWidth
+            ? constraints.maxWidth
+            : lerpDouble(from.width, to.width, progress)!;
+        final height = constraints.hasBoundedHeight
+            ? constraints.maxHeight
+            : lerpDouble(from.height, to.height, progress)!;
+        final fromRadius = from.type == ImageType.emote
+            ? BorderRadius.zero
+            : from.borderRadius;
+        final toRadius = to.type == ImageType.emote
+            ? BorderRadius.zero
+            : to.borderRadius;
+        return ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: BorderRadius.lerp(fromRadius, toRadius, progress)!,
+          child: NetworkImgLayer(
+            src: to.src?.isNotEmpty == true ? to.src : from.src,
+            width: width,
+            height: height,
+            type: .emote,
+            quality: max(from.quality, to.quality),
+            fit: from.fit == to.fit ? from.fit : BoxFit.cover,
+            alignment: Alignment.lerp(from.alignment, to.alignment, progress)!,
+            cacheWidth: true,
+            fadeInDuration: Duration.zero,
+            fadeOutDuration: Duration.zero,
+            getPlaceHolder: to.getPlaceHolder ?? from.getPlaceHolder,
+          ),
+        );
+      },
+    ),
+  );
 }
 
 class _VideoCardTarget {

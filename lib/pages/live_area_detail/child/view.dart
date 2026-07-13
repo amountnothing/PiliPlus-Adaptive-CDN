@@ -49,6 +49,7 @@ class _LiveAreaChildPageState extends State<LiveAreaChildPage>
       onRefresh: _controller.onRefresh,
       child: CustomScrollView(
         controller: _controller.scrollController,
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverPadding(

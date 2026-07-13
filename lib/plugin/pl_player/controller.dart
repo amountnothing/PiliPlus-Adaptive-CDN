@@ -82,6 +82,7 @@ class PlPlayerController with BlockConfigMixin {
 
   /// [playerStatus] has a [status] observable
   final playerStatus = PlPlayerStatus(PlayerStatus.playing);
+  int manualPauseGeneration = 0;
 
   ///
   final Rx<DataStatus> dataStatus = Rx(DataStatus.none);
@@ -153,6 +154,11 @@ class PlPlayerController with BlockConfigMixin {
   final RxBool isSliderMoving = false.obs;
 
   bool _autoPlay = false;
+  bool _isInBackground = false;
+  bool _wasPlayingOnEnterBackground = false;
+  bool _backgroundReconnectRefreshing = false;
+  Duration _lastBackgroundReconnectPosition = Duration.zero;
+  Timer? _backgroundReconnectTimer;
 
   // 记录历史记录
   int? _aid;
@@ -779,6 +785,7 @@ class PlPlayerController with BlockConfigMixin {
     assert(_videoPlayerController == null);
     final opt = {
       'video-sync': Pref.videoSync,
+      if (PlatformUtils.isMobile) 'network-timeout': '15',
       if (Platform.isAndroid) 'ao': Pref.audioOutput,
       'volume':
           (PlatformUtils.isMobile ? Pref.playerVolume : volume.value * 100)
@@ -1051,6 +1058,9 @@ class PlPlayerController with BlockConfigMixin {
             event.startsWith("Failed to open file")) {
           return;
         }
+        if (_isBackgroundNetworkError(event)) {
+          _backgroundReconnectNow('error: $event');
+        }
         if (isLive) {
           if (event.startsWith('tcp: ffurl_read returned ') ||
               event.startsWith("Failed to open https://") ||
@@ -1117,6 +1127,93 @@ class PlPlayerController with BlockConfigMixin {
     _subscriptions?.forEach((e) => e.cancel());
     _subscriptions?.clear();
     _subscriptions = null;
+  }
+
+  void onAppLifecycleState(AppLifecycleState state) {
+    final inBackground =
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached ||
+        state == AppLifecycleState.hidden;
+    if (_isInBackground == inBackground) return;
+    _isInBackground = inBackground;
+    if (inBackground) {
+      _wasPlayingOnEnterBackground = playerStatus.isPlaying;
+      _lastBackgroundReconnectPosition = position;
+      _startBackgroundReconnectTimer();
+    } else {
+      _stopBackgroundReconnectTimer();
+      _wasPlayingOnEnterBackground = false;
+    }
+  }
+
+  bool get _canReconnectInBackground =>
+      _isInBackground &&
+      _wasPlayingOnEnterBackground &&
+      continuePlayInBackground.value &&
+      _videoPlayerController?.current.isNotEmpty == true &&
+      dataSource is! FileSource;
+
+  void _startBackgroundReconnectTimer() {
+    _backgroundReconnectTimer?.cancel();
+    if (!_canReconnectInBackground) return;
+    _backgroundReconnectTimer = Timer.periodic(
+      const Duration(seconds: 8),
+      (_) => _checkBackgroundReconnect(),
+    );
+  }
+
+  void _stopBackgroundReconnectTimer() {
+    _backgroundReconnectTimer?.cancel();
+    _backgroundReconnectTimer = null;
+    _backgroundReconnectRefreshing = false;
+  }
+
+  void _checkBackgroundReconnect() {
+    if (!_canReconnectInBackground || processing) return;
+    final last = _lastBackgroundReconnectPosition;
+    _lastBackgroundReconnectPosition = position;
+    final stalled = isLive
+        ? isBuffering.value || !playerStatus.isPlaying
+        : position <= last + const Duration(milliseconds: 500);
+    if (dataStatus.error ||
+        isBuffering.value ||
+        !playerStatus.isPlaying ||
+        stalled) {
+      _backgroundReconnectNow('background stall');
+    }
+  }
+
+  void _backgroundReconnectNow(String reason) {
+    if (!_canReconnectInBackground || _backgroundReconnectRefreshing) return;
+    EasyThrottle.throttle(
+      'pl-player-background-reconnect',
+      const Duration(seconds: 10),
+      () {
+        if (!_canReconnectInBackground) return;
+        _backgroundReconnectRefreshing = true;
+        Utils.reportLog(() => 'BackgroundReconnect: $reason');
+        final refresh = refreshPlayer();
+        if (refresh == null) {
+          _backgroundReconnectRefreshing = false;
+          return;
+        }
+        refresh.whenComplete(() {
+          _backgroundReconnectRefreshing = false;
+          _lastBackgroundReconnectPosition = position;
+        });
+      },
+    );
+  }
+
+  bool _isBackgroundNetworkError(String event) {
+    final lower = event.toLowerCase();
+    return lower.contains('failed to open http') ||
+        lower.contains('can not open external file http') ||
+        lower.contains('ffurl_read returned') ||
+        lower.contains('connection timed out') ||
+        lower.contains('failed to resolve hostname') ||
+        lower.contains('mbedtls_ssl_read') ||
+        lower.contains('mbedtls_ssl_handshake');
   }
 
   void _cancelSubForSeek() {
@@ -1218,11 +1315,21 @@ class PlPlayerController with BlockConfigMixin {
     audioSessionHandler?.setActive(true);
 
     playerStatus.value = PlayerStatus.playing;
+    if (_isInBackground && continuePlayInBackground.value) {
+      _wasPlayingOnEnterBackground = true;
+      _lastBackgroundReconnectPosition = position;
+      _startBackgroundReconnectTimer();
+    }
     // screenManager.setOverlays(false);
   }
 
   /// 暂停播放
   Future<void> pause({bool notify = true, bool isInterrupt = false}) async {
+    if (!isInterrupt) {
+      manualPauseGeneration += 1;
+      _wasPlayingOnEnterBackground = false;
+      _stopBackgroundReconnectTimer();
+    }
     await _videoPlayerController?.pause();
     playerStatus.value = PlayerStatus.paused;
 

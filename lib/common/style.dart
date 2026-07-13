@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart'
     show BorderRadius, Radius, BoxConstraints, ButtonStyle, VisualDensity;
+import 'package:flutter/rendering.dart' show ScrollCacheExtent;
 
 abstract final class Style {
   static const cardSpace = 8.0;
@@ -9,6 +10,7 @@ abstract final class Style {
   static const aspectRatio = 16 / 10;
   static const aspectRatio16x9 = 16 / 9;
   static const imgMaxRatio = 2.6;
+  static const feedCacheExtent = ScrollCacheExtent.pixels(1000);
   static const bottomSheetRadius = BorderRadius.vertical(top: .circular(18));
   static const dialogFixedConstraints = BoxConstraints.tightFor(width: 420);
   static const topBarHeight = 52.0;

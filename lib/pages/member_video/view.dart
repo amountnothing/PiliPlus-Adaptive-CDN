@@ -106,6 +106,7 @@ class _MemberVideoState extends State<MemberVideo>
         }
       },
       child: CustomScrollView(
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: ReloadScrollPhysics(controller: _controller),
         slivers: [
           SliverPadding(
@@ -246,7 +247,7 @@ class _MemberVideoState extends State<MemberVideo>
     final count = _controller.count;
     if (count != null) {
       return Text(
-        '共$count视频',
+        '$count视频',
         style: const TextStyle(fontSize: 13),
       );
     }

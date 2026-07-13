@@ -69,6 +69,7 @@ class _PgcIndexPageState extends State<PgcIndexPage>
             padding: EdgeInsets.only(left: padding.left, right: padding.right),
             child: CustomScrollView(
               controller: _ctr.scrollController,
+              scrollCacheExtent: Style.feedCacheExtent,
               slivers: [
                 if (widget.indexType != null)
                   const SliverToBoxAdapter(child: SizedBox(height: 12)),

@@ -29,7 +29,6 @@ class _MemberAudioState extends State<MemberAudio>
     with AutomaticKeepAliveClientMixin {
   late final MemberAudioController _controller;
 
-  @override
   void initState() {
     super.initState();
     _controller = Get.put(
@@ -45,6 +44,7 @@ class _MemberAudioState extends State<MemberAudio>
     return refreshIndicator(
       onRefresh: _controller.onRefresh,
       child: CustomScrollView(
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverPadding(
@@ -87,7 +87,7 @@ class _MemberAudioState extends State<MemberAudio>
                       child: Row(
                         children: [
                           Text(
-                            '共${_controller.totalSize ?? 0}首',
+                            '${_controller.totalSize ?? 0}首',
                             style: const TextStyle(fontSize: 13),
                           ),
                           Padding(

@@ -1,4 +1,5 @@
 import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/view_sliver_safe_area.dart';
@@ -25,6 +26,7 @@ abstract class FollowTypePageState<T extends StatefulWidget> extends State<T> {
       body: refreshIndicator(
         onRefresh: controller.onRefresh,
         child: CustomScrollView(
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           // controller: controller.scrollController,
           slivers: [

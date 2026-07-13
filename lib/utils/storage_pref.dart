@@ -289,6 +289,16 @@ abstract final class Pref {
     defaultValue: 10.0,
   );
 
+  static double get adaptiveLowBufferStutterWindowSec => _setting.get(
+    SettingBoxKey.adaptiveLowBufferStutterWindowSec,
+    defaultValue: 5.0,
+  );
+
+  static double get adaptiveLowBufferStutterMinGrowthSec => _setting.get(
+    SettingBoxKey.adaptiveLowBufferStutterMinGrowthSec,
+    defaultValue: 1.0,
+  );
+
   static double get adaptiveCdnCooldownSec => _setting.get(
     SettingBoxKey.adaptiveCdnCooldownSec,
     defaultValue: 30.0,
@@ -897,7 +907,7 @@ abstract final class Pref {
     final forwardBytes = max(
       16 * 0x100000,
       max(configuredBytes, bitrateBytes),
-    ).clamp(16 * 0x100000, 128 * 0x100000).round();
+    ).clamp(16 * 0x100000, 96 * 0x100000).round();
     final backBytes = min(4 * 0x100000, max(1 * 0x100000, forwardBytes ~/ 8));
     return {
       'cache': 'yes',

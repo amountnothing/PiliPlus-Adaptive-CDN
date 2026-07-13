@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:PiliPlus/common/skeleton/msg_feed_top.dart';
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/button/more_btn.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
@@ -88,6 +89,7 @@ class _FollowChildPageState extends State<FollowChildPage>
         onRefresh: _followController.onRefresh,
         child: CustomScrollView(
           controller: _followController.scrollController,
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             if (_followController.loadSameFollow)

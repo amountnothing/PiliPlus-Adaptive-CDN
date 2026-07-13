@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
 import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
@@ -45,6 +46,7 @@ class _FavNoteChildPageState extends State<FavNoteChildPage>
           onRefresh: _favNoteController.onRefresh,
           child: CustomScrollView(
             controller: _favNoteController.scrollController,
+            scrollCacheExtent: Style.feedCacheExtent,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverPadding(

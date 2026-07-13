@@ -46,6 +46,7 @@ class _MemberShopState extends State<MemberShop>
     return refreshIndicator(
       onRefresh: _controller.onRefresh,
       child: CustomScrollView(
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverPadding(

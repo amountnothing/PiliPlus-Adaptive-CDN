@@ -1,4 +1,5 @@
 import 'package:PiliPlus/common/skeleton/fav_pgc_item.dart';
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
 import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
@@ -51,6 +52,7 @@ class _FavPgcChildPageState extends State<FavPgcChildPage>
           onRefresh: _favPgcController.onRefresh,
           child: CustomScrollView(
             controller: _favPgcController.scrollController,
+            scrollCacheExtent: Style.feedCacheExtent,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverPadding(
@@ -148,7 +150,7 @@ class _FavPgcChildPageState extends State<FavPgcChildPage>
                                   horizontal: 5,
                                 ),
                                 child: Text(
-                                  '标记为${item.title}',
+                                  '标记 ${item.title}',
                                   style: TextStyle(
                                     color: theme.colorScheme.onSurfaceVariant,
                                   ),

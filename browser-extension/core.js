@@ -223,7 +223,8 @@
       lastBuffered: 0,
       lastBufferProgressAt: now,
       bufferBelowTarget: false,
-      lowBufferArmed: false,
+      lowBufferSince: 0,
+      lowBufferPeak: 0,
       lastPosition: 0,
       lastPositionProgressAt: now,
       lastSwitchAt: -Infinity,
@@ -234,7 +235,8 @@
     state.lastBuffered = sample.buffered;
     state.lastBufferProgressAt = now;
     state.bufferBelowTarget = false;
-    state.lowBufferArmed = false;
+    state.lowBufferSince = 0;
+    state.lowBufferPeak = 0;
     state.lastPosition = sample.position;
     state.lastPositionProgressAt = now;
   }
@@ -259,7 +261,8 @@
       state.lastBuffered = buffered;
       state.lastBufferProgressAt = now;
       state.bufferBelowTarget = false;
-      state.lowBufferArmed = forward > settings.lowBufferSec;
+      state.lowBufferSince = forward <= settings.lowBufferSec ? now : 0;
+      state.lowBufferPeak = forward <= settings.lowBufferSec ? forward : 0;
       state.lastPosition = position;
       state.lastPositionProgressAt = now;
       state.lastSwitchAt = now;
@@ -276,16 +279,27 @@
       state.lastBufferProgressAt = now;
     }
 
-    if (forward > settings.lowBufferSec) {
-      state.lowBufferArmed = true;
-    } else if (
+    const lowRecoveryTarget = settings.lowBufferSec + 2;
+    if (forward >= lowRecoveryTarget) {
+      state.lowBufferSince = 0;
+      state.lowBufferPeak = 0;
+    } else if (forward <= settings.lowBufferSec || state.lowBufferSince) {
+      if (!state.lowBufferSince) state.lowBufferSince = now;
+      state.lowBufferPeak = Math.max(state.lowBufferPeak, forward);
+    }
+    if (
       trying &&
-      (state.lowBufferArmed || now - state.lastSwitchAt >= settings.bufferStallSec * 1000)
+      state.lowBufferSince &&
+      now - state.lowBufferSince >= 5000 &&
+      state.lowBufferPeak < lowRecoveryTarget &&
+      now - state.lastSwitchAt >= 5000
     ) {
-      state.lowBufferArmed = false;
+      state.lowBufferSince = 0;
+      state.lowBufferPeak = 0;
       state.lastSwitchAt = now;
       return "low-buffer";
     }
+    if (trying && state.lowBufferSince) return null;
 
     const targetFloor = Math.max(
       settings.lowBufferSec,
@@ -307,6 +321,15 @@
     return null;
   }
 
+  function shouldPauseForVideoFrameStall(sample, now) {
+    return (
+      sample.playing &&
+      !sample.seeking &&
+      sample.position - sample.lastFramePosition >= 0.5 &&
+      now - sample.lastFrameAt >= 1500
+    );
+  }
+
   return Object.freeze({
     DEFAULT_SETTINGS,
     KNOWN_UPOS_HOSTS,
@@ -326,5 +349,6 @@
     reorderVideoArrays,
     createHealthState,
     evaluateHealth,
+    shouldPauseForVideoFrameStall,
   });
 });

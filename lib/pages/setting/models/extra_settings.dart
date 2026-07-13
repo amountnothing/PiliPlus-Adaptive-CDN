@@ -30,6 +30,7 @@ import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/cache_manager.dart';
+import 'package:PiliPlus/utils/dynamic_filter.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
 import 'package:PiliPlus/utils/filtering_text.dart';
@@ -228,6 +229,19 @@ List<SettingsModel> get extraSettings => [
       DynamicsDataModel.banWordForDyn = value;
       DynamicsDataModel.enableFilter = value.pattern.isNotEmpty;
     },
+  ),
+  SplitModel(
+    normalModel: const NormalModel.split(
+      title: '动态过滤',
+      subtitle: '过滤广告、直播、短转发等动态',
+      leading: Icon(Icons.filter_alt_outlined),
+    ),
+    switchModel: SwitchModel.split(
+      defaultVal: false,
+      setKey: SettingBoxKey.dynamicFilterEnable,
+      onChanged: (_) => DynamicFilter.reload(),
+      onTap: (context) => Get.toNamed('/dynamicFilter'),
+    ),
   ),
   const SwitchModel(
     title: '使用外部浏览器打开链接',

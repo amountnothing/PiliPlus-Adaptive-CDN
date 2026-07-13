@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/list_tile.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
@@ -74,6 +75,7 @@ class _UpowerRankPageState extends State<UpowerRankPage>
       onRefresh: _controller.onRefresh,
       child: CustomScrollView(
         controller: _controller.scrollController,
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverPadding(
@@ -239,7 +241,6 @@ class _UpowerRankPageState extends State<UpowerRankPage>
                               ),
                             ),
                             const TextSpan(
-                              text: ' 天',
                               style: TextStyle(fontSize: 13),
                             ),
                           ],

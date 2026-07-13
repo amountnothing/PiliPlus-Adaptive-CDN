@@ -77,6 +77,7 @@ class _MemberHomeState extends State<MemberHome>
       Success(response: final res) =>
         res != null
             ? CustomScrollView(
+                scrollCacheExtent: Style.feedCacheExtent,
                 slivers: [
                   if (res.archive?.item?.isNotEmpty == true) ...[
                     _header(

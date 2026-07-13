@@ -29,12 +29,12 @@ class _FavTopicPageState extends State<FavTopicPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final ThemeData theme = Theme.of(context);
     return refreshIndicator(
       onRefresh: _controller.onRefresh,
       child: CustomScrollView(
         controller: _controller.scrollController,
+        scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           SliverPadding(

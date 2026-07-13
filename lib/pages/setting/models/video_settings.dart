@@ -64,6 +64,21 @@ List<SettingsModel> get _adaptivePlaybackSettings => [
     onTap: _showAdaptiveLowBufferDialog,
   ),
   NormalModel(
+    title: '低水位卡顿检测窗口',
+    leading: const Icon(Icons.more_time_rounded),
+    getSubtitle: () => '缓冲低于低水位后，观察 ${Pref.adaptiveLowBufferStutterWindowSec}s',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveLowBufferStutterWindowDialog,
+  ),
+  NormalModel(
+    title: '低水位最小净增',
+    leading: const Icon(Icons.trending_up_rounded),
+    getSubtitle: () =>
+        '窗口内缓冲净增 ≤ ${Pref.adaptiveLowBufferStutterMinGrowthSec}s 时切换 CDN',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveLowBufferStutterMinGrowthDialog,
+  ),
+  NormalModel(
     title: 'CDN 拉取超时',
     leading: const Icon(Icons.timer_off_outlined),
     getSubtitle: () => 'CDN 实际拉取超过 ${Pref.adaptiveStallTimeoutSec}s 无响应后切换',
@@ -772,6 +787,34 @@ void _showAdaptiveLowBufferDialog(
   suffix: 's',
   minValue: 2,
   maxValue: 20,
+);
+
+void _showAdaptiveLowBufferStutterWindowDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveLowBufferStutterWindowSec,
+  defVal: Pref.adaptiveLowBufferStutterWindowSec,
+  title: '低水位卡顿检测窗口',
+  suffix: 's',
+  minValue: 1,
+  maxValue: 20,
+);
+
+void _showAdaptiveLowBufferStutterMinGrowthDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveLowBufferStutterMinGrowthSec,
+  defVal: Pref.adaptiveLowBufferStutterMinGrowthSec,
+  title: '低水位最小净增',
+  suffix: 's',
+  minValue: 0,
+  maxValue: 10,
 );
 
 void _showAdaptiveStallTimeoutDialog(

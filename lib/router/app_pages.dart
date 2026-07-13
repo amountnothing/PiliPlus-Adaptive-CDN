@@ -57,6 +57,7 @@ import 'package:PiliPlus/pages/setting/extra_setting.dart';
 import 'package:PiliPlus/pages/setting/pages/bar_set.dart';
 import 'package:PiliPlus/pages/setting/pages/color_select.dart';
 import 'package:PiliPlus/pages/setting/pages/display_mode.dart';
+import 'package:PiliPlus/pages/setting/pages/dynamic_filter.dart';
 import 'package:PiliPlus/pages/setting/pages/font_size_select.dart';
 import 'package:PiliPlus/pages/setting/pages/logs.dart';
 import 'package:PiliPlus/pages/setting/pages/play_speed_set.dart';
@@ -128,6 +129,18 @@ class Routes {
     GetPage(name: '/privacySetting', page: () => const PrivacySetting()),
     // 其它设置
     GetPage(name: '/extraSetting', page: () => const ExtraSetting()),
+    GetPage(
+      name: '/dynamicFilter',
+      page: () => const DynamicFilterSettingsPage(),
+    ),
+    GetPage(
+      name: '/dynamicFilter/text',
+      page: () => const DynamicFilterTextRulesPage(),
+    ),
+    GetPage(
+      name: '/dynamicFilter/users',
+      page: () => const DynamicFilterForwardUsersPage(),
+    ),
     //
     GetPage(name: '/blackListPage', page: () => const BlackListPage()),
     GetPage(name: '/colorSetting', page: () => const ColorSelectPage()),

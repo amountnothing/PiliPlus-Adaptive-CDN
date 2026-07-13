@@ -1,4 +1,5 @@
 import 'package:PiliPlus/common/assets.dart';
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/custom_icon.dart';
 import 'package:PiliPlus/common/widgets/dynamic_sliver_app_bar/dynamic_sliver_app_bar.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
@@ -68,6 +69,7 @@ class _DynTopicPageState extends State<DynTopicPage>
               },
               child: CustomScrollView(
                 controller: _controller.scrollController,
+                scrollCacheExtent: Style.feedCacheExtent,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
                   Obx(

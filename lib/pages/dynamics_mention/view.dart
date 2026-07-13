@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/draggable_scrollable_sheet.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
@@ -182,6 +183,7 @@ class _DynMentionPanelState
                 },
                 child: CustomScrollView(
                   controller: widget.scrollController,
+                  scrollCacheExtent: Style.feedCacheExtent,
                   slivers: [
                     Obx(
                       () => _buildBody(theme, _controller.loadingState.value),

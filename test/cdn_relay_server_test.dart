@@ -25,7 +25,7 @@ void main() {
     });
 
     test(
-      'switches CDN on the next Range request instead of splicing one response',
+      'keeps one response after verifying the new CDN overlap',
       () async {
         final payload = List<int>.generate(32, (index) => index);
         final upstreamStalled = Completer<void>();
@@ -60,31 +60,13 @@ void main() {
         final response = await request.close();
         await upstreamStalled.future.timeout(const Duration(seconds: 1));
         final firstBytes = await _readBytesAllowingPrematureClose(response);
-        expect(firstBytes.length, lessThan(payload.length));
+        expect(firstBytes, payload);
         expect(switches, hasLength(1));
         expect(
           session.currentVideoSource,
           contains('localhost:${second.port}'),
         );
         client.close(force: true);
-
-        final resumeClient = HttpClient();
-        final resumeRequest = await resumeClient.getUrl(
-          Uri.parse(session.videoUrl),
-        );
-        resumeRequest.headers.set(
-          HttpHeaders.rangeHeader,
-          'bytes=${firstBytes.length}-',
-        );
-        final resumeResponse = await resumeRequest.close();
-        final resumeBytes = await resumeResponse.fold<List<int>>(
-          <int>[],
-          (buffer, chunk) => buffer..addAll(chunk),
-        );
-        resumeClient.close(force: true);
-
-        expect(resumeResponse.statusCode, HttpStatus.partialContent);
-        expect([...firstBytes, ...resumeBytes], payload);
         expect(
           session.currentVideoSource,
           contains('localhost:${second.port}'),
@@ -378,23 +360,7 @@ void main() {
       final firstBytes = await _readBytesAllowingPrematureClose(response);
       client.close(force: true);
 
-      final resumeClient = HttpClient();
-      final resumeRequest = await resumeClient.getUrl(
-        Uri.parse(session.videoUrl),
-      );
-      resumeRequest.headers.set(
-        HttpHeaders.rangeHeader,
-        'bytes=${firstBytes.length}-',
-      );
-      final resumeResponse = await resumeRequest.close();
-      final resumeBytes = await resumeResponse.fold<List<int>>(
-        <int>[],
-        (buffer, chunk) => buffer..addAll(chunk),
-      );
-      resumeClient.close(force: true);
-
-      expect([...firstBytes, ...resumeBytes], payload);
-      expect(resumeResponse.statusCode, HttpStatus.partialContent);
+      expect(firstBytes, payload);
       expect(switches, hasLength(1));
       expect(session.currentVideoSource, contains('localhost:${second.port}'));
     });

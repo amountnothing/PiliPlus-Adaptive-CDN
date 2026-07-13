@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/video_card/video_card_h.dart';
@@ -30,6 +31,7 @@ class _PopularPreciousPageState extends State<PopularPreciousPage>
       body: refreshIndicator(
         onRefresh: _controller.onRefresh,
         child: CustomScrollView(
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             ViewSliverSafeArea(

@@ -53,15 +53,20 @@ Widget videoSeasonWidget(
             clipBehavior: Clip.none,
             children: [
               LayoutBuilder(
-                builder: (context, constraints) => PageUtils.videoCoverHero(
-                  tag: coverHeroTag,
-                  child: NetworkImgLayer(
+                builder: (context, constraints) {
+                  final image = NetworkImgLayer(
                     width: constraints.maxWidth,
                     height: constraints.maxWidth / Style.aspectRatio,
                     src: cover,
                     quality: 40,
-                  ),
-                ),
+                  );
+                  return isDetail
+                      ? image
+                      : PageUtils.videoCoverHero(
+                          tag: coverHeroTag,
+                          child: image,
+                        );
+                },
               ),
               if (video.badge?.text case final badge?)
                 PBadge(

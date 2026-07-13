@@ -70,6 +70,7 @@ class _MemberOpusState extends State<MemberOpus>
               return false;
             },
             child: CustomScrollView(
+              scrollCacheExtent: Style.feedCacheExtent,
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
                 SliverPadding(

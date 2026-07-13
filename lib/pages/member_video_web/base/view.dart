@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
 import 'package:PiliPlus/common/widgets/dialog/dialog.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
@@ -64,6 +65,7 @@ abstract class BaseVideoWebState<
       body: refreshIndicator(
         onRefresh: controller.onRefresh,
         child: CustomScrollView(
+          scrollCacheExtent: Style.feedCacheExtent,
           physics: ReloadScrollPhysics(controller: controller),
           slivers: [
             SliverPadding(
@@ -136,7 +138,7 @@ abstract class BaseVideoWebState<
     final count = controller.count;
     if (count == null) return null;
     return Text(
-      '共 $count 视频',
+      '$count 视频',
       style: const TextStyle(height: 1),
       strutStyle: const StrutStyle(leading: 0, height: 1),
     );
