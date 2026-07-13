@@ -52,12 +52,7 @@ class _MemberHomeState extends State<MemberHome>
     mainAxisExtent: MediaQuery.textScalerOf(context).scale(55),
   );
 
-  late final gridDelegateAudio = SliverGridDelegateWithExtentAndRatio(
-    mainAxisSpacing: 2,
-    maxCrossAxisExtent: Grid.smallCardWidth * 2,
-    childAspectRatio: Style.aspectRatio * 2.6,
-    minHeight: MediaQuery.textScalerOf(context).scale(90),
-  );
+  late final gridDelegateAudio = Grid.videoCardHDelegate();
 
   late final gridDelegatePgc = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: Style.cardSpace,
@@ -115,7 +110,7 @@ class _MemberHomeState extends State<MemberHome>
                     ),
                     SliverToBoxAdapter(
                       child: SizedBox(
-                        height: 98,
+                        height: 110,
                         child: MemberFavItem(
                           item: res.favourite2!.item!.first,
                         ),
@@ -184,7 +179,7 @@ class _MemberHomeState extends State<MemberHome>
                     ),
                     SliverToBoxAdapter(
                       child: SizedBox(
-                        height: 98,
+                        height: 110,
                         child: MemberArticleItem(
                           item: res.article!.item!.first,
                         ),

@@ -89,22 +89,13 @@ class _MemberSearchChildPageState extends State<MemberSearchChildPage>
                       ? SliverWaterfallFlow(
                           gridDelegate: dynGridDelegate,
                           delegate: SliverChildBuilderDelegate(
-                            (_, index) {
-                              if (index == response.length - 1) {
-                                _controller.onLoadMore();
-                              }
-                              return DynamicPanel(item: response[index]);
-                            },
+                            (_, index) => _itemBuilder(response, index),
                             childCount: response.length,
                           ),
                         )
                       : SliverList.builder(
-                          itemBuilder: (context, index) {
-                            if (index == response.length - 1) {
-                              _controller.onLoadMore();
-                            }
-                            return DynamicPanel(item: response[index]);
-                          },
+                          itemBuilder: (context, index) =>
+                              _itemBuilder(response, index),
                           itemCount: response.length,
                         ),
               }
@@ -114,6 +105,13 @@ class _MemberSearchChildPageState extends State<MemberSearchChildPage>
         onReload: _controller.onReload,
       ),
     };
+  }
+
+  Widget _itemBuilder(List list, int index) {
+    if (index == list.length - 1) {
+      _controller.onLoadMore();
+    }
+    return DynamicPanel(item: list[index]);
   }
 
   @override

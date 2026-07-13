@@ -8,8 +8,7 @@ abstract final class SettingBoxKey {
       defaultAudioQaCellular = 'defaultAudioQaCellular',
       autoPlayEnable = 'autoPlayEnable',
       fullScreenMode = 'fullScreenMode',
-      defaultDecode = 'defaultDecode',
-      secondDecode = 'secondDecode',
+      preferCodecs = 'preferCodecs',
       defaultToastOp = 'defaultToastOp',
       defaultPicQa = 'defaultPicQa',
       enableHA = 'enableHA',
@@ -71,7 +70,6 @@ abstract final class SettingBoxKey {
       banWordForRecommend = 'banWordForRecommend',
       applyFilterToRelatedVideos = 'applyFilterToRelatedVideos',
       autoUpdate = 'autoUpdate',
-      autoClearCache = 'autoClearCache',
       maxCacheSize = 'maxCacheSize',
       defaultShowComment = 'defaultShowComment',
       replySortType = 'replySortType',
@@ -179,7 +177,8 @@ abstract final class SettingBoxKey {
       touchSlopH = 'touchSlopH',
       floatingNavBar = 'floatingNavBar',
       removeSafeArea = 'removeSafeArea',
-      angleDegrees = 'angleDegrees';
+      angleDegrees = 'angleDegrees',
+      liveStream = 'liveStream';
 
   static const String minimizeOnExit = 'minimizeOnExit',
       windowSize = 'windowSize',
