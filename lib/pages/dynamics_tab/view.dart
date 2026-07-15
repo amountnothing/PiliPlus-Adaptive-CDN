@@ -28,7 +28,9 @@ class DynamicsTabPage extends StatefulWidget {
 
 class _DynamicsTabPageState extends State<DynamicsTabPage>
     with AutomaticKeepAliveClientMixin, DynMixin {
-  final dynamicsController = Get.putOrFind(DynamicsController.new);
+  StreamSubscription? _listener;
+
+  DynamicsController dynamicsController = Get.putOrFind(DynamicsController.new);
   late final DynamicsTabController controller;
 
   @override
@@ -37,22 +39,38 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
   @override
   void initState() {
     controller = Get.putOrFind(
-      () => DynamicsTabController(dynamicsType: widget.dynamicsType),
+      () =>
+          DynamicsTabController(dynamicsType: widget.dynamicsType)
+            ..mid = dynamicsController.mid.value,
       tag: widget.dynamicsType.name,
     );
     super.initState();
+    if (widget.dynamicsType == DynamicsTabType.up) {
+      _listener = dynamicsController.mid.listen((mid) {
+        if (mid != -1) {
+          controller
+            ..mid = mid
+            ..onReload();
+        }
+      });
+    }
   }
 
-  Future<void> onRefresh() {
-    dynamicsController.singleRefresh();
-    return controller.onRefresh();
+  @override
+  void dispose() {
+    _listener?.cancel();
+    dynamicsController.mid.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return refreshIndicator(
-      onRefresh: onRefresh,
+      onRefresh: () {
+        dynamicsController.queryFollowUp();
+        return controller.onRefresh();
+      },
       child: CustomScrollView(
         scrollCacheExtent: Style.feedCacheExtent,
         physics: const AlwaysScrollableScrollPhysics(),
@@ -78,13 +96,36 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
                   ? SliverWaterfallFlow(
                       gridDelegate: dynGridDelegate,
                       delegate: SliverChildBuilderDelegate(
-                        (_, index) => _itemBuilder(response, index),
+                        (_, index) {
+                          if (index == response.length - 1) {
+                            controller.onLoadMore();
+                          }
+                          final item = response[index];
+                          return DynamicPanel(
+                            item: item,
+                            onRemove: (idStr) =>
+                                controller.onRemove(index, idStr),
+                            onBlock: () => controller.onBlock(index),
+                            onUnfold: () => controller.onUnfold(item, index),
+                          );
+                        },
                         childCount: response.length,
                       ),
                     )
                   : SliverList.builder(
-                      itemBuilder: (context, index) =>
-                          _itemBuilder(response, index),
+                      itemBuilder: (context, index) {
+                        if (index == response.length - 1) {
+                          controller.onLoadMore();
+                        }
+                        final item = response[index];
+                        return DynamicPanel(
+                          item: item,
+                          onRemove: (idStr) =>
+                              controller.onRemove(index, idStr),
+                          onBlock: () => controller.onBlock(index),
+                          onUnfold: () => controller.onUnfold(item, index),
+                        );
+                      },
                       itemCount: response.length,
                     )
             : HttpError(onReload: controller.onReload),
@@ -93,18 +134,5 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
         onReload: controller.onReload,
       ),
     };
-  }
-
-  Widget _itemBuilder(List<DynamicItemModel> list, int index) {
-    if (index == list.length - 1) {
-      controller.onLoadMore();
-    }
-    final item = list[index];
-    return DynamicPanel(
-      item: item,
-      onRemove: (idStr) => controller.onRemove(index, idStr),
-      onBlock: () => controller.onBlock(index),
-      onUnfold: () => controller.onUnfold(item, index),
-    );
   }
 }

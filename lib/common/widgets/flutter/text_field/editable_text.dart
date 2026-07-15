@@ -25,7 +25,6 @@ import 'package:PiliPlus/common/widgets/flutter/text_field/controller.dart';
 import 'package:PiliPlus/common/widgets/flutter/text_field/editable.dart';
 import 'package:PiliPlus/common/widgets/flutter/text_field/spell_check.dart';
 import 'package:PiliPlus/common/widgets/flutter/text_field/text_selection.dart';
-import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart'
@@ -3557,8 +3556,6 @@ class EditableTextState extends State<EditableText>
     }
   }
 
-  TextRange? _deletedRange;
-
   @override
   void updateEditingValueWithDeltas(List<TextEditingDelta> textEditingDeltas) {
     if (textEditingDeltas.isEmpty) {
@@ -3567,35 +3564,14 @@ class EditableTextState extends State<EditableText>
     }
     TextEditingValue remoteValue = _value;
     for (final TextEditingDelta delta in textEditingDeltas) {
-      if (PlatformUtils.isDesktop) {
-        if (_deletedRange case final range?) {
-          final deleteDelta = TextEditingDeltaDeletion(
-            oldText: remoteValue.text,
-            deletedRange: range,
-            selection: remoteValue.selection,
-            composing: remoteValue.composing,
-          );
-          _deletedRange = null;
-          widget.controller.syncRichText(deleteDelta);
-        } else if (delta is TextEditingDeltaInsertion &&
-            !remoteValue.selection.isCollapsed) {
-          final offset = delta.textInserted.length;
-          _deletedRange = TextRange(
-            start: remoteValue.selection.start + offset,
-            end: remoteValue.selection.end + offset,
-          );
-        }
-      }
       widget.controller.syncRichText(delta);
       remoteValue = delta.apply(remoteValue);
     }
 
-    final plainText = widget.controller.plainText;
-    final composing = textEditingDeltas.last.composing;
     final newValue = TextEditingValue(
-      text: plainText,
+      text: widget.controller.plainText,
       selection: widget.controller.newSelection,
-      composing: composing.end <= plainText.length ? composing : .empty,
+      composing: textEditingDeltas.last.composing,
     );
 
     updateEditingValue(newValue, remoteValue: remoteValue);
@@ -4869,7 +4845,6 @@ class EditableTextState extends State<EditableText>
   }
 
   void _handleFocusChanged() {
-    _deletedRange = null;
     _openOrCloseInputConnectionIfNeeded();
     _startOrStopCursorTimerIfNeeded();
     _updateOrDisposeSelectionOverlayIfNeeded();

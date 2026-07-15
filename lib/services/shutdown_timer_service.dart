@@ -108,7 +108,7 @@ class ShutdownTimerService {
   void _syncProgressAndExit() {
     if (PlPlayerController.instance case final player?) {
       final res = player.makeHeartBeat(
-        player.position.value,
+        player.positionSeconds.value,
         type: .completed,
         isManual: true,
       );

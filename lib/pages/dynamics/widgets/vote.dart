@@ -159,53 +159,57 @@ class _VotePanelState extends State<VotePanel> {
                     context: context,
                     builder: (context) {
                       final colorScheme = ColorScheme.of(context);
-                      return SimpleDialog(
+                      return AlertDialog(
                         clipBehavior: .hardEdge,
                         title: const Text('关注的人的投票'),
-                        contentPadding: const .only(bottom: 12),
-                        titlePadding: const .fromLTRB(20, 20, 20, 10),
-                        children: list
-                            .map(
-                              (e) => ListTile(
-                                dense: true,
-                                onTap: () =>
-                                    Get.toNamed('/member?mid=${e.mid}'),
-                                leading: NetworkImgLayer(
-                                  src: e.face,
-                                  width: 40,
-                                  height: 40,
-                                  type: .avatar,
-                                ),
-                                title: Text.rich(
-                                  style: const TextStyle(fontSize: 13),
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(text: e.name),
+                        contentPadding: const .only(top: 10, bottom: 12),
+                        content: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: .min,
+                            children: list
+                                .map(
+                                  (e) => ListTile(
+                                    dense: true,
+                                    onTap: () =>
+                                        Get.toNamed('/member?mid=${e.mid}'),
+                                    leading: NetworkImgLayer(
+                                      src: e.face,
+                                      width: 40,
+                                      height: 40,
+                                      type: .avatar,
+                                    ),
+                                    title: Text.rich(
+                                      style: const TextStyle(fontSize: 13),
                                       TextSpan(
-                                        text: ' 投给了',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: colorScheme.outline,
-                                        ),
+                                        children: [
+                                          TextSpan(text: e.name),
+                                          TextSpan(
+                                            text: ' 投给了',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: colorScheme.outline,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
+                                    subtitle: Text(
+                                      style: const TextStyle(fontSize: 13),
+                                      e.votes
+                                          .map(
+                                            (vote) => _voteInfo.options
+                                                .firstWhereOrNull(
+                                                  (e) => e.optIdx == vote,
+                                                )
+                                                ?.optDesc,
+                                          )
+                                          .join('、'),
+                                    ),
                                   ),
-                                ),
-                                subtitle: Text(
-                                  style: const TextStyle(fontSize: 13),
-                                  e.votes
-                                      .map(
-                                        (vote) => _voteInfo.options
-                                            .firstWhereOrNull(
-                                              (e) => e.optIdx == vote,
-                                            )
-                                            ?.optDesc,
-                                      )
-                                      .join('、'),
-                                ),
-                              ),
-                            )
-                            .toList(),
+                                )
+                                .toList(),
+                          ),
+                        ),
                       );
                     },
                   );

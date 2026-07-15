@@ -57,7 +57,7 @@ class _PlDanmakuState extends State<PlDanmaku> {
       } else {
         _plDanmakuController.queryDanmaku(
           PlDanmakuController.calcSegment(
-            playerController.positionInMilliseconds,
+            playerController.position.inMilliseconds,
           ),
         );
       }
@@ -114,9 +114,7 @@ class _PlDanmakuState extends State<PlDanmaku> {
         .getCurrentDanmaku(currentPosition);
     if (currentDanmakuList != null) {
       final blockColorful = DanmakuOptions.blockColorful;
-      final danmakuWeight = DanmakuOptions.danmakuWeight;
       for (DanmakuElem e in currentDanmakuList) {
-        if (e.weight < danmakuWeight) return;
         if (e.mode == 7) {
           try {
             _controller!.addDanmaku(

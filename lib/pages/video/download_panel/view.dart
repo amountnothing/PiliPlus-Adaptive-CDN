@@ -383,7 +383,7 @@ class _DownloadPanelState extends State<DownloadPanel> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2),
       child: SizedBox(
-        height: 110,
+        height: 98,
         child: Builder(
           builder: (context) {
             return Material(
@@ -412,8 +412,8 @@ class _DownloadPanelState extends State<DownloadPanel> {
                           children: [
                             NetworkImgLayer(
                               src: cover,
-                              width: 160,
-                              height: 100,
+                              width: 140.8,
+                              height: 88,
                               cacheWidth: cacheWidth,
                             ),
                             if (duration != null && duration > 0)

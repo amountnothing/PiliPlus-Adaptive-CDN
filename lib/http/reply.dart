@@ -186,7 +186,7 @@ abstract final class ReplyHttp {
     String? reasonDesc,
   }) async {
     final res = await Request().post(
-      Api.replyReport,
+      '/x/v2/reply/report',
       data: {
         'add_blacklist': banUid,
         'csrf': Accounts.main.csrf,

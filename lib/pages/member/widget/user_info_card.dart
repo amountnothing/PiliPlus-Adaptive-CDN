@@ -24,7 +24,6 @@ import 'package:PiliPlus/pages/member_guard/view.dart';
 import 'package:PiliPlus/pages/member_upower_rank/view.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
-import 'package:PiliPlus/utils/bili_colors.dart';
 import 'package:PiliPlus/utils/bili_utils.dart';
 import 'package:PiliPlus/utils/color_utils.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
@@ -218,10 +217,14 @@ class UserInfoCard extends StatelessWidget {
               ),
             ),
           ),
-          BiliUtils.levelPicture(
-            card.levelInfo!.currentLevel!,
-            isSeniorMember: card.levelInfo?.identity == 2,
+          Image.asset(
+            BiliUtils.levelName(
+              card.levelInfo!.currentLevel!,
+              isSeniorMember: card.levelInfo?.identity == 2,
+            ),
             height: 11,
+            cacheHeight: 11.cacheSize(context),
+            semanticLabel: '等级${card.levelInfo?.currentLevel}',
           ),
           if (card.vip?.status == 1)
             Container(
@@ -279,17 +282,13 @@ class UserInfoCard extends StatelessWidget {
                     shape: .circle,
                     color: colorScheme.surface,
                   ),
-                  child: card.officialVerify?.type == 0
-                      ? const Icon(
-                          Icons.offline_bolt,
-                          color: BiliColors.yellow,
-                          size: 18,
-                        )
-                      : const Icon(
-                          Icons.offline_bolt,
-                          color: Colors.lightBlueAccent,
-                          size: 18,
-                        ),
+                  child: Icon(
+                    Icons.offline_bolt,
+                    color: card.officialVerify?.type == 0
+                        ? const Color(0xFFFFCC00)
+                        : Colors.lightBlueAccent,
+                    size: 18,
+                  ),
                 ),
               ),
               const TextSpan(text: ' '),

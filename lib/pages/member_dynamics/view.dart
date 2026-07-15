@@ -87,13 +87,30 @@ class _MemberDynamicsPageState extends State<MemberDynamicsPage>
                   ? SliverWaterfallFlow(
                       gridDelegate: dynGridDelegate,
                       delegate: SliverChildBuilderDelegate(
-                        (_, index) => _itemBuilder(response, index),
+                        (_, index) {
+                          if (index == response.length - 1) {
+                            _memberDynamicController.onLoadMore();
+                          }
+                          return DynamicPanel(
+                            item: response[index],
+                            onRemove: _memberDynamicController.onRemove,
+                            onSetTop: _memberDynamicController.onSetTop,
+                          );
+                        },
                         childCount: response.length,
                       ),
                     )
                   : SliverList.builder(
-                      itemBuilder: (context, index) =>
-                          _itemBuilder(response, index),
+                      itemBuilder: (context, index) {
+                        if (index == response.length - 1) {
+                          _memberDynamicController.onLoadMore();
+                        }
+                        return DynamicPanel(
+                          item: response[index],
+                          onRemove: _memberDynamicController.onRemove,
+                          onSetTop: _memberDynamicController.onSetTop,
+                        );
+                      },
                       itemCount: response.length,
                     )
             : HttpError(onReload: _memberDynamicController.onReload),
@@ -102,16 +119,5 @@ class _MemberDynamicsPageState extends State<MemberDynamicsPage>
         onReload: _memberDynamicController.onReload,
       ),
     };
-  }
-
-  Widget _itemBuilder(List<DynamicItemModel> list, int index) {
-    if (index == list.length - 1) {
-      _memberDynamicController.onLoadMore();
-    }
-    return DynamicPanel(
-      item: list[index],
-      onRemove: _memberDynamicController.onRemove,
-      onSetTop: _memberDynamicController.onSetTop,
-    );
   }
 }

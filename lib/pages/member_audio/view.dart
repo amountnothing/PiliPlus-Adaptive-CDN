@@ -26,7 +26,7 @@ class MemberAudio extends StatefulWidget {
 }
 
 class _MemberAudioState extends State<MemberAudio>
-    with AutomaticKeepAliveClientMixin, GridMixin {
+    with AutomaticKeepAliveClientMixin {
   late final MemberAudioController _controller;
 
   void initState() {
@@ -62,6 +62,13 @@ class _MemberAudioState extends State<MemberAudio>
 
   @override
   bool get wantKeepAlive => true;
+
+  late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
+    mainAxisSpacing: 2,
+    maxCrossAxisExtent: Grid.smallCardWidth * 2,
+    childAspectRatio: Style.aspectRatio * 2.6,
+    minHeight: MediaQuery.textScalerOf(context).scale(90),
+  );
 
   Widget _buildBody(
     ColorScheme colorScheme,

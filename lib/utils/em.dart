@@ -5,26 +5,8 @@ abstract final class Em {
   );
 
   static String regCate(String origin) {
-    final matches = _exp.firstMatch(origin);
-    return matches?.group(1) ?? origin;
-  }
-
-  static String parseHtml(String str) {
-    return str.replaceAllMapped(
-      _htmlRegExp,
-      (match) => switch (match.group(1)) {
-        'lt' => '<',
-        'gt' => '>',
-        'quot' => '"',
-        'apos' => "'",
-        'nbsp' => ' ',
-        'amp' => '&',
-        var i? when (i.startsWith('#x')) => String.fromCharCode(
-          int.parse(i.substring(2), radix: 16),
-        ),
-        _ => match.group(0)!,
-      },
-    );
+    Iterable<Match> matches = _exp.allMatches(origin);
+    return matches.lastOrNull?.group(1) ?? origin;
   }
 
   static List<({bool isEm, String text})> regTitle(String origin) {
@@ -32,12 +14,30 @@ abstract final class Em {
     origin.splitMapJoin(
       _exp,
       onMatch: (Match match) {
-        res.add((isEm: true, text: parseHtml(match[1] ?? match[0]!)));
+        String matchStr = match[0]!;
+        res.add((isEm: true, text: regCate(matchStr)));
         return '';
       },
       onNonMatch: (String str) {
         if (str != '') {
-          res.add((isEm: false, text: parseHtml(str)));
+          res.add((
+            isEm: false,
+            text: str.replaceAllMapped(
+              _htmlRegExp,
+              (m) => switch (m.group(1)) {
+                'lt' => '<',
+                'gt' => '>',
+                'quot' => '"',
+                'apos' => "'",
+                'nbsp' => ' ',
+                'amp' => '&',
+                var i? when (i.startsWith('#x')) => String.fromCharCode(
+                  int.parse(i.substring(2), radix: 16),
+                ),
+                _ => m.group(0)!,
+              },
+            ),
+          ));
         }
         return '';
       },

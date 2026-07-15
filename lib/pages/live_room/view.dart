@@ -151,6 +151,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
     plPlayerController.removeStatusLister(playerListener);
     _liveRoomController
       ..danmakuController?.clear()
+      ..danmakuController?.pause()
       ..cancelLiveTimer()
       ..closeLiveMsg()
       ..isPlaying = plPlayerController.playerStatus.isPlaying;
@@ -764,13 +765,14 @@ class _LiveRoomPageState extends State<LiveRoomPage>
         ..onSendDanmaku(),
     );
     return Padding(
-      padding: .only(bottom: 12, top: isPortrait ? 12 : 0),
+      padding: EdgeInsets.only(bottom: 12, top: isPortrait ? 12 : 0),
       child: _liveRoomController.showSuperChat
           ? PageView<CustomHorizontalDragGestureRecognizer>(
               key: pageKey,
               controller: _liveRoomController.pageController,
               physics: clampingScrollPhysics,
-              onPageChanged: _liveRoomController.pageIndex.call,
+              onPageChanged: (value) =>
+                  _liveRoomController.pageIndex.value = value,
               horizontalDragGestureRecognizer:
                   CustomHorizontalDragGestureRecognizer.new,
               children: [
@@ -807,7 +809,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
                 Obx(
                   () {
                     final enableShowLiveDanmaku =
-                        plPlayerController.enableShowLiveDanmaku.value;
+                        plPlayerController.enableShowDanmaku.value;
                     return SizedBox(
                       width: 34,
                       height: 34,
@@ -815,8 +817,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
                         style: IconButton.styleFrom(padding: .zero),
                         onPressed: () {
                           final newVal = !enableShowLiveDanmaku;
-                          plPlayerController.enableShowLiveDanmaku.value =
-                              newVal;
+                          plPlayerController.enableShowDanmaku.value = newVal;
                           if (!plPlayerController.tempPlayerConf) {
                             GStorage.setting.put(
                               SettingBoxKey.enableShowLiveDanmaku,
@@ -1090,7 +1091,7 @@ class _LiveDanmakuState extends State<LiveDanmaku> {
     final option = DanmakuOptions.get(notFullscreen: widget.notFullscreen);
     return Obx(
       () => AnimatedOpacity(
-        opacity: plPlayerController.enableShowLiveDanmaku.value
+        opacity: plPlayerController.enableShowDanmaku.value
             ? plPlayerController.danmakuOpacity.value
             : 0,
         duration: const Duration(milliseconds: 100),

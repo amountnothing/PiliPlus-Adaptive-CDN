@@ -36,7 +36,7 @@ class DownloadDetailPage extends StatefulWidget {
 }
 
 class _DownloadDetailPageState extends State<DownloadDetailPage>
-    with BaseMultiSelectMixin<BiliDownloadEntryInfo>, GridMixin {
+    with BaseMultiSelectMixin<BiliDownloadEntryInfo> {
   StreamSubscription? _sub;
   final _downloadItems = RxList<BiliDownloadEntryInfo>();
   final _controller = Get.find<DownloadPageController>();
@@ -149,7 +149,11 @@ class _DownloadDetailPageState extends State<DownloadDetailPage>
                 sliver: Obx(() {
                   if (_downloadItems.isNotEmpty) {
                     return SliverGrid.builder(
-                      gridDelegate: gridDelegate,
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        mainAxisSpacing: 2,
+                        mainAxisExtent: 100,
+                        maxCrossAxisExtent: Grid.smallCardWidth * 2,
+                      ),
                       itemBuilder: (context, index) {
                         final entry = _downloadItems[index];
                         return DetailItem(

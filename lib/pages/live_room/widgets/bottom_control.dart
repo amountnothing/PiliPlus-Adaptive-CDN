@@ -88,7 +88,7 @@ class _BottomControlState extends State<BottomControl> with HeaderMixin {
           Obx(
             () {
               final enableShowLiveDanmaku =
-                  plPlayerController.enableShowLiveDanmaku.value;
+                  plPlayerController.enableShowDanmaku.value;
               return ComBtn(
                 height: 30,
                 tooltip: "${enableShowLiveDanmaku ? '关闭' : '开启'}弹幕",
@@ -105,7 +105,7 @@ class _BottomControlState extends State<BottomControl> with HeaderMixin {
                       ),
                 onTap: () {
                   final newVal = !enableShowLiveDanmaku;
-                  plPlayerController.enableShowLiveDanmaku.value = newVal;
+                  plPlayerController.enableShowDanmaku.value = newVal;
                   if (!plPlayerController.tempPlayerConf) {
                     GStorage.setting.put(
                       SettingBoxKey.enableShowLiveDanmaku,

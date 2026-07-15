@@ -16,10 +16,9 @@ class DynamicsTabController
     with AccountMixin {
   DynamicsTabController({required this.dynamicsType});
   final DynamicsTabType dynamicsType;
-
-  String? offset;
-
-  late final mainController = Get.find<MainController>();
+  String offset = '';
+  int? mid;
+  late final MainController mainController = Get.find<MainController>();
   final dynamicsController = Get.find<DynamicsController>();
 
   @override
@@ -30,25 +29,25 @@ class DynamicsTabController
 
   @override
   Future<void> onRefresh() {
-    if (dynamicsType == .all) {
+    if (dynamicsType == DynamicsTabType.all) {
       mainController.setDynCount();
     }
-    offset = null;
+    offset = '';
     return super.onRefresh();
   }
 
   @override
   List<DynamicItemModel>? getDataList(DynamicsDataModel response) {
-    offset = response.offset;
+    offset = response.offset ?? '';
     return response.items;
   }
 
   @override
   Future<LoadingState<DynamicsDataModel>> customGetData() =>
       DynamicsHttp.followDynamic(
-        offset: offset,
         type: dynamicsType,
-        hostMid: dynamicsController.hostMid,
+        offset: offset,
+        mid: mid,
         tempBannedList: dynamicsController.tempBannedList,
       );
 
@@ -71,7 +70,7 @@ class DynamicsTabController
   }
 
   void onBlock(int index) {
-    if (dynamicsType != .up) {
+    if (dynamicsType != DynamicsTabType.up) {
       loadingState
         ..value.data!.removeAt(index)
         ..refresh();

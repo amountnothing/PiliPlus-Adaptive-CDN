@@ -33,7 +33,7 @@ class ArticleOpus extends StatelessWidget {
           final item = _ops[index];
           switch (item.insert) {
             case String e:
-              return Text(e);
+              return SelectableText(e);
             case Insert(:final card):
               if (card != null) {
                 if (card.url?.isNotEmpty == true) {

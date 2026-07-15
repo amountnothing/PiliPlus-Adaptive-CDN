@@ -72,7 +72,7 @@ class _MemberFavoriteState extends State<MemberFavorite>
       Loading() => SliverPadding(
         padding: const EdgeInsets.only(top: 7),
         sliver: SliverGrid.builder(
-          gridDelegate: gridDelegate,
+          gridDelegate: Grid.videoCardHDelegate(context),
           itemBuilder: (context, index) => const VideoCardHSkeleton(),
           itemCount: 10,
         ),
@@ -171,7 +171,7 @@ class _MemberFavoriteState extends State<MemberFavorite>
               itemBuilder: (context, index) {
                 final item = list[index];
                 return SizedBox(
-                  height: 110,
+                  height: 98,
                   child: MemberFavItem(
                     item: item,
                     onDelete: (isDeleted) {

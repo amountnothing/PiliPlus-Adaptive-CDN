@@ -18,9 +18,6 @@ import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
-import 'package:PiliPlus/utils/storage.dart';
-import 'package:PiliPlus/utils/storage_key.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -78,8 +75,11 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
         liveController.title.value,
         spacing: 30,
         velocity: 30,
-        strutStyle: const StrutStyle(fontSize: 15, leading: 0),
-        style: const TextStyle(fontSize: 15, height: 1, color: Colors.white),
+        style: const TextStyle(
+          fontSize: 15,
+          height: 1,
+          color: Colors.white,
+        ),
       ),
     );
     if (isFullScreen) {
@@ -355,8 +355,9 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
                       padding: .only(
                         bottom: MediaQuery.viewPaddingOf(context).bottom + 100,
                       ),
-                      children: controller.stream.mapIndexed((si, stream) {
-                        final isCurrStream = si == controller.streamIndex;
+                      children: controller.stream.indexed.map((stream) {
+                        final isCurrStream =
+                            stream.$1 == controller.streamIndex;
                         final streamColor = isCurrStream
                             ? secondary
                             : onSurfaceVariant;
@@ -365,14 +366,15 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
                           iconColor: streamColor,
                           collapsedIconColor: streamColor,
                           title: Text(
-                            stream.protocolName ?? si.toString(),
+                            stream.$2.protocolName ?? stream.$1.toString(),
                             style: isCurrStream
                                 ? currStyle
                                 : const TextStyle(fontSize: 14),
                           ),
-                          children: stream.format.mapIndexed((fi, format) {
+                          children: stream.$2.format.indexed.map((format) {
                             final isCurrFormat =
-                                isCurrStream && fi == controller.formatIndex;
+                                isCurrStream &&
+                                format.$1 == controller.formatIndex;
                             final formatColor = isCurrFormat
                                 ? secondary
                                 : onSurfaceVariant;
@@ -381,14 +383,16 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
                               iconColor: formatColor,
                               collapsedIconColor: formatColor,
                               title: Text(
-                                format.formatName ?? fi.toString(),
+                                format.$2.formatName ?? format.$1.toString(),
                                 style: isCurrFormat
                                     ? currStyle
                                     : const TextStyle(fontSize: 14),
                               ),
-                              children: format.codec.mapIndexed((ci, codec) {
+                              children: format.$2.codec.indexed.map((codec) {
+                                final e = codec.$2;
                                 final isCurrCodec =
-                                    isCurrFormat && ci == controller.codecIndex;
+                                    isCurrFormat &&
+                                    codec.$1 == controller.codecIndex;
                                 final codecColor = isCurrCodec
                                     ? secondary
                                     : onSurfaceVariant;
@@ -397,19 +401,19 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
                                   iconColor: codecColor,
                                   collapsedIconColor: codecColor,
                                   title: Text(
-                                    '${codec.codecName ?? ci.toString()} (${LiveQuality.fromCode(codec.currentQn)?.desc ?? codec.currentQn})',
+                                    '${e.codecName ?? codec.$1.toString()} (${LiveQuality.fromCode(e.currentQn)?.desc ?? e.currentQn})',
                                     style: isCurrCodec
                                         ? currStyle
                                         : const TextStyle(fontSize: 14),
                                   ),
-                                  children: codec.urlInfo.mapIndexed((ui, url) {
+                                  children: e.urlInfo.indexed.map((url) {
                                     final isCurrUrl =
-                                        isCurrCodec &&
-                                        ui == controller.liveUrlIndex;
+                                        (isCurrCodec &&
+                                        url.$1 == controller.liveUrlIndex);
                                     return ListTile(
                                       dense: true,
                                       title: Text(
-                                        '${url.host}...',
+                                        '${url.$2.host}${e.baseUrl}...',
                                         style: isCurrUrl
                                             ? const TextStyle(fontSize: 14)
                                             : TextStyle(
@@ -423,18 +427,10 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
                                           : () {
                                               Get.back();
                                               controller.initLiveUrl(
-                                                streamIndex: si,
-                                                formatIndex: fi,
-                                                codecIndex: ci,
-                                                liveUrlIndex: ui,
-                                              );
-                                              GStorage.setting.put(
-                                                SettingBoxKey.liveStream,
-                                                [
-                                                  stream.protocolName!,
-                                                  format.formatName!,
-                                                  codec.codecName!,
-                                                ],
+                                                streamIndex: stream.$1,
+                                                formatIndex: format.$1,
+                                                codecIndex: codec.$1,
+                                                liveUrlIndex: url.$1,
                                               );
                                             },
                                     );

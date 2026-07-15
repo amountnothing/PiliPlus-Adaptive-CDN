@@ -42,8 +42,8 @@ class MemberFavItem extends StatelessWidget {
             children: [
               NetworkImgLayer(
                 src: item.cover,
-                width: 160,
-                height: 100,
+                width: 140.8,
+                height: 88,
               ),
               const SizedBox(width: 10),
               Expanded(

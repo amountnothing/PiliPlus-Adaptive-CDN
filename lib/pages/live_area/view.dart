@@ -322,7 +322,10 @@ class _LiveAreaPageState extends State<LiveAreaPage> {
             text: item.name!,
             fontSize: 14,
             bgColor: Colors.transparent,
-            padding: const .symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 4,
+            ),
             onTap: (value) {
               if (_controller.isEditing.value) {
                 onPressed();

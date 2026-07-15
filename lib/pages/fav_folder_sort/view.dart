@@ -81,7 +81,7 @@ class _FavFolderSortPageState extends State<FavFolderSortPage>
         final key = item.id.toString();
         return SizedBox(
           key: Key(key),
-          height: 110,
+          height: 98,
           child: FavVideoItem(
             heroTag: key,
             item: item,

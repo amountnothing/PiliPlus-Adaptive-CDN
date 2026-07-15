@@ -1,21 +1,15 @@
 import 'dart:math';
 
-import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/custom_icon.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/flutter/text_field/controller.dart';
 import 'package:PiliPlus/common/widgets/pair.dart';
-import 'package:PiliPlus/common/widgets/scroll_physics.dart';
-import 'package:PiliPlus/common/widgets/sliver/sliver_floating_header.dart';
-import 'package:PiliPlus/common/widgets/sliver/sliver_to_box_adapter.dart';
 import 'package:PiliPlus/http/constants.dart';
 import 'package:PiliPlus/http/dynamics.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models/common/reply/reply_option_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
 import 'package:PiliPlus/pages/common/dyn/common_dyn_page.dart';
-import 'package:PiliPlus/pages/common/dyn/reaction/controller.dart';
-import 'package:PiliPlus/pages/common/dyn/reaction/view.dart';
 import 'package:PiliPlus/pages/dynamics/widgets/author_panel.dart';
 import 'package:PiliPlus/pages/dynamics/widgets/dynamic_panel.dart';
 import 'package:PiliPlus/pages/dynamics_create/view.dart';
@@ -24,19 +18,12 @@ import 'package:PiliPlus/pages/dynamics_repost/view.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
-import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/share_utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-
-const Set<TargetPlatform> _kDesktopPlatforms = <TargetPlatform>{
-  TargetPlatform.macOS,
-  TargetPlatform.windows,
-  TargetPlatform.linux,
-};
 
 class DynamicDetailPage extends StatefulWidget {
   const DynamicDetailPage({super.key});
@@ -45,72 +32,32 @@ class DynamicDetailPage extends StatefulWidget {
   State<DynamicDetailPage> createState() => _DynamicDetailPageState();
 }
 
-class _DynamicDetailPageState
-    extends CommonDynPageMultiState<DynamicDetailPage> {
+class _DynamicDetailPageState extends CommonDynPageState<DynamicDetailPage> {
   @override
-  late final DynamicDetailController controller;
-  late final DynReactController _reactController;
-
-  late final RxBool _isRefreshing = false.obs;
-
-  void _startRefresh() {
-    _isRefreshing.value = true;
-    _refreshController.repeat();
-  }
-
-  void _stopRefresh() {
-    if (!mounted) return;
-    _isRefreshing.value = false;
-    _refreshController.stop();
-  }
-
-  void _onRefresh(Future<void> future) {
-    _startRefresh();
-    future.whenComplete(_stopRefresh);
-    // Future.delayed(
-    //   const Duration(milliseconds: 800),
-    // ).whenComplete(_stopRefresh);
-  }
-
-  AnimationController? refreshController;
-  AnimationController get _refreshController =>
-      refreshController ??= AnimationController(
-        vsync: this,
-        duration: CircularProgressIndicator.defaultAnimationDuration,
-      );
+  final DynamicDetailController controller = Get.putOrFind(
+    DynamicDetailController.new,
+    tag: (Get.arguments['item'] as DynamicItemModel).idStr.toString(),
+  );
 
   @override
-  dynamic get arguments => {'item': controller.dynItem};
+  dynamic get arguments => {
+    'item': controller.dynItem,
+  };
 
   @override
-  void initState() {
-    super.initState();
-    final args = Get.arguments;
-    final item = args['item'] as DynamicItemModel;
-    final id = item.idStr.toString();
-    if (args['viewComment'] ?? false) {
-      WidgetsBinding.instance.addPostFrameCallback(_jumpToComment);
-    }
-    controller = Get.putOrFind(DynamicDetailController.new, tag: id);
-    final stat = item.modules.moduleStat;
-    controller.count.value = stat?.comment?.count ?? -1;
-    _reactController = Get.put(
-      DynReactController(
-        id,
-        count: (stat?.like?.count ?? -1) + (stat?.forward?.count ?? -1),
-      ),
-      tag: id,
-    );
-  }
-
-  @override
-  void dispose() {
-    refreshController?.dispose();
-    super.dispose();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        controller.showTitle.value =
+            scrollController.positions.first.pixels > 55;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: _buildAppBar(),
@@ -119,14 +66,14 @@ class _DynamicDetailPageState
         child: isPortrait
             ? refreshIndicator(
                 onRefresh: controller.onRefresh,
-                child: _buildBody(),
+                child: _buildBody(theme),
               )
-            : _buildBody(),
+            : _buildBody(theme),
       ),
       floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButton: SlideTransition(
         position: fabAnimation,
-        child: _buildBottom(),
+        child: _buildBottom(theme),
       ),
     );
   }
@@ -295,129 +242,17 @@ class _DynamicDetailPageState
         : [ratioWidget(maxWidth), const SizedBox(width: 16)],
   );
 
-  Widget _buildTabBar() {
-    return SizedBox(
-      height: 40,
-      child: TabBar(
-        padding: .zero,
-        isScrollable: true,
-        indicatorSize: .tab,
-        tabAlignment: .start,
-        controller: tabController,
-        labelPadding: const .symmetric(horizontal: 12),
-        dividerColor: theme.colorScheme.outline.withValues(alpha: 0.1),
-        onTap: (value) {
-          if (!tabController.indexIsChanging) {
-            final positions = PrimaryScrollController.of(context).positions;
-            if (positions.length == 1) {
-              final postion = positions.single;
-              if (postion.pixels >= postion.maxScrollExtent) {
-                postion.jumpTo(postion.pixels);
-              }
-              switch (value) {
-                case 0:
-                  _onRefresh(controller.onRefresh());
-                case 1:
-                  _onRefresh(_reactController.onRefresh());
-              }
-            } else if (positions.length > 1) {
-              positions.elementAt(1).jumpTo(0);
-            }
-          }
-        },
-        tabs: [
-          Tab(
-            child: Obx(() {
-              final count = controller.count.value;
-              return Text(
-                '${DynType.reply.label}${count < 0 ? '' : ' ${NumUtils.numFormat(count)}'}',
-              );
-            }),
-          ),
-          Tab(
-            child: Obx(() {
-              final count = _reactController.count.value;
-              return Text(
-                '${DynType.reaction.label}${count < 0 ? '' : ' ${NumUtils.numFormat(count)}'}',
-              );
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTabBody([bool isPortrait = true]) {
-    final reply = CustomScrollView(
-      key: const PageStorageKey(DynType.reply),
-      physics: ReloadScrollPhysics(controller: controller),
-      slivers: [
-        buildReplyHeader(isPortrait),
-        Obx(() => replyList(controller.loadingState.value)),
-      ],
-    );
-    final child = tabBarView(
-      controller: tabController,
-      children: [
-        isPortrait
-            ? reply
-            : refreshIndicator(onRefresh: controller.onRefresh, child: reply),
-        DynReactPage(
-          isPortrait: isPortrait,
-          id: controller.dynItem.idStr,
-          controller: _reactController,
-        ),
-      ],
-    );
+  Widget _buildBody(ThemeData theme) {
+    double padding = max(maxWidth / 2 - Grid.smallCardWidth, 0);
+    Widget child;
     if (isPortrait) {
-      return Stack(
-        clipBehavior: .none,
-        children: [
-          child,
-          Positioned(
-            left: 0,
-            right: 0,
-            top: displacement,
-            child: Obx(() {
-              final isRefreshing = _isRefreshing.value;
-              return AnimatedScale(
-                scale: isRefreshing ? 1 : 0,
-                duration: const Duration(milliseconds: 200),
-                child: Center(
-                  child: SizedBox.fromSize(
-                    size: const .square(40),
-                    child: Material(
-                      type: .circle,
-                      color: theme.colorScheme.onSecondary,
-                      elevation: 2.0,
-                      child: Padding(
-                        padding: const .all(6),
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          controller: _refreshController,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }),
-          ),
-        ],
-      );
-    }
-    return child;
-  }
-
-  Widget _buildPortrait(double padding) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: padding),
-      child: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverToBoxWithOffsetAdapter(
-              offset: 55,
-              onVisibilityChanged: controller.showTitle.call,
+      child = Padding(
+        padding: EdgeInsets.symmetric(horizontal: padding),
+        child: CustomScrollView(
+          controller: scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
               child: DynamicPanel(
                 item: controller.dynItem,
                 isDetail: true,
@@ -427,89 +262,72 @@ class _DynamicDetailPageState
                 onSetReplySubject: controller.onSetReplySubject,
               ),
             ),
-          ];
-        },
-        body: Column(
-          children: [
-            _buildTabBar(),
-            Expanded(child: _buildTabBody()),
+            buildReplyHeader(theme),
+            Obx(() => replyList(theme, controller.loadingState.value)),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildHorizontal(double padding) {
-    padding = padding / 4;
-    final flex = controller.ratio[0].toInt();
-    final flex1 = controller.ratio[1].toInt();
-    final child = Row(
-      children: [
-        Expanded(
-          flex: flex,
-          child: CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: .only(
-                  left: padding,
-                  bottom: this.padding.bottom + 100,
+      );
+    } else {
+      padding = padding / 4;
+      final flex = controller.ratio[0].toInt();
+      final flex1 = controller.ratio[1].toInt();
+      child = Row(
+        children: [
+          Expanded(
+            flex: flex,
+            child: CustomScrollView(
+              controller: scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                SliverPadding(
+                  padding: EdgeInsets.only(
+                    left: padding,
+                    bottom: this.padding.bottom + 100,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: DynamicPanel(
+                      item: controller.dynItem,
+                      isDetail: true,
+                      isDetailPortraitW: isPortrait,
+                      onSetPubSetting: controller.onSetPubSetting,
+                      onEdit: _onEdit,
+                      onSetReplySubject: controller.onSetReplySubject,
+                    ),
+                  ),
                 ),
-                sliver: SliverToBoxWithOffsetAdapter(
-                  offset: 55,
-                  onVisibilityChanged: controller.showTitle.call,
-                  child: DynamicPanel(
-                    item: controller.dynItem,
-                    isDetail: true,
-                    isDetailPortraitW: isPortrait,
-                    onSetPubSetting: controller.onSetPubSetting,
-                    onEdit: _onEdit,
-                    onSetReplySubject: controller.onSetReplySubject,
+              ],
+            ),
+          ),
+          Expanded(
+            flex: flex1,
+            child: Padding(
+              padding: EdgeInsets.only(right: padding),
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                resizeToAvoidBottomInset: false,
+                body: refreshIndicator(
+                  onRefresh: controller.onRefresh,
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      buildReplyHeader(theme),
+                      Obx(
+                        () => replyList(theme, controller.loadingState.value),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: flex1,
-          child: Padding(
-            padding: EdgeInsets.only(right: padding),
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              resizeToAvoidBottomInset: false,
-              body: Column(
-                children: [
-                  _buildTabBar(),
-                  Expanded(child: _buildTabBody(false)),
-                ],
-              ),
             ),
           ),
-        ),
-      ],
-    );
-    if (PlatformUtils.isDesktop) {
-      return PrimaryScrollController(
-        controller: PrimaryScrollController.of(context),
-        automaticallyInheritForPlatforms: _kDesktopPlatforms,
-        child: child,
+        ],
       );
     }
     return child;
   }
 
-  Widget _buildBody() {
-    double padding = max(maxWidth / 2 - Grid.smallCardWidth, 0);
-    Widget child;
-    if (isPortrait) {
-      child = _buildPortrait(padding);
-    } else {
-      child = _buildHorizontal(padding);
-    }
-    return fabAnimWrapper(child);
-  }
-
-  Widget _buildBottom() {
+  Widget _buildBottom(ThemeData theme) {
     if (!controller.showDynActionBar) {
       return fabButton;
     }
@@ -566,7 +384,9 @@ class _DynamicDetailPageState
               color: theme.colorScheme.surface,
               border: Border(
                 top: BorderSide(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.08),
+                  color: theme.colorScheme.outline.withValues(
+                    alpha: 0.08,
+                  ),
                 ),
               ),
             ),
@@ -613,14 +433,6 @@ class _DynamicDetailPageState
                   ),
                 ),
                 Expanded(
-                  child: textIconButton(
-                    icon: FontAwesomeIcons.comment,
-                    text: '评论',
-                    stat: moduleStat?.comment,
-                    onPressed: _jumpToComment,
-                  ),
-                ),
-                Expanded(
                   child: Builder(
                     builder: (context) {
                       return textIconButton(
@@ -647,45 +459,5 @@ class _DynamicDetailPageState
         ],
       ),
     );
-  }
-
-  @override
-  Widget buildReplyHeader([bool isPortrait = true]) {
-    final secondary = theme.colorScheme.secondary;
-    final child = Padding(
-      padding: const .fromLTRB(12, 2.5, 6, 2.5),
-      child: Obx(
-        () {
-          final sortType = controller.sortType.value;
-          return Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Text(sortType.title),
-              TextButton.icon(
-                style: Style.buttonStyle,
-                onPressed: controller.queryBySort,
-                icon: Icon(Icons.sort, size: 16, color: secondary),
-                label: Text(
-                  sortType.label,
-                  style: TextStyle(fontSize: 13, color: secondary),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-    return SliverFloatingHeaderWidget(
-      backgroundColor: theme.colorScheme.surface,
-      child: child,
-    );
-  }
-
-  void _jumpToComment([_]) {
-    if (!isPortrait) return;
-    try {
-      final position = PrimaryScrollController.of(context).position;
-      position.jumpTo(position.maxScrollExtent);
-    } catch (_) {}
   }
 }

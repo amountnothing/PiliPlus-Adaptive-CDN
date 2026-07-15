@@ -9,7 +9,6 @@ import 'package:PiliPlus/pages/live_dm_block/controller.dart';
 import 'package:PiliPlus/pages/search/widgets/search_text.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/utils.dart';
-import 'package:collection/collection.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show FilteringTextInputFormatter;
@@ -169,14 +168,15 @@ class _LiveDmBlockPageState extends State<LiveDmBlockPage> {
       child: Wrap(
         spacing: 12,
         runSpacing: 12,
-        children: list.mapIndexed(
-          (i, e) {
+        children: list.indexed.map(
+          (e) {
+            final item = e.$2;
             return SearchText(
-              text: e is ShieldUserList ? e.uname! : e as String,
+              text: item is ShieldUserList ? item.uname! : item as String,
               onTap: (value) => showConfirmDialog(
                 context: context,
                 title: const Text('确定删除该规则？'),
-                onConfirm: () => _controller.onRemove(i, e),
+                onConfirm: () => _controller.onRemove(e.$1, item),
               ),
             );
           },

@@ -21,7 +21,7 @@ class LiveCardVApp extends StatelessWidget {
   Widget build(BuildContext context) {
     void onLongPress() => imageSaveDialog(
       title: item.title,
-      cover: showFirstFrame ? item.systemCover : item.cover,
+      cover: item.cover,
     );
     return Card(
       clipBehavior: Clip.hardEdge,

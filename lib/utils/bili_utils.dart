@@ -1,6 +1,3 @@
-import 'package:PiliPlus/common/widgets/svg/level_icon.dart';
-import 'package:flutter/material.dart';
-
 abstract final class BiliUtils {
   static bool isDefaultFav(int? attr) {
     if (attr == null) {
@@ -24,12 +21,8 @@ abstract final class BiliUtils {
     return tagid != null && tagid != 0 && tagid != -10 && tagid != -2;
   }
 
-  // https://s1.hdslb.com/bfs/svg-next/font/2025-10-27/freshspace-zpjpp3aqht.css
-  static Widget levelPicture(
-    int level, {
+  static String levelName(
+    Object level, {
     bool isSeniorMember = false,
-    double height = 11,
-  }) {
-    return UserLevel(level, height: height, flash: isSeniorMember);
-  }
+  }) => 'assets/images/lv/lv${isSeniorMember ? '6_s' : level}.png';
 }

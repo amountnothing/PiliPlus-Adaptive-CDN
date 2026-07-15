@@ -57,15 +57,16 @@ abstract class ReplyController<R> extends CommonListController<R, ReplyInfo> {
   }
 
   @override
-  bool customHandleResponse(bool isRefresh, Success<R> response) {
-    final data = response.response as MainListReply;
+  bool customHandleResponse(bool isRefresh, Success response) {
+    MainListReply data = response.response;
     cursorNext = data.cursor.next;
     paginationReply = data.paginationReply;
     count.value = data.subjectControl.count.toInt();
     if (isRefresh) {
       subjectControl = data.subjectControl;
       upMid ??= data.subjectControl.upMid;
-      if (hasUpTop = data.hasUpTop()) {
+      hasUpTop = data.hasUpTop();
+      if (data.hasUpTop()) {
         data.replies.insert(0, data.upTop);
       }
       if (subjectControl?.title == ReplySortType.select.title) {

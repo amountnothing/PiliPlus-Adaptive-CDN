@@ -11,6 +11,7 @@ import 'package:PiliPlus/pages/member/controller.dart';
 import 'package:PiliPlus/pages/member_video/controller.dart';
 import 'package:PiliPlus/pages/member_video/widgets/video_card_h_member_video.dart';
 import 'package:PiliPlus/utils/grid.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -52,18 +53,19 @@ class _MemberVideoState extends State<MemberVideo>
 
   late final MemberVideoCtr _controller;
 
+  int? _index;
+  late ExtendedNestedScrollController _scrollController;
+
   void _jumpToIndex(int index) {
     final scrollOffset = gridDelegate.layoutCache!
         .getGeometryForChildIndex(index)
         .scrollOffset;
     try {
-      final state = Get.find<MemberController>(
-        tag: widget.heroTag,
-      ).scrollKey.currentState;
-      if (state != null && state.mounted) {
-        state.innerNestedPositions.first.localJumpTo(scrollOffset);
-      }
+      _scrollController.nestedPositions
+          .elementAt(_index!)
+          .localJumpTo(scrollOffset);
     } catch (e) {
+      _scrollController.jumpTo(scrollOffset);
       if (kDebugMode) debugPrint('jump error: $e');
     }
   }
@@ -117,6 +119,12 @@ class _MemberVideoState extends State<MemberVideo>
       ),
     );
     if (_controller.isVideo && _controller.fromViewAid?.isNotEmpty == true) {
+      if (_index == null) {
+        _scrollController =
+            PrimaryScrollController.of(this.context)
+                as ExtendedNestedScrollController;
+        _index = _scrollController.nestedPositions.length;
+      }
       return Stack(
         clipBehavior: Clip.none,
         children: [

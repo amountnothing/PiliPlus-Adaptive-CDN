@@ -54,7 +54,8 @@ class _ViewPointsPageState extends State<ViewPointsPage>
               scale: 0.8,
               child: Switch(
                 value: videoDetailController.showVP.value,
-                onChanged: videoDetailController.showVP.call,
+                onChanged: (value) =>
+                    videoDetailController.showVP.value = value,
               ),
             ),
           ),
@@ -102,30 +103,27 @@ class _ViewPointsPageState extends State<ViewPointsPage>
         final segment = videoDetailController.viewPointList[index];
         if (currentIndex == -1 && segment.from != null && segment.to != null) {
           final positionSeconds =
-              videoDetailController.plPlayerController.position.value;
+              videoDetailController.plPlayerController.positionSeconds.value;
           if (positionSeconds >= segment.from! &&
               positionSeconds < segment.to!) {
             currentIndex = index;
           }
         }
         final isCurr = currentIndex == index;
-        return _buildItem(theme.colorScheme, segment, isCurr);
+        return _buildItem(theme, segment, isCurr);
       },
     );
     if (_isNested) {
       return ExtendedVisibilityDetector(
-        uniqueKey: const ValueKey(ViewPointsPage),
+        uniqueKey: const Key('viewpoints'),
         child: child,
       );
     }
     return child;
   }
 
-  Widget _buildItem(
-    ColorScheme colorScheme,
-    ViewPointSegment segment,
-    bool isCurr,
-  ) {
+  Widget _buildItem(ThemeData theme, ViewPointSegment segment, bool isCurr) {
+    final theme = Theme.of(context);
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
@@ -139,14 +137,17 @@ class _ViewPointsPageState extends State<ViewPointsPage>
               }
             : null,
         child: Padding(
-          padding: const .symmetric(horizontal: Style.safeSpace, vertical: 5),
+          padding: const EdgeInsets.symmetric(
+            horizontal: Style.safeSpace,
+            vertical: 5,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               NetworkImgLayer(
                 src: segment.url,
-                width: 160,
-                height: 100,
+                width: 140.8,
+                height: 88,
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -162,14 +163,14 @@ class _ViewPointsPageState extends State<ViewPointsPage>
                       style: isCurr
                           ? TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: colorScheme.primary,
+                              color: theme.colorScheme.primary,
                             )
                           : null,
                     ),
                     Text(
                       '${segment.from != null ? DurationUtils.formatDuration(segment.from) : ''} - '
                       '${segment.to != null ? DurationUtils.formatDuration(segment.to) : ''}',
-                      style: TextStyle(color: colorScheme.outline),
+                      style: TextStyle(color: theme.colorScheme.outline),
                     ),
                   ],
                 ),

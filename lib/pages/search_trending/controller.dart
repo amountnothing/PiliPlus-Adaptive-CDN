@@ -16,11 +16,14 @@ class SearchTrendingController
 
   @override
   List<SearchTrendingItemModel>? getDataList(SearchTrendingData response) {
-    topCount = response.topCount;
-    return response.list;
+    List<SearchTrendingItemModel> topList =
+        response.topList ?? <SearchTrendingItemModel>[];
+    topCount = topList.length;
+    return response.list == null ? topList : topList
+      ..addAll(response.list ?? []);
   }
 
   @override
   Future<LoadingState<SearchTrendingData>> customGetData() =>
-      SearchHttp.searchTrending(needsTop: true);
+      SearchHttp.searchTrending();
 }

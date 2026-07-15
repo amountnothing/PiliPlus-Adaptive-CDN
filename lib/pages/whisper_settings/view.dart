@@ -1,4 +1,3 @@
-import 'package:PiliPlus/common/widgets/dialog/simple_dialog_option.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/loading_widget.dart';
 import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
     show IMSettingType, Setting;
@@ -83,45 +82,49 @@ class _WhisperSettingsPageState extends State<WhisperSettingsPage> {
       String? selected;
       showDialog(
         context: context,
-        builder: (context) => SimpleDialog(
+        builder: (context) => AlertDialog(
           clipBehavior: Clip.hardEdge,
           contentPadding: const EdgeInsets.symmetric(vertical: 12),
-          children: item.redirect.windowSelect.item.map(
-            (e) {
-              if (e.selected) {
-                selected ??= e.text;
-              }
-              return DialogOption(
-                onPressed: () async {
-                  if (!e.selected) {
-                    Get.back();
-                    for (final j in item.redirect.windowSelect.item) {
-                      j.selected = false;
-                    }
-                    item.redirect.selectedSummary = e.text;
-                    e.selected = true;
-                    _controller.loadingState.refresh();
-                    final settings = {key: item};
-                    final res = await _controller.onSet(settings);
-                    if (!res) {
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: item.redirect.windowSelect.item.map(
+              (e) {
+                if (e.selected) {
+                  selected ??= e.text;
+                }
+                return ListTile(
+                  dense: true,
+                  onTap: () async {
+                    if (!e.selected) {
+                      Get.back();
                       for (final j in item.redirect.windowSelect.item) {
-                        j.selected = j.text == selected;
+                        j.selected = false;
                       }
-                      item.redirect.selectedSummary = selected!;
+                      item.redirect.selectedSummary = e.text;
+                      e.selected = true;
                       _controller.loadingState.refresh();
+                      final settings = {key: item};
+                      final res = await _controller.onSet(settings);
+                      if (!res) {
+                        for (final j in item.redirect.windowSelect.item) {
+                          j.selected = j.text == selected;
+                        }
+                        item.redirect.selectedSummary = selected!;
+                        _controller.loadingState.refresh();
+                      }
                     }
-                  }
-                },
-                child: Text(
-                  e.text,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: e.selected ? theme.colorScheme.primary : null,
+                  },
+                  title: Text(
+                    e.text,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: e.selected ? theme.colorScheme.primary : null,
+                    ),
                   ),
-                ),
-              );
-            },
-          ).toList(),
+                );
+              },
+            ).toList(),
+          ),
         ),
       );
     } else if (item.redirect.otherPage.hasUrl()) {

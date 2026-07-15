@@ -1,6 +1,6 @@
 int? safeToInt(dynamic value) => switch (value) {
-  int _ => value,
-  String _ => int.tryParse(value),
-  num _ => value.toInt(),
+  int() => value,
+  String() => int.tryParse(value),
+  num() => value.toInt(),
   _ => null,
 };

@@ -385,7 +385,7 @@ class _CreateDynPanelState extends CommonRichTextPubPageState<CreateDynPanel> {
     return PopupMenuButton<bool>(
       requestFocus: false,
       initialValue: _isPrivate.value,
-      onSelected: _isPrivate.call,
+      onSelected: (value) => _isPrivate.value = value,
       itemBuilder: (context) => List.generate(
         2,
         (index) => PopupMenuItem<bool>(

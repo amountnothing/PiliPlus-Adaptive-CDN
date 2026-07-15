@@ -183,7 +183,7 @@ class _MainReplyPageState extends State<MainReplyPage>
       child: Padding(
         padding: const .fromLTRB(12, 2.5, 6, 2.5),
         child: Row(
-          mainAxisAlignment: .spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Obx(
               () {

@@ -40,18 +40,20 @@ class _MatchInfoPageState extends CommonDynPageState<MatchInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final child = Scaffold(
+    final theme = Theme.of(context);
+    return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('比赛详情')),
       body: ViewSafeArea(
         child: refreshIndicator(
           onRefresh: controller.onRefresh,
           child: CustomScrollView(
+            controller: scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
-              Obx(() => _buildInfo(controller.infoState.value)),
-              buildReplyHeader(),
-              Obx(() => replyList(controller.loadingState.value)),
+              Obx(() => _buildInfo(theme, controller.infoState.value)),
+              buildReplyHeader(theme),
+              Obx(() => replyList(theme, controller.loadingState.value)),
             ],
           ),
         ),
@@ -62,10 +64,9 @@ class _MatchInfoPageState extends CommonDynPageState<MatchInfoPage> {
         child: fabButton,
       ),
     );
-    return fabAnimWrapper(child);
   }
 
-  Widget _buildInfo(LoadingState<MatchContest?> infoState) {
+  Widget _buildInfo(ThemeData theme, LoadingState<MatchContest?> infoState) {
     if (infoState case Success(:final response?)) {
       try {
         Widget teamInfo(MatchTeam team) {
@@ -187,7 +188,12 @@ class _MatchInfoPageState extends CommonDynPageState<MatchInfoPage> {
   }
 
   @override
-  void replyReply(BuildContext context, ReplyInfo replyItem, int? id) {
+  void replyReply(
+    BuildContext context,
+    ReplyInfo replyItem,
+    int? id,
+    ThemeData theme,
+  ) {
     EasyThrottle.throttle('replyReply', const Duration(milliseconds: 500), () {
       int oid = replyItem.oid.toInt();
       int rpid = replyItem.id.toInt();

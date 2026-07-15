@@ -183,9 +183,10 @@ class _PostPanelState extends State<PostPanel>
   late final PlPlayerController plPlayerController = widget.plPlayerController;
   late final List<PostSegmentModel> list = videoDetailController.postList;
 
-  double get videoDuration => plPlayerController.durationInMilliseconds / 1000;
+  double get videoDuration =>
+      plPlayerController.duration.value.inMilliseconds / 1000;
 
-  double currentPos() => plPlayerController.positionInMilliseconds / 1000;
+  double currentPos() => plPlayerController.position.inMilliseconds / 1000;
 
   @override
   Widget buildPage(ThemeData theme) {
@@ -262,7 +263,7 @@ class _PostPanelState extends State<PostPanel>
     );
     if (_isNested) {
       child = ExtendedVisibilityDetector(
-        uniqueKey: const ValueKey(PostPanel),
+        uniqueKey: const Key('post-panel'),
         child: child,
       );
     }
