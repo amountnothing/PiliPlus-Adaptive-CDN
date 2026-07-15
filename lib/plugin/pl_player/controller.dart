@@ -966,11 +966,12 @@ class PlPlayerController with BlockConfigMixin {
           makeHeartBeat(seconds, type: .status);
         }
       }),
-
       ///completed
       stream.completed.listen((bool completed) {
         if (completed) {
           playerStatus.value = .completed;
+          _wasPlayingOnEnterBackground = false;
+          _stopBackgroundReconnectTimer();
 
           for (final element in _statusListeners) {
             element(.completed);
