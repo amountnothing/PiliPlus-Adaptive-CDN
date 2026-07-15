@@ -1004,6 +1004,8 @@ class PlPlayerController with BlockConfigMixin {
       stream.completed.listen((event) {
         if (event) {
           playerStatus.value = PlayerStatus.completed;
+          _wasPlayingOnEnterBackground = false;
+          _stopBackgroundReconnectTimer();
 
           /// 触发回调事件
           for (final element in _statusListeners) {
