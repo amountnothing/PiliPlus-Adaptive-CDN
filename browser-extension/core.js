@@ -12,7 +12,7 @@
     targetBufferSec: 30,
     segmentToleranceSec: 10,
     lowBufferSec: 10,
-    bufferStallSec: 10,
+    bufferStallSec: 5,
     endToleranceSec: 2,
     cooldownSec: 30,
     traverseAllCdns: true,
@@ -47,6 +47,7 @@
     maxSwitches: [1, 50],
     stableRewardSec: [10, 300],
   });
+  const MIN_BUFFER_GROWTH_SEC = 1;
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -222,9 +223,8 @@
     return {
       lastBuffered: 0,
       lastBufferProgressAt: now,
+      refillStartBuffered: 0,
       bufferBelowTarget: false,
-      lowBufferSince: 0,
-      lowBufferPeak: 0,
       lastPosition: 0,
       lastPositionProgressAt: now,
       lastSwitchAt: -Infinity,
@@ -234,9 +234,8 @@
   function resetAtMediaTail(state, sample, now) {
     state.lastBuffered = sample.buffered;
     state.lastBufferProgressAt = now;
+    state.refillStartBuffered = sample.buffered;
     state.bufferBelowTarget = false;
-    state.lowBufferSince = 0;
-    state.lowBufferPeak = 0;
     state.lastPosition = sample.position;
     state.lastPositionProgressAt = now;
   }
@@ -260,9 +259,8 @@
     if (positionDelta >= 2 && (buffered < state.lastBuffered || forward <= 1)) {
       state.lastBuffered = buffered;
       state.lastBufferProgressAt = now;
+      state.refillStartBuffered = buffered;
       state.bufferBelowTarget = false;
-      state.lowBufferSince = forward <= settings.lowBufferSec ? now : 0;
-      state.lowBufferPeak = forward <= settings.lowBufferSec ? forward : 0;
       state.lastPosition = position;
       state.lastPositionProgressAt = now;
       state.lastSwitchAt = now;
@@ -274,32 +272,7 @@
     }
 
 
-    if (buffered < state.lastBuffered || buffered - state.lastBuffered >= 0.25) {
-      state.lastBuffered = buffered;
-      state.lastBufferProgressAt = now;
-    }
-
-    const lowRecoveryTarget = settings.lowBufferSec + 2;
-    if (forward >= lowRecoveryTarget) {
-      state.lowBufferSince = 0;
-      state.lowBufferPeak = 0;
-    } else if (forward <= settings.lowBufferSec || state.lowBufferSince) {
-      if (!state.lowBufferSince) state.lowBufferSince = now;
-      state.lowBufferPeak = Math.max(state.lowBufferPeak, forward);
-    }
-    if (
-      trying &&
-      state.lowBufferSince &&
-      now - state.lowBufferSince >= 5000 &&
-      state.lowBufferPeak < lowRecoveryTarget &&
-      now - state.lastSwitchAt >= 5000
-    ) {
-      state.lowBufferSince = 0;
-      state.lowBufferPeak = 0;
-      state.lastSwitchAt = now;
-      return "low-buffer";
-    }
-    if (trying && state.lowBufferSince) return null;
+    state.lastBuffered = buffered;
 
     const targetFloor = Math.max(
       settings.lowBufferSec,
@@ -312,9 +285,15 @@
     if (!state.bufferBelowTarget) {
       state.bufferBelowTarget = true;
       state.lastBufferProgressAt = now;
+      state.refillStartBuffered = buffered;
       return null;
     }
     if (trying && now - state.lastBufferProgressAt >= settings.bufferStallSec * 1000) {
+      const growth = buffered - state.refillStartBuffered;
+      state.lastBufferProgressAt = now;
+      state.refillStartBuffered = buffered;
+      if (growth >= MIN_BUFFER_GROWTH_SEC) return null;
+      state.bufferBelowTarget = false;
       state.lastSwitchAt = now;
       return "buffer-stall";
     }

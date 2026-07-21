@@ -1,12 +1,9 @@
 import 'dart:io' show Directory, File;
-import 'dart:io' as io show HttpClient;
 
 import 'package:PiliPlus/utils/extension/file_ext.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
@@ -19,7 +16,6 @@ abstract final class CacheManager {
       connectionTimeout: const Duration(seconds: 10),
       requestTimeout: const Duration(seconds: 15),
     ),
-    httpClientFactory: _SharedImageHttpClient.new,
   ).then((i) => manager = i);
 
   // 获取缓存目录
@@ -108,17 +104,4 @@ abstract final class CacheManager {
       }
     }
   }
-}
-
-class _SharedImageHttpClient extends http.BaseClient {
-  static final _client = io.HttpClient()
-    ..idleTimeout = const Duration(seconds: 15);
-  final _inner = IOClient(_client);
-
-  @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) =>
-      _inner.send(request);
-
-  @override
-  void close() {}
 }

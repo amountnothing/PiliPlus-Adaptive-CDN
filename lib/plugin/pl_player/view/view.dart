@@ -51,6 +51,7 @@ import 'package:PiliPlus/plugin/pl_player/widgets/forward_seek.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/mpv_convert_webp.dart';
 import 'package:PiliPlus/plugin/pl_player/widgets/play_pause_btn.dart';
 import 'package:PiliPlus/utils/android/bindings.g.dart';
+import 'package:PiliPlus/utils/adaptive_playback.dart';
 import 'package:PiliPlus/utils/cache_manager.dart';
 import 'package:PiliPlus/utils/connectivity_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
@@ -1909,9 +1910,12 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         ],
 
         Obx(() {
-          if (plPlayerController.dataStatus.loading ||
-              (plPlayerController.isBuffering.value &&
-                  plPlayerController.playerStatus.isPlaying)) {
+          if (AdaptivePlayback.shouldShowLoading(
+            dataLoading: plPlayerController.dataStatus.loading,
+            playbackRequested: plPlayerController.playbackRequested.value,
+            isBuffering: plPlayerController.isBuffering.value,
+            presentationStalled: plPlayerController.presentationStalled.value,
+          )) {
             if (plPlayerController.dataStatus.loading &&
                 widget.loadingCover != null) {
               return Positioned.fill(
@@ -1939,7 +1943,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                         semanticLabel: "加载中",
                         color: Colors.white,
                       ),
-                      if (plPlayerController.isBuffering.value)
+                      if (plPlayerController.isBuffering.value ||
+                          plPlayerController.presentationStalled.value)
                         Obx(() {
                           if (plPlayerController.bufferedSeconds.value == 0) {
                             return const Text(

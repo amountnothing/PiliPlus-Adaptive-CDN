@@ -141,8 +141,7 @@ void main() {
     test('ignores a stale buffering flag after a manual pause', () {
       expect(
         AdaptivePlayback.shouldAccumulateCdnStall(
-          isPlaying: false,
-          isBuffering: true,
+          playbackRequested: false,
         ),
         isFalse,
       );
@@ -151,20 +150,95 @@ void main() {
     test('monitors an actively playing video', () {
       expect(
         AdaptivePlayback.shouldAccumulateCdnStall(
-          isPlaying: true,
-          isBuffering: false,
+          playbackRequested: true,
         ),
         isTrue,
       );
     });
   });
 
-  group('AdaptivePlayback.shouldRecoverFrozenVideo', () {
+  test('loading follows playback intent and presentation state', () {
+    expect(
+      AdaptivePlayback.shouldShowLoading(
+        dataLoading: false,
+        playbackRequested: false,
+        isBuffering: true,
+        presentationStalled: false,
+      ),
+      isFalse,
+    );
+    expect(
+      AdaptivePlayback.shouldShowLoading(
+        dataLoading: false,
+        playbackRequested: true,
+        isBuffering: true,
+        presentationStalled: false,
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.shouldShowLoading(
+        dataLoading: false,
+        playbackRequested: true,
+        isBuffering: false,
+        presentationStalled: true,
+      ),
+      isTrue,
+    );
+  });
+
+  test('buffer stall requires 5s with less than 1s growth', () {
+    const common = (
+      forwardBuffer: Duration(seconds: 8),
+      refillThreshold: Duration(seconds: 20),
+      observationWindow: Duration(seconds: 5),
+      minGrowth: Duration(seconds: 1),
+    );
+    expect(
+      AdaptivePlayback.shouldSwitchForStalledBuffer(
+        forwardBuffer: common.forwardBuffer,
+        refillThreshold: common.refillThreshold,
+        observedFor: const Duration(seconds: 5),
+        observationWindow: common.observationWindow,
+        bufferGrowth: const Duration(milliseconds: 999),
+        minGrowth: common.minGrowth,
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.shouldSwitchForStalledBuffer(
+        forwardBuffer: common.forwardBuffer,
+        refillThreshold: common.refillThreshold,
+        observedFor: const Duration(seconds: 5),
+        observationWindow: common.observationWindow,
+        bufferGrowth: const Duration(seconds: 1),
+        minGrowth: common.minGrowth,
+      ),
+      isFalse,
+    );
+  });
+
+  test('recognizes errors caused by closing an old relay response', () {
+    expect(
+      AdaptivePlayback.isExpectedRelayInterruptionError(
+        'http: Stream ends prematurely at 10, should be 20',
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.isExpectedRelayInterruptionError(
+        'Seek failed (to 832836571, size -38)',
+      ),
+      isTrue,
+    );
+  });
+
+  group('AdaptivePlayback.shouldRecoverFrozenTrack', () {
     test('detects video pts stuck while playback and buffer advance', () {
       expect(
-        AdaptivePlayback.shouldRecoverFrozenVideo(
-          videoPts: const Duration(seconds: 12),
-          lastVideoPts: const Duration(seconds: 12),
+        AdaptivePlayback.shouldRecoverFrozenTrack(
+          trackPts: const Duration(seconds: 12),
+          lastTrackPts: const Duration(seconds: 12),
           position: const Duration(seconds: 40),
           lastPlaybackPosition: const Duration(seconds: 39),
           forwardBuffer: const Duration(seconds: 25),
@@ -172,7 +246,7 @@ void main() {
           noFrameProgressFor: const Duration(seconds: 9),
           freezeTimeout: const Duration(seconds: 8),
           isPlaying: true,
-          isOnlyAudio: false,
+          trackExpected: true,
         ),
         isTrue,
       );
@@ -191,9 +265,9 @@ void main() {
       );
 
       expect(
-        AdaptivePlayback.shouldRecoverFrozenVideo(
-          videoPts: args.videoPts,
-          lastVideoPts: args.lastVideoPts,
+        AdaptivePlayback.shouldRecoverFrozenTrack(
+          trackPts: args.videoPts,
+          lastTrackPts: args.lastVideoPts,
           position: args.position,
           lastPlaybackPosition: args.lastPlaybackPosition,
           forwardBuffer: args.forwardBuffer,
@@ -201,14 +275,14 @@ void main() {
           noFrameProgressFor: args.noFrameProgressFor,
           freezeTimeout: args.freezeTimeout,
           isPlaying: false,
-          isOnlyAudio: false,
+          trackExpected: true,
         ),
         isFalse,
       );
       expect(
-        AdaptivePlayback.shouldRecoverFrozenVideo(
-          videoPts: args.videoPts,
-          lastVideoPts: args.lastVideoPts,
+        AdaptivePlayback.shouldRecoverFrozenTrack(
+          trackPts: args.videoPts,
+          lastTrackPts: args.lastVideoPts,
           position: args.position,
           lastPlaybackPosition: args.lastPlaybackPosition,
           forwardBuffer: args.forwardBuffer,
@@ -216,14 +290,14 @@ void main() {
           noFrameProgressFor: args.noFrameProgressFor,
           freezeTimeout: args.freezeTimeout,
           isPlaying: true,
-          isOnlyAudio: true,
+          trackExpected: false,
         ),
         isFalse,
       );
       expect(
-        AdaptivePlayback.shouldRecoverFrozenVideo(
-          videoPts: args.videoPts,
-          lastVideoPts: args.lastVideoPts,
+        AdaptivePlayback.shouldRecoverFrozenTrack(
+          trackPts: args.videoPts,
+          lastTrackPts: args.lastVideoPts,
           position: args.position,
           lastPlaybackPosition: args.lastPlaybackPosition,
           forwardBuffer: const Duration(seconds: 5),
@@ -231,7 +305,7 @@ void main() {
           noFrameProgressFor: args.noFrameProgressFor,
           freezeTimeout: args.freezeTimeout,
           isPlaying: true,
-          isOnlyAudio: false,
+          trackExpected: true,
         ),
         isFalse,
       );

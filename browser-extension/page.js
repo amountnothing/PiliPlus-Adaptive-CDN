@@ -244,8 +244,7 @@
     switchCount += 1;
     health.lastSwitchAt = Date.now();
     health.lastBufferProgressAt = Date.now();
-    health.lowBufferSince = 0;
-    health.lowBufferPeak = 0;
+    health.bufferBelowTarget = false;
     abortInflightMedia();
     const hosts = [...new Set(targets.map((item) => Core.hostOf(item.currentUrl)).filter(Boolean))];
     lastReason = `${reasonLabel(reason)} → ${hosts.join(" / ")}`;

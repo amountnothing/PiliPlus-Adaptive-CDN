@@ -135,14 +135,15 @@ class VideoDetailController extends GetxController
   late VideoItem firstVideo;
   String? videoUrl;
   String? audioUrl;
+  static const _relayNetworkTimeout = Duration(seconds: 30);
   Duration get _bufferStallTimeout => Duration(
     milliseconds: (Pref.adaptiveStallTimeoutSec * 1000).round(),
   );
   Duration get _lowForwardBuffer => Duration(
     milliseconds: (Pref.adaptiveLowBufferSec * 1000).round(),
   );
-  Duration get _lowBufferStutterWindow => Duration(
-    milliseconds: (Pref.adaptiveLowBufferStutterWindowSec * 1000).round(),
+  Duration get _refillForwardBuffer => Duration(
+    milliseconds: (Pref.adaptiveRefillBufferSec * 1000).round(),
   );
   Duration get _lowBufferStutterMinGrowth => Duration(
     milliseconds: (Pref.adaptiveLowBufferStutterMinGrowthSec * 1000).round(),
@@ -166,9 +167,6 @@ class VideoDetailController extends GetxController
   int _adaptiveBandwidth = 0;
   int _cdnSwitchCount = 0;
   bool _switchingCdn = false;
-  bool _relayStallPaused = false;
-  bool _resumeAfterRelayStall = false;
-  int _relayStallPauseGeneration = 0;
   CdnRelaySession? _cdnRelaySession;
   final List<CdnRelaySession> _retiredCdnRelays = [];
   final List<Timer> _retiredCdnRelayTimers = [];
@@ -181,7 +179,9 @@ class VideoDetailController extends GetxController
   Duration _lastPlaybackPosition = Duration.zero;
   DateTime _lastSeekRebufferAt = DateTime.fromMillisecondsSinceEpoch(0);
   Duration? _lastVideoPts;
+  Duration? _lastAudioPts;
   DateTime _lastVideoFrameProgressAt = DateTime.now();
+  DateTime _lastAudioFrameProgressAt = DateTime.now();
   DateTime _lastVideoFreezeRecoveryAt = DateTime.fromMillisecondsSinceEpoch(0);
   DateTime _lastPlayerErrorRecoveryAt = DateTime.fromMillisecondsSinceEpoch(0);
   int _videoFreezeRecoveryCount = 0;
@@ -783,10 +783,10 @@ class VideoDetailController extends GetxController
     return -1;
   }
 
-  Duration? _readVideoPts() {
+  Duration? _readPts(String property) {
     try {
       final raw = plPlayerController.videoPlayerController?.getProperty(
-        'video-pts',
+        property,
       );
       if (raw == null || raw.isEmpty || raw == 'no') return null;
       final seconds = double.tryParse(raw);
@@ -834,8 +834,10 @@ class VideoDetailController extends GetxController
   }
 
   void _resetVideoFrameHealth(DateTime now) {
-    _lastVideoPts = _readVideoPts();
+    _lastVideoPts = _readPts('video-pts');
+    _lastAudioPts = _readPts('audio-pts');
     _lastVideoFrameProgressAt = now;
+    _lastAudioFrameProgressAt = now;
   }
 
   void _configureAdaptiveSources({
@@ -914,11 +916,17 @@ class VideoDetailController extends GetxController
     final isLocalRelayFailure = _isLocalRelayOpenFailure(event);
     final isBitstreamCorruption = _isVideoBitstreamCorruption(event);
     final isRecoverable = _isRecoverableAdaptivePlayerError(event);
+    final hasReachedContentEnd = AdaptivePlayback.hasReachedContentEnd(
+      duration: plPlayerController.duration.value,
+      position: plPlayerController.position,
+      buffered: plPlayerController.buffered.value,
+    );
+    if (isRecoverable && hasReachedContentEnd) return true;
     if (!Pref.adaptivePlayback ||
         isFileSource ||
         isClosed ||
         plPlayerController.onlyPlayAudio.value ||
-        (!plPlayerController.playerStatus.isPlaying && !isLocalRelayFailure) ||
+        (!plPlayerController.playbackRequested.value && !isLocalRelayFailure) ||
         (!isRecoverable && !isLocalRelayFailure)) {
       return false;
     }
@@ -930,13 +938,6 @@ class VideoDetailController extends GetxController
         ? const Duration(seconds: 2)
         : const Duration(seconds: 8);
     if (now.difference(_lastPlayerErrorRecoveryAt) < recoveryCooldown) {
-      return true;
-    }
-    if (AdaptivePlayback.hasReachedContentEnd(
-      duration: plPlayerController.duration.value,
-      position: plPlayerController.position,
-      buffered: plPlayerController.buffered.value,
-    )) {
       return true;
     }
     if (event.toLowerCase().contains('seek failed') &&
@@ -995,7 +996,9 @@ class VideoDetailController extends GetxController
 
   bool _isExpectedRelayRebuildNoise(String event) {
     final lower = event.toLowerCase();
-    return lower.contains('pad aid') && lower.contains('not connected');
+    return (lower.contains('pad aid') && lower.contains('not connected')) ||
+        (_cdnRelaySession != null &&
+            AdaptivePlayback.isExpectedRelayInterruptionError(event));
   }
 
   Future<void> _recoverFromPlayerError({
@@ -1009,15 +1012,12 @@ class VideoDetailController extends GetxController
       );
       return;
     }
-    final switched = await _switchToNextCdn(
-      rebuildPlayer: true,
-      stopCurrentSourceOnRebuild: forcePlayerRebuild,
-    );
-    if (switched) return;
+    final switched = await _switchToNextCdn();
     if (forcePlayerRebuild) {
       await _rebuildRelayAndPlayer(stopCurrentSource: true);
       return;
     }
+    if (switched) return;
     await _recoverFrozenVideo();
   }
 
@@ -1050,24 +1050,10 @@ class VideoDetailController extends GetxController
     final position = plPlayerController.position;
     final duration = plPlayerController.duration.value;
     final now = DateTime.now();
-    if (_cdnRelaySession?.isStalled == true) {
-      _pauseForRelayStallIfBuffering();
-    }
-    final shouldMonitor =
-        _relayStallPaused ||
-        AdaptivePlayback.shouldAccumulateCdnStall(
-          isPlaying: plPlayerController.playerStatus.isPlaying,
-          isBuffering: plPlayerController.isBuffering.value,
-        );
+    final shouldMonitor = AdaptivePlayback.shouldAccumulateCdnStall(
+      playbackRequested: plPlayerController.playbackRequested.value,
+    );
     _cdnRelaySession?.setPlaybackPaused(!shouldMonitor);
-
-    if (_relayStallPaused) {
-      _lastBufferedPosition = buffered;
-      _lastBufferProgressAt = now;
-      _lastPlaybackPosition = position;
-      _resetVideoFrameHealth(now);
-      return;
-    }
 
     if (!shouldMonitor) {
       // A manual pause may leave isBuffering true for a short time. Do not
@@ -1088,6 +1074,7 @@ class VideoDetailController extends GetxController
       position: position,
       buffered: buffered,
     )) {
+      _cdnRelaySession?.setPlaybackPaused(true);
       // No more bytes are expected once the buffered/played edge reaches the
       // media tail. Reset the stall clock so a later seek starts a fresh check.
       _lastBufferedPosition = buffered;
@@ -1113,7 +1100,7 @@ class VideoDetailController extends GetxController
       return;
     }
 
-    final videoPts = _readVideoPts();
+    final videoPts = _readPts('video-pts');
     final lastVideoPts = _lastVideoPts;
     if (videoPts == null ||
         lastVideoPts == null ||
@@ -1122,20 +1109,42 @@ class VideoDetailController extends GetxController
       _lastVideoPts = videoPts;
       _lastVideoFrameProgressAt = now;
     }
+    final audioPts = _readPts('audio-pts');
+    final lastAudioPts = _lastAudioPts;
+    if (audioPts == null ||
+        lastAudioPts == null ||
+        audioPts < lastAudioPts ||
+        audioPts - lastAudioPts >= const Duration(milliseconds: 250)) {
+      _lastAudioPts = audioPts;
+      _lastAudioFrameProgressAt = now;
+    }
 
     if (positionDelta >= 250) {
-      if (AdaptivePlayback.shouldRecoverFrozenVideo(
-        videoPts: videoPts,
-        lastVideoPts: lastVideoPts,
-        position: position,
-        lastPlaybackPosition: _lastPlaybackPosition,
-        forwardBuffer: forwardBuffer,
-        minForwardBuffer: _lowForwardBuffer,
-        noFrameProgressFor: now.difference(_lastVideoFrameProgressAt),
-        freezeTimeout: const Duration(seconds: 8),
-        isPlaying: plPlayerController.playerStatus.isPlaying,
-        isOnlyAudio: plPlayerController.onlyPlayAudio.value,
-      )) {
+      final isPlaying = plPlayerController.playbackRequested.value;
+      if (AdaptivePlayback.shouldRecoverFrozenTrack(
+            trackPts: videoPts,
+            lastTrackPts: lastVideoPts,
+            position: position,
+            lastPlaybackPosition: _lastPlaybackPosition,
+            forwardBuffer: forwardBuffer,
+            minForwardBuffer: _lowForwardBuffer,
+            noFrameProgressFor: now.difference(_lastVideoFrameProgressAt),
+            freezeTimeout: const Duration(seconds: 8),
+            isPlaying: isPlaying,
+            trackExpected: !plPlayerController.onlyPlayAudio.value,
+          ) ||
+          AdaptivePlayback.shouldRecoverFrozenTrack(
+            trackPts: audioPts,
+            lastTrackPts: lastAudioPts,
+            position: position,
+            lastPlaybackPosition: _lastPlaybackPosition,
+            forwardBuffer: forwardBuffer,
+            minForwardBuffer: _lowForwardBuffer,
+            noFrameProgressFor: now.difference(_lastAudioFrameProgressAt),
+            freezeTimeout: const Duration(seconds: 8),
+            isPlaying: isPlaying,
+            trackExpected: audioUrl?.isNotEmpty == true,
+          )) {
         unawaited(_recoverFrozenVideo());
         return;
       }
@@ -1156,7 +1165,7 @@ class VideoDetailController extends GetxController
 
   void _resetLowBufferWatch(DateTime now, Duration forwardBuffer) {
     _lowBufferTriggered = false;
-    if (forwardBuffer <= _lowForwardBuffer) {
+    if (forwardBuffer <= _refillForwardBuffer) {
       _lowBufferStutterSince = now;
       _lowBufferStutterStart = forwardBuffer;
     } else {
@@ -1188,7 +1197,7 @@ class VideoDetailController extends GetxController
       _resetLowBufferWatch(now, forwardBuffer);
       return false;
     }
-    if (forwardBuffer > _lowForwardBuffer) {
+    if (forwardBuffer > _refillForwardBuffer) {
       _resetLowBufferWatch(now, forwardBuffer);
       return false;
     }
@@ -1198,11 +1207,19 @@ class VideoDetailController extends GetxController
       _lowBufferStutterStart = forwardBuffer;
     }
     final netGrowth = forwardBuffer - _lowBufferStutterStart;
-    if (_lowBufferTriggered ||
-        now.difference(_lowBufferStutterSince!) < _lowBufferStutterWindow) {
+    if (_lowBufferTriggered) {
       return false;
     }
-    if (netGrowth > _lowBufferStutterMinGrowth) {
+    final observedFor = now.difference(_lowBufferStutterSince!);
+    if (observedFor < _bufferStallTimeout) return false;
+    if (!AdaptivePlayback.shouldSwitchForStalledBuffer(
+      forwardBuffer: forwardBuffer,
+      refillThreshold: _refillForwardBuffer,
+      observedFor: observedFor,
+      observationWindow: _bufferStallTimeout,
+      bufferGrowth: netGrowth,
+      minGrowth: _lowBufferStutterMinGrowth,
+    )) {
       _lowBufferStutterSince = now;
       _lowBufferStutterStart = forwardBuffer;
       return false;
@@ -1245,7 +1262,10 @@ class VideoDetailController extends GetxController
 
     _switchingCdn = true;
     _lastVideoFreezeRecoveryAt = now;
+    final pauseGeneration = plPlayerController.manualPauseGeneration;
+    plPlayerController.presentationStalled.value = true;
     try {
+      await plPlayerController.pause(isInterrupt: true);
       playedTime = plPlayerController.position;
       _lastBufferedPosition = plPlayerController.buffered.value;
       _lastBufferProgressAt = now;
@@ -1270,13 +1290,19 @@ class VideoDetailController extends GetxController
       }
     } finally {
       _switchingCdn = false;
+      plPlayerController.presentationStalled.value = false;
+      if (plPlayerController.playbackRequested.value &&
+          pauseGeneration == plPlayerController.manualPauseGeneration) {
+        if (!plPlayerController.playerStatus.isPlaying) {
+          await plPlayerController.play();
+        }
+      } else {
+        await plPlayerController.pause(isInterrupt: true);
+      }
     }
   }
 
-  Future<bool> _switchToNextCdn({
-    bool rebuildPlayer = false,
-    bool stopCurrentSourceOnRebuild = false,
-  }) async {
+  Future<bool> _switchToNextCdn() async {
     if (_switchingCdn ||
         _cdnSwitchCount >= _maxCdnSwitches ||
         videoUrl == null ||
@@ -1292,10 +1318,8 @@ class VideoDetailController extends GetxController
       if (_cdnRelaySession case final relay?) {
         final switched = relay.switchVideo(
           expectedUrl: videoUrl,
-          switchMatchingAudio: true,
         );
         if (!switched) {
-          _cdnHealthTimer?.cancel();
           SmartDialog.showToast(
             '当前视频没有更多可用 CDN',
           );
@@ -1313,14 +1337,6 @@ class VideoDetailController extends GetxController
         _lastBufferedPosition = plPlayerController.buffered.value;
         final now = DateTime.now();
         _resetLowBufferWatchAfterCdnSwitch(now);
-        if (rebuildPlayer) {
-          playedTime = plPlayerController.position;
-          if (stopCurrentSourceOnRebuild) {
-            await plPlayerController.stopCurrentSource();
-          }
-          await _disposeCdnRelay(delayed: true);
-          await playerInit(autoplay: true);
-        }
         return true;
       }
 
@@ -1334,7 +1350,6 @@ class VideoDetailController extends GetxController
         _videoCdnIndex,
       );
       if (nextVideoIndex < 0) {
-        _cdnHealthTimer?.cancel();
         SmartDialog.showToast(
           '当前视频没有更多可用 CDN',
         );
@@ -1396,34 +1411,6 @@ class VideoDetailController extends GetxController
     }
   }
 
-  void _onRelayStall(bool stalled) {
-    if (isClosed) return;
-    if (stalled) {
-      _pauseForRelayStallIfBuffering();
-      return;
-    }
-    if (!_relayStallPaused) return;
-    _relayStallPaused = false;
-    final shouldResume =
-        _resumeAfterRelayStall &&
-        !_switchingCdn &&
-        _relayStallPauseGeneration == plPlayerController.manualPauseGeneration;
-    _resumeAfterRelayStall = false;
-    if (shouldResume) unawaited(plPlayerController.play());
-  }
-
-  void _pauseForRelayStallIfBuffering() {
-    if (_relayStallPaused ||
-        !plPlayerController.isBuffering.value ||
-        !plPlayerController.playerStatus.isPlaying) {
-      return;
-    }
-    _relayStallPaused = true;
-    _resumeAfterRelayStall = true;
-    _relayStallPauseGeneration = plPlayerController.manualPauseGeneration;
-    unawaited(plPlayerController.pause(isInterrupt: true));
-  }
-
   Future<(String, String?)> _relayPlaybackSources() async {
     if (!Pref.adaptivePlayback || _videoCdnCandidates.length < 2) {
       await _disposeAllCdnRelays();
@@ -1452,13 +1439,12 @@ class VideoDetailController extends GetxController
         videoIndex: relayVideoIndex < 0 ? 0 : relayVideoIndex,
         audioCandidates: relayAudioCandidates,
         audioIndex: relayAudioIndex < 0 ? 0 : relayAudioIndex,
-        stallTimeout: _bufferStallTimeout,
+        stallTimeout: _relayNetworkTimeout,
         cooldown: Duration(
           milliseconds: (Pref.adaptiveCdnCooldownSec * 1000).round(),
         ),
         maxSwitches: _maxCdnSwitches,
         onSwitch: _onRelaySwitch,
-        onStall: _onRelayStall,
       );
     } else {
       relay.updateSources(
@@ -2066,6 +2052,7 @@ class VideoDetailController extends GetxController
     final hasUnderlyingVideoPage =
         _activeVideoPageCount > 1 && !plPlayerController.isCloseAll;
     _cdnHealthTimer?.cancel();
+    plPlayerController.presentationStalled.value = false;
     plPlayerController.onPlayerError = null;
     if (hasUnderlyingVideoPage) {
       Utils.reportLog(
@@ -2097,6 +2084,7 @@ class VideoDetailController extends GetxController
 
   void onReset({bool isStein = false}) {
     _cdnHealthTimer?.cancel();
+    plPlayerController.presentationStalled.value = false;
     unawaited(_disposeAllCdnRelays());
     _failedCdnHosts.clear();
     _videoCdnCandidates = const [];

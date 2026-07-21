@@ -24,7 +24,6 @@ abstract final class SettingBoxKey {
       adaptiveStallTimeoutSec = 'adaptiveStallTimeoutSec',
       adaptivePlaybackStallSec = 'adaptivePlaybackStallSec',
       adaptiveSegmentToleranceSec = 'adaptiveSegmentToleranceSec',
-      adaptiveLowBufferStutterWindowSec = 'adaptiveLowBufferStutterWindowSec',
       adaptiveLowBufferStutterMinGrowthSec =
           'adaptiveLowBufferStutterMinGrowthSec',
       adaptiveCdnPullGraceSec = 'adaptiveCdnPullGraceSec',

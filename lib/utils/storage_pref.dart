@@ -281,7 +281,7 @@ abstract final class Pref {
 
   static double get adaptiveStallTimeoutSec => _setting.get(
     SettingBoxKey.adaptiveStallTimeoutSec,
-    defaultValue: 10.0,
+    defaultValue: 5.0,
   );
 
   static double get adaptiveSegmentToleranceSec => _setting.get(
@@ -289,15 +289,21 @@ abstract final class Pref {
     defaultValue: 10.0,
   );
 
-  static double get adaptiveLowBufferStutterWindowSec => _setting.get(
-    SettingBoxKey.adaptiveLowBufferStutterWindowSec,
-    defaultValue: 5.0,
-  );
-
   static double get adaptiveLowBufferStutterMinGrowthSec => _setting.get(
     SettingBoxKey.adaptiveLowBufferStutterMinGrowthSec,
     defaultValue: 1.0,
   );
+
+  static double get adaptiveRefillBufferSec {
+    final targetSec = max(adaptiveTargetBufferSec, 1.0);
+    return min(
+      targetSec,
+      max(
+        adaptiveLowBufferSec + adaptiveSegmentToleranceSec,
+        targetSec - adaptiveSegmentToleranceSec,
+      ),
+    );
+  }
 
   static double get adaptiveCdnCooldownSec => _setting.get(
     SettingBoxKey.adaptiveCdnCooldownSec,
@@ -894,12 +900,7 @@ abstract final class Pref {
     // Adaptive segment tolerance is the refill trigger margin. A 30s target
     // with the default 10s tolerance refills around 20s, close to the old
     // bufSec / 1.5 player behavior instead of forcing constant top-up.
-    final hysteresisSec =
-        max(
-          Pref.adaptiveLowBufferSec + Pref.adaptiveSegmentToleranceSec,
-          targetSec - Pref.adaptiveSegmentToleranceSec,
-        ) *
-        playbackSpeed;
+    final hysteresisSec = Pref.adaptiveRefillBufferSec * playbackSpeed;
     final configuredBytes = Pref.bufferSize * 0x100000;
     final bitrateBytes = bandwidth == null || bandwidth <= 0
         ? 0.0
