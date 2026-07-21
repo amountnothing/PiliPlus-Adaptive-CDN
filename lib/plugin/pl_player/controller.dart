@@ -79,6 +79,7 @@ class PlPlayerController with BlockConfigMixin {
   final playerStatus = PlPlayerStatus(.playing);
 
   final Rx<DataStatus> dataStatus = Rx(.none);
+  final RxBool playbackRequested = true.obs;
   int manualPauseGeneration = 0;
 
   Duration? seekToPos;
@@ -188,6 +189,7 @@ class PlPlayerController with BlockConfigMixin {
   late final RxBool flipY = false.obs;
 
   final RxBool isBuffering = true.obs;
+  final RxBool presentationStalled = false.obs;
 
   /// 全屏方向
   // ignore: unnecessary_getters_setters
@@ -883,6 +885,7 @@ class PlPlayerController with BlockConfigMixin {
       return null;
     }
     if (_videoPlayerController case final ctr? when (ctr.current.isNotEmpty)) {
+      playbackRequested.value = true;
       return ctr.open(
         ctr.current.last.copyWith(start: ctr.state.position),
         play: true,
@@ -969,6 +972,7 @@ class PlPlayerController with BlockConfigMixin {
       ///completed
       stream.completed.listen((bool completed) {
         if (completed) {
+          playbackRequested.value = false;
           playerStatus.value = .completed;
           _wasPlayingOnEnterBackground = false;
           _stopBackgroundReconnectTimer();
@@ -1260,6 +1264,7 @@ class PlPlayerController with BlockConfigMixin {
   /// 播放视频
   Future<void> play({bool repeat = false, bool hideControls = true}) async {
     if (_playerCount == 0) return;
+    playbackRequested.value = true;
     // 播放时自动隐藏控制条
     controls = !hideControls;
     // repeat为true，将从头播放
@@ -1284,6 +1289,7 @@ class PlPlayerController with BlockConfigMixin {
   /// 暂停播放
   Future<void> pause({bool notify = true, bool isInterrupt = false}) async {
     if (!isInterrupt) {
+      playbackRequested.value = false;
       manualPauseGeneration += 1;
       _wasPlayingOnEnterBackground = false;
       _stopBackgroundReconnectTimer();
@@ -1612,10 +1618,12 @@ class PlPlayerController with BlockConfigMixin {
     }
 
     Future<void> send() {
+      final targetCid = cid ?? this.cid;
+      if (targetCid == null) return Future.value();
       return VideoHttp.heartBeat(
         aid: aid ?? _aid,
         bvid: bvid ?? _bvid,
-        cid: cid ?? this.cid,
+        cid: targetCid,
         progress: progress,
         epid: epid ?? _epid,
         seasonId: seasonId ?? _seasonId,

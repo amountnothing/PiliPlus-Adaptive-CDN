@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
+import 'dart:math' show Random;
 
 import 'package:PiliPlus/services/cdn_score_service.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
@@ -176,9 +176,7 @@ class CdnRelaySession {
   Duration _cdnSwitchPullGrace = Duration.zero;
   DateTime _lastPlayerBytesAt = DateTime.fromMillisecondsSinceEpoch(0);
   Completer<void>? _resumeCompleter;
-  final Set<Object> _stalledRequests = {};
-
-  static const _spliceOverlapBytes = 64 * 1024;
+  final Set<CdnRelayTrack> _stalledRequests = {};
 
   bool get isDisposed => _disposed;
   bool get isStalled => _stalledRequests.isNotEmpty;
@@ -242,7 +240,7 @@ class CdnRelaySession {
     }
   }
 
-  void _setRequestStalled(Object request, bool stalled) {
+  void _setRequestStalled(CdnRelayTrack request, bool stalled) {
     final wasStalled = _stalledRequests.isNotEmpty;
     if (stalled) {
       _stalledRequests.add(request);
@@ -264,23 +262,16 @@ class CdnRelaySession {
     _audio.update(audioCandidates, audioIndex);
   }
 
-  bool switchVideo({String? expectedUrl, bool switchMatchingAudio = true}) {
+  bool switchVideo({String? expectedUrl}) {
     if (_disposed || _video.candidates.length < 2) return false;
     if (expectedUrl != null && _video.currentUrl != expectedUrl) return true;
-    final failedHost = VideoUtils.cdnHost(_video.currentUrl);
-    final switched = _video.switchNext(expectedUrl: expectedUrl);
-    if (switched && switchMatchingAudio && failedHost != null) {
-      if (VideoUtils.cdnHost(currentAudioSource) == failedHost) {
-        _audio.switchNext(recordFailure: false);
-      }
-    }
-    return switched;
+    return _video.switchNext(expectedUrl: expectedUrl);
   }
 
   Future<void> _serve(HttpRequest request, CdnRelayTrack type) async {
     final response = request.response;
     final track = type == CdnRelayTrack.video ? _video : _audio;
-    final stallToken = Object();
+    final stallToken = type;
     if (_disposed || track.candidates.isEmpty) {
       response.statusCode = HttpStatus.notFound;
       await response.close();
@@ -300,12 +291,8 @@ class CdnRelaySession {
       return;
     }
 
-    var bytesSent = 0;
-    int? absoluteStart = parsedRange?.start;
     var headersSent = false;
     var attempts = 0;
-    String? lastVerifiedUrl;
-    final sentTail = <int>[];
 
     while (!_disposed && attempts <= track.candidates.length) {
       await _waitUntilPlaybackResumes();
@@ -316,17 +303,11 @@ class CdnRelaySession {
       var sourceBytes = 0;
       var networkWait = Duration.zero;
       var countAttempt = true;
-      final resumeOverlap = min(sentTail.length, bytesSent);
-      var verifiedOverlap = 0;
       try {
         final upstream = await _openUpstream(
           request: request,
           sourceUrl: sourceUrl,
           originalRange: requestedRange,
-          absoluteStart: absoluteStart,
-          bytesSent: bytesSent,
-          resumeOverlap: resumeOverlap,
-          end: parsedRange?.start == null ? null : parsedRange?.end,
         );
         _lastPlayerBytesAt = DateTime.now();
         if (_playbackPaused || track.generation != sourceGeneration) {
@@ -337,17 +318,14 @@ class CdnRelaySession {
         final contentRange = _ContentRange.tryParse(
           upstream.headers.value(HttpHeaders.contentRangeHeader),
         );
-        final expectedStart = (absoluteStart ?? 0) + bytesSent - resumeOverlap;
-        if ((bytesSent > 0 &&
-                (upstream.statusCode != HttpStatus.partialContent ||
-                    contentRange?.start != expectedStart)) ||
-            (bytesSent == 0 &&
-                requestedRange != null &&
-                upstream.statusCode != HttpStatus.partialContent)) {
+        if (requestedRange != null &&
+            (upstream.statusCode != HttpStatus.partialContent ||
+                (parsedRange?.start != null &&
+                    contentRange?.start != parsedRange!.start))) {
           await _cancelResponse(upstream);
           throw const _RelaySourceMismatch();
         }
-        absoluteStart ??= contentRange?.start ?? 0;
+        final absoluteStart = contentRange?.start ?? 0;
         final totalLength =
             contentRange?.total ??
             (upstream.contentLength >= 0
@@ -392,30 +370,11 @@ class CdnRelaySession {
           }
           final hasNext = readResult as bool;
           if (!hasNext) break;
-          final upstreamChunk = iterator.current;
-          sourceBytes += upstreamChunk.length;
-          var chunk = upstreamChunk;
-          if (verifiedOverlap < resumeOverlap) {
-            final remaining = resumeOverlap - verifiedOverlap;
-            final compared = min(remaining, chunk.length);
-            for (var i = 0; i < compared; i++) {
-              if (chunk[i] != sentTail[verifiedOverlap + i]) {
-                throw const _RelaySourceMismatch();
-              }
-            }
-            verifiedOverlap += compared;
-            if (compared == chunk.length) continue;
-            chunk = chunk.sublist(compared);
-          }
+          final chunk = iterator.current;
+          sourceBytes += chunk.length;
           _setRequestStalled(stallToken, false);
           _lastPlayerBytesAt = DateTime.now();
           response.add(chunk);
-          bytesSent += chunk.length;
-          lastVerifiedUrl = sourceUrl;
-          sentTail.addAll(chunk);
-          if (sentTail.length > _spliceOverlapBytes) {
-            sentTail.removeRange(0, sentTail.length - _spliceOverlapBytes);
-          }
           // Respect mpv backpressure. A blocked local client is not a CDN stall.
           await response.flush();
           _lastPlayerBytesAt = DateTime.now();
@@ -432,9 +391,6 @@ class CdnRelaySession {
             networkWait = Duration.zero;
           }
         }
-        if (verifiedOverlap != resumeOverlap) {
-          throw const _RelaySourceMismatch();
-        }
         _setRequestStalled(stallToken, false);
         CdnScoreService.recordSuccess(
           sourceUrl,
@@ -449,8 +405,10 @@ class CdnRelaySession {
         // player has accepted this response, avoid byte-splicing CDN mirrors in
         // one stream; close it so mpv retries with a fresh Range request.
         countAttempt = !_playbackPaused;
-        if (!_playbackPaused) _setRequestStalled(stallToken, true);
-        if (headersSent && sourceUrl != track.currentUrl) continue;
+        if (headersSent && sourceUrl != track.currentUrl) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } on TimeoutException {
         _setRequestStalled(stallToken, true);
         if (_shouldPauseCdnSwitch) {
@@ -473,7 +431,10 @@ class CdnRelaySession {
           rethrow;
         }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
-        if (headersSent) continue;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } on SocketException {
         _setRequestStalled(stallToken, true);
         if (_shouldPauseCdnSwitch) {
@@ -496,7 +457,10 @@ class CdnRelaySession {
           rethrow;
         }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
-        if (headersSent) continue;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } on HttpException {
         _setRequestStalled(stallToken, true);
         if (_shouldPauseCdnSwitch) {
@@ -519,7 +483,10 @@ class CdnRelaySession {
           rethrow;
         }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
-        if (headersSent) continue;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } on _RelaySourceMismatch {
         _setRequestStalled(stallToken, true);
         if (_shouldPauseCdnSwitch) {
@@ -542,7 +509,10 @@ class CdnRelaySession {
           rethrow;
         }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
-        if (headersSent) continue;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } catch (_) {
         _setRequestStalled(stallToken, true);
         if (_shouldPauseCdnSwitch) {
@@ -565,7 +535,10 @@ class CdnRelaySession {
           rethrow;
         }
         if (!_switchAfterFailure(type, sourceUrl)) rethrow;
-        if (headersSent) continue;
+        if (headersSent) {
+          await _closeInterruptedResponse(response);
+          return;
+        }
       } finally {
         await iterator?.cancel();
       }
@@ -580,7 +553,7 @@ class CdnRelaySession {
 
   bool _switchAfterFailure(CdnRelayTrack type, String expectedUrl) {
     return type == CdnRelayTrack.video
-        ? switchVideo(expectedUrl: expectedUrl, switchMatchingAudio: true)
+        ? switchVideo(expectedUrl: expectedUrl)
         : _audio.switchNext(expectedUrl: expectedUrl);
   }
 
@@ -593,17 +566,17 @@ class CdnRelaySession {
     try {
       final socket = await response.detachSocket();
       socket.destroy();
-    } catch (_) {}
+    } catch (_) {
+      try {
+        await response.close();
+      } catch (_) {}
+    }
   }
 
   Future<HttpClientResponse> _openUpstream({
     required HttpRequest request,
     required String sourceUrl,
     required String? originalRange,
-    required int? absoluteStart,
-    required int bytesSent,
-    required int resumeOverlap,
-    required int? end,
   }) async {
     final upstreamRequest = await _client
         .openUrl(request.method, Uri.parse(sourceUrl))
@@ -622,14 +595,8 @@ class CdnRelaySession {
       if (value != null) upstreamRequest.headers.set(header, value);
     }
 
-    if (bytesSent == 0 && originalRange != null) {
+    if (originalRange != null) {
       upstreamRequest.headers.set(HttpHeaders.rangeHeader, originalRange);
-    } else if (bytesSent > 0) {
-      final start = (absoluteStart ?? 0) + bytesSent - resumeOverlap;
-      upstreamRequest.headers.set(
-        HttpHeaders.rangeHeader,
-        'bytes=$start-${end ?? ''}',
-      );
     }
 
     final upstream = await upstreamRequest.close().timeout(stallTimeout);

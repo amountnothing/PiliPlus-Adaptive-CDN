@@ -94,116 +94,27 @@ test("supports selectable preferred codec and legacy AV1 toggle", () => {
   Core.reorderVideoArrays(dash, "avc", () => true);
   assert.equal(Core.codecFamily(dash.video[0].codecs), "avc");
 });
-test("switches after ten seconds without buffer growth below the target", () => {
+test("switches after five seconds when refill grows less than one second", () => {
   const state = Core.createHealthState(0);
-  const settings = { lowBufferSec: 2 };
   const sample = { duration: 100, position: 10, buffered: 25, playing: true, ended: false };
-  assert.equal(Core.evaluateHealth(state, sample, settings, 0), null);
-  assert.equal(Core.evaluateHealth(state, { ...sample, position: 10.3 }, settings, 3_500), null);
-  assert.equal(Core.evaluateHealth(state, { ...sample, position: 10.6 }, settings, 7_000), null);
+  assert.equal(Core.evaluateHealth(state, sample, { lowBufferSec: 2 }, 0), null);
   assert.equal(
-    Core.evaluateHealth(state, { ...sample, position: 10.9 }, settings, 10_000),
+    Core.evaluateHealth(state, { ...sample, buffered: 25.999 }, { lowBufferSec: 2 }, 4_999),
+    null,
+  );
+  assert.equal(
+    Core.evaluateHealth(state, { ...sample, buffered: 25.999 }, { lowBufferSec: 2 }, 5_000),
     "buffer-stall",
   );
 });
 
-test("switches when low buffer fails to recover aggressively", () => {
+test("uses the same refill rule at low buffer and accepts one second growth", () => {
   const state = Core.createHealthState(0);
+  const sample = { duration: 100, position: 25, buffered: 35, playing: true, ended: false };
+  assert.equal(Core.evaluateHealth(state, sample, {}, 0), null);
   assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 10, buffered: 35, playing: true, ended: false },
-      {},
-      0,
-    ),
+    Core.evaluateHealth(state, { ...sample, buffered: 36 }, {}, 5_000),
     null,
-  );
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 25, buffered: 35, playing: true, ended: false },
-      {},
-      1_000,
-    ),
-    null,
-  );
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 30, buffered: 40, playing: true, ended: false },
-      {},
-      6_000,
-    ),
-    "low-buffer",
-  );
-});
-
-
-test("keeps retrying when low buffer stays unrecovered", () => {
-  const state = Core.createHealthState(0);
-  const settings = { lowBufferSec: 10, bufferStallSec: 4 };
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 10, buffered: 35, playing: true, ended: false },
-      settings,
-      0,
-    ),
-    null,
-  );
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 25, buffered: 35, playing: true, ended: false },
-      settings,
-      1_000,
-    ),
-    null,
-  );
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 25.5, buffered: 35, playing: true, ended: false },
-      settings,
-      4_999,
-    ),
-    null,
-  );
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 26, buffered: 35, playing: true, ended: false },
-      settings,
-      6_000,
-    ),
-    "low-buffer",
-  );
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 26.5, buffered: 35, playing: true, ended: false },
-      settings,
-      10_999,
-    ),
-    null,
-  );
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 31, buffered: 40, playing: true, ended: false },
-      settings,
-      11_000,
-    ),
-    null,
-  );
-  assert.equal(
-    Core.evaluateHealth(
-      state,
-      { duration: 100, position: 36, buffered: 45, playing: true, ended: false },
-      settings,
-      16_000,
-    ),
-    "low-buffer",
   );
 });
 
@@ -265,7 +176,7 @@ test("treats a seek jump like startup rebuffering instead of a CDN stall", () =>
   assert.equal(
     Core.evaluateHealth(
       state,
-      { duration: 100, position: 71, buffered: 70, playing: true, ended: false },
+      { duration: 100, position: 70.5, buffered: 70, playing: true, ended: false },
       settings,
       5_000,
     ),
@@ -274,11 +185,11 @@ test("treats a seek jump like startup rebuffering instead of a CDN stall", () =>
   assert.equal(
     Core.evaluateHealth(
       state,
-      { duration: 100, position: 71.5, buffered: 70, playing: true, ended: false },
+      { duration: 100, position: 70.5, buffered: 70, playing: true, ended: false },
       settings,
-      6_000,
+      8_999,
     ),
-    "low-buffer",
+    "buffer-stall",
   );
 });
 test("does not classify the downloaded media tail as a CDN stall", () => {

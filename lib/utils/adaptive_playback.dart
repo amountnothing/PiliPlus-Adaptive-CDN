@@ -19,13 +19,38 @@ abstract final class AdaptivePlayback {
   /// Buffering can remain true briefly after a manual pause. CDN health
   /// timers must follow the user's playback intent instead of that stale flag.
   static bool shouldAccumulateCdnStall({
-    required bool isPlaying,
-    required bool isBuffering,
-  }) => isPlaying;
+    required bool playbackRequested,
+  }) => playbackRequested;
 
-  static bool shouldRecoverFrozenVideo({
-    required Duration? videoPts,
-    required Duration? lastVideoPts,
+  static bool shouldShowLoading({
+    required bool dataLoading,
+    required bool playbackRequested,
+    required bool isBuffering,
+    required bool presentationStalled,
+  }) =>
+      dataLoading || presentationStalled || (playbackRequested && isBuffering);
+
+  static bool shouldSwitchForStalledBuffer({
+    required Duration forwardBuffer,
+    required Duration refillThreshold,
+    required Duration observedFor,
+    required Duration observationWindow,
+    required Duration bufferGrowth,
+    required Duration minGrowth,
+  }) =>
+      forwardBuffer <= refillThreshold &&
+      observedFor >= observationWindow &&
+      bufferGrowth < minGrowth;
+
+  static bool isExpectedRelayInterruptionError(String event) {
+    final lower = event.toLowerCase();
+    return lower.contains('stream ends prematurely') ||
+        (lower.contains('seek failed') && lower.contains('size -'));
+  }
+
+  static bool shouldRecoverFrozenTrack({
+    required Duration? trackPts,
+    required Duration? lastTrackPts,
     required Duration position,
     required Duration lastPlaybackPosition,
     required Duration forwardBuffer,
@@ -33,19 +58,22 @@ abstract final class AdaptivePlayback {
     required Duration noFrameProgressFor,
     required Duration freezeTimeout,
     required bool isPlaying,
-    required bool isOnlyAudio,
+    required bool trackExpected,
   }) {
-    if (!isPlaying || isOnlyAudio || videoPts == null || lastVideoPts == null) {
+    if (!isPlaying ||
+        !trackExpected ||
+        trackPts == null ||
+        lastTrackPts == null) {
       return false;
     }
     if (forwardBuffer < minForwardBuffer) return false;
 
     final playbackAdvanced =
         (position - lastPlaybackPosition).inMilliseconds.abs() >= 250;
-    final videoAdvanced =
-        videoPts - lastVideoPts >= const Duration(milliseconds: 250);
+    final trackAdvanced =
+        trackPts - lastTrackPts >= const Duration(milliseconds: 250);
     return playbackAdvanced &&
-        !videoAdvanced &&
+        !trackAdvanced &&
         noFrameProgressFor >= freezeTimeout;
   }
 

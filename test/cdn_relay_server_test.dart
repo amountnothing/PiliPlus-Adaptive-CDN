@@ -25,7 +25,7 @@ void main() {
     });
 
     test(
-      'keeps one response after verifying the new CDN overlap',
+      'switches CDN behind one stable URL without splicing responses',
       () async {
         final payload = List<int>.generate(32, (index) => index);
         final upstreamStalled = Completer<void>();
@@ -41,6 +41,7 @@ void main() {
         upstreamServers.addAll([first, second]);
 
         final switches = <(String, String)>[];
+        final stalls = <bool>[];
         final session = await relayServer.createSession(
           videoCandidates: [
             'http://127.0.0.1:${first.port}/video.m4s',
@@ -53,24 +54,35 @@ void main() {
           onSwitch: (track, failed, next) {
             if (track == CdnRelayTrack.video) switches.add((failed, next));
           },
+          onStall: stalls.add,
         );
 
         final client = HttpClient();
-        final request = await client.getUrl(Uri.parse(session.videoUrl));
+        final stableUrl = session.videoUrl;
+        final request = await client.getUrl(Uri.parse(stableUrl));
         final response = await request.close();
         await upstreamStalled.future.timeout(const Duration(seconds: 1));
         final firstBytes = await _readBytesAllowingPrematureClose(response);
-        expect(firstBytes, payload);
+        expect(firstBytes.length, lessThanOrEqualTo(8));
+        expect(firstBytes, payload.sublist(0, firstBytes.length));
         expect(switches, hasLength(1));
         expect(
           session.currentVideoSource,
           contains('localhost:${second.port}'),
         );
+
+        final resumedRequest = await client.getUrl(Uri.parse(stableUrl));
+        resumedRequest.headers.set(HttpHeaders.rangeHeader, 'bytes=8-');
+        final resumedBytes = await (await resumedRequest.close())
+            .fold<List<int>>(
+              <int>[],
+              (bytes, chunk) => bytes..addAll(chunk),
+            );
+
+        expect(session.videoUrl, stableUrl);
+        expect(resumedBytes, payload.sublist(8));
+        expect(stalls, [true, false]);
         client.close(force: true);
-        expect(
-          session.currentVideoSource,
-          contains('localhost:${second.port}'),
-        );
       },
     );
 
@@ -91,6 +103,7 @@ void main() {
         upstreamServers.addAll([first, second]);
 
         final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
+        final stalls = <bool>[];
         final session = await relayServer.createSession(
           videoCandidates: [
             firstUrl,
@@ -100,6 +113,7 @@ void main() {
           stallTimeout: const Duration(seconds: 5),
           cooldown: Duration.zero,
           maxSwitches: 3,
+          onStall: stalls.add,
         );
 
         final client = HttpClient();
@@ -118,11 +132,12 @@ void main() {
           session.currentVideoSource,
           contains('localhost:${second.port}'),
         );
+        expect(stalls, isEmpty);
       },
     );
 
     test(
-      'matching audio switch does not double-penalize the same CDN host',
+      'video switch leaves a healthy audio response on its current CDN',
       () async {
         final payload = List<int>.generate(32, (index) => index);
         final first = await _startUpstream(payload);
@@ -149,6 +164,7 @@ void main() {
 
         expect(session.switchVideo(expectedUrl: failedVideo), isTrue);
 
+        expect(session.currentAudioSource, failedAudio);
         final entry = CdnScoreService.entryForUrl(failedVideo);
         expect(entry.failures, 1);
         expect(entry.score, 36);
@@ -360,7 +376,8 @@ void main() {
       final firstBytes = await _readBytesAllowingPrematureClose(response);
       client.close(force: true);
 
-      expect(firstBytes, payload);
+      expect(firstBytes.length, lessThanOrEqualTo(8));
+      expect(firstBytes, payload.sublist(0, firstBytes.length));
       expect(switches, hasLength(1));
       expect(session.currentVideoSource, contains('localhost:${second.port}'));
     });

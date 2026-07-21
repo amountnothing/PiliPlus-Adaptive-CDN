@@ -40,7 +40,7 @@
         <label class="setting"><span><strong>目标缓冲</strong><small>低于目标后开始观察缓冲增长。</small></span><input data-setting="targetBufferSec" type="number" min="5" max="120" step="1" /><em>秒</em></label>
         <label class="setting"><span><strong>回填触发容差</strong><small>浏览器不能强制播放器拉满缓冲；低于目标约该秒数后开始观察并换 CDN；默认 10 秒。</small></span><input data-setting="segmentToleranceSec" type="number" min="0" max="30" step="0.5" /><em>秒</em></label>
         <label class="setting"><span><strong>低缓冲阈值</strong><small>缓冲低于该值时切换。</small></span><input data-setting="lowBufferSec" type="number" min="2" max="30" step="1" /><em>秒</em></label>
-        <label class="setting"><span><strong>缓冲停滞判定</strong><small>非片尾且缓冲没有增长的持续时间。</small></span><input data-setting="bufferStallSec" type="number" min="2" max="60" step="1" /><em>秒</em></label>
+        <label class="setting"><span><strong>缓冲停滞判定</strong><small>每次开始回填后观察该时长，缓冲净增长不足 1 秒则换源。</small></span><input data-setting="bufferStallSec" type="number" min="2" max="60" step="1" /><em>秒</em></label>
         <label class="setting"><span><strong>片尾排除范围</strong><small>已下载至片尾时不把“无新数据”判作故障。</small></span><input data-setting="endToleranceSec" type="number" min="0" max="10" step="0.5" /><em>秒</em></label>
       </section>
 
