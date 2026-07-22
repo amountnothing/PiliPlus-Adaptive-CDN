@@ -212,16 +212,17 @@
   - 原生 overlay 局部接管：讨论过，可能增加复杂度/维护成本，暂未采用。
   - 当前方向：封面 Hero + 视频页下层滑入 + 返回时整页/整卡 Hero。
 - 最近的动画状态：
-  - 用户认为方向基本符合描述。
-  - 最新问题：打开动画轨迹看起来还不是直线移动。
-  - 最新处理：保留上一版结构，仅新增打开动画日志，不继续盲改。
+  - 2026-07-22 用户确认当前版本动画没有问题，后续改动若产生回归应立即撤回。
+  - 已确认 `video-cover-*` 只是封面和整卡共用的关联键：`_videoCoverRects` 保存封面矩形，`_videoCardTargetReaders` / `_videoCardRects` 保存返回动画使用的整卡矩形。
+  - `cardRect` 出现全宽比例并不代表误抓封面；当前预测返回按设计将整页缩回整张来源卡片，不要改成只缩回封面。
+  - 当前可回退的动画代码基线为 `1037daba4`。
 
 ## 5. 项目暂停分区
 
 ### 当前暂停点
 
-日期：2026-07-01  
-最后完成事项：为打开动画添加诊断日志，并编译过 arm64-v8a release APK。
+日期：2026-07-22
+最后完成事项：核对并记录当前已认可的打开/预测返回动画实现。
 
 最新 APK 输出路径：
 
@@ -229,36 +230,20 @@
 build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 ```
 
-当前未解决重点：
-
-- 打开视频卡片时，用户视觉上认为封面 Hero 轨迹仍不是直线。
-- 下一步不要先改动画；先让用户安装最新包、复现一次、导出日志。
-- 重点看日志：
-  - `VideoOpenAnim: coverHeroFlight ... fromRect=... toRect=...`
-  - `VideoOpenAnim: heroRectSample label=cover:...`
-  - `VideoOpenAnim: pageInternalSlide sample=...`
+当前没有待修复的动画问题。除非用户提供新的可复现回归，不要继续调整动画目标、比例或页面层级。
 
 ### 继续项目时先做什么
 
 1. 读取本文档。
 2. 看 `git status --short`，确认用户未提交改动和当前工作树。
-3. 如果用户给了新日志，先筛选：
-
-```powershell
-Select-String -Path <日志文件> -Pattern "VideoOpenAnim|PredictiveBack"
-```
-
-4. 判断：
-   - `heroRectSample` 是否直线。
-   - `toRect` 是否在飞行中变动。
-   - `pageInternalSlide` 是否和 Hero 同时发生、方向是否与点击卡片位置一致。
-5. 只改最小必要点；改完跑：
+3. 如果出现动画回归，先与 `1037daba4` 对比相关文件，只改最小必要点。
+4. 改完跑：
 
 ```powershell
 ..\.tooling\flutter\bin\flutter.bat analyze lib\utils\page_utils.dart lib\pages\video\view.dart lib\pages\dynamics\widgets\dynamic_panel.dart
 ```
 
-6. 用户要测试包时编译：
+5. 用户要测试包时编译：
 
 ```powershell
 ..\.tooling\flutter\bin\flutter.bat build apk --release --target-platform android-arm64 --split-per-abi
