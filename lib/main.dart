@@ -414,7 +414,7 @@ class _PredictiveBackGestureDispatcherState
     }
     _route = route;
     PredictiveBackProgress.start(backEvent.progress);
-    Utils.reportLog(() => 'PredictiveBack: start ${route.settings.name}');
+    // Utils.reportLog(() => 'PredictiveBack: start ${route.settings.name}');
     route.handleStartBackGesture(progress: 1 - backEvent.progress);
     return true;
   }
@@ -434,7 +434,7 @@ class _PredictiveBackGestureDispatcherState
     final route = _route;
     _route = null;
     PredictiveBackProgress.reset();
-    Utils.reportLog(() => 'PredictiveBack: cancel ${route?.settings.name}');
+    // Utils.reportLog(() => 'PredictiveBack: cancel ${route?.settings.name}');
     route?.handleCancelBackGesture();
   }
 
@@ -446,7 +446,7 @@ class _PredictiveBackGestureDispatcherState
       return;
     }
     PredictiveBackProgress.update(1);
-    Utils.reportLog(() => 'PredictiveBack: commit ${route.settings.name}');
+    // Utils.reportLog(() => 'PredictiveBack: commit ${route.settings.name}');
     final navigator = route.navigator;
     navigator?.pop();
     Future.delayed(

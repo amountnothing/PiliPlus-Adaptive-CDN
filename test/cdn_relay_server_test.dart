@@ -25,13 +25,14 @@ void main() {
     });
 
     test(
-      'switches CDN behind one stable URL without splicing responses',
+      'closes the active response and serves the next Range from the new CDN',
       () async {
-        final payload = List<int>.generate(32, (index) => index);
+        const prefixLength = 300 * 1024;
+        final payload = List<int>.generate(512 * 1024, (index) => index % 256);
         final upstreamStalled = Completer<void>();
         final first = await _startUpstream(
           payload,
-          stallAfterBytes: 8,
+          stallAfterBytes: prefixLength,
           stallFor: const Duration(seconds: 2),
           onStallStarted: () {
             if (!upstreamStalled.isCompleted) upstreamStalled.complete();
@@ -41,48 +42,60 @@ void main() {
         upstreamServers.addAll([first, second]);
 
         final switches = <(String, String)>[];
-        final stalls = <bool>[];
+        final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
         final session = await relayServer.createSession(
           videoCandidates: [
-            'http://127.0.0.1:${first.port}/video.m4s',
+            firstUrl,
             'http://localhost:${second.port}/video.m4s',
           ],
           videoIndex: 0,
-          stallTimeout: const Duration(milliseconds: 500),
           cooldown: Duration.zero,
           maxSwitches: 3,
           onSwitch: (track, failed, next) {
             if (track == CdnRelayTrack.video) switches.add((failed, next));
           },
-          onStall: stalls.add,
         );
 
         final client = HttpClient();
         final stableUrl = session.videoUrl;
         final request = await client.getUrl(Uri.parse(stableUrl));
         final response = await request.close();
-        await upstreamStalled.future.timeout(const Duration(seconds: 1));
-        final firstBytes = await _readBytesAllowingPrematureClose(response);
-        expect(firstBytes.length, lessThanOrEqualTo(8));
-        expect(firstBytes, payload.sublist(0, firstBytes.length));
+        final receivedPrefix = Completer<void>();
+        final readFuture = _readBytesAllowingPrematureClose(
+          response,
+          onBytes: (bytes) {
+            if (bytes.length >= prefixLength && !receivedPrefix.isCompleted) {
+              receivedPrefix.complete();
+            }
+          },
+        );
+        await receivedPrefix.future.timeout(const Duration(seconds: 1));
+        expect(
+          session.switchVideo(expectedUrl: firstUrl, reason: 'test'),
+          isTrue,
+        );
+        final firstBytes = await readFuture;
+
+        expect(firstBytes, payload.sublist(0, prefixLength));
         expect(switches, hasLength(1));
         expect(
           session.currentVideoSource,
           contains('localhost:${second.port}'),
         );
-
+        expect(session.videoUrl, stableUrl);
         final resumedRequest = await client.getUrl(Uri.parse(stableUrl));
-        resumedRequest.headers.set(HttpHeaders.rangeHeader, 'bytes=8-');
+        resumedRequest.headers.set(
+          HttpHeaders.rangeHeader,
+          'bytes=$prefixLength-',
+        );
         final resumedBytes = await (await resumedRequest.close())
             .fold<List<int>>(
               <int>[],
               (bytes, chunk) => bytes..addAll(chunk),
             );
-
-        expect(session.videoUrl, stableUrl);
-        expect(resumedBytes, payload.sublist(8));
-        expect(stalls, [true, false]);
         client.close(force: true);
+
+        expect(resumedBytes, payload.sublist(prefixLength));
       },
     );
 
@@ -90,49 +103,48 @@ void main() {
       'controller switch selects the next CDN without changing local URL',
       () async {
         final payload = List<int>.generate(32, (index) => index);
-        final upstreamStalled = Completer<void>();
+        final requestStarted = Completer<void>();
         final first = await _startUpstream(
           payload,
-          stallAfterBytes: 8,
-          stallFor: const Duration(seconds: 2),
-          onStallStarted: () {
-            if (!upstreamStalled.isCompleted) upstreamStalled.complete();
+          responseDelay: const Duration(seconds: 2),
+          onRequest: () {
+            if (!requestStarted.isCompleted) requestStarted.complete();
           },
         );
         final second = await _startUpstream(payload);
         upstreamServers.addAll([first, second]);
 
         final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
-        final stalls = <bool>[];
         final session = await relayServer.createSession(
           videoCandidates: [
             firstUrl,
             'http://localhost:${second.port}/video.m4s',
           ],
           videoIndex: 0,
-          stallTimeout: const Duration(seconds: 5),
           cooldown: Duration.zero,
           maxSwitches: 3,
-          onStall: stalls.add,
         );
 
         final client = HttpClient();
         final stableUrl = session.videoUrl;
         final request = await client.getUrl(Uri.parse(session.videoUrl));
-        final response = await request.close();
-        final subscription = response.listen(null);
+        final responseFuture = request.close();
 
-        await upstreamStalled.future.timeout(const Duration(seconds: 1));
+        await requestStarted.future.timeout(const Duration(seconds: 1));
         expect(session.switchVideo(expectedUrl: firstUrl), isTrue);
-        await subscription.cancel();
+        final response = await responseFuture;
+        final bytes = await response.fold<List<int>>(
+          <int>[],
+          (buffer, chunk) => buffer..addAll(chunk),
+        );
         client.close(force: true);
 
         expect(session.videoUrl, stableUrl);
+        expect(bytes, payload);
         expect(
           session.currentVideoSource,
           contains('localhost:${second.port}'),
         );
-        expect(stalls, isEmpty);
       },
     );
 
@@ -157,7 +169,6 @@ void main() {
             'http://localhost:${second.port}/audio.m4s',
           ],
           audioIndex: 0,
-          stallTimeout: const Duration(milliseconds: 500),
           cooldown: Duration.zero,
           maxSwitches: 3,
         );
@@ -172,114 +183,16 @@ void main() {
     );
 
     test(
-      'does not switch CDN while CDN failure switching is paused',
-      () async {
-        final payload = List<int>.generate(32, (index) => index);
-        final upstreamStalled = Completer<void>();
-        final first = await _startUpstream(
-          payload,
-          stallAfterBytes: 8,
-          stallFor: const Duration(seconds: 2),
-          onStallStarted: () {
-            if (!upstreamStalled.isCompleted) upstreamStalled.complete();
-          },
-        );
-        final second = await _startUpstream(payload);
-        upstreamServers.addAll([first, second]);
-
-        final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
-        final switches = <(String, String)>[];
-        final session = await relayServer.createSession(
-          videoCandidates: [
-            firstUrl,
-            'http://localhost:${second.port}/video.m4s',
-          ],
-          videoIndex: 0,
-          stallTimeout: const Duration(milliseconds: 300),
-          cooldown: Duration.zero,
-          maxSwitches: 3,
-          onSwitch: (track, failed, next) {
-            if (track == CdnRelayTrack.video) switches.add((failed, next));
-          },
-        );
-        session.setCdnSwitchPaused(true);
-
-        final client = HttpClient();
-        final request = await client.getUrl(Uri.parse(session.videoUrl));
-        final response = await request.close();
-        final readFuture = _readBytesAllowingPrematureClose(response);
-
-        await upstreamStalled.future.timeout(const Duration(seconds: 1));
-        await readFuture;
-        client.close(force: true);
-
-        expect(switches, isEmpty);
-        expect(session.currentVideoSource, firstUrl);
-        expect(CdnScoreService.entryForUrl(firstUrl).failures, 0);
-      },
-    );
-
-    test(
-      'recent player byte delivery pauses CDN failure switching',
-      () async {
-        final payload = List<int>.generate(32, (index) => index);
-        final upstreamStalled = Completer<void>();
-        final first = await _startUpstream(
-          payload,
-          stallAfterBytes: 8,
-          stallFor: const Duration(seconds: 2),
-          onStallStarted: () {
-            if (!upstreamStalled.isCompleted) upstreamStalled.complete();
-          },
-        );
-        final second = await _startUpstream(payload);
-        upstreamServers.addAll([first, second]);
-
-        final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
-        final switches = <(String, String)>[];
-        final session = await relayServer.createSession(
-          videoCandidates: [
-            firstUrl,
-            'http://localhost:${second.port}/video.m4s',
-          ],
-          videoIndex: 0,
-          stallTimeout: const Duration(milliseconds: 300),
-          cooldown: Duration.zero,
-          maxSwitches: 3,
-          onSwitch: (track, failed, next) {
-            if (track == CdnRelayTrack.video) switches.add((failed, next));
-          },
-        );
-        session.setCdnSwitchPullGrace(const Duration(seconds: 3));
-
-        final client = HttpClient();
-        final request = await client.getUrl(Uri.parse(session.videoUrl));
-        final response = await request.close();
-
-        await upstreamStalled.future.timeout(const Duration(seconds: 1));
-        await _readBytesAllowingPrematureClose(response);
-        client.close(force: true);
-
-        expect(switches, isEmpty);
-        expect(session.currentVideoSource, firstUrl);
-        expect(session.isCdnSwitchPaused, isTrue);
-        expect(CdnScoreService.entryForUrl(firstUrl).failures, 0);
-      },
-    );
-
-    test(
       'pauses CDN switching when the whole network looks impaired',
       () async {
         final payload = List<int>.generate(32, (index) => index);
         final first = await _startUpstream(
           payload,
-          stallAfterBytes: 0,
-          stallFor: const Duration(seconds: 2),
+          disconnectAfterBytes: 0,
         );
         final second = await _startUpstream(
           payload,
-          stallAfterBytes: 0,
-          stallFor: const Duration(seconds: 2),
+          disconnectAfterBytes: 0,
         );
         upstreamServers.addAll([first, second]);
 
@@ -290,7 +203,6 @@ void main() {
             'http://localhost:${second.port}/video.m4s',
           ],
           videoIndex: 0,
-          stallTimeout: const Duration(milliseconds: 300),
           cooldown: Duration.zero,
           maxSwitches: 3,
           onSwitch: (track, failed, next) {
@@ -326,61 +238,86 @@ void main() {
           session.currentVideoSource,
           contains('localhost:${second.port}'),
         );
+        expect(session.isNetworkSwitchPaused, isFalse);
+
+        final thirdClient = HttpClient();
+        final thirdRequest = await thirdClient.getUrl(
+          Uri.parse(session.videoUrl),
+        );
+        final thirdResponse = await thirdRequest.close();
+        await _readBytesAllowingPrematureClose(thirdResponse);
+        thirdClient.close(force: true);
+
         expect(session.isNetworkSwitchPaused, isTrue);
       },
     );
 
-    test('manual pause suspends relay timeout and CDN penalties', () async {
-      final payload = List<int>.generate(32, (index) => index);
-      final upstreamStalled = Completer<void>();
-      final first = await _startUpstream(
-        payload,
-        stallAfterBytes: 8,
-        stallFor: const Duration(seconds: 3),
-        onStallStarted: () {
-          if (!upstreamStalled.isCompleted) upstreamStalled.complete();
-        },
-      );
-      final second = await _startUpstream(payload);
-      upstreamServers.addAll([first, second]);
+    test(
+      'manual pause closes the active response without CDN penalty',
+      () async {
+        final payload = List<int>.generate(32, (index) => index);
+        final upstreamStalled = Completer<void>();
+        final first = await _startUpstream(
+          payload,
+          stallAfterBytes: 8,
+          stallFor: const Duration(milliseconds: 100),
+          onStallStarted: () {
+            if (!upstreamStalled.isCompleted) upstreamStalled.complete();
+          },
+        );
+        final second = await _startUpstream(payload);
+        upstreamServers.addAll([first, second]);
 
-      final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
-      final switches = <(String, String)>[];
-      final session = await relayServer.createSession(
-        videoCandidates: [
-          firstUrl,
-          'http://localhost:${second.port}/video.m4s',
-        ],
-        videoIndex: 0,
-        stallTimeout: const Duration(milliseconds: 500),
-        cooldown: Duration.zero,
-        maxSwitches: 3,
-        onSwitch: (track, failed, next) {
-          if (track == CdnRelayTrack.video) switches.add((failed, next));
-        },
-      );
+        final firstUrl = 'http://127.0.0.1:${first.port}/video.m4s';
+        final switches = <(String, String)>[];
+        final session = await relayServer.createSession(
+          videoCandidates: [
+            firstUrl,
+            'http://localhost:${second.port}/video.m4s',
+          ],
+          videoIndex: 0,
+          cooldown: Duration.zero,
+          maxSwitches: 3,
+          onSwitch: (track, failed, next) {
+            if (track == CdnRelayTrack.video) switches.add((failed, next));
+          },
+        );
 
-      final client = HttpClient();
-      final request = await client.getUrl(Uri.parse(session.videoUrl));
-      final responseFuture = request.close();
+        final client = HttpClient();
+        final request = await client.getUrl(Uri.parse(session.videoUrl));
+        final responseFuture = request.close();
 
-      await upstreamStalled.future.timeout(const Duration(seconds: 1));
-      session.setPlaybackPaused(true);
-      await Future<void>.delayed(const Duration(milliseconds: 700));
+        await upstreamStalled.future.timeout(const Duration(seconds: 1));
+        session.setPlaybackPaused(true);
+        await Future<void>.delayed(const Duration(milliseconds: 700));
 
-      expect(switches, isEmpty);
-      expect(session.currentVideoSource, firstUrl);
+        expect(switches, isEmpty);
+        expect(session.currentVideoSource, firstUrl);
 
-      session.setPlaybackPaused(false);
-      final response = await responseFuture;
-      final firstBytes = await _readBytesAllowingPrematureClose(response);
-      client.close(force: true);
+        session.setPlaybackPaused(false);
+        final response = await responseFuture;
+        final bytes = await _readBytesAllowingPrematureClose(response);
 
-      expect(firstBytes.length, lessThanOrEqualTo(8));
-      expect(firstBytes, payload.sublist(0, firstBytes.length));
-      expect(switches, hasLength(1));
-      expect(session.currentVideoSource, contains('localhost:${second.port}'));
-    });
+        expect(bytes.length, lessThanOrEqualTo(8));
+        expect(bytes, payload.sublist(0, bytes.length));
+        expect(switches, isEmpty);
+        expect(session.currentVideoSource, firstUrl);
+        expect(CdnScoreService.entryForUrl(firstUrl).failures, 0);
+
+        final resumedRequest = await client.getUrl(Uri.parse(session.videoUrl));
+        resumedRequest.headers.set(
+          HttpHeaders.rangeHeader,
+          'bytes=${bytes.length}-',
+        );
+        final resumedBytes = await (await resumedRequest.close())
+            .fold<List<int>>(
+              <int>[],
+              (buffer, chunk) => buffer..addAll(chunk),
+            );
+        client.close(force: true);
+        expect(resumedBytes, payload.sublist(bytes.length));
+      },
+    );
 
     test('forwards byte ranges without changing the player URL', () async {
       final payload = List<int>.generate(32, (index) => index);
@@ -389,7 +326,6 @@ void main() {
       final session = await relayServer.createSession(
         videoCandidates: ['http://127.0.0.1:${upstream.port}/video.m4s'],
         videoIndex: 0,
-        stallTimeout: const Duration(seconds: 1),
         cooldown: Duration.zero,
         maxSwitches: 3,
       );
@@ -415,11 +351,18 @@ void main() {
 Future<HttpServer> _startUpstream(
   List<int> payload, {
   int? stallAfterBytes,
+  int? disconnectAfterBytes,
+  Duration responseDelay = Duration.zero,
   Duration stallFor = Duration.zero,
+  void Function()? onRequest,
   void Function()? onStallStarted,
 }) async {
   final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
   server.listen((request) async {
+    onRequest?.call();
+    if (responseDelay > Duration.zero) {
+      await Future<void>.delayed(responseDelay);
+    }
     final range = request.headers.value(HttpHeaders.rangeHeader);
     final match = range == null
         ? null
@@ -443,11 +386,16 @@ Future<HttpServer> _startUpstream(
 
     final body = payload.sublist(start, end + 1);
     final firstLength = stallAfterBytes == null
-        ? body.length
+        ? (disconnectAfterBytes ?? body.length).clamp(0, body.length)
         : stallAfterBytes.clamp(0, body.length);
     try {
       response.add(body.sublist(0, firstLength));
       await response.flush();
+      if (disconnectAfterBytes != null) {
+        final socket = await response.detachSocket();
+        socket.destroy();
+        return;
+      }
       if (firstLength < body.length) {
         onStallStarted?.call();
         await Future<void>.delayed(stallFor);
@@ -462,13 +410,17 @@ Future<HttpServer> _startUpstream(
 }
 
 Future<List<int>> _readBytesAllowingPrematureClose(
-  HttpClientResponse response,
-) async {
+  HttpClientResponse response, {
+  void Function(List<int> bytes)? onBytes,
+}) async {
   final bytes = <int>[];
   final completer = Completer<List<int>>();
   late final StreamSubscription<List<int>> subscription;
   subscription = response.listen(
-    bytes.addAll,
+    (chunk) {
+      bytes.addAll(chunk);
+      onBytes?.call(bytes);
+    },
     onError: (Object _, StackTrace _) {
       if (!completer.isCompleted) completer.complete(bytes);
     },

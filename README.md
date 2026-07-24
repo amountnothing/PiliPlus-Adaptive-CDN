@@ -1,6 +1,6 @@
 > [!IMPORTANT]
 > **PiliPlus Adaptive CDN** 是面向海外及网络波动环境的 PiliPlus 改版。
-> 自适应播放开启后，会优先使用 HEVC、次选 AVC，并提供冻结恢复解码方案；播放器会按目标缓冲主动回填，结合 CDN 实际拉取超时、回填触发容差和低缓冲兜底判断切换时机。CDN 候选按稳定性评分降序选择，支持遍历全部候选；故障 CDN 会进入冷却并在当前视频内排除。切换通过本地 Range Relay 完成，尽量保留已下载缓冲，不因为换 CDN 重载整段视频。关闭自适应播放后，CDN、测速、解码、缓冲等手动设置恢复原有 PiliPlus 行为。
+> 自适应播放开启后，会优先使用 HEVC、次选 AVC，并提供冻结恢复解码方案；播放器会按目标缓冲主动回填，结合缓冲净增长观察、回填触发容差和低缓冲兜底判断切换时机。CDN 候选按稳定性评分降序选择，支持遍历全部候选；故障 CDN 会进入冷却并在当前视频内排除。切换通过本地 Range Relay 完成，尽量保留已下载缓冲，不因为换 CDN 重载整段视频。关闭自适应播放后，CDN、测速、解码、缓冲等手动设置恢复原有 PiliPlus 行为。
 >
 > GitHub Actions 会定期检查 [PiliPlus 上游 Release](https://github.com/bggRGjQaUbCoE/PiliPlus/releases)。发现新版本后会尝试合并上游并自动构建 Android Release；若存在代码冲突则停止更新，避免覆盖自适应播放逻辑。
 >

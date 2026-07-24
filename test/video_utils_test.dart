@@ -141,7 +141,8 @@ void main() {
     test('ignores a stale buffering flag after a manual pause', () {
       expect(
         AdaptivePlayback.shouldAccumulateCdnStall(
-          playbackRequested: false,
+          playbackRequested: true,
+          isPlaying: false,
         ),
         isFalse,
       );
@@ -151,6 +152,7 @@ void main() {
       expect(
         AdaptivePlayback.shouldAccumulateCdnStall(
           playbackRequested: true,
+          isPlaying: true,
         ),
         isTrue,
       );
@@ -187,12 +189,44 @@ void main() {
     );
   });
 
+  test('player rebuild resumes only from the same media checkpoint', () {
+    expect(
+      AdaptivePlayback.rebuildResumePosition(
+        checkpointCid: 1,
+        targetCid: 1,
+        checkpoint: const Duration(seconds: 42),
+        requested: const Duration(seconds: 10),
+      ),
+      const Duration(seconds: 42),
+    );
+    expect(
+      AdaptivePlayback.rebuildResumePosition(
+        checkpointCid: 1,
+        targetCid: 2,
+        checkpoint: const Duration(seconds: 42),
+        requested: const Duration(seconds: 10),
+      ),
+      const Duration(seconds: 10),
+    );
+  });
+
   test('buffer stall requires 5s with less than 1s growth', () {
     const common = (
       forwardBuffer: Duration(seconds: 8),
       refillThreshold: Duration(seconds: 20),
       observationWindow: Duration(seconds: 5),
       minGrowth: Duration(seconds: 1),
+    );
+    expect(
+      AdaptivePlayback.shouldSwitchForStalledBuffer(
+        forwardBuffer: common.forwardBuffer,
+        refillThreshold: common.refillThreshold,
+        observedFor: const Duration(milliseconds: 4999),
+        observationWindow: common.observationWindow,
+        bufferGrowth: Duration.zero,
+        minGrowth: common.minGrowth,
+      ),
+      isFalse,
     );
     expect(
       AdaptivePlayback.shouldSwitchForStalledBuffer(
@@ -234,13 +268,11 @@ void main() {
   });
 
   group('AdaptivePlayback.shouldRecoverFrozenTrack', () {
-    test('detects video pts stuck while playback and buffer advance', () {
+    test('detects a stuck pts even when the playback clock also stops', () {
       expect(
         AdaptivePlayback.shouldRecoverFrozenTrack(
           trackPts: const Duration(seconds: 12),
           lastTrackPts: const Duration(seconds: 12),
-          position: const Duration(seconds: 40),
-          lastPlaybackPosition: const Duration(seconds: 39),
           forwardBuffer: const Duration(seconds: 25),
           minForwardBuffer: const Duration(seconds: 10),
           noFrameProgressFor: const Duration(seconds: 9),
@@ -256,8 +288,6 @@ void main() {
       const args = (
         videoPts: Duration(seconds: 12),
         lastVideoPts: Duration(seconds: 12),
-        position: Duration(seconds: 40),
-        lastPlaybackPosition: Duration(seconds: 39),
         forwardBuffer: Duration(seconds: 25),
         minForwardBuffer: Duration(seconds: 10),
         noFrameProgressFor: Duration(seconds: 9),
@@ -268,8 +298,6 @@ void main() {
         AdaptivePlayback.shouldRecoverFrozenTrack(
           trackPts: args.videoPts,
           lastTrackPts: args.lastVideoPts,
-          position: args.position,
-          lastPlaybackPosition: args.lastPlaybackPosition,
           forwardBuffer: args.forwardBuffer,
           minForwardBuffer: args.minForwardBuffer,
           noFrameProgressFor: args.noFrameProgressFor,
@@ -283,8 +311,6 @@ void main() {
         AdaptivePlayback.shouldRecoverFrozenTrack(
           trackPts: args.videoPts,
           lastTrackPts: args.lastVideoPts,
-          position: args.position,
-          lastPlaybackPosition: args.lastPlaybackPosition,
           forwardBuffer: args.forwardBuffer,
           minForwardBuffer: args.minForwardBuffer,
           noFrameProgressFor: args.noFrameProgressFor,
@@ -298,8 +324,6 @@ void main() {
         AdaptivePlayback.shouldRecoverFrozenTrack(
           trackPts: args.videoPts,
           lastTrackPts: args.lastVideoPts,
-          position: args.position,
-          lastPlaybackPosition: args.lastPlaybackPosition,
           forwardBuffer: const Duration(seconds: 5),
           minForwardBuffer: args.minForwardBuffer,
           noFrameProgressFor: args.noFrameProgressFor,

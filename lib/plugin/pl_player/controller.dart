@@ -35,6 +35,7 @@ import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/android/android_helper.dart';
 import 'package:PiliPlus/utils/android/bindings.g.dart';
+import 'package:PiliPlus/utils/adaptive_playback.dart';
 import 'package:PiliPlus/utils/asset_utils.dart';
 import 'package:PiliPlus/utils/device_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
@@ -90,6 +91,9 @@ class PlPlayerController with BlockConfigMixin {
 
   int get positionInMilliseconds =>
       videoPlayerController?.state.position.inMilliseconds ?? 0;
+  Duration? _rebuildPosition;
+  int? _rebuildCid;
+  int? _activeCid;
 
   final RxInt buffered = RxInt(0);
 
@@ -621,6 +625,13 @@ class PlPlayerController with BlockConfigMixin {
     Volume? volume,
     bool autoFullScreenFlag = false,
   }) async {
+    _checkpointForRebuild();
+    final resumeAt = AdaptivePlayback.rebuildResumePosition(
+      checkpointCid: _rebuildCid,
+      targetCid: cid,
+      checkpoint: _rebuildPosition,
+      requested: seekTo,
+    );
     try {
       _processing = true;
       this.isLive = isLive;
@@ -648,14 +659,16 @@ class PlPlayerController with BlockConfigMixin {
       cancelLongPressTimer();
       if (_videoPlayerController != null &&
           _videoPlayerController!.state.playing) {
-        await pause(notify: false);
+        await pause(notify: false, isInterrupt: true);
       }
 
       if (_playerCount == 0) {
         return;
       }
       // 配置Player 音轨、字幕等等
-      await _createVideoController(dataSource, seekTo, volume);
+      await _createVideoController(dataSource, resumeAt, volume);
+      _activeCid = cid;
+      _clearRebuildCheckpoint();
 
       if (_playerCount == 0) {
         _removeListeners();
@@ -666,7 +679,7 @@ class PlPlayerController with BlockConfigMixin {
       }
 
       updateDuration(duration ?? _videoPlayerController!.state.duration);
-      position.value = buffered.value = seekTo?.inSeconds ?? 0;
+      position.value = buffered.value = resumeAt?.inSeconds ?? 0;
 
       dataStatus.value = .loaded;
 
@@ -880,22 +893,55 @@ class PlPlayerController with BlockConfigMixin {
     );
   }
 
+  void _checkpointForRebuild() {
+    final currentPosition =
+        _videoPlayerController?.state.position ??
+        Duration(seconds: position.value);
+    if (_activeCid == null ||
+        currentPosition <= Duration.zero ||
+        playerStatus.isCompleted) {
+      return;
+    }
+    if (_rebuildCid == _activeCid && _rebuildPosition == currentPosition) {
+      return;
+    }
+    _rebuildCid = _activeCid;
+    _rebuildPosition = currentPosition;
+    Utils.reportLog(
+      () =>
+          'AdaptiveRebuild checkpoint cid=$_activeCid positionMs=${currentPosition.inMilliseconds}',
+    );
+    makeHeartBeat(currentPosition.inSeconds, type: .status, isManual: true);
+  }
+
+  void _clearRebuildCheckpoint() {
+    _rebuildCid = null;
+    _rebuildPosition = null;
+  }
+
   Future<void>? refreshPlayer() {
     if (dataSource is FileSource) {
       return null;
     }
     if (_videoPlayerController case final ctr? when (ctr.current.isNotEmpty)) {
-      playbackRequested.value = true;
-      return ctr.open(
-        ctr.current.last.copyWith(start: ctr.state.position),
-        play: true,
+      _checkpointForRebuild();
+      final resumeAt = AdaptivePlayback.rebuildResumePosition(
+        checkpointCid: _rebuildCid,
+        targetCid: cid,
+        checkpoint: _rebuildPosition,
+        requested: ctr.state.position,
       );
+      playbackRequested.value = true;
+      return ctr
+          .open(ctr.current.last.copyWith(start: resumeAt), play: true)
+          .then((_) => _clearRebuildCheckpoint());
     }
     return null;
   }
 
   // 开始播放
   Future<void> stopCurrentSource() async {
+    _checkpointForRebuild();
     try {
       await _videoPlayerController?.stop();
     } catch (_) {}
