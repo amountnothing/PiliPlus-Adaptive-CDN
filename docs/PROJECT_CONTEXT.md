@@ -1,6 +1,6 @@
 # PiliPlus Adaptive CDN 项目上下文
 
-更新时间：2026-07-23
+更新时间：2026-07-24
 用途：给人和 Codex 快速恢复项目上下文，避免长对话压缩后丢失关键记忆。
 
 - 当前工作目录：`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN/PiliPlus-Adaptive-CDN-repo`。
@@ -45,7 +45,7 @@
 
 - `.github/workflows/adaptive_release.yml` 定时检查上游 `bggRGjQaUbCoE/PiliPlus` 最新 release。
 - 发现新上游版本后尝试 merge，上游无变化则跳过。
-- GitHub release 构建 Android split APK。
+- GitHub release 构建 Android split APK，并把 Chromium/Edge ZIP 与 Tampermonkey `.user.js` 直接作为 Release 附件发布。
 - Release 构建要求稳定签名 secrets，并校验证书 SHA-256，避免普通安卓机安装时报签名问题。
 
 ### 动画 / 预测返回

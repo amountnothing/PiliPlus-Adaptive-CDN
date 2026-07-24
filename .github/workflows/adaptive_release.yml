@@ -210,6 +210,12 @@ jobs:
             mv "$file" "PiliPlus-Adaptive-CDN_android_${version}_${abi}.apk"
           done
 
+      - name: Package browser extensions
+        shell: pwsh
+        run: |
+          ./browser-extension/package.ps1
+          ./browser-extension/package-userscript.ps1
+
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
@@ -223,7 +229,10 @@ jobs:
 
             Includes configurable decode preference, adaptive buffering,
             automatic CDN failover, and per-video failed-CDN exclusion.
-          files: PiliPlus-Adaptive-CDN_android_*.apk
+          files: |
+            PiliPlus-Adaptive-CDN_android_*.apk
+            dist/PiliPlus-Adaptive-CDN-Web-*.zip
+            dist/PiliPlus-Adaptive-CDN-Web.user.js
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v7
