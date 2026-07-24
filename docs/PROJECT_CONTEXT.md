@@ -1,7 +1,11 @@
 # PiliPlus Adaptive CDN 项目上下文
 
-更新时间：2026-07-01  
+更新时间：2026-07-23
 用途：给人和 Codex 快速恢复项目上下文，避免长对话压缩后丢失关键记忆。
+
+- 当前工作目录：`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN/PiliPlus-Adaptive-CDN-repo`。
+- APK、油猴脚本等交付目录：`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN`。
+- 外层 `PiliPlus-Adaptive-CDN-handoff.md` 是历史迁移快照，不作为当前参数或版本依据。
 
 ## 1. 已实现的功能
 
@@ -13,18 +17,19 @@
 - 默认解码优先级：
   - 第一优先：HEVC/H.265。
   - 恢复 / 兼容优先：AVC/H.264。
-- 可配置目标缓冲、回填触发容差、低缓冲阈值、CDN 拉取超时、故障 CDN 冷却、最大切换次数、是否遍历所有 CDN。
+- 可配置目标缓冲、回填触发容差、低缓冲阈值、缓冲增长观察时间、故障 CDN 冷却、最大切换次数、是否遍历所有 CDN。
 - CDN 有持久化稳定性评分，开始播放时按评分降序选择，故障时降分，稳定播放时逐步加分。
 - 故障 CDN：
-  - 默认全局冷却 30 秒。
+  - App 默认全局冷却 60 秒。
   - 当前视频内不再使用该 CDN。
 - 使用本地 Range Relay，让播放器面对稳定的本地 URL，上游 CDN 可以切换，尽量保留已有缓冲。
 - 处理过的误判：
   - 视频结尾没有新内容可下载不算 CDN 超时。
-  - 手动暂停不算 CDN 超时。
+  - 手动暂停不算 CDN 超时或 PTS 冻结；健康监测同时要求“请求播放”和“播放器实际播放”。
   - 拖动进度条导致缓冲减少时，按“视频刚开始”类似逻辑处理，避免误判。
   - 网络整体很差时可暂停/放宽 CDN 切换，避免断网时把所有 CDN 都判坏。
 - 避免在同一个下游响应里拼接两个 CDN 的字节流；切换 CDN 时关闭当前上游响应，让后续 Range 请求走新 CDN，降低画面卡住、音频继续的风险。
+- 音频或视频任一轨道停滞都视为整体播放停滞：音画和进度一起暂停，恢复后一起继续，并进入 CDN/播放器恢复判断。
 
 ### 浏览器扩展
 
@@ -81,10 +86,10 @@
 
 - 使用项目内置日志页，不再保留额外魔改日志系统。
 - 关于页有“日志模式”开关。打开后，原本错误日志可作为普通调试日志使用。
-- 最近新增打开动画日志：
-  - `coverHeroFlight`：来源/目标 size 与 rect。
-  - `heroRectSample`：Hero 飞行 0/25/50/75/100% 的 raw、curveProgress、begin/end/current rect。
-  - `pageInternalSlide sample`：页面下层滑入 0/25/50/75/100% 的 raw、curve、dxFraction、routeDxPx、routeDyPx、pageHero，以及 player/body/tabBar/tabView/intro/reply/related 的全局 rect；用于确认元素轨迹是否只有 x 变化，y 是否异常上下漂移。
+- 日志必须保持可长期启用和可复制，禁止每帧、每秒及常规预测返回/动画事件日志。
+- `PredictiveBack: start/cancel/commit` 调用保留在 `lib/main.dart`，但已注释，不要删除。
+- 动画常规采样日志已停用；只保留快照捕获失败等真正异常。
+- 播放器只记录异常、CDN 切换、PTS 冻结和恢复动作的简短摘要，不记录健康监测轮询。
 
 ## 2. 实现方法
 
@@ -108,9 +113,10 @@
     - `adaptiveRecoveryDecode`: AVC。
     - `adaptiveTargetBufferSec`: 30。
     - `adaptiveLowBufferSec`: 10。
-    - `adaptiveStallTimeoutSec`: 10。
+    - `adaptiveStallTimeoutSec`: 5。
     - `adaptiveSegmentToleranceSec`: 10。
-    - `adaptiveCdnCooldownSec`: 30。
+    - `adaptiveLowBufferStutterMinGrowthSec`: 1。
+    - `adaptiveCdnCooldownSec`: 60。
     - `adaptiveMaxCdnSwitches`: 3。
     - `adaptiveTraverseAllCdns`: true。
   - `initBuffer()` 在自适应播放开启时扩大缓存并设置回填 hysteresis。
@@ -124,6 +130,7 @@
 
 - `browser-extension/core.js`
   - 评分、冷却、候选排序、编码族判断、参数校验。
+  - 当前版本 0.2.6；回填观察 5 秒，净增长不足 1 秒才切换。
 - `browser-extension/page.js`
   - 注入网页侧。
   - 拦截 playurl、fetch、XHR。
@@ -181,15 +188,12 @@
 - 打开动画不要再改成“整页快照飞到卡片/播放器”的可见效果；打开只允许封面 Hero + 页面下层滑入。
 - 预测返回动画不要再改成“只有封面卡片飞回”或“整页向右隐去”；目标是页面整体缩回来源视频卡片。
 - 打开动画与预测返回动画要隔离：修打开动画优先只碰 `videoCoverHero()` / `_openPageSlideAnim` / 封面覆盖层；修预测返回优先只碰 `videoPageHero()` / `videoCardHero()` / `_croppedSnapshotFlight()`。
-- 如果打开阶段日志出现 `heroRectSample label=page/card`，说明卡片侧 Hero 又在当前路由启用了，是错误状态；打开阶段应该只有 `cover` 可见参与。
+- 打开阶段应该只有 `cover` 可见参与；如果卡片侧 `page/card` Hero 在当前路由参与 push，就是错误状态。
 - 封面消失逻辑不要绑定 pageHero；pageHero 是预测返回载体，不是播放器准备状态。
 - 如果要改封面消失，必须保持：封面 Hero 到播放器位置后仍然是同一张封面盖在播放器上，直到播放器开始 loading/loaded，再 100ms 淡出。
-- 当前动画调试不要再大范围重写，先用采样日志确定问题：
-  - `heroRectSample label=cover` 才是打开封面轨迹；`card/page` 类日志属于返回/预测返回，不要混为打开封面轨迹。
-  - 预测返回看 `heroRectSample label=page/card`，打开动画看 `label=cover`；不要用一个日志结论修另一个动画。
-  - `curveProgress` 可以不同于 `raw`，这是速度曲线；判断路径是否直线要看 begin/end/current rect 的中心点是否在线性插值线上。
-  - 如果 `heroRectSample label=cover` 的 rect 中心点不是直线，优先修 `_VideoHeroRectTween`。
-  - 如果 `toRect` 在打开过程中变化，说明目标 Hero 仍被某个布局/Transform 带动。
+- 当前动画调试不要再大范围重写；先区分打开封面 Hero 与预测返回 page/card Hero，不能用一个阶段的现象修改另一个阶段。
+- 如确需采样轨迹，只临时记录少量关键点，定位完成后立即注释；判断直线路径应比较 begin/end/current rect 的中心点，`curveProgress` 与 `raw` 不同只是速度曲线。
+- 封面轨迹中心点异常时优先检查 `_VideoHeroRectTween`；目标 rect 在打开过程中变化时检查布局或 Transform，不先改播放器 UI。
 
 ## 4. 对话历史中的重要记忆
 
@@ -201,6 +205,7 @@
   - 断网、Wi-Fi 信号极差但仍连接时，不应疯狂切 CDN。
 - 用户偏好：
   - 能测试就给本地 arm64-v8a APK。
+  - 安装包、油猴脚本等交付文件只放在 `PiliplusAdaptiveCDN` 目录内。
   - 简洁可维护优先，避免过度工程化。
   - 不要骗“已修好”；不确定就加日志定位。
   - 不希望为了动画牺牲功耗和性能。
@@ -215,28 +220,25 @@
   - 2026-07-22 用户确认当前版本动画没有问题，后续改动若产生回归应立即撤回。
   - 已确认 `video-cover-*` 只是封面和整卡共用的关联键：`_videoCoverRects` 保存封面矩形，`_videoCardTargetReaders` / `_videoCardRects` 保存返回动画使用的整卡矩形。
   - `cardRect` 出现全宽比例并不代表误抓封面；当前预测返回按设计将整页缩回整张来源卡片，不要改成只缩回封面。
-  - 当前可回退的动画代码基线为 `1037daba4`。
+  - 当前已记录的动画代码基线为 `30eac66c5`；其父提交 `1037daba4` 是自适应播放停滞处理基线。
 
 ## 5. 项目暂停分区
 
 ### 当前暂停点
 
-日期：2026-07-22
-最后完成事项：核对并记录当前已认可的打开/预测返回动画实现。
+日期：2026-07-24
+最后完成事项：移除同一播放器响应内的跨 CDN 重叠续接；换源或暂停会关闭当前响应，由 mpv 通过稳定本地 URL 发起新 Range，已有播放器缓冲保留。
 
-最新 APK 输出路径：
+最新 APK 按当前提交命名并输出到
+`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN`；具体文件名和校验值以每次构建结果为准。
 
-```text
-build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-```
-
-当前没有待修复的动画问题。除非用户提供新的可复现回归，不要继续调整动画目标、比例或页面层级。
+当前没有待修复的动画问题。除非用户提供新的可复现回归，不要继续调整动画目标、比例或页面层级。当前工作树包含未提交的 Adaptive CDN、日志和播放器改动，任何任务开始前都必须先检查并保留。
 
 ### 继续项目时先做什么
 
-1. 读取本文档。
+1. 完整读取本文档和根目录 `AGENTS.md`。
 2. 看 `git status --short`，确认用户未提交改动和当前工作树。
-3. 如果出现动画回归，先与 `1037daba4` 对比相关文件，只改最小必要点。
+3. 如果出现动画回归，先与 `30eac66c5` 对比相关文件，只改最小必要点。
 4. 改完跑：
 
 ```powershell
@@ -246,7 +248,7 @@ build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 5. 用户要测试包时编译：
 
 ```powershell
-..\.tooling\flutter\bin\flutter.bat build apk --release --target-platform android-arm64 --split-per-abi
+..\.tooling\flutter\bin\flutter.bat build apk --release --target-platform android-arm64 --split-per-abi --android-project-arg=kotlin.incremental=false --android-project-arg=kotlin.compiler.execution.strategy=in-process
 ```
 
 ### 暂停期间不要忘记

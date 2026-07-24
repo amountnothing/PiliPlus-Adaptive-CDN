@@ -307,7 +307,7 @@ abstract final class Pref {
 
   static double get adaptiveCdnCooldownSec => _setting.get(
     SettingBoxKey.adaptiveCdnCooldownSec,
-    defaultValue: 30.0,
+    defaultValue: 60.0,
   );
 
   static double get adaptiveMaxCdnSwitches => _setting.get(

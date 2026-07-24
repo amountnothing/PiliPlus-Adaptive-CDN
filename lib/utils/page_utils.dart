@@ -46,9 +46,7 @@ import 'package:url_launcher/url_launcher.dart';
 abstract final class PageUtils {
   static const Curve _videoOpenCurve = Cubic(0.15, 1, 0.2, 1);
   static final Map<Object, Rect> _videoCoverRects = {};
-  static final Map<Object, Rect> _loggedVideoCoverRects = {};
   static final Map<Object, Rect> _videoCardRects = {};
-  static final Map<Object, Rect> _loggedVideoCardRects = {};
   static final Map<Object, _VideoCardTarget? Function()>
   _videoCardTargetReaders = {};
   static final Map<Object, Future<void> Function()>
@@ -57,24 +55,6 @@ abstract final class PageUtils {
   static final Map<Object, Widget> _videoCardWidgets = {};
   static String videoCoverHeroTag(Object owner) =>
       'video-cover-${identityHashCode(owner)}';
-
-  static String _rectLog(Rect? rect) => rect == null
-      ? 'null'
-      : 'l=${rect.left.toStringAsFixed(1)},t=${rect.top.toStringAsFixed(1)},w=${rect.width.toStringAsFixed(1)},h=${rect.height.toStringAsFixed(1)}';
-
-  static String _sizeLog(Size? size) => size == null
-      ? 'null'
-      : 'w=${size.width.toStringAsFixed(1)},h=${size.height.toStringAsFixed(1)}';
-
-  static Rect? _contextRect(BuildContext context) {
-    final renderObject = context.findRenderObject();
-    if (renderObject is! RenderBox ||
-        !renderObject.attached ||
-        !renderObject.hasSize) {
-      return null;
-    }
-    return renderObject.localToGlobal(Offset.zero) & renderObject.size;
-  }
 
   static NetworkImgLayer? _networkImage(BuildContext context) {
     NetworkImgLayer? result;
@@ -127,19 +107,6 @@ abstract final class PageUtils {
       final topLeft = renderObject.localToGlobal(Offset.zero);
       final rect = topLeft & renderObject.size;
       _videoCoverRects[tag] = rect;
-      if (!Utils.logMode) {
-        return;
-      }
-      final loggedRect = _loggedVideoCoverRects[tag];
-      if (loggedRect == null ||
-          (loggedRect.center - rect.center).distanceSquared > 1 ||
-          (loggedRect.size.width - rect.size.width).abs() > 1 ||
-          (loggedRect.size.height - rect.size.height).abs() > 1) {
-        _loggedVideoCoverRects[tag] = rect;
-        Utils.reportLog(
-          () => 'VideoOpenAnim: coverRect tag=$tag rect=${_rectLog(rect)}',
-        );
-      }
     });
   }
 
@@ -155,25 +122,11 @@ abstract final class PageUtils {
       final topLeft = renderObject.localToGlobal(Offset.zero);
       final rect = topLeft & renderObject.size;
       _videoCardRects[tag] = rect;
-      if (!Utils.logMode) {
-        return;
-      }
-      final loggedRect = _loggedVideoCardRects[tag];
-      if (loggedRect == null ||
-          (loggedRect.center - rect.center).distanceSquared > 1 ||
-          (loggedRect.size.width - rect.size.width).abs() > 1 ||
-          (loggedRect.size.height - rect.size.height).abs() > 1) {
-        _loggedVideoCardRects[tag] = rect;
-        Utils.reportLog(
-          () => 'VideoBackAnim: cardRect tag=$tag rect=${_rectLog(rect)}',
-        );
-      }
     });
   }
 
   static double _videoPageSlideFrom(Object? coverHeroTag) {
     if (coverHeroTag == null) {
-      Utils.reportLog(() => 'VideoOpenAnim: slideFrom fallback noCoverHeroTag');
       return 1;
     }
     final rect = _videoCoverRects[coverHeroTag];
@@ -183,17 +136,9 @@ abstract final class PageUtils {
               PlatformDispatcher.instance.views.first.devicePixelRatio
         : MediaQuery.maybeSizeOf(context)?.width ?? 0;
     if (rect == null || screenWidth <= 0) {
-      Utils.reportLog(
-        () =>
-            'VideoOpenAnim: slideFrom fallback tag=$coverHeroTag rect=${_rectLog(rect)} screenWidth=${screenWidth.toStringAsFixed(1)}',
-      );
       return 1;
     }
     final slideFrom = rect.center.dx < screenWidth / 2 ? -1.0 : 1.0;
-    Utils.reportLog(
-      () =>
-          'VideoOpenAnim: slideFrom tag=$coverHeroTag rect=${_rectLog(rect)} screenWidth=${screenWidth.toStringAsFixed(1)} slideFrom=$slideFrom',
-    );
     return slideFrom;
   }
 
@@ -205,13 +150,9 @@ abstract final class PageUtils {
     tag: tag,
     transitionOnUserGestures: true,
     createRectTween: (begin, end) =>
-        _VideoHeroRectTween(label: 'cover:$tag', begin: begin, end: end),
+        _VideoHeroRectTween(begin: begin, end: end),
     flightShuttleBuilder:
         (context, animation, flightDirection, fromHeroContext, toHeroContext) {
-          Utils.reportLog(
-            () =>
-                'VideoOpenAnim: coverHeroFlight tag=$tag direction=$flightDirection fromSize=${_sizeLog(fromHeroContext.size)} toSize=${_sizeLog(toHeroContext.size)} fromRect=${_rectLog(_contextRect(fromHeroContext))} toRect=${_rectLog(_contextRect(toHeroContext))}',
-          );
           if (flightDirection != HeroFlightDirection.push) {
             return const SizedBox.shrink();
           }
@@ -1064,9 +1005,7 @@ class _SlowVideoGetPageRoute<T> extends GetPageRoute<T> {
   });
 
   final Object? coverHeroTag;
-  bool _loggedPushTransition = false;
   bool _backGestureActive = false;
-  bool _loggedBackTransition = false;
 
   @override
   bool get opaque => !_backGestureActive;
@@ -1083,10 +1022,6 @@ class _SlowVideoGetPageRoute<T> extends GetPageRoute<T> {
     if (overlayEntries.isNotEmpty) {
       overlayEntries.first.opaque = false;
     }
-    Utils.reportLog(
-      () =>
-          'VideoBackAnim: routeBackStart route=$routeName progress=${progress.toStringAsFixed(3)} routeOpaque=$opaque targetPageIsBackground=true',
-    );
     changedInternalState();
     super.handleStartBackGesture(progress: progress);
   }
@@ -1094,11 +1029,6 @@ class _SlowVideoGetPageRoute<T> extends GetPageRoute<T> {
   @override
   void handleCancelBackGesture() {
     _backGestureActive = false;
-    _loggedBackTransition = false;
-    Utils.reportLog(
-      () =>
-          'VideoBackAnim: routeBackCancel route=$routeName routeOpaque=$opaque',
-    );
     changedInternalState();
     super.handleCancelBackGesture();
   }
@@ -1127,26 +1057,11 @@ class _SlowVideoGetPageRoute<T> extends GetPageRoute<T> {
       final targetCard = coverHeroTag == null
           ? null
           : PageUtils._videoCardWidgets[coverHeroTag];
-      if (Utils.logMode && !_loggedBackTransition) {
-        _loggedBackTransition = true;
-        Utils.reportLog(
-          () =>
-              'VideoBackAnim: routeTransition route=$routeName status=${animation.status} value=${animation.value.toStringAsFixed(3)} routeOpaque=$opaque coverHeroTag=$coverHeroTag targetRect=${PageUtils._rectLog(target?.rect)} visibleRect=${PageUtils._rectLog(target?.visibleRect)} targetPageIsBackground=true noGrayBlackOverlay=true sourceSnapshot=true',
-        );
-      }
       return _PredictiveVideoBackTransition(
         animation: animation,
         target: target,
         targetCard: targetCard,
         child: child,
-      );
-    }
-    _loggedBackTransition = false;
-    if (Utils.logMode && !_loggedPushTransition) {
-      _loggedPushTransition = true;
-      Utils.reportLog(
-        () =>
-            'VideoOpenAnim: routeTransition route=$routeName status=${animation.status}',
       );
     }
     return child;
@@ -1547,13 +1462,9 @@ class _VideoCardTarget {
 
 class _VideoHeroRectTween extends RectTween {
   _VideoHeroRectTween({
-    required this.label,
     super.begin,
     super.end,
   });
-
-  final String label;
-  final Set<double> _loggedSamples = <double>{};
 
   @override
   Rect? lerp(double t) {
@@ -1563,29 +1474,6 @@ class _VideoHeroRectTween extends RectTween {
       return super.lerp(t);
     }
     final progress = PageUtils._videoOpenCurve.transform(t);
-    final rect = Rect.lerp(begin, end, progress)!;
-    _logSample(t, progress, rect);
-    return rect;
-  }
-
-  void _logSample(double raw, double progress, Rect rect) {
-    if (!Utils.logMode) {
-      return;
-    }
-    for (final sample in const [0.0, 0.25, 0.5, 0.75, 1.0]) {
-      final reached = sample == 0.0
-          ? raw <= 0.02
-          : sample == 1.0
-          ? raw >= 0.98
-          : raw >= sample;
-      if (!reached || !_loggedSamples.add(sample)) {
-        continue;
-      }
-      Utils.reportLog(
-        () =>
-            'VideoOpenAnim: heroRectSample label=$label sample=${sample.toStringAsFixed(2)} raw=${raw.toStringAsFixed(3)} curveProgress=${progress.toStringAsFixed(3)} begin=${PageUtils._rectLog(begin)} end=${PageUtils._rectLog(end)} rect=${PageUtils._rectLog(rect)}',
-      );
-      break;
-    }
+    return Rect.lerp(begin, end, progress);
   }
 }

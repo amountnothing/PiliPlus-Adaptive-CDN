@@ -17,10 +17,11 @@ abstract final class AdaptivePlayback {
   }
 
   /// Buffering can remain true briefly after a manual pause. CDN health
-  /// timers must follow the user's playback intent instead of that stale flag.
+  /// timers must require both playback intent and an actually playing player.
   static bool shouldAccumulateCdnStall({
     required bool playbackRequested,
-  }) => playbackRequested;
+    required bool isPlaying,
+  }) => playbackRequested && isPlaying;
 
   static bool shouldShowLoading({
     required bool dataLoading,
@@ -29,6 +30,18 @@ abstract final class AdaptivePlayback {
     required bool presentationStalled,
   }) =>
       dataLoading || presentationStalled || (playbackRequested && isBuffering);
+
+  static Duration? rebuildResumePosition({
+    required int? checkpointCid,
+    required int? targetCid,
+    required Duration? checkpoint,
+    required Duration? requested,
+  }) =>
+      checkpointCid == targetCid &&
+          checkpoint != null &&
+          checkpoint > Duration.zero
+      ? checkpoint
+      : requested;
 
   static bool shouldSwitchForStalledBuffer({
     required Duration forwardBuffer,
@@ -51,8 +64,6 @@ abstract final class AdaptivePlayback {
   static bool shouldRecoverFrozenTrack({
     required Duration? trackPts,
     required Duration? lastTrackPts,
-    required Duration position,
-    required Duration lastPlaybackPosition,
     required Duration forwardBuffer,
     required Duration minForwardBuffer,
     required Duration noFrameProgressFor,
@@ -68,13 +79,9 @@ abstract final class AdaptivePlayback {
     }
     if (forwardBuffer < minForwardBuffer) return false;
 
-    final playbackAdvanced =
-        (position - lastPlaybackPosition).inMilliseconds.abs() >= 250;
     final trackAdvanced =
         trackPts - lastTrackPts >= const Duration(milliseconds: 250);
-    return playbackAdvanced &&
-        !trackAdvanced &&
-        noFrameProgressFor >= freezeTimeout;
+    return !trackAdvanced && noFrameProgressFor >= freezeTimeout;
   }
 
   /// Whether the player has already downloaded or reached the media tail.

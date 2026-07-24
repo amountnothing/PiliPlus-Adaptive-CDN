@@ -44,7 +44,8 @@ List<SettingsModel> get _adaptivePlaybackSettings => [
   NormalModel(
     title: '目标缓冲时长',
     leading: const Icon(Icons.hourglass_top_rounded),
-    getSubtitle: () => '当前：${Pref.adaptiveTargetBufferSec}s',
+    getSubtitle: () =>
+        '目标 ${Pref.adaptiveTargetBufferSec}s；当前回填观察线 ${Pref.adaptiveRefillBufferSec}s',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveTargetBufferDialog,
   ),
@@ -52,14 +53,14 @@ List<SettingsModel> get _adaptivePlaybackSettings => [
     title: '回填触发容差',
     leading: const Icon(Icons.av_timer_outlined),
     getSubtitle: () =>
-        '缓冲低于目标约 ${Pref.adaptiveSegmentToleranceSec}s 时回填；默认 10s',
+        '距目标 ${Pref.adaptiveSegmentToleranceSec}s 时进入回填区；实际观察线 ${Pref.adaptiveRefillBufferSec}s',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveSegmentToleranceDialog,
   ),
   NormalModel(
-    title: '低缓冲切换阈值',
+    title: 'PTS 冻结检测缓冲阈值',
     leading: const Icon(Icons.water_outlined),
-    getSubtitle: () => '播放中缓冲低于 ${Pref.adaptiveLowBufferSec}s 时切换',
+    getSubtitle: () => '前向缓冲至少 ${Pref.adaptiveLowBufferSec}s 时，才把时间戳不前进判为解码冻结',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveLowBufferDialog,
   ),
@@ -67,14 +68,15 @@ List<SettingsModel> get _adaptivePlaybackSettings => [
     title: '缓冲停滞最小增长',
     leading: const Icon(Icons.trending_up_rounded),
     getSubtitle: () =>
-        '开始回填后缓冲增长不足 ${Pref.adaptiveLowBufferStutterMinGrowthSec}s 时切换 CDN',
+        '进入回填区后，窗口内净增长不足 ${Pref.adaptiveLowBufferStutterMinGrowthSec}s 时切换 CDN',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveLowBufferStutterMinGrowthDialog,
   ),
   NormalModel(
     title: '缓冲停滞检测窗口',
     leading: const Icon(Icons.timer_off_outlined),
-    getSubtitle: () => '每次开始回填后观察 ${Pref.adaptiveStallTimeoutSec}s',
+    getSubtitle: () =>
+        '每次进入回填区后观察 ${Pref.adaptiveStallTimeoutSec}s，不使用独立网络读取超时',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveStallTimeoutDialog,
   ),
@@ -114,7 +116,7 @@ List<SettingsModel> get _adaptivePlaybackSettings => [
 List<SettingsModel> get videoSettings => [
   const SwitchModel(
     title: '自适应播放',
-    subtitle: '可配置解码优先级、动态缓冲并在 CDN 拉取停滞时自动切换',
+    subtitle: '可配置解码优先级、动态缓冲并在缓冲净增长停滞时自动切换 CDN',
     leading: Icon(Icons.auto_awesome_outlined),
     setKey: SettingBoxKey.adaptivePlayback,
     defaultVal: false,
@@ -776,7 +778,7 @@ void _showAdaptiveLowBufferDialog(
   setState,
   key: SettingBoxKey.adaptiveLowBufferSec,
   defVal: Pref.adaptiveLowBufferSec,
-  title: '低缓冲切换阈值',
+  title: 'PTS 冻结检测缓冲阈值',
   suffix: 's',
   minValue: 2,
   maxValue: 20,

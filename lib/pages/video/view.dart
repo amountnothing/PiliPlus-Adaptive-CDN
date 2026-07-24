@@ -64,7 +64,6 @@ import 'package:PiliPlus/utils/predictive_back_progress.dart';
 import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/theme_utils.dart';
-import 'package:PiliPlus/utils/utils.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
@@ -118,13 +117,10 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
 
   bool isShowing = true;
   bool _initialPlayerCoverReleased = false;
-  bool _loggedNoCoverHero = false;
-  bool? _lastInitialCoverVisible;
   bool _pausedForPredictiveBack = false;
   late final double _openSlideFrom;
   late final AnimationController _openPageAnimCtr;
   late final Animation<double> _openPageSlideAnim;
-  final Set<double> _loggedOpenSlideSamples = <double>{};
   final _openPlayerKey = GlobalKey(debugLabel: 'openPlayer');
   final _openPageBodyKey = GlobalKey(debugLabel: 'openPageBody');
   final _openTabBarKey = GlobalKey(debugLabel: 'openTabBar');
@@ -161,15 +157,9 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
           duration: const Duration(milliseconds: 360),
         )..addStatusListener((status) {
           if (status == AnimationStatus.completed && mounted) {
-            Utils.reportLog(
-              () => 'VideoOpenAnim: pageInternalSlide completed',
-            );
             setState(() {});
           }
         });
-    if (Utils.logMode) {
-      _openPageAnimCtr.addListener(_logOpenSlideSample);
-    }
     _openPageSlideAnim = CurvedAnimation(
       parent: _openPageAnimCtr,
       curve: const Cubic(0.15, 1, 0.2, 1),
@@ -178,10 +168,6 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
       if (!mounted) {
         return;
       }
-      Utils.reportLog(
-        () =>
-            'VideoOpenAnim: pageInternalSlide start slideFrom=$_openSlideFrom',
-      );
       _openPageAnimCtr.forward();
     });
 
@@ -228,53 +214,6 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
     }
   }
 
-  void _logOpenSlideSample() {
-    final raw = _openPageAnimCtr.value;
-    for (final sample in const [0.0, 0.25, 0.5, 0.75, 1.0]) {
-      final reached = sample == 0.0
-          ? raw <= 0.02
-          : sample == 1.0
-          ? raw >= 0.98
-          : raw >= sample;
-      if (!reached || !_loggedOpenSlideSamples.add(sample)) {
-        continue;
-      }
-      final screenWidth = MediaQuery.maybeSizeOf(context)?.width ?? 0;
-      final dxFraction = _openSlideFrom * (1 - _openPageSlideAnim.value);
-      Utils.reportLog(
-        () =>
-            'VideoOpenAnim: pageInternalSlide sample=${sample.toStringAsFixed(2)} raw=${raw.toStringAsFixed(3)} curve=${_openPageSlideAnim.value.toStringAsFixed(3)} dxFraction=${dxFraction.toStringAsFixed(3)} routeDxPx=${(screenWidth * dxFraction).toStringAsFixed(1)} routeDyPx=0.0 pageHero=${videoDetailController.coverHeroTag != null} elements=${_openAnimElementRects()}',
-      );
-      break;
-    }
-  }
-
-  String _openAnimElementRects() => [
-    'player=${_globalRectLog(_openPlayerKey)}',
-    'body=${_globalRectLog(_openPageBodyKey)}',
-    'tabBar=${_globalRectLog(_openTabBarKey)}',
-    'tabView=${_globalRectLog(_openTabViewKey)}',
-    'intro=${_globalRectLog(videoIntroKey)}',
-    'reply=${_globalRectLog(videoReplyPanelKey)}',
-    'related=${_globalRectLog(videoRelatedKey)}',
-  ].join(' ');
-
-  String _globalRectLog(GlobalKey key) {
-    final context = key.currentContext;
-    final renderObject = context?.findRenderObject();
-    if (renderObject == null) {
-      return 'null';
-    }
-    if (renderObject is! RenderBox) {
-      return 'nonBox:${renderObject.runtimeType}';
-    }
-    if (!renderObject.hasSize) {
-      return 'noSize';
-    }
-    final rect = renderObject.localToGlobal(Offset.zero) & renderObject.size;
-    return 'l=${rect.left.toStringAsFixed(1)},t=${rect.top.toStringAsFixed(1)},w=${rect.width.toStringAsFixed(1)},h=${rect.height.toStringAsFixed(1)}';
-  }
-
   void _onPredictiveBackActiveChanged() {
     final ctr = plPlayerController;
     if (ctr == null) {
@@ -287,16 +226,12 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
       if (!_pausedForPredictiveBack && ctr.playerStatus.isPlaying) {
         _pausedForPredictiveBack = true;
         ctr.pause();
-        Utils.reportLog(() => 'VideoBackAnim: pausePlaybackForPredictiveBack');
       }
       return;
     }
     if (_pausedForPredictiveBack && mounted) {
       _pausedForPredictiveBack = false;
       ctr.play();
-      Utils.reportLog(
-        () => 'VideoBackAnim: resumePlaybackAfterPredictiveBackCancel',
-      );
     }
   }
 
@@ -1823,38 +1758,16 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
         Obx(() {
           final coverHeroTag = videoDetailController.coverHeroTag;
           if (!videoDetailController.autoPlay || coverHeroTag == null) {
-            if (Utils.logMode && !_loggedNoCoverHero) {
-              _loggedNoCoverHero = true;
-              Utils.reportLog(
-                () =>
-                    'VideoOpenAnim: coverOverlay skipped autoPlay=${videoDetailController.autoPlay} tag=$coverHeroTag',
-              );
-            }
             return const SizedBox.shrink();
           }
           final ctr = videoDetailController.plPlayerController;
           final openDone = _openPageAnimCtr.status == AnimationStatus.completed;
-          final playerCreated =
-              ctr.videoPlayerController != null && ctr.videoController != null;
           final playerReady = ctr.dataStatus.loading || ctr.dataStatus.loaded;
           final initializing = !playerReady || !openDone;
           if (!initializing) {
-            if (Utils.logMode && !_initialPlayerCoverReleased) {
-              Utils.reportLog(
-                () =>
-                    'VideoOpenAnim: coverOverlay release videoState=${videoDetailController.videoState.value} dataStatus=${ctr.dataStatus.value} playerCreated=$playerCreated playerReady=$playerReady openDone=$openDone',
-              );
-            }
             _initialPlayerCoverReleased = true;
           }
           final showCover = !_initialPlayerCoverReleased && initializing;
-          if (Utils.logMode && _lastInitialCoverVisible != showCover) {
-            _lastInitialCoverVisible = showCover;
-            Utils.reportLog(
-              () =>
-                  'VideoOpenAnim: coverOverlay visible=$showCover initializing=$initializing released=$_initialPlayerCoverReleased videoState=${videoDetailController.videoState.value} dataStatus=${ctr.dataStatus.value} playerCreated=$playerCreated playerReady=$playerReady openDone=$openDone',
-            );
-          }
           return Positioned.fill(
             child: IgnorePointer(
               child: AnimatedOpacity(
