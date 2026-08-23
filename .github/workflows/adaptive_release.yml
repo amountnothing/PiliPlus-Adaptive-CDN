@@ -81,6 +81,20 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git remote add upstream "https://github.com/${UPSTREAM_REPOSITORY}.git"
             git fetch upstream --tags --force
+
+            if ! merge_check="$(git merge-tree --write-tree HEAD "$upstream_tag" 2>&1)"; then
+              if [[ "${{ github.event_name }}" == "schedule" ]]; then
+                echo "::warning title=Upstream sync needs manual resolution::${upstream_tag} conflicts with the adaptive fork; scheduled build skipped."
+                echo "should_build=false" >> "$GITHUB_OUTPUT"
+                echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
+                echo "upstream_tag=${upstream_tag}" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              echo "::error title=Upstream merge conflict::${upstream_tag} requires manual conflict resolution."
+              echo "$merge_check"
+              exit 1
+            fi
+
             git merge --no-edit "$upstream_tag"
 
             printf '%s\n' "$upstream_tag" > .github/upstream-release.txt
