@@ -53,7 +53,10 @@ class AudioSessionHandler {
             // player.setVolume(player.volume.value * 2);
             break;
           case AudioInterruptionType.pause:
-            if (_playInterrupted) PlPlayerController.playIfExists();
+            if (_playInterrupted &&
+                PlPlayerController.instance?.playbackRequested.value == true) {
+              PlPlayerController.playIfExists();
+            }
             //player.play();
             break;
           case AudioInterruptionType.unknown:

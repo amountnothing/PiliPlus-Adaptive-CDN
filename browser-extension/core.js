@@ -13,8 +13,8 @@
     segmentToleranceSec: 10,
     lowBufferSec: 10,
     bufferStallSec: 5,
-    endToleranceSec: 2,
-    cooldownSec: 30,
+    endToleranceSec: 5,
+    cooldownSec: 60,
     traverseAllCdns: true,
     maxSwitches: 3,
     stableRewardSec: 30,
@@ -169,6 +169,21 @@
     return uniqueUrls([base, ...(Array.isArray(backup) ? backup : [backup])]);
   }
 
+  function streamKind(stream) {
+    const mime = String(stream?.mimeType || stream?.mime_type || "").toLowerCase();
+    const codec = String(stream?.codecs || "").toLowerCase();
+    if (mime.startsWith("audio/")) return "audio";
+    if (mime.startsWith("video/")) return "video";
+    if (/^(mp4a|ec-3|ac-3|opus)/.test(codec)) return "audio";
+    return codecFamily(stream?.codecs) ? "video" : "";
+  }
+
+  function selectSwitchTargets(resources, failedResource) {
+    if (failedResource) return [failedResource];
+    const video = resources.filter((resource) => resource.kind === "video");
+    return video.length ? video : resources;
+  }
+
   function collectStreams(rootValue) {
     const streams = [];
     const visited = new Set();
@@ -223,18 +238,19 @@
     return {
       lastBuffered: 0,
       lastBufferProgressAt: now,
-      refillStartBuffered: 0,
+      refillStartForward: 0,
       bufferBelowTarget: false,
       lastPosition: 0,
       lastPositionProgressAt: now,
       lastSwitchAt: -Infinity,
+      wasTrying: false,
     };
   }
 
   function resetAtMediaTail(state, sample, now) {
     state.lastBuffered = sample.buffered;
     state.lastBufferProgressAt = now;
-    state.refillStartBuffered = sample.buffered;
+    state.refillStartForward = 0;
     state.bufferBelowTarget = false;
     state.lastPosition = sample.position;
     state.lastPositionProgressAt = now;
@@ -245,9 +261,15 @@
     const duration = Number(sample.duration) || 0;
     const position = Number(sample.position) || 0;
     const buffered = Math.max(position, Number(sample.buffered) || 0);
-    const trying = Boolean(sample.playing) && !sample.ended;
+    // `video.paused === false` becomes true as soon as play() is accepted,
+    // which can be several seconds before the first frame is actually ready.
+    // Do not start the CDN-stall clock during that normal startup window.
+    const trying =
+      Boolean(sample.playing) && sample.hasStartedPlayback !== false && !sample.ended;
     const atTail =
-      duration > 0 && Math.max(position, buffered) + settings.endToleranceSec >= duration;
+      duration > 0 &&
+      position + settings.endToleranceSec >= duration &&
+      buffered + Math.min(2, settings.endToleranceSec) >= duration;
 
     if (atTail) {
       resetAtMediaTail(state, { position, buffered }, now);
@@ -256,10 +278,19 @@
 
     const positionDelta = Math.abs(position - state.lastPosition);
     const forward = Math.max(0, buffered - position);
+    const startedTrying = trying && !state.wasTrying;
+    state.wasTrying = trying;
+    if (startedTrying) {
+      // Starting or resuming playback begins a new observation window. Time
+      // spent loading or explicitly paused must not count toward a CDN stall.
+      state.lastBufferProgressAt = now;
+      state.refillStartForward = forward;
+      state.bufferBelowTarget = false;
+    }
     if (positionDelta >= 2 && (buffered < state.lastBuffered || forward <= 1)) {
       state.lastBuffered = buffered;
       state.lastBufferProgressAt = now;
-      state.refillStartBuffered = buffered;
+      state.refillStartForward = forward;
       state.bufferBelowTarget = false;
       state.lastPosition = position;
       state.lastPositionProgressAt = now;
@@ -274,9 +305,12 @@
 
     state.lastBuffered = buffered;
 
-    const targetFloor = Math.max(
-      settings.lowBufferSec,
-      settings.targetBufferSec - settings.segmentToleranceSec,
+    const targetFloor = Math.min(
+      settings.targetBufferSec,
+      Math.max(
+        settings.lowBufferSec + settings.segmentToleranceSec,
+        settings.targetBufferSec - settings.segmentToleranceSec,
+      ),
     );
     if (forward >= targetFloor) {
       state.bufferBelowTarget = false;
@@ -285,13 +319,13 @@
     if (!state.bufferBelowTarget) {
       state.bufferBelowTarget = true;
       state.lastBufferProgressAt = now;
-      state.refillStartBuffered = buffered;
+      state.refillStartForward = forward;
       return null;
     }
     if (trying && now - state.lastBufferProgressAt >= settings.bufferStallSec * 1000) {
-      const growth = buffered - state.refillStartBuffered;
+      const growth = forward - state.refillStartForward;
       state.lastBufferProgressAt = now;
-      state.refillStartBuffered = buffered;
+      state.refillStartForward = forward;
       if (growth >= MIN_BUFFER_GROWTH_SEC) return null;
       state.bufferBelowTarget = false;
       state.lastSwitchAt = now;
@@ -301,12 +335,46 @@
   }
 
   function shouldPauseForVideoFrameStall(sample, now) {
+    const frameGraceAt = Math.max(
+      Number(sample.lastFrameAt) || 0,
+      Number(sample.playStartedAt) || 0,
+    );
     return (
       sample.playing &&
+      sample.hasStartedPlayback !== false &&
       !sample.seeking &&
+      now >= (Number(sample.recoveryUntil) || 0) &&
+      (Number(sample.forwardBuffer) || 0) >= (Number(sample.minForwardBuffer) || 0) &&
       sample.position - sample.lastFramePosition >= 0.5 &&
-      now - sample.lastFrameAt >= 1500
+      now - frameGraceAt >= 8000
     );
+  }
+
+  function shouldSwitchForRequestFailure(status, aborted) {
+    return !aborted && (status == null || (status !== 200 && status !== 206));
+  }
+
+  function isCurrentResourceFailure(currentUrl, failedHost) {
+    return !failedHost || hostOf(currentUrl) === failedHost;
+  }
+
+  function createNetworkGuardState() {
+    return { samples: [], pauseUntil: 0 };
+  }
+
+  function shouldPauseNetworkSwitch(state, sample, now) {
+    if (now < state.pauseUntil) return true;
+    state.samples = state.samples.filter((item) => now - item.at <= 15_000);
+    state.samples.push({ at: now, host: sample.host, kind: sample.kind });
+    const hosts = new Set(state.samples.map((item) => item.host).filter(Boolean));
+    const kinds = new Set(state.samples.map((item) => item.kind).filter(Boolean));
+    const looksGlobal =
+      state.samples.length >= 3 &&
+      (state.samples.length >= 4 || hosts.size >= 2 || kinds.size >= 2);
+    if (!looksGlobal) return false;
+    state.samples = [];
+    state.pauseUntil = now + 20_000;
+    return true;
   }
 
   return Object.freeze({
@@ -322,6 +390,8 @@
     scoreOf,
     rankCandidates,
     streamUrls,
+    streamKind,
+    selectSwitchTargets,
     collectStreams,
     isAv1Codec,
     codecFamily,
@@ -329,5 +399,9 @@
     createHealthState,
     evaluateHealth,
     shouldPauseForVideoFrameStall,
+    shouldSwitchForRequestFailure,
+    isCurrentResourceFailure,
+    createNetworkGuardState,
+    shouldPauseNetworkSwitch,
   });
 });

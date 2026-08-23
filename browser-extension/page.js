@@ -20,10 +20,12 @@
   const nativeXhrSend = XMLHttpRequest.prototype.send;
   const nativeJsonParse = JSON.parse.bind(JSON);
 
+  const sessionPathKey = () => location.pathname.replace(/\/+$/, "");
+
   let settings = Core.normalizeSettings();
   let scores = {};
   let cooldowns = {};
-  let sessionPath = location.pathname;
+  let sessionPath = sessionPathKey();
   let switchCount = 0;
   let lastReason = "等待播放地址";
   let lastBufferSeconds = 0;
@@ -31,8 +33,18 @@
   let lastRewardPosition = 0;
   let health = Core.createHealthState(Date.now());
   let frameVideo = null;
+  let stopFrameTracking = () => {};
   let lastVideoFrameAt = Date.now();
   let lastVideoFramePosition = 0;
+  let videoPlayStartedAt = Date.now();
+  let videoHasStartedPlayback = false;
+  let videoFrameRecoveryUntil = 0;
+  let pageVisibleAt = Date.now();
+  let networkGuard = Core.createNetworkGuardState();
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) pageVisibleAt = Date.now();
+  });
 
   const resources = new Set();
   const aliases = new Map();
@@ -55,8 +67,8 @@
     for (const [host, until] of Object.entries(cooldowns)) {
       if (Number(until) <= now) delete cooldowns[host];
     }
-    for (const [controller, createdAt] of activeFetches) {
-      if (now - createdAt > 90_000) activeFetches.delete(controller);
+    for (const [controller, request] of activeFetches) {
+      if (now - request.createdAt > 90_000) activeFetches.delete(controller);
     }
   }
 
@@ -102,6 +114,7 @@
   }
 
   function registerStream(stream) {
+    const kind = Core.streamKind(stream);
     const urls = Core.expandUposCandidates(
       Core.streamUrls(stream),
       settings.expandKnownUpos,
@@ -121,9 +134,11 @@
         urls: [],
         currentUrl: effective[0],
         lastRequestAt: 0,
+        kind,
       };
       resources.add(resource);
     }
+    if (!resource.kind) resource.kind = kind;
     resource.urls = Core.uniqueUrls([...resource.urls, ...urls]);
     const currentHost = Core.hostOf(resource.currentUrl);
     resource.currentUrl =
@@ -132,6 +147,7 @@
   }
 
   function processPlayInfo(value) {
+    if (sessionPathKey() !== sessionPath) resetVideoSession();
     if (!value || typeof value !== "object" || processedObjects.has(value)) return value;
     const streams = Core.collectStreams(value);
     if (!streams.length) return value;
@@ -195,15 +211,21 @@
     return { url: resource.currentUrl || url, resource };
   }
 
-  function abortInflightMedia() {
-    for (const controller of activeFetches.keys()) controller.abort("adaptive-cdn-switch");
-    activeFetches.clear();
+  function abortInflightMedia(targets = null) {
+    const targetSet = targets ? new Set(targets) : null;
+    for (const [controller, request] of activeFetches) {
+      if (targetSet && !targetSet.has(request.resource)) continue;
+      controller.abort("adaptive-cdn-switch");
+      activeFetches.delete(controller);
+    }
     for (const xhr of activeXhrs) {
+      if (targetSet && !targetSet.has(xhr.__piliAdaptiveResource)) continue;
       try {
+        xhr.__piliAdaptiveAborted = true;
         xhr.abort();
       } catch (_) {}
+      activeXhrs.delete(xhr);
     }
-    activeXhrs.clear();
   }
 
   function activeResources() {
@@ -212,7 +234,7 @@
     return active.length ? active : [...resources];
   }
 
-  function switchCdn(reason, manual = false) {
+  function switchCdn(reason, manual = false, failedHost = null, failedResource = null) {
     if (!settings.enabled || !resources.size) return false;
     const maximum = settings.traverseAllCdns ? Infinity : settings.maxSwitches;
     if (!manual && switchCount >= maximum) {
@@ -221,8 +243,10 @@
       return false;
     }
 
-    const targets = activeResources();
-    const currentHosts = new Set(targets.map((item) => Core.hostOf(item.currentUrl)).filter(Boolean));
+    const targets = Core.selectSwitchTargets(activeResources(), failedResource);
+    const currentHosts = new Set(
+      (failedHost ? [failedHost] : targets.map((item) => Core.hostOf(item.currentUrl))).filter(Boolean),
+    );
     for (const host of currentHosts) markFailed(host);
 
     let changed = 0;
@@ -245,12 +269,33 @@
     health.lastSwitchAt = Date.now();
     health.lastBufferProgressAt = Date.now();
     health.bufferBelowTarget = false;
-    abortInflightMedia();
+    if (reason === "buffer-stall") abortInflightMedia(targets);
     const hosts = [...new Set(targets.map((item) => Core.hostOf(item.currentUrl)).filter(Boolean))];
     lastReason = `${reasonLabel(reason)} → ${hosts.join(" / ")}`;
     emitStatus();
     showToast(`Adaptive CDN：${lastReason}`);
     return true;
+  }
+
+  function switchAfterRequestFailure(reason, resource, failedHost) {
+    // Parallel requests from an old host can finish after another request has
+    // already switched this resource. Such stale failures must not advance the
+    // resource through several more CDNs.
+    if (resource && !Core.isCurrentResourceFailure(resource.currentUrl, failedHost)) {
+      return false;
+    }
+    if (
+      Core.shouldPauseNetworkSwitch(
+        networkGuard,
+        { host: failedHost, kind: resource?.kind },
+        Date.now(),
+      )
+    ) {
+      lastReason = "检测到整体网络异常，暂停 CDN 切换 20 秒";
+      emitStatus();
+      return false;
+    }
+    return switchCdn(reason, false, failedHost, resource);
   }
 
   function reasonLabel(reason) {
@@ -260,7 +305,6 @@
         "low-buffer": "缓冲降至阈值",
         "network-error": "网络请求失败",
         "http-error": "CDN 返回错误",
-        "video-frame-stall": "画面卡住，已暂停音频和进度",
         manual: "手动切换",
       }[reason] || reason
     );
@@ -319,17 +363,23 @@
 
     const controller = new AbortController();
     combineSignal(controller, input, init);
-    activeFetches.set(controller, Date.now());
+    activeFetches.set(controller, { createdAt: Date.now(), resource: rewritten.resource });
     try {
       const response = await nativeFetch(mediaFetchInput(input, rewritten.url), {
         ...init,
         signal: controller.signal,
       });
-      if (!response.ok && response.status >= 500) switchCdn("http-error");
+      if (Core.shouldSwitchForRequestFailure(response.status, controller.signal.aborted)) {
+        switchAfterRequestFailure("http-error", rewritten.resource, Core.hostOf(rewritten.url));
+      }
       return response;
     } catch (error) {
-      if (!controller.signal.aborted) switchCdn("network-error");
+      if (Core.shouldSwitchForRequestFailure(null, controller.signal.aborted)) {
+        switchAfterRequestFailure("network-error", rewritten.resource, Core.hostOf(rewritten.url));
+      }
       throw error;
+    } finally {
+      activeFetches.delete(controller);
     }
   };
 
@@ -337,6 +387,7 @@
     const originalUrl = String(url);
     const rewritten = rewriteMediaUrl(originalUrl);
     this.__piliAdaptiveResource = rewritten.resource;
+    this.__piliAdaptiveHost = Core.hostOf(rewritten.url);
     this.__piliAdaptivePlayUrl = Core.isPlayUrlApi(originalUrl);
     if (this.__piliAdaptivePlayUrl) {
       this.addEventListener(
@@ -355,16 +406,53 @@
 
   XMLHttpRequest.prototype.send = function adaptiveSend(body) {
     if (this.__piliAdaptiveResource) {
+      this.__piliAdaptiveAborted = false;
+      this.__piliAdaptiveHandledFailure = false;
       activeXhrs.add(this);
+      this.addEventListener(
+        "abort",
+        () => {
+          // The player routinely cancels obsolete range requests while
+          // seeking, changing quality, or replacing a MediaSource. This is
+          // not a CDN failure and must never advance the candidate list.
+          this.__piliAdaptiveAborted = true;
+          this.__piliAdaptiveHandledFailure = true;
+          activeXhrs.delete(this);
+        },
+        { once: true },
+      );
       this.addEventListener(
         "loadend",
         () => {
           activeXhrs.delete(this);
-          if (this.status >= 500) switchCdn("http-error");
+          if (
+            !this.__piliAdaptiveHandledFailure &&
+            Core.shouldSwitchForRequestFailure(this.status, this.__piliAdaptiveAborted)
+          ) {
+            this.__piliAdaptiveHandledFailure = true;
+            switchAfterRequestFailure(
+              "http-error",
+              this.__piliAdaptiveResource,
+              this.__piliAdaptiveHost,
+            );
+          }
         },
         { once: true },
       );
-      this.addEventListener("error", () => switchCdn("network-error"), { once: true });
+      this.addEventListener(
+        "error",
+        () => {
+          if (Core.shouldSwitchForRequestFailure(null, this.__piliAdaptiveAborted)) {
+            this.__piliAdaptiveHandledFailure = true;
+            switchAfterRequestFailure(
+              "network-error",
+              this.__piliAdaptiveResource,
+              this.__piliAdaptiveHost,
+            );
+          }
+        },
+        { once: true },
+      );
     }
     return nativeXhrSend.call(this, body);
   };
@@ -392,17 +480,57 @@
   }
 
   function trackVideoFrames(video) {
-    if (frameVideo === video || !video.requestVideoFrameCallback) return;
+    if (frameVideo === video) return;
+    stopFrameTracking();
     frameVideo = video;
-    lastVideoFrameAt = Date.now();
-    lastVideoFramePosition = video.currentTime || 0;
-    const next = (_, metadata) => {
-      if (frameVideo !== video) return;
-      lastVideoFrameAt = Date.now();
-      lastVideoFramePosition = Number(metadata.mediaTime) || video.currentTime || 0;
-      video.requestVideoFrameCallback(next);
+    videoHasStartedPlayback = false;
+    let stopped = false;
+    let callbackId = 0;
+    const resetFrameBaseline = () => {
+      if (stopped || frameVideo !== video) return;
+      videoPlayStartedAt = Date.now();
+      lastVideoFrameAt = videoPlayStartedAt;
+      lastVideoFramePosition = video.currentTime || 0;
     };
-    video.requestVideoFrameCallback(next);
+    const markPlaybackStarted = () => {
+      if (stopped || frameVideo !== video) return;
+      videoHasStartedPlayback = true;
+      resetFrameBaseline();
+    };
+    const resetForNewSource = () => {
+      if (stopped || frameVideo !== video) return;
+      videoHasStartedPlayback = false;
+      videoFrameRecoveryUntil = 0;
+      resetFrameBaseline();
+      health = Core.createHealthState(Date.now());
+    };
+    resetFrameBaseline();
+    video.addEventListener("playing", markPlaybackStarted);
+    video.addEventListener("loadstart", resetForNewSource);
+    video.addEventListener("seeking", resetFrameBaseline);
+    if (!video.paused && (video.currentTime || 0) > 0) markPlaybackStarted();
+    if (video.requestVideoFrameCallback) {
+      const next = (_, metadata) => {
+        if (stopped || frameVideo !== video) return;
+        videoHasStartedPlayback = true;
+        lastVideoFrameAt = Date.now();
+        lastVideoFramePosition = Number(metadata.mediaTime) || video.currentTime || 0;
+        videoFrameRecoveryUntil = 0;
+        callbackId = video.requestVideoFrameCallback(next);
+      };
+      callbackId = video.requestVideoFrameCallback(next);
+    }
+    stopFrameTracking = () => {
+      stopped = true;
+      video.removeEventListener("playing", markPlaybackStarted);
+      video.removeEventListener("loadstart", resetForNewSource);
+      video.removeEventListener("seeking", resetFrameBaseline);
+      if (callbackId && video.cancelVideoFrameCallback) {
+        video.cancelVideoFrameCallback(callbackId);
+      }
+      if (frameVideo === video) frameVideo = null;
+      stopFrameTracking = () => {};
+    };
   }
 
   function rewardStablePlayback(video, now) {
@@ -420,30 +548,41 @@
   }
 
   function monitorVideo() {
-    if (location.pathname !== sessionPath) resetVideoSession();
+    if (sessionPathKey() !== sessionPath) resetVideoSession();
     if (!settings.enabled) return;
     const video = document.querySelector("video");
     if (!video) return;
+    if (document.hidden) return;
     const now = Date.now();
+    const end = bufferedEnd(video);
+    const forwardBuffer = Math.max(0, end - video.currentTime);
     trackVideoFrames(video);
     if (
+      video.requestVideoFrameCallback &&
       Core.shouldPauseForVideoFrameStall(
         {
           playing: !video.paused,
+          hasStartedPlayback: videoHasStartedPlayback,
           seeking: video.seeking,
           position: video.currentTime || 0,
           lastFramePosition: lastVideoFramePosition,
           lastFrameAt: lastVideoFrameAt,
+          playStartedAt: Math.max(videoPlayStartedAt, pageVisibleAt),
+          recoveryUntil: videoFrameRecoveryUntil,
+          forwardBuffer,
+          minForwardBuffer: settings.lowBufferSec,
         },
         now,
       )
     ) {
-      video.pause();
-      switchCdn("video-frame-stall");
+      videoFrameRecoveryUntil = now + 12_000;
+      lastReason = "画面卡住，正在重新缓冲";
+      emitStatus();
+      showToast(`Adaptive CDN：${lastReason}`);
+      video.currentTime = Math.max(0, Math.min(video.currentTime, lastVideoFramePosition));
       return;
     }
-    const end = bufferedEnd(video);
-    lastBufferSeconds = Math.max(0, end - video.currentTime);
+    lastBufferSeconds = forwardBuffer;
     const reason = Core.evaluateHealth(
       health,
       {
@@ -451,6 +590,7 @@
         position: video.currentTime,
         buffered: end,
         playing: !video.paused,
+        hasStartedPlayback: videoHasStartedPlayback,
         ended: video.ended,
       },
       settings,
@@ -463,16 +603,20 @@
 
   function resetVideoSession() {
     abortInflightMedia();
+    stopFrameTracking();
     resources.clear();
     aliases.clear();
     failedHosts.clear();
     switchCount = 0;
     lastReason = "等待播放地址";
     lastBufferSeconds = 0;
-    frameVideo = null;
     lastVideoFrameAt = Date.now();
     lastVideoFramePosition = 0;
-    sessionPath = location.pathname;
+    videoPlayStartedAt = Date.now();
+    videoHasStartedPlayback = false;
+    videoFrameRecoveryUntil = 0;
+    networkGuard = Core.createNetworkGuardState();
+    sessionPath = sessionPathKey();
     health = Core.createHealthState(Date.now());
     lastRewardAt = Date.now();
     lastRewardPosition = 0;

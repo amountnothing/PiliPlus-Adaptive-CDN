@@ -1,4 +1,4 @@
-import 'dart:async' show StreamSubscription, Timer;
+import 'dart:async' show StreamSubscription, Timer, unawaited;
 import 'dart:convert' show ascii;
 import 'dart:io' show Platform;
 import 'dart:math' show max, min;
@@ -99,6 +99,11 @@ class PlPlayerController with BlockConfigMixin {
   Duration? _rebuildPosition;
   int? _rebuildCid;
   int? _activeCid;
+  int _mediaOpenGeneration = 0;
+  int _openedMediaGeneration = 0;
+  bool _completionEventArmed = false;
+  bool get _isReplacingMedia => _mediaOpenGeneration != _openedMediaGeneration;
+  bool _preserveRebuildPosition = false;
 
   /// 进度条位置
   Duration sliderPosition = Duration.zero;
@@ -161,6 +166,8 @@ class PlPlayerController with BlockConfigMixin {
   bool _autoPlay = false;
   bool _isInBackground = false;
   bool _wasPlayingOnEnterBackground = false;
+  bool _temporarilyPaused = false;
+  bool _hasStartedPlayback = false;
   bool _backgroundReconnectRefreshing = false;
   Duration _lastBackgroundReconnectPosition = Duration.zero;
   Timer? _backgroundReconnectTimer;
@@ -507,9 +514,10 @@ class PlPlayerController with BlockConfigMixin {
     bool notify = true,
     bool isInterrupt = false,
   }) async {
-    if (_instance?.playerStatus.isPlaying ?? false) {
-      await _instance?.pause(notify: notify, isInterrupt: isInterrupt);
-    }
+    // A notification/media-button pause can arrive while buffering has already
+    // made the native player report paused. Still record the user's intent so
+    // reconnect and interruption recovery cannot start playback again.
+    await _instance?.pause(notify: notify, isInterrupt: isInterrupt);
   }
 
   static Future<void> seekToIfExists(
@@ -662,7 +670,17 @@ class PlPlayerController with BlockConfigMixin {
     VoidCallback? onInit,
     Volume? volume,
     bool autoFullScreenFlag = false,
+    int? expectedManualPauseGeneration,
   }) async {
+    final mediaOpenGeneration = ++_mediaOpenGeneration;
+    _completionEventArmed = false;
+    _hasStartedPlayback = false;
+    final autoplayGeneration =
+        expectedManualPauseGeneration ?? manualPauseGeneration;
+    if (expectedManualPauseGeneration == null ||
+        expectedManualPauseGeneration == manualPauseGeneration) {
+      playbackRequested.value = autoplay;
+    }
     _checkpointForRebuild();
     final resumeAt = AdaptivePlayback.rebuildResumePosition(
       checkpointCid: _rebuildCid,
@@ -670,6 +688,8 @@ class PlPlayerController with BlockConfigMixin {
       checkpoint: _rebuildPosition,
       requested: seekTo,
     );
+    _preserveRebuildPosition =
+        resumeAt != null && resumeAt > Duration.zero && _rebuildCid == cid;
     try {
       _processing = true;
       this.isLive = isLive;
@@ -700,11 +720,17 @@ class PlPlayerController with BlockConfigMixin {
         await pause(notify: false, isInterrupt: true);
       }
 
-      if (_playerCount == 0) {
+      if (_playerCount == 0 || mediaOpenGeneration != _mediaOpenGeneration) {
         return;
       }
       // 配置Player 音轨、字幕等等
-      await _createVideoController(dataSource, resumeAt, volume);
+      final opened = await _createVideoController(
+        dataSource,
+        resumeAt,
+        volume,
+        mediaOpenGeneration,
+      );
+      if (!opened || mediaOpenGeneration != _mediaOpenGeneration) return;
       _activeCid = cid;
       _clearRebuildCheckpoint();
 
@@ -724,21 +750,29 @@ class PlPlayerController with BlockConfigMixin {
       updateBufferedSecond();
       // 数据加载完成
       dataStatus.value = DataStatus.loaded;
+      // The old media can emit completed/paused while Player.open replaces it.
+      // Only accept stream events after the latest open has taken ownership.
+      _openedMediaGeneration = mediaOpenGeneration;
 
       if (autoFullScreenFlag && autoEnterFullScreen) {
         triggerFullScreen(status: true);
       }
 
-      await _initializePlayer();
+      await _initializePlayer(autoplayGeneration);
       onInit?.call();
     } catch (err, stackTrace) {
-      dataStatus.value = DataStatus.error;
+      if (mediaOpenGeneration == _mediaOpenGeneration) {
+        dataStatus.value = DataStatus.error;
+        _openedMediaGeneration = mediaOpenGeneration;
+      }
       if (kDebugMode) {
         debugPrint(stackTrace.toString());
         debugPrint('plPlayer err:  $err');
       }
     } finally {
-      _processing = false;
+      if (mediaOpenGeneration == _mediaOpenGeneration) {
+        _processing = false;
+      }
     }
   }
 
@@ -844,15 +878,16 @@ class PlPlayerController with BlockConfigMixin {
   Map<String, String> get liveBuffer => _liveBuffer ??= Pref.initLiveBuffer();
 
   // 配置播放器
-  Future<void> _createVideoController(
+  Future<bool> _createVideoController(
     DataSource dataSource,
     Duration? seekTo,
     Volume? volume,
+    int mediaOpenGeneration,
   ) async {
     isBuffering.value = false;
     buffered.value = Duration.zero;
     _heartDuration = 0;
-    position = Duration.zero;
+    if (!_preserveRebuildPosition) position = Duration.zero;
     // 初始化时清空弹幕，防止上次重叠
     danmakuController?.clear();
 
@@ -865,13 +900,15 @@ class PlPlayerController with BlockConfigMixin {
         player.dispose();
         player = null;
         _videoController = null;
-        return;
+        return false;
       }
       _videoPlayerController = player;
       if (isAnim && superResolutionType.value != .disable) {
         await setShader();
       }
     }
+
+    if (mediaOpenGeneration != _mediaOpenGeneration) return false;
 
     final Map<String, String> extras = {};
 
@@ -932,6 +969,7 @@ class PlPlayerController with BlockConfigMixin {
       ),
       play: false,
     );
+    return mediaOpenGeneration == _mediaOpenGeneration;
   }
 
   void _checkpointForRebuild() {
@@ -953,6 +991,7 @@ class PlPlayerController with BlockConfigMixin {
   void _clearRebuildCheckpoint() {
     _rebuildCid = null;
     _rebuildPosition = null;
+    _preserveRebuildPosition = false;
   }
 
   Future<void>? refreshPlayer() {
@@ -961,16 +1000,30 @@ class PlPlayerController with BlockConfigMixin {
     }
     if (_videoPlayerController case final ctr? when (ctr.current.isNotEmpty)) {
       _checkpointForRebuild();
+      _preserveRebuildPosition = _rebuildPosition != null;
       final resumeAt = AdaptivePlayback.rebuildResumePosition(
         checkpointCid: _rebuildCid,
         targetCid: cid,
         checkpoint: _rebuildPosition,
         requested: position,
       );
-      playbackRequested.value = true;
+      final autoplay = playbackRequested.value;
+      final pauseGeneration = manualPauseGeneration;
       return ctr
-          .open(ctr.current.last.copyWith(start: resumeAt), play: true)
-          .then((_) => _clearRebuildCheckpoint());
+          .open(ctr.current.last.copyWith(start: resumeAt), play: false)
+          .then((_) async {
+            if (AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
+              autoplay: autoplay,
+              playbackRequested: playbackRequested.value,
+              pauseGenerationAtStart: pauseGeneration,
+              currentPauseGeneration: manualPauseGeneration,
+            )) {
+              await play();
+            } else {
+              await pause(notify: false, isInterrupt: true);
+            }
+          })
+          .whenComplete(_clearRebuildCheckpoint);
     }
     return null;
   }
@@ -978,12 +1031,13 @@ class PlPlayerController with BlockConfigMixin {
   // 开始播放
   Future<void> stopCurrentSource() async {
     _checkpointForRebuild();
+    _preserveRebuildPosition = _rebuildPosition != null;
     try {
       await _videoPlayerController?.stop();
     } catch (_) {}
   }
 
-  Future<void> _initializePlayer() async {
+  Future<void> _initializePlayer(int autoplayGeneration) async {
     if (_instance == null) return;
     // 设置倍速
     if (isLive) {
@@ -1004,9 +1058,16 @@ class PlPlayerController with BlockConfigMixin {
     // }
 
     // 自动播放
-    if (_autoPlay) {
+    if (AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
+      autoplay: _autoPlay,
+      playbackRequested: playbackRequested.value,
+      pauseGenerationAtStart: autoplayGeneration,
+      currentPauseGeneration: manualPauseGeneration,
+    )) {
       playIfExists();
       // await play(duration: duration);
+    } else {
+      await pause(notify: false, isInterrupt: true);
     }
   }
 
@@ -1020,8 +1081,27 @@ class PlPlayerController with BlockConfigMixin {
     final stream = player.stream;
     _subscriptions = [
       stream.playing.listen((event) {
+        if (_isReplacingMedia) return;
+        if (event &&
+            !AdaptivePlayback.shouldAcceptNativePlayingEvent(
+              playbackRequested: playbackRequested.value,
+            )) {
+          // A late native/lifecycle event must never override an explicit
+          // pause. Keep the player and the public state aligned.
+          unawaited(_videoPlayerController?.pause());
+          _disableAutoEnterPip();
+          playerStatus.value = PlayerStatus.paused;
+          videoPlayerServiceHandler?.onStatusChange(
+            PlayerStatus.paused,
+            isBuffering.value,
+            isLive,
+          );
+          return;
+        }
         WakelockPlus.toggle(enable: event);
         if (event) {
+          _hasStartedPlayback = true;
+          _completionEventArmed = true;
           if (_isAutoEnterPip) {
             if (_isCurrVideoPage) {
               enterPip(autoEnter: true);
@@ -1049,7 +1129,14 @@ class PlPlayerController with BlockConfigMixin {
         }
       }),
       stream.completed.listen((event) {
+        if (_isReplacingMedia) return;
         if (event) {
+          // Replacing Media can deliver the previous item's completion after
+          // open() has returned. A media item cannot complete before it has
+          // actually started, so keep that stale event from clearing the new
+          // item's autoplay request.
+          if (!_completionEventArmed) return;
+          _completionEventArmed = false;
           playbackRequested.value = false;
           playerStatus.value = PlayerStatus.completed;
           _wasPlayingOnEnterBackground = false;
@@ -1065,27 +1152,39 @@ class PlPlayerController with BlockConfigMixin {
         makeHeartBeat(positionSeconds.value, type: HeartBeatType.completed);
       }),
       stream.position.listen((event) {
-        position = event;
+        if (_isReplacingMedia) return;
+        final preserved = _rebuildPosition;
+        final effectivePosition =
+            _preserveRebuildPosition &&
+                event == Duration.zero &&
+                preserved != null &&
+                preserved > Duration.zero
+            ? preserved
+            : event;
+        position = effectivePosition;
         updatePositionSecond();
         if (!isSliderMoving.value) {
-          sliderPosition = event;
+          sliderPosition = effectivePosition;
           updateSliderPositionSecond();
         }
 
         /// 触发回调事件
         for (final element in _positionListeners) {
-          element(event);
+          element(effectivePosition);
         }
-        makeHeartBeat(event.inSeconds);
+        makeHeartBeat(effectivePosition.inSeconds);
       }),
       stream.duration.listen((Duration event) {
+        if (_isReplacingMedia) return;
         duration.value = event;
       }),
       stream.buffer.listen((Duration event) {
+        if (_isReplacingMedia) return;
         buffered.value = event;
         updateBufferedSecond();
       }),
       stream.buffering.listen((bool event) {
+        if (_isReplacingMedia) return;
         isBuffering.value = event;
         videoPlayerServiceHandler?.onStatusChange(
           playerStatus.value,
@@ -1095,6 +1194,7 @@ class PlPlayerController with BlockConfigMixin {
       }),
       if (kDebugMode)
         stream.log.listen(((PlayerLog log) {
+          if (_isReplacingMedia) return;
           if (log.level == 'error' || log.level == 'fatal') {
             final event = '${log.prefix}: ${log.text}'.trim();
             if (onPlayerError?.call(event) ?? false) return;
@@ -1104,6 +1204,8 @@ class PlPlayerController with BlockConfigMixin {
           }
         })),
       stream.error.listen((String event) {
+        if (_isReplacingMedia) return;
+        if (AdaptivePlayback.isDetachedAudioPadNoise(event)) return;
         if (dataSource is FileSource &&
             event.startsWith("Failed to open file")) {
           return;
@@ -1187,13 +1289,56 @@ class PlPlayerController with BlockConfigMixin {
     if (_isInBackground == inBackground) return;
     _isInBackground = inBackground;
     if (inBackground) {
-      _wasPlayingOnEnterBackground = playerStatus.isPlaying;
+      _wasPlayingOnEnterBackground = playbackRequested.value;
       _lastBackgroundReconnectPosition = position;
+      if (!playbackRequested.value) {
+        _stopBackgroundReconnectTimer();
+        unawaited(_videoPlayerController?.pause());
+        playerStatus.value = PlayerStatus.paused;
+        return;
+      }
       _startBackgroundReconnectTimer();
     } else {
       _stopBackgroundReconnectTimer();
       _wasPlayingOnEnterBackground = false;
     }
+  }
+
+  Future<void> resumeAfterLifecyclePause({
+    required int expectedManualPauseGeneration,
+  }) async {
+    if (!AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
+      autoplay: true,
+      playbackRequested: playbackRequested.value,
+      pauseGenerationAtStart: expectedManualPauseGeneration,
+      currentPauseGeneration: manualPauseGeneration,
+    )) {
+      return;
+    }
+
+    final resumeCid = cid;
+    final resumePosition = position;
+    await play();
+    await Future<void>.delayed(const Duration(seconds: 5));
+    if (_isInBackground ||
+        processing ||
+        cid != resumeCid ||
+        playerStatus.isCompleted ||
+        !AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
+          autoplay: true,
+          playbackRequested: playbackRequested.value,
+          pauseGenerationAtStart: expectedManualPauseGeneration,
+          currentPauseGeneration: manualPauseGeneration,
+        )) {
+      return;
+    }
+
+    final progressed =
+        position > resumePosition + const Duration(milliseconds: 500);
+    if (progressed && !isBuffering.value && playerStatus.isPlaying) return;
+
+    Utils.reportLog(() => 'BackgroundReconnect: foreground resume stalled');
+    await refreshPlayer();
   }
 
   bool get _canReconnectInBackground =>
@@ -1202,6 +1347,19 @@ class PlPlayerController with BlockConfigMixin {
       continuePlayInBackground.value &&
       _videoPlayerController?.current.isNotEmpty == true &&
       dataSource is! FileSource;
+
+  bool get shouldKeepRelayActive =>
+      playbackRequested.value &&
+      (!_isInBackground || continuePlayInBackground.value);
+
+  bool get shouldMonitorPlaybackHealth =>
+      AdaptivePlayback.shouldAccumulateCdnStall(
+        playbackRequested: playbackRequested.value,
+        temporarilyPaused:
+            _temporarilyPaused ||
+            (_isInBackground && !continuePlayInBackground.value),
+        hasStartedPlayback: _hasStartedPlayback,
+      );
 
   void _startBackgroundReconnectTimer() {
     _backgroundReconnectTimer?.cancel();
@@ -1281,6 +1439,9 @@ class PlPlayerController with BlockConfigMixin {
     if (_playerCount == 0) {
       return;
     }
+    // An explicit seek supersedes any recovery checkpoint, including a seek
+    // from the media notification while a rebuild is pending.
+    _clearRebuildCheckpoint();
     if (position < Duration.zero) {
       position = Duration.zero;
     }
@@ -1353,6 +1514,7 @@ class PlPlayerController with BlockConfigMixin {
   Future<void> play({bool repeat = false, bool hideControls = true}) async {
     if (_playerCount == 0) return;
     playbackRequested.value = true;
+    _temporarilyPaused = false;
     // 播放时自动隐藏控制条
     controls = !hideControls;
     // repeat为true，将从头播放
@@ -1376,6 +1538,7 @@ class PlPlayerController with BlockConfigMixin {
 
   /// 暂停播放
   Future<void> pause({bool notify = true, bool isInterrupt = false}) async {
+    _temporarilyPaused = isInterrupt;
     if (!isInterrupt) {
       playbackRequested.value = false;
       manualPauseGeneration += 1;
@@ -1540,10 +1703,11 @@ class PlPlayerController with BlockConfigMixin {
   // 双击播放、暂停
   Future<void> onDoubleTapCenter() async {
     if (!isLive && _isCompleted) {
-      await videoPlayerController!.seek(Duration.zero);
-      videoPlayerController!.play();
+      await play(repeat: true);
+    } else if (videoPlayerController!.state.playing) {
+      await pause();
     } else {
-      videoPlayerController!.playOrPause();
+      await play();
     }
   }
 

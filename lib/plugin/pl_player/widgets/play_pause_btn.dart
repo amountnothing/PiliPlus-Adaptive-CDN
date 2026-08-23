@@ -21,17 +21,22 @@ class PlayOrPauseButtonState extends State<PlayOrPauseButton>
   late final AnimationController controller;
   late final StreamSubscription<bool> subscription;
   late Player player;
+  late bool playing;
 
   @override
   void initState() {
     super.initState();
     player = widget.plPlayerController.videoPlayerController!;
+    playing = player.state.playing;
     controller = AnimationController(
       vsync: this,
-      value: player.state.playing ? 1 : 0,
+      value: playing ? 1 : 0,
       duration: const Duration(milliseconds: 200),
     );
     subscription = player.stream.playing.listen((playing) {
+      if (mounted && this.playing != playing) {
+        setState(() => this.playing = playing);
+      }
       if (playing) {
         controller.forward();
       } else {
@@ -57,7 +62,7 @@ class PlayOrPauseButtonState extends State<PlayOrPauseButton>
         onTap: widget.plPlayerController.onDoubleTapCenter,
         child: Center(
           child: AnimatedIcon(
-            semanticLabel: player.state.playing ? '暂停' : '播放',
+            semanticLabel: playing ? '暂停' : '播放',
             progress: controller,
             icon: AnimatedIcons.play_pause,
             color: Colors.white,

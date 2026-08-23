@@ -796,16 +796,12 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                                             .videoPlayerController!
                                             .state
                                             .completed) {
-                                          await plPlayerController!
-                                              .videoPlayerController!
-                                              .seek(Duration.zero);
-                                          plPlayerController!
-                                              .videoPlayerController!
-                                              .play();
+                                          await plPlayerController!.play(
+                                            repeat: true,
+                                          );
                                         } else {
-                                          plPlayerController!
-                                              .videoPlayerController!
-                                              .playOrPause();
+                                          await plPlayerController!
+                                              .onDoubleTapCenter();
                                         }
                                       }
                                     },

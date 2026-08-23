@@ -92,14 +92,14 @@ void main() {
   });
 
   group('AdaptivePlayback.hasReachedContentEnd', () {
-    test('treats a fully buffered media tail as complete', () {
+    test('does not treat a fully buffered seek target as complete', () {
       expect(
         AdaptivePlayback.hasReachedContentEnd(
           duration: const Duration(seconds: 100),
           position: const Duration(seconds: 80),
           buffered: const Duration(seconds: 100),
         ),
-        isTrue,
+        isFalse,
       );
     });
 
@@ -107,12 +107,48 @@ void main() {
       expect(
         AdaptivePlayback.hasReachedContentEnd(
           duration: const Duration(seconds: 100),
-          position: const Duration(seconds: 98),
-          buffered: const Duration(milliseconds: 98500),
+          position: const Duration(milliseconds: 99800),
+          buffered: const Duration(seconds: 100),
         ),
         isTrue,
       );
     });
+
+    test('does not switch CDN while the final segment is playing', () {
+      expect(
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: const Duration(seconds: 100),
+          position: const Duration(seconds: 96),
+          buffered: const Duration(seconds: 98),
+        ),
+        isTrue,
+      );
+    });
+
+    test('still recovers when the final segment has not been downloaded', () {
+      expect(
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: const Duration(seconds: 100),
+          position: const Duration(seconds: 96),
+          buffered: const Duration(seconds: 96),
+        ),
+        isFalse,
+      );
+    });
+
+    test(
+      'allows playback after seeking to the start of a fully buffered file',
+      () {
+        expect(
+          AdaptivePlayback.hasReachedContentEnd(
+            duration: const Duration(seconds: 100),
+            position: Duration.zero,
+            buffered: const Duration(seconds: 100),
+          ),
+          isFalse,
+        );
+      },
+    );
 
     test('does not hide a real stall before the media tail', () {
       expect(
@@ -135,28 +171,149 @@ void main() {
         isFalse,
       );
     });
+
+    test('does not treat the start of a short video as its tail', () {
+      expect(
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: const Duration(seconds: 4),
+          position: Duration.zero,
+          buffered: const Duration(seconds: 4),
+        ),
+        isFalse,
+      );
+      expect(
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: const Duration(seconds: 4),
+          position: const Duration(milliseconds: 3700),
+          buffered: const Duration(seconds: 4),
+        ),
+        isTrue,
+      );
+    });
   });
 
   group('AdaptivePlayback.shouldAccumulateCdnStall', () {
-    test('ignores a stale buffering flag after a manual pause', () {
+    test('ignores a stale buffering flag after an explicit pause', () {
       expect(
         AdaptivePlayback.shouldAccumulateCdnStall(
-          playbackRequested: true,
-          isPlaying: false,
+          playbackRequested: false,
+          temporarilyPaused: false,
+          hasStartedPlayback: true,
         ),
         isFalse,
       );
     });
 
-    test('monitors an actively playing video', () {
+    test('monitors playback intent even when native playing turns false', () {
       expect(
         AdaptivePlayback.shouldAccumulateCdnStall(
           playbackRequested: true,
-          isPlaying: true,
+          temporarilyPaused: false,
+          hasStartedPlayback: true,
         ),
         isTrue,
       );
     });
+
+    test('ignores a lifecycle or audio-focus pause', () {
+      expect(
+        AdaptivePlayback.shouldAccumulateCdnStall(
+          playbackRequested: true,
+          temporarilyPaused: true,
+          hasStartedPlayback: true,
+        ),
+        isFalse,
+      );
+    });
+
+    test('does not monitor before the current media has actually started', () {
+      expect(
+        AdaptivePlayback.shouldAccumulateCdnStall(
+          playbackRequested: true,
+          temporarilyPaused: false,
+          hasStartedPlayback: false,
+        ),
+        isFalse,
+      );
+    });
+  });
+
+  test('recoverable player errors respect playback intent', () {
+    expect(
+      AdaptivePlayback.shouldRecoverPlayerError(
+        playbackRequested: true,
+        onlyPlayAudio: false,
+        isLocalRelayFailure: false,
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.shouldRecoverPlayerError(
+        playbackRequested: false,
+        onlyPlayAudio: false,
+        isLocalRelayFailure: false,
+      ),
+      isFalse,
+    );
+    expect(
+      AdaptivePlayback.shouldRecoverPlayerError(
+        playbackRequested: false,
+        onlyPlayAudio: true,
+        isLocalRelayFailure: true,
+      ),
+      isFalse,
+    );
+  });
+
+  test('async recovery cannot override a later manual pause', () {
+    expect(
+      AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
+        autoplay: true,
+        playbackRequested: true,
+        pauseGenerationAtStart: 4,
+        currentPauseGeneration: 4,
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
+        autoplay: true,
+        playbackRequested: false,
+        pauseGenerationAtStart: 4,
+        currentPauseGeneration: 5,
+      ),
+      isFalse,
+    );
+    expect(
+      AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
+        autoplay: true,
+        playbackRequested: true,
+        pauseGenerationAtStart: 4,
+        currentPauseGeneration: 5,
+      ),
+      isFalse,
+    );
+  });
+
+  test('late native playing events cannot override a manual pause', () {
+    expect(
+      AdaptivePlayback.shouldAcceptNativePlayingEvent(
+        playbackRequested: true,
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.shouldAcceptNativePlayingEvent(
+        playbackRequested: false,
+      ),
+      isFalse,
+    );
+  });
+
+  test('recognizes relay startup format errors separately', () {
+    const message = 'Failed to recognize file format.';
+    expect(AdaptivePlayback.isUnrecognizedFormat(message), isTrue);
+    expect(AdaptivePlayback.isVideoBitstreamCorruption(message), isTrue);
   });
 
   test('loading follows playback intent and presentation state', () {
@@ -207,6 +364,15 @@ void main() {
         requested: const Duration(seconds: 10),
       ),
       const Duration(seconds: 10),
+    );
+    expect(
+      AdaptivePlayback.rebuildResumePosition(
+        checkpointCid: 1,
+        targetCid: 1,
+        checkpoint: Duration.zero,
+        requested: const Duration(seconds: 42),
+      ),
+      const Duration(seconds: 42),
     );
   });
 
@@ -267,7 +433,90 @@ void main() {
     );
   });
 
+  test('rebuilds after an empty interrupted response has no file format', () {
+    expect(
+      AdaptivePlayback.isVideoBitstreamCorruption(
+        'Failed to recognize file format.',
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.isDetachedAudioPadNoise(
+        'Pad aid1 is not connected to anything.',
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.isVideoBitstreamCorruption(
+        'NULL: Invalid OBU: fragment too short (1 bytes).',
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.isVideoBitstreamCorruption(
+        'NULL: zero_bit out of range: 1, but must be in [0,0].',
+      ),
+      isTrue,
+    );
+    expect(
+      AdaptivePlayback.isLoopbackRelayConnectionFailure(
+        'tcp: Connection to tcp://127.0.0.1:39169 failed: Connection timed out',
+      ),
+      isTrue,
+    );
+  });
+
   group('AdaptivePlayback.shouldRecoverFrozenTrack', () {
+    test('does not infer a freeze from an unavailable audio pts property', () {
+      expect(
+        AdaptivePlayback.shouldRecoverFrozenTrack(
+          trackPts: null,
+          lastTrackPts: const Duration(seconds: 12),
+          forwardBuffer: const Duration(seconds: 20),
+          minForwardBuffer: const Duration(seconds: 10),
+          noFrameProgressFor: const Duration(seconds: 8),
+          freezeTimeout: const Duration(seconds: 8),
+          isPlaying: true,
+          trackExpected: true,
+          peerTrackAdvanced: true,
+        ),
+        isFalse,
+      );
+    });
+
+    test('does not recover while an expected pts has never initialized', () {
+      expect(
+        AdaptivePlayback.shouldRecoverFrozenTrack(
+          trackPts: null,
+          lastTrackPts: null,
+          forwardBuffer: const Duration(seconds: 20),
+          minForwardBuffer: const Duration(seconds: 10),
+          noFrameProgressFor: const Duration(seconds: 11),
+          freezeTimeout: const Duration(seconds: 8),
+          isPlaying: true,
+          trackExpected: true,
+          peerTrackAdvanced: true,
+        ),
+        isFalse,
+      );
+    });
+
+    test('does not recover a missing pts when both tracks are stalled', () {
+      expect(
+        AdaptivePlayback.shouldRecoverFrozenTrack(
+          trackPts: null,
+          lastTrackPts: const Duration(seconds: 12),
+          forwardBuffer: Duration.zero,
+          minForwardBuffer: const Duration(seconds: 10),
+          noFrameProgressFor: const Duration(seconds: 20),
+          freezeTimeout: const Duration(seconds: 8),
+          isPlaying: true,
+          trackExpected: true,
+        ),
+        isFalse,
+      );
+    });
+
     test('detects a stuck pts even when the playback clock also stops', () {
       expect(
         AdaptivePlayback.shouldRecoverFrozenTrack(
@@ -332,6 +581,23 @@ void main() {
           trackExpected: true,
         ),
         isFalse,
+      );
+    });
+
+    test('recovers a frozen track at low buffer when its peer advances', () {
+      expect(
+        AdaptivePlayback.shouldRecoverFrozenTrack(
+          trackPts: const Duration(seconds: 12),
+          lastTrackPts: const Duration(seconds: 12),
+          forwardBuffer: const Duration(seconds: 2),
+          minForwardBuffer: const Duration(seconds: 10),
+          noFrameProgressFor: const Duration(seconds: 9),
+          freezeTimeout: const Duration(seconds: 8),
+          isPlaying: true,
+          trackExpected: true,
+          peerTrackAdvanced: true,
+        ),
+        isTrue,
       );
     });
   });
