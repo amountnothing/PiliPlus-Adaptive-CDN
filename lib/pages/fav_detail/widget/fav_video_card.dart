@@ -24,7 +24,6 @@ class FavVideoCardH extends StatelessWidget {
   final FavDetailItemModel item;
   final int? index;
   final BaseFavController? ctr;
-  String get coverHeroTag => PageUtils.videoCoverHeroTag(this);
 
   const FavVideoCardH({
     super.key,
@@ -83,7 +82,7 @@ class FavVideoCardH extends StatelessWidget {
                     );
                     break;
                   default:
-                    ctr!.onViewFav(item, index, coverHeroTag: coverHeroTag);
+                    ctr!.onViewFav(item, index);
                     break;
                 }
               },
@@ -106,13 +105,10 @@ class FavVideoCardH extends StatelessWidget {
                     return Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        PageUtils.videoCoverHero(
-                          tag: coverHeroTag,
-                          child: NetworkImgLayer(
-                            src: item.cover,
-                            width: maxWidth,
-                            height: maxHeight,
-                          ),
+                        NetworkImgLayer(
+                          src: item.cover,
+                          width: maxWidth,
+                          height: maxHeight,
                         ),
                         PBadge(
                           text: DurationUtils.formatDuration(item.duration),

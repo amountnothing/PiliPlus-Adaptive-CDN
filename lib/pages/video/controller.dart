@@ -161,12 +161,8 @@ class VideoDetailController extends GetxController
   int _remainingCdnSwitches(CdnRelayTrack track) => track == .video
       ? max(0, _maxCdnSwitches - _videoCdnSwitchCount)
       : max(0, _maxAudioCdnSwitches - _audioCdnSwitchCount);
-  String get _preferredDecode =>
-      Pref.adaptivePlayback ? Pref.adaptivePreferredDecode : cacheDecode;
-  String get _fallbackDecode =>
-      Pref.adaptivePlayback ? Pref.adaptiveRecoveryDecode : cacheSecondDecode;
   VideoDecodeFormatType get _recoveryDecodeFormat =>
-      VideoDecodeFormatType.fromString(_fallbackDecode);
+      VideoDecodeFormatType.fromString(Pref.adaptiveRecoveryDecode);
 
   Timer? _cdnHealthTimer;
   List<String> _videoCdnCandidates = const [];
@@ -888,10 +884,10 @@ class VideoDetailController extends GetxController
     if (!Pref.adaptivePlayback || isFileSource) {
       return;
     }
-    _lastBufferedPosition = plPlayerController.buffered.value;
+    _lastBufferedPosition = plPlayerController.currentBuffered;
     final now = DateTime.now();
     _cdnHealthStartedAt = now;
-    _lastPlaybackPosition = plPlayerController.position;
+    _lastPlaybackPosition = plPlayerController.currentPosition;
     _resetVideoFrameHealth(now);
     _videoFreezeRecoveryCount = 0;
     final forwardBuffer = _lastBufferedPosition > _lastPlaybackPosition
@@ -916,9 +912,11 @@ class VideoDetailController extends GetxController
         !unrecognizedRelayFormat && _isVideoBitstreamCorruption(event);
     final isRecoverable = _isRecoverableAdaptivePlayerError(event);
     final hasReachedContentEnd = AdaptivePlayback.hasReachedContentEnd(
-      duration: plPlayerController.duration.value,
-      position: plPlayerController.position,
-      buffered: plPlayerController.buffered.value,
+      duration: Duration(
+        milliseconds: plPlayerController.durationInMilliseconds,
+      ),
+      position: plPlayerController.currentPosition,
+      buffered: plPlayerController.currentBuffered,
     );
     if (isRecoverable && hasReachedContentEnd) return true;
     if (!Pref.adaptivePlayback ||
@@ -956,8 +954,8 @@ class VideoDetailController extends GetxController
     _logAdaptive(
       'player-error bitstream=$isBitstreamCorruption '
       'localRelay=$isLocalRelayFailure '
-      'positionMs=${plPlayerController.position.inMilliseconds} '
-      'bufferedMs=${plPlayerController.buffered.value.inMilliseconds} '
+      'positionMs=${plPlayerController.currentPosition.inMilliseconds} '
+      'bufferedMs=${plPlayerController.currentBuffered.inMilliseconds} '
       'message=${_briefPlayerError(event)}',
     );
     unawaited(
@@ -1043,7 +1041,7 @@ class VideoDetailController extends GetxController
         AdaptivePlayback.rebuildResumePosition(
           checkpointCid: cid.value,
           targetCid: cid.value,
-          checkpoint: plPlayerController.position,
+          checkpoint: plPlayerController.currentPosition,
           requested: playedTime,
         ) ??
         Duration.zero;
@@ -1089,9 +1087,11 @@ class VideoDetailController extends GetxController
     );
     if (_switchingCdn || plPlayerController.processing) return;
 
-    final buffered = plPlayerController.buffered.value;
-    final position = plPlayerController.position;
-    final duration = plPlayerController.duration.value;
+    final buffered = plPlayerController.currentBuffered;
+    final position = plPlayerController.currentPosition;
+    final duration = Duration(
+      milliseconds: plPlayerController.durationInMilliseconds,
+    );
     final now = DateTime.now();
     final shouldMonitor = plPlayerController.shouldMonitorPlaybackHealth;
     if (!shouldMonitor) {
@@ -1246,8 +1246,8 @@ class VideoDetailController extends GetxController
   }
 
   void _resetLowBufferWatchAfterCdnSwitch(DateTime now) {
-    final buffered = plPlayerController.buffered.value;
-    final position = plPlayerController.position;
+    final buffered = plPlayerController.currentBuffered;
+    final position = plPlayerController.currentPosition;
     _resetLowBufferWatch(
       now,
       buffered > position ? buffered - position : Duration.zero,
@@ -1312,9 +1312,11 @@ class VideoDetailController extends GetxController
         now.difference(_lastVideoFreezeRecoveryAt) <
             const Duration(seconds: 12) ||
         AdaptivePlayback.hasReachedContentEnd(
-          duration: plPlayerController.duration.value,
-          position: plPlayerController.position,
-          buffered: plPlayerController.buffered.value,
+          duration: Duration(
+            milliseconds: plPlayerController.durationInMilliseconds,
+          ),
+          position: plPlayerController.currentPosition,
+          buffered: plPlayerController.currentBuffered,
         )) {
       return;
     }
@@ -1326,8 +1328,8 @@ class VideoDetailController extends GetxController
     try {
       await plPlayerController.pause(isInterrupt: true);
       _capturePlaybackPosition();
-      _lastBufferedPosition = plPlayerController.buffered.value;
-      _lastPlaybackPosition = plPlayerController.position;
+      _lastBufferedPosition = plPlayerController.currentBuffered;
+      _lastPlaybackPosition = plPlayerController.currentPosition;
       _resetVideoFrameHealth(now);
 
       final includesVideo = frozenTracks.contains('video');
@@ -1376,9 +1378,11 @@ class VideoDetailController extends GetxController
         _remainingCdnSwitches(.video) <= 0 ||
         videoUrl == null ||
         AdaptivePlayback.hasReachedContentEnd(
-          duration: plPlayerController.duration.value,
-          position: plPlayerController.position,
-          buffered: plPlayerController.buffered.value,
+          duration: Duration(
+            milliseconds: plPlayerController.durationInMilliseconds,
+          ),
+          position: plPlayerController.currentPosition,
+          buffered: plPlayerController.currentBuffered,
         )) {
       return false;
     }
@@ -1409,7 +1413,7 @@ class VideoDetailController extends GetxController
           final audioIndex = _audioCdnCandidates.indexOf(currentAudioUrl);
           if (audioIndex >= 0) _audioCdnIndex = audioIndex;
         }
-        _lastBufferedPosition = plPlayerController.buffered.value;
+        _lastBufferedPosition = plPlayerController.currentBuffered;
         final now = DateTime.now();
         _resetLowBufferWatchAfterCdnSwitch(now);
         return true;
@@ -1490,7 +1494,7 @@ class VideoDetailController extends GetxController
       videoUrl = nextUrl;
       final index = _videoCdnCandidates.indexOf(nextUrl);
       if (index >= 0) _videoCdnIndex = index;
-      _lastBufferedPosition = plPlayerController.buffered.value;
+      _lastBufferedPosition = plPlayerController.currentBuffered;
       final now = DateTime.now();
       _resetLowBufferWatchAfterCdnSwitch(now);
       SmartDialog.showToast('已保留缓冲并切换 CDN 节点');
@@ -1508,8 +1512,8 @@ class VideoDetailController extends GetxController
   ) {
     if (isClosed) return;
     final now = DateTime.now();
-    final position = plPlayerController.position;
-    final buffered = plPlayerController.buffered.value;
+    final position = plPlayerController.currentPosition;
+    final buffered = plPlayerController.currentBuffered;
     final forwardBuffer = buffered > position
         ? buffered - position
         : Duration.zero;

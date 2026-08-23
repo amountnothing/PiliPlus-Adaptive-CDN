@@ -16,7 +16,6 @@ import 'package:material_ui/material_ui.dart';
 
 class MusicVideoCardH extends StatelessWidget {
   final BgmRecommend videoItem;
-  String get coverHeroTag => PageUtils.videoCoverHeroTag(this);
 
   const MusicVideoCardH({
     super.key,
@@ -50,7 +49,6 @@ class MusicVideoCardH extends StatelessWidget {
               cover: videoItem.cover,
               title: videoItem.title,
               dimension: dimension,
-              coverHeroTag: coverHeroTag,
             );
           }
         },
@@ -73,13 +71,10 @@ class MusicVideoCardH extends StatelessWidget {
                     return Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        PageUtils.videoCoverHero(
-                          tag: coverHeroTag,
-                          child: NetworkImgLayer(
-                            src: videoItem.cover,
-                            width: maxWidth,
-                            height: maxHeight,
-                          ),
+                        NetworkImgLayer(
+                          src: videoItem.cover,
+                          width: maxWidth,
+                          height: maxHeight,
                         ),
                         PBadge(
                           text: DurationUtils.formatDuration(

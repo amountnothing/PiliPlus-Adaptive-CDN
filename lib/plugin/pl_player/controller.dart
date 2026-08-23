@@ -91,6 +91,9 @@ class PlPlayerController with BlockConfigMixin {
 
   int get positionInMilliseconds =>
       videoPlayerController?.state.position.inMilliseconds ?? 0;
+  Duration get currentPosition =>
+      videoPlayerController?.state.position ??
+      Duration(seconds: position.value);
   Duration? _rebuildPosition;
   int? _rebuildCid;
   int? _activeCid;
@@ -101,6 +104,7 @@ class PlPlayerController with BlockConfigMixin {
   bool _preserveRebuildPosition = false;
 
   final RxInt buffered = RxInt(0);
+  Duration get currentBuffered => Duration(seconds: buffered.value);
 
   final RxInt duration = RxInt(0);
 
@@ -874,8 +878,7 @@ class PlPlayerController with BlockConfigMixin {
         final bandwidth = dataSource is NetworkSource
             ? dataSource.bandwidth
             : null;
-        _buffer = Pref.initBuffer(_playbackSpeed.value, bandwidth);
-        extras.addAll(_buffer!);
+        extras.addAll(Pref.initBuffer(_playbackSpeed.value, bandwidth));
       }
     }
 
@@ -1096,6 +1099,7 @@ class PlPlayerController with BlockConfigMixin {
           makeHeartBeat(seconds, type: .status);
         }
       }),
+
       ///completed
       stream.completed.listen((bool completed) {
         if (_isReplacingMedia) return;
@@ -1118,6 +1122,7 @@ class PlPlayerController with BlockConfigMixin {
           makeHeartBeat(-1, type: .completed);
         }
       }),
+
       /// position
       stream.position.listen((Duration event) {
         if (_isReplacingMedia) return;
@@ -1255,7 +1260,7 @@ class PlPlayerController with BlockConfigMixin {
     _isInBackground = inBackground;
     if (inBackground) {
       _wasPlayingOnEnterBackground = playbackRequested.value;
-      _lastBackgroundReconnectPosition = position;
+      _lastBackgroundReconnectPosition = currentPosition;
       if (!playbackRequested.value) {
         _stopBackgroundReconnectTimer();
         unawaited(_videoPlayerController?.pause());
@@ -1282,7 +1287,7 @@ class PlPlayerController with BlockConfigMixin {
     }
 
     final resumeCid = cid;
-    final resumePosition = position;
+    final resumePosition = currentPosition;
     await play();
     await Future<void>.delayed(const Duration(seconds: 5));
     if (_isInBackground ||
@@ -1299,7 +1304,7 @@ class PlPlayerController with BlockConfigMixin {
     }
 
     final progressed =
-        position > resumePosition + const Duration(milliseconds: 500);
+        currentPosition > resumePosition + const Duration(milliseconds: 500);
     if (progressed && !isBuffering.value && playerStatus.isPlaying) return;
 
     Utils.reportLog(() => 'BackgroundReconnect: foreground resume stalled');
@@ -1344,10 +1349,10 @@ class PlPlayerController with BlockConfigMixin {
   void _checkBackgroundReconnect() {
     if (!_canReconnectInBackground || processing) return;
     final last = _lastBackgroundReconnectPosition;
-    _lastBackgroundReconnectPosition = position;
+    _lastBackgroundReconnectPosition = currentPosition;
     final stalled = isLive
         ? isBuffering.value || !playerStatus.isPlaying
-        : position <= last + const Duration(milliseconds: 500);
+        : currentPosition <= last + const Duration(milliseconds: 500);
     if (dataStatus.error ||
         isBuffering.value ||
         !playerStatus.isPlaying ||
@@ -1372,7 +1377,7 @@ class PlPlayerController with BlockConfigMixin {
         }
         refresh.whenComplete(() {
           _backgroundReconnectRefreshing = false;
-          _lastBackgroundReconnectPosition = position;
+          _lastBackgroundReconnectPosition = currentPosition;
         });
       },
     );
@@ -1490,7 +1495,7 @@ class PlPlayerController with BlockConfigMixin {
     playerStatus.value = PlayerStatus.playing;
     if (_isInBackground && continuePlayInBackground.value) {
       _wasPlayingOnEnterBackground = true;
-      _lastBackgroundReconnectPosition = position;
+      _lastBackgroundReconnectPosition = currentPosition;
       _startBackgroundReconnectTimer();
     }
     // screenManager.setOverlays(false);

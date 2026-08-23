@@ -210,7 +210,11 @@ $patches_material = @($ModalBarrierPatchMaterial, $NavigationDrawerPatchMaterial
                     $FABPatchMaterial, $TextFieldPatchMaterial, $ScaffoldPatchMaterial, $RefreshIndicatorPatchMaterial,
                     $TabsPatchMaterial)
 
-$PubCacheDir = "~/.pub-cache"
+$PubCacheDir = if ($IsWindows) {
+    "$env:LOCALAPPDATA/Pub/Cache"
+} else {
+    "~/.pub-cache"
+}
 
 switch ($platform.ToLower()) {
     "android" {
@@ -224,7 +228,6 @@ switch ($platform.ToLower()) {
     "macos" {
     }
     "windows" {
-        $PubCacheDir = "$env:LOCALAPPDATA/Pub/Cache"
     }
     default {}
 }

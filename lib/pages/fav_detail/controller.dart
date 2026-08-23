@@ -29,7 +29,7 @@ mixin BaseFavController
 
   ValueChanged<int>? updateCount;
 
-  void onViewFav(FavDetailItemModel item, int? index, {String? coverHeroTag});
+  void onViewFav(FavDetailItemModel item, int? index);
 
   Future<void> onCancelFav(int index, int id, int type) async {
     final res = await FavHttp.favVideo(
@@ -213,11 +213,7 @@ class FavDetailController
   }
 
   @override
-  void onViewFav(
-    FavDetailItemModel item,
-    int? index, {
-    String? coverHeroTag,
-  }) {
+  void onViewFav(FavDetailItemModel item, int? index) {
     final folder = folderInfo.value;
     // TODO: dimension
     PageUtils.toVideoPage(
@@ -225,7 +221,6 @@ class FavDetailController
       cid: item.ugc!.firstCid!,
       cover: item.cover,
       title: item.title,
-      coverHeroTag: coverHeroTag,
       extraArguments: isPlayAll.value
           ? {
               'sourceType': SourceType.fav,

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:math' show max, min, pow, sqrt;
+import 'dart:math' show max, min;
 
 import 'package:PiliPlus/common/widgets/gesture/horizontal_drag_gesture_recognizer.dart'
     show deviceTouchSlop;

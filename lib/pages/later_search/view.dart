@@ -72,13 +72,12 @@ class _LaterSearchPageState
           index: index,
           videoItem: item,
           ctr: controller,
-          onViewLater: (cid, coverHeroTag) {
+          onViewLater: (cid) {
             PageUtils.toVideoPage(
               bvid: item.bvid,
               cid: cid,
               cover: item.pic,
               title: item.title,
-              coverHeroTag: coverHeroTag,
               dimension: item.dimension,
               extraArguments: {
                 'oid': item.aid,

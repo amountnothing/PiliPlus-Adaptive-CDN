@@ -27,7 +27,6 @@ class SearchArchiveGrpc extends StatelessWidget {
   });
 
   final Arc item;
-  String get coverHeroTag => PageUtils.videoCoverHeroTag(this);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +62,6 @@ class SearchArchiveGrpc extends StatelessWidget {
                 cover: arc.pic,
                 title: titleStr,
                 isVertical: arc.dimension.isVertical,
-                coverHeroTag: coverHeroTag,
               );
             },
             child: Padding(
@@ -83,13 +81,10 @@ class SearchArchiveGrpc extends StatelessWidget {
                         return Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            PageUtils.videoCoverHero(
-                              tag: coverHeroTag,
-                              child: NetworkImgLayer(
-                                src: arc.pic,
-                                width: maxWidth,
-                                height: maxHeight,
-                              ),
+                            NetworkImgLayer(
+                              src: arc.pic,
+                              width: maxWidth,
+                              height: maxHeight,
                             ),
                             if (item.isPugv)
                               const PBadge(

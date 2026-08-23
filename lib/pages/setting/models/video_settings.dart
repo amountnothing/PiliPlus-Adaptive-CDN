@@ -29,7 +29,7 @@ List<SettingsModel> get _adaptivePlaybackSettings => [
     title: '自适应首选解码',
     leading: const Icon(Icons.movie_filter_outlined),
     getSubtitle: () =>
-        '当前：${VideoDecodeFormatType.fromCode(Pref.adaptivePreferredDecode).description}',
+        '当前：${VideoDecodeFormatType.fromString(Pref.adaptivePreferredDecode).description}',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptivePreferredDecodeDialog,
   ),
@@ -37,7 +37,7 @@ List<SettingsModel> get _adaptivePlaybackSettings => [
     title: '冻结恢复解码',
     leading: const Icon(Icons.video_settings_outlined),
     getSubtitle: () =>
-        '画面冻结/码流错误时尝试切到 ${VideoDecodeFormatType.fromCode(Pref.adaptiveRecoveryDecode).description}',
+        '画面冻结/码流错误时尝试切到 ${VideoDecodeFormatType.fromString(Pref.adaptiveRecoveryDecode).description}',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveRecoveryDecodeDialog,
   ),
@@ -127,7 +127,7 @@ List<SettingsModel> get videoSettings => [
     title: '自适应播放详细设置',
     leading: const Icon(Icons.tune_rounded),
     getSubtitle: () =>
-        '${VideoDecodeFormatType.fromCode(Pref.adaptivePreferredDecode).description} 优先，冻结恢复 ${VideoDecodeFormatType.fromCode(Pref.adaptiveRecoveryDecode).description}',
+        '${VideoDecodeFormatType.fromString(Pref.adaptivePreferredDecode).description} 优先，冻结恢复 ${VideoDecodeFormatType.fromString(Pref.adaptiveRecoveryDecode).description}',
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _openAdaptivePlaybackSettings,
   ),

@@ -46,7 +46,6 @@ class DynamicPanel extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
-    final coverHeroTag = PageUtils.videoCoverHeroTag(item);
     final authorWidget = AuthorPanel(
       item: item,
       isDetail: isDetail,
@@ -77,10 +76,7 @@ class DynamicPanel extends StatelessWidget {
                   'DYNAMIC_TYPE_COURSES_SEASON',
                 }.contains(item.type)
             ? null
-            : () => PageUtils.pushDynDetail(
-                item,
-                coverHeroTag: coverHeroTag,
-              ),
+            : () => PageUtils.pushDynDetail(item),
         onLongPress: showMore,
         onSecondaryTap: PlatformUtils.isMobile ? null : showMore,
         child: Column(
@@ -125,19 +121,8 @@ class DynamicPanel extends StatelessWidget {
         ),
       ),
     );
-    final isVideoCard = const {
-      'DYNAMIC_TYPE_AV',
-      'DYNAMIC_TYPE_UGC_SEASON',
-    }.contains(item.type);
-    Widget card = !isSave && !isDetail && isVideoCard
-        ? PageUtils.videoCardHero(
-            tag: coverHeroTag,
-            snapshotTarget: true,
-            child: child,
-          )
-        : child;
     if (isSave || (isDetail && !isDetailPortraitW)) {
-      return card;
+      return child;
     }
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -150,7 +135,7 @@ class DynamicPanel extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8),
-        child: card,
+        child: child,
       ),
     );
   }

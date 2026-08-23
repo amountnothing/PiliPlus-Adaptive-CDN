@@ -28,7 +28,6 @@ class VideoCardHMemberVideo extends StatelessWidget {
   final VoidCallback? onTap;
   final dynamic bvid;
   final String? fromViewAid;
-  String get coverHeroTag => PageUtils.videoCoverHeroTag(this);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +71,6 @@ class VideoCardHMemberVideo extends StatelessWidget {
                     cover: videoItem.cover,
                     title: videoItem.title,
                     isVertical: isVertical,
-                    coverHeroTag: coverHeroTag,
                   );
                 },
             child: Padding(
@@ -92,13 +90,10 @@ class VideoCardHMemberVideo extends StatelessWidget {
                         return Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            PageUtils.videoCoverHero(
-                              tag: coverHeroTag,
-                              child: NetworkImgLayer(
-                                src: videoItem.cover,
-                                width: maxWidth,
-                                height: maxHeight,
-                              ),
+                            NetworkImgLayer(
+                              src: videoItem.cover,
+                              width: maxWidth,
+                              height: maxHeight,
                             ),
                             if (fromViewAid == videoItem.param)
                               const Positioned.fill(

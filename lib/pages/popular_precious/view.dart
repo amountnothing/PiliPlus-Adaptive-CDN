@@ -1,4 +1,3 @@
-import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/scaffold/simple_scaffold.dart';
@@ -31,7 +30,6 @@ class _PopularPreciousPageState extends State<PopularPreciousPage>
       body: refreshIndicator(
         onRefresh: _controller.onRefresh,
         child: CustomScrollView(
-          scrollCacheExtent: Style.feedCacheExtent,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             ViewSliverSafeArea(
@@ -55,13 +53,10 @@ class _PopularPreciousPageState extends State<PopularPreciousPage>
             final item = response[index];
             return VideoCardH(
               videoItem: item,
-              onTapWithHero: (coverHeroTag) {
+              onTap: () {
                 PageUtils.toVideoPage(
                   bvid: item.bvid,
                   cid: item.cid!,
-                  cover: item.cover,
-                  title: item.title,
-                  coverHeroTag: coverHeroTag,
                   dimension: item.dimension,
                   extraArguments: {
                     'sourceType': SourceType.playlist,
