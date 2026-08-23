@@ -153,6 +153,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
   Offset? _initialFocalPoint;
 
   bool _pauseDueToPauseUponEnteringBackgroundMode = false;
+  int? _backgroundPauseGeneration;
 
   StreamSubscription? _brightnessListener;
   void _onBrightnessChanged(double value) {
@@ -336,14 +337,27 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     if (!plPlayerController.continuePlayInBackground.value) {
       late final player = plPlayerController.videoPlayerController;
       if (const <AppLifecycleState>[.paused, .detached].contains(state)) {
-        if (player != null && player.state.playing) {
+        if (player != null &&
+            player.state.playing &&
+            plPlayerController.playbackRequested.value) {
           _pauseDueToPauseUponEnteringBackgroundMode = true;
-          player.pause();
+          _backgroundPauseGeneration = plPlayerController.manualPauseGeneration;
+          unawaited(
+            plPlayerController.pause(notify: false, isInterrupt: true),
+          );
         }
-      } else {
+      } else if (state == AppLifecycleState.resumed) {
         if (_pauseDueToPauseUponEnteringBackgroundMode) {
           _pauseDueToPauseUponEnteringBackgroundMode = false;
-          player?.play();
+          final pauseGeneration = _backgroundPauseGeneration;
+          _backgroundPauseGeneration = null;
+          if (pauseGeneration != null) {
+            unawaited(
+              plPlayerController.resumeAfterLifecyclePause(
+                expectedManualPauseGeneration: pauseGeneration,
+              ),
+            );
+          }
         }
       }
     }

@@ -20,6 +20,7 @@ typedef CdnRelayRecoveryCallback =
     void Function(CdnRelayTrack track, int offset, String reason);
 
 typedef CdnRelayLogCallback = void Function(String message);
+typedef CdnRelaySwitchGuard = bool Function();
 
 /// A loopback HTTP range relay. The player keeps one stable local URL while
 /// upstream byte requests can move between CDN mirrors.
@@ -27,12 +28,51 @@ typedef CdnRelayLogCallback = void Function(String message);
 /// Once response bytes reach the player, a switch closes that response so mpv
 /// retries a fresh Range request against the new CDN without losing its buffer.
 class CdnRelayServer {
-  CdnRelayServer();
+  CdnRelayServer({
+    Future<bool> Function()? connectivityProbe,
+    Duration unreachableSwitchDelay = const Duration(seconds: 5),
+  }) : _connectivityProbe = connectivityProbe ?? _probePublicDns,
+       _offlineSwitchDelay = unreachableSwitchDelay;
 
   static final CdnRelayServer shared = CdnRelayServer();
 
   final Map<String, CdnRelaySession> _sessions = {};
+  final Future<bool> Function() _connectivityProbe;
+  final Duration _offlineSwitchDelay;
   HttpServer? _server;
+  Future<void>? _switchGate;
+
+  Future<void> waitBeforeCdnSwitch() => _switchGate ??= _waitBeforeCdnSwitch()
+      .whenComplete(() => _switchGate = null);
+
+  Future<void> _waitBeforeCdnSwitch() async {
+    if (await _connectivityProbe()) return;
+    await Future<void>.delayed(_offlineSwitchDelay);
+  }
+
+  static Future<bool> _probePublicDns() async {
+    final reachable = await Future.wait([
+      _probeHost('1.1.1.1'),
+      _probeHost('223.5.5.5'),
+    ]);
+    return reachable.any((value) => value);
+  }
+
+  static Future<bool> _probeHost(String host) async {
+    Socket? socket;
+    try {
+      socket = await Socket.connect(
+        host,
+        53,
+        timeout: const Duration(milliseconds: 800),
+      );
+      return true;
+    } catch (_) {
+      return false;
+    } finally {
+      socket?.destroy();
+    }
+  }
 
   Future<CdnRelaySession> createSession({
     required List<String> videoCandidates,
@@ -41,6 +81,9 @@ class CdnRelayServer {
     int audioIndex = 0,
     required Duration cooldown,
     required int maxSwitches,
+    int? maxAudioSwitches,
+    int initialSwitchCount = 0,
+    int initialAudioSwitchCount = 0,
     CdnRelaySwitchCallback? onSwitch,
     CdnRelayRecoveryCallback? onRecoveryRequired,
     CdnRelayLogCallback? onLog,
@@ -56,6 +99,9 @@ class CdnRelayServer {
       audioIndex: audioIndex,
       cooldown: cooldown,
       maxSwitches: maxSwitches,
+      maxAudioSwitches: maxAudioSwitches ?? maxSwitches,
+      initialSwitchCount: initialSwitchCount,
+      initialAudioSwitchCount: initialAudioSwitchCount,
       onSwitch: onSwitch,
       onRecoveryRequired: onRecoveryRequired,
       onLog: onLog,
@@ -136,15 +182,27 @@ class CdnRelaySession {
     required List<String> audioCandidates,
     required int audioIndex,
     required Duration cooldown,
-    required int maxSwitches,
+    required this.maxSwitches,
+    required this.maxAudioSwitches,
+    required int initialSwitchCount,
+    required int initialAudioSwitchCount,
     required CdnRelaySwitchCallback? onSwitch,
     required this.onRecoveryRequired,
     required this.onLog,
-  }) : _video = _RelayTrackState(
+  }) : _videoSwitches = initialSwitchCount < 0
+           ? 0
+           : initialSwitchCount > maxSwitches
+           ? maxSwitches
+           : initialSwitchCount,
+       _audioSwitches = initialAudioSwitchCount < 0
+           ? 0
+           : initialAudioSwitchCount > maxAudioSwitches
+           ? maxAudioSwitches
+           : initialAudioSwitchCount,
+       _video = _RelayTrackState(
          type: CdnRelayTrack.video,
          candidates: videoCandidates,
          index: videoIndex,
-         maxSwitches: maxSwitches,
          cooldown: cooldown,
          onSwitch: onSwitch,
        ),
@@ -152,7 +210,6 @@ class CdnRelaySession {
          type: CdnRelayTrack.audio,
          candidates: audioCandidates,
          index: audioIndex,
-         maxSwitches: maxSwitches,
          cooldown: cooldown,
          onSwitch: onSwitch,
        ) {
@@ -166,17 +223,29 @@ class CdnRelaySession {
 
   final CdnRelayServer _owner;
   final String _token;
-  final CdnRelayRecoveryCallback? onRecoveryRequired;
-  final CdnRelayLogCallback? onLog;
+  CdnRelayRecoveryCallback? onRecoveryRequired;
+  CdnRelayLogCallback? onLog;
   final _RelayTrackState _video;
   final _RelayTrackState _audio;
   final _NetworkImpairmentGuard _networkGuard = _NetworkImpairmentGuard();
   final HttpClient _client = HttpClient();
+  final int maxSwitches;
+  final int maxAudioSwitches;
+  int _videoSwitches;
+  int _audioSwitches;
   bool _disposed = false;
+  bool _retired = false;
   bool _playbackPaused = false;
   Completer<void>? _resumeCompleter;
 
   bool get isDisposed => _disposed;
+  int get switchCount => _videoSwitches;
+  int get audioSwitchCount => _audioSwitches;
+  int get remainingSwitches =>
+      _videoSwitches >= maxSwitches ? 0 : maxSwitches - _videoSwitches;
+  int get remainingAudioSwitches => _audioSwitches >= maxAudioSwitches
+      ? 0
+      : maxAudioSwitches - _audioSwitches;
   bool get isNetworkSwitchPaused => _networkGuard.isPaused;
   String get videoUrl => _owner._uri(_token, CdnRelayTrack.video).toString();
   String? get audioUrl => _audio.candidates.isEmpty
@@ -185,6 +254,15 @@ class CdnRelaySession {
   String get currentVideoSource => _video.currentUrl;
   String? get currentAudioSource =>
       _audio.candidates.isEmpty ? null : _audio.currentUrl;
+
+  void retire() {
+    if (_retired) return;
+    _retired = true;
+    onRecoveryRequired = null;
+    onLog = null;
+    _video.onSwitch = null;
+    _audio.onSwitch = null;
+  }
 
   void setPlaybackPaused(bool paused) {
     if (_disposed || _playbackPaused == paused) return;
@@ -214,26 +292,32 @@ class CdnRelaySession {
     required List<String> audioCandidates,
     required int audioIndex,
   }) {
+    if (_disposed || _retired) return;
     _video.update(videoCandidates, videoIndex);
     _audio.update(audioCandidates, audioIndex);
   }
 
-  bool switchVideo({
+  Future<bool> switchVideo({
     String? expectedUrl,
     String reason = 'buffer-stall',
-  }) {
-    if (_disposed || _video.candidates.length < 2) return false;
+    CdnRelaySwitchGuard? canSwitch,
+  }) async {
+    if (_disposed || _retired || _video.candidates.length < 2) return false;
     if (expectedUrl != null && _video.currentUrl != expectedUrl) return true;
     return _switchTrack(
       _video,
       expectedUrl: expectedUrl,
       reason: reason,
+      canSwitch: canSwitch,
     );
   }
 
   Future<void> _serve(HttpRequest request, CdnRelayTrack type) async {
     final response = request.response;
     final track = type == CdnRelayTrack.video ? _video : _audio;
+    // A retired relay no longer switches or reports callbacks, but it remains
+    // readable until its short grace period ends. MPV can issue one final
+    // Range request while the replacement source is taking ownership.
     if (_disposed || track.candidates.isEmpty) {
       response.statusCode = HttpStatus.notFound;
       await response.close();
@@ -311,6 +395,9 @@ class CdnRelaySession {
           throw const _RelaySourceMismatch();
         }
         final absoluteStart = contentRange?.start ?? 0;
+        final expectedResponseBytes = contentRange == null
+            ? (upstream.contentLength >= 0 ? upstream.contentLength : null)
+            : contentRange.end - contentRange.start + 1;
         final totalLength =
             contentRange?.total ??
             (upstream.contentLength >= 0
@@ -371,7 +458,7 @@ class CdnRelaySession {
           if (track.currentUrl != sourceUrl) {
             throw const _RelaySourceChanged();
           }
-          if (scoreBytes >= 4 * 1024 * 1024) {
+          if (!_retired && scoreBytes >= 4 * 1024 * 1024) {
             CdnScoreService.recordSuccess(
               sourceUrl,
               bytes: scoreBytes,
@@ -381,11 +468,21 @@ class CdnRelaySession {
             networkWait = Duration.zero;
           }
         }
-        CdnScoreService.recordSuccess(
-          sourceUrl,
-          bytes: scoreBytes,
-          networkWait: networkWait,
-        );
+        if (expectedResponseBytes != null &&
+            sourceBytes < expectedResponseBytes) {
+          throw HttpException(
+            'Upstream response ended early: received $sourceBytes of '
+            '$expectedResponseBytes bytes',
+            uri: Uri.parse(sourceUrl),
+          );
+        }
+        if (!_retired) {
+          CdnScoreService.recordSuccess(
+            sourceUrl,
+            bytes: scoreBytes,
+            networkWait: networkWait,
+          );
+        }
         await response.close();
         return;
       } on _RelayDownstreamClosed {
@@ -397,6 +494,15 @@ class CdnRelaySession {
           return;
         }
       } catch (error) {
+        if (_retired) {
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          response.statusCode = HttpStatus.badGateway;
+          await response.close();
+          return;
+        }
         final mismatch = error is _RelaySourceMismatch;
         final reason = mismatch ? 'source-mismatch' : _failureReason(error);
         if (!mismatch &&
@@ -412,7 +518,7 @@ class CdnRelaySession {
           }
           rethrow;
         }
-        if (!_switchAfterFailure(type, sourceUrl, reason: reason)) {
+        if (!await _switchAfterFailure(type, sourceUrl, reason: reason)) {
           if (headersSent) {
             _requestRecovery(type, responseStart + deliveredBytes, reason);
             await _closeInterruptedResponse(response);
@@ -448,23 +554,44 @@ class CdnRelaySession {
     } catch (_) {}
   }
 
-  bool _switchAfterFailure(
+  Future<bool> _switchAfterFailure(
     CdnRelayTrack type,
     String expectedUrl, {
     required String reason,
   }) {
     final track = type == CdnRelayTrack.video ? _video : _audio;
-    return _switchTrack(track, expectedUrl: expectedUrl, reason: reason);
+    return _switchTrack(
+      track,
+      expectedUrl: expectedUrl,
+      reason: reason,
+    );
   }
 
-  bool _switchTrack(
+  Future<bool> _switchTrack(
     _RelayTrackState track, {
     String? expectedUrl,
     required String reason,
-  }) {
+    CdnRelaySwitchGuard? canSwitch,
+  }) async {
+    if (_disposed ||
+        _retired ||
+        _playbackPaused ||
+        _switchesFor(track.type) >= _maxSwitchesFor(track.type) ||
+        (canSwitch != null && !canSwitch())) {
+      return false;
+    }
+    await _owner.waitBeforeCdnSwitch();
+    if (_disposed ||
+        _retired ||
+        _playbackPaused ||
+        _switchesFor(track.type) >= _maxSwitchesFor(track.type) ||
+        (canSwitch != null && !canSwitch())) {
+      return false;
+    }
     final failedUrl = track.currentUrl;
     final switched = track.switchNext(expectedUrl: expectedUrl);
     if (switched && failedUrl != track.currentUrl) {
+      _incrementSwitches(track.type);
       _log(
         'switch track=${track.type.name} reason=$reason '
         'from=${_host(failedUrl)} to=${_host(track.currentUrl)} '
@@ -474,7 +601,22 @@ class CdnRelaySession {
     return switched;
   }
 
+  int _switchesFor(CdnRelayTrack track) =>
+      track == CdnRelayTrack.video ? _videoSwitches : _audioSwitches;
+
+  int _maxSwitchesFor(CdnRelayTrack track) =>
+      track == CdnRelayTrack.video ? maxSwitches : maxAudioSwitches;
+
+  void _incrementSwitches(CdnRelayTrack track) {
+    if (track == CdnRelayTrack.video) {
+      _videoSwitches += 1;
+    } else {
+      _audioSwitches += 1;
+    }
+  }
+
   void _requestRecovery(CdnRelayTrack track, int offset, String reason) {
+    if (_retired) return;
     _log('rebuild-required track=${track.name} offset=$offset reason=$reason');
     onRecoveryRequired?.call(track, offset, reason);
   }
@@ -587,19 +729,16 @@ class _RelayTrackState {
     required this.type,
     required List<String> candidates,
     required int index,
-    required this.maxSwitches,
     required this.cooldown,
     required this.onSwitch,
   }) : candidates = List<String>.of(candidates),
        index = candidates.isEmpty ? 0 : index.clamp(0, candidates.length - 1);
 
   final CdnRelayTrack type;
-  final int maxSwitches;
   final Duration cooldown;
-  final CdnRelaySwitchCallback? onSwitch;
+  CdnRelaySwitchCallback? onSwitch;
   List<String> candidates;
   int index;
-  int switches = 0;
   int generation = 0;
   int? expectedLength;
   final Set<String> failedHosts = {};
@@ -624,9 +763,7 @@ class _RelayTrackState {
     _notifyChanged();
     candidates = List<String>.of(nextCandidates);
     index = candidates.isEmpty ? 0 : nextIndex.clamp(0, candidates.length - 1);
-    switches = 0;
     expectedLength = null;
-    failedHosts.clear();
   }
 
   bool acceptLength(int? length) {
@@ -637,7 +774,7 @@ class _RelayTrackState {
 
   bool switchNext({String? expectedUrl}) {
     if (expectedUrl != null && currentUrl != expectedUrl) return true;
-    if (candidates.length < 2 || switches >= maxSwitches) return false;
+    if (candidates.length < 2) return false;
     final failedUrl = currentUrl;
     final failedHost = VideoUtils.cdnHost(failedUrl);
     if (failedHost != null) failedHosts.add(failedHost);
@@ -650,7 +787,6 @@ class _RelayTrackState {
       if (host != null && failedHosts.contains(host)) continue;
       if (VideoUtils.isCdnCoolingDown(next)) continue;
       index = candidates.indexOf(next);
-      switches += 1;
       _notifyChanged();
       onSwitch?.call(type, failedUrl, next);
       return true;
