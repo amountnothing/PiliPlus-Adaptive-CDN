@@ -1,10 +1,12 @@
 # PiliPlus Adaptive CDN 项目上下文
 
-更新时间：2026-08-15
+更新时间：2026-08-24
 用途：给人和 Codex 快速恢复项目上下文，避免长对话压缩后丢失关键记忆。
 
-- 当前工作目录：`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN/PiliPlus-Adaptive-CDN-repo`。
-- APK、油猴脚本等交付目录：`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN`。
+- 唯一源码基准：GitHub `amountnothing/PiliPlus-Adaptive-CDN` 的 `main` 分支。
+- 本机工作目录示例：`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN/PiliPlus-Adaptive-CDN-repo`；云端 clone 不依赖此绝对路径。
+- 本机 APK、油猴脚本等临时交付目录：`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN`；长期交付使用 GitHub Release/Actions artifact。
+- 云端迁移、环境初始化、私钥边界和本机目录清单见 `docs/CLOUD_AGENT_HANDOFF.md`。
 - 外层 `PiliPlus-Adaptive-CDN-handoff.md` 是历史迁移快照，不作为当前参数或版本依据。
 
 ## 0. 每次任务必读的架构基准
@@ -254,7 +256,7 @@
 最新 APK 按当前提交命名并输出到
 `H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN`；具体文件名和校验值以每次构建结果为准。
 
-当前没有待修复的动画问题。除非用户提供新的可复现回归，不要继续调整动画目标、比例或页面层级。当前工作树包含未提交的 Adaptive CDN、日志和播放器改动，任何任务开始前都必须先检查并保留。
+当前没有待修复的动画问题。除非用户提供新的可复现回归，不要继续调整动画目标、比例或页面层级。不要根据本文假定工作树是否干净；任何任务开始前都必须运行 `git status --short` 并保留已有修改。
 
 ### 2026-08-08 播放状态与 CDN 切换约束
 

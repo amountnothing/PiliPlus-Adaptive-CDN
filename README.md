@@ -5,6 +5,8 @@
 > GitHub Actions 会定期检查 [PiliPlus 上游 Release](https://github.com/bggRGjQaUbCoE/PiliPlus/releases)。发现新版本后会尝试合并上游并自动构建 Android Release；若存在代码冲突则停止更新，避免覆盖自适应播放逻辑。
 >
 > 同仓库还提供 [Chromium 网页扩展](browser-extension/README.md)：它会读取每个网页视频实际返回的 DASH CDN 候选，在保留浏览器 MSE 缓冲的情况下切换后续 Range 请求。网页端不会套用 App 的固定 CDN 名单。
+>
+> 维护者与云端 Agent：修改前请依次阅读 [AGENTS.md](AGENTS.md)、[项目上下文](docs/PROJECT_CONTEXT.md)、[完整架构](docs/CODEBASE_REFERENCE.md) 和 [云端接管指南](docs/CLOUD_AGENT_HANDOFF.md)。
 
 <div align="center">
     <img width="200" height="200" src="assets/images/logo/logo.png">

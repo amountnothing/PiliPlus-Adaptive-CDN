@@ -3,8 +3,11 @@
 每次开始任务前必须：
 
 1. 完整读取 `docs/PROJECT_CONTEXT.md`。
-2. 执行 `git status --short`，保留用户已有未提交改动。
-3. 再读取任务涉及的当前代码；文档与代码冲突时先核实，不凭旧会话猜测。
+2. 完整读取 `docs/CODEBASE_REFERENCE.md`。
+3. 执行 `git status --short`，保留用户已有未提交改动。
+4. 再读取任务涉及的当前代码；文档与代码冲突时先核实，不凭旧会话猜测。
+
+新环境或云端 Agent 首次接管时，先读取 `docs/CLOUD_AGENT_HANDOFF.md`，但仍以上述当前文档和代码为准。
 
 长期边界：
 
