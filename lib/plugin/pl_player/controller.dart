@@ -71,7 +71,7 @@ import 'package:window_manager/window_manager.dart';
 typedef PlayCallback = Future<void>? Function();
 typedef PlayerErrorCallback = bool Function(String event);
 
-class PlPlayerController with BlockConfigMixin {
+class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   Player? _videoPlayerController;
   VideoController? _videoController;
 
@@ -88,6 +88,8 @@ class PlPlayerController with BlockConfigMixin {
   final RxBool isSeeking = false.obs;
 
   final RxInt position = RxInt(0);
+  final RxInt seekPosition = RxInt(0);
+  int get progress => isSeeking.value ? seekPosition.value : position.value;
 
   int get positionInMilliseconds =>
       videoPlayerController?.state.position.inMilliseconds ?? 0;
@@ -304,8 +306,7 @@ class PlPlayerController with BlockConfigMixin {
   }
 
   void enterPip({bool autoEnter = false}) {
-    if (videoPlayerController != null) {
-      final state = videoPlayerController!.state;
+    if (videoPlayerController case NativePlayer(:final state)) {
       PageUtils.enterPip(
         autoEnter: autoEnter,
         width: state.width == 0 ? width : state.width,
@@ -605,12 +606,6 @@ class PlPlayerController with BlockConfigMixin {
   // offline
   bool get isFileSource => dataSource is FileSource;
 
-  late final _audioNormalization = Pref.audioNormalization;
-  late final enableAudioNormalization =
-      Platform.isAndroid && _audioNormalization != '0';
-  late final String _audioNormalizationParam =
-      AudioNormalization.getParamFromConfig(_audioNormalization);
-
   // 初始化资源
   Future<void> setDataSource(
     DataSource dataSource, {
@@ -790,8 +785,6 @@ class PlPlayerController with BlockConfigMixin {
     }
   }
 
-  static final loudnormRegExp = RegExp('loudnorm=([^,]+)');
-
   Future<Player> _initPlayer() async {
     assert(_videoPlayerController == null);
     final opt = {
@@ -897,33 +890,10 @@ class PlPlayerController with BlockConfigMixin {
             // '!delay_open,media_type=audio;'
             '%${isFileSource ? utf8.encode(audio).length : audio.length}%$audio');
       }
-      if (enableAudioNormalization) {
-        final String audioNormalization;
-        if (volume != null && volume.isNotEmpty) {
-          audioNormalization = _audioNormalizationParam.replaceFirstMapped(
-            loudnormRegExp,
-            (i) =>
-                'loudnorm=${volume.format(
-                  Map.fromEntries(
-                    i.group(1)!.split(':').map((item) {
-                      final parts = item.split('=');
-                      return MapEntry(parts[0].toLowerCase(), num.parse(parts[1]));
-                    }),
-                  ),
-                )}',
-          );
-        } else {
-          audioNormalization = _audioNormalizationParam.replaceFirst(
-            loudnormRegExp,
-            AudioNormalization.getParamFromConfig(Pref.fallbackNormalization),
-          );
-        }
-        if (audioNormalization.isNotEmpty) {
-          extras['lavfi-complex'] = '"[aid1] $audioNormalization [ao]"';
-        }
-      }
+      audioFilterExtras(volume, map: extras);
     }
 
+    assert(!isLive || seekTo == null);
     await player.open(
       Media(
         video,
@@ -977,8 +947,18 @@ class PlPlayerController with BlockConfigMixin {
       );
       final autoplay = playbackRequested.value;
       final pauseGeneration = manualPauseGeneration;
+      final startDuringOpen =
+          AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
+            autoplay: autoplay,
+            playbackRequested: playbackRequested.value,
+            pauseGenerationAtStart: pauseGeneration,
+            currentPauseGeneration: manualPauseGeneration,
+          );
       return ctr
-          .open(ctr.current.last.copyWith(start: resumeAt), play: false)
+          .open(
+            ctr.current.last.copyWith(start: resumeAt),
+            play: startDuringOpen,
+          )
           .then((_) async {
             if (AdaptivePlayback.shouldAutoplayAfterAsyncOperation(
               autoplay: autoplay,
@@ -1137,9 +1117,7 @@ class PlPlayerController with BlockConfigMixin {
         final posInSeconds = effectivePosition.inSeconds;
 
         if (posInSeconds != this.position.value) {
-          if (!isSeeking.value) {
-            this.position.value = posInSeconds;
-          }
+          this.position.value = posInSeconds;
 
           videoPlayerServiceHandler?.onPositionChange(effectivePosition);
 
@@ -1530,6 +1508,11 @@ class PlPlayerController with BlockConfigMixin {
       }
       _timer = null;
     });
+  }
+
+  void onSeekStart(int seekFrom) {
+    seekPosition.value = seekFrom;
+    isSeeking.value = true;
   }
 
   void onSeekEnd() {
@@ -2022,9 +2005,6 @@ class PlPlayerController with BlockConfigMixin {
 
   Future<void> takeScreenshot() async {
     SmartDialog.showToast('截图中');
-    final time = DurationUtils.formatDuration(
-      positionInMilliseconds / 1000,
-    ).replaceAll(':', '-');
     final image = await videoPlayerController?.screenshot();
     if (image != null) {
       SmartDialog.showToast('点击弹窗保存截图');
@@ -2034,6 +2014,9 @@ class PlPlayerController with BlockConfigMixin {
           onTap: () async {
             final bytes = await image.toByteData(format: .png);
             if (bytes != null) {
+              final time = DurationUtils.formatDuration(
+                positionInMilliseconds / 1000,
+              ).replaceAll(':', '-');
               ImageUtils.saveByteImg(
                 bytes: bytes.buffer.asUint8List(),
                 fileName: 'screenshot_${cid}_$time',
