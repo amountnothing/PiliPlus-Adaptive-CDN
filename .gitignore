@@ -151,3 +151,18 @@ pili_release.json
 dist
 
 test*
+!/test/
+/test/*
+!/test/adaptive_buffer_policy_test.dart
+
+# Java heap dumps from failed Gradle/R8 builds (never commit these).
+android/*.hprof
+
+# Browser regression sources only; keep other test artifacts ignored.
+!/browser-extension/test/
+/browser-extension/test/*
+!/browser-extension/test/core.test.cjs
+!/browser-extension/test/page.test.cjs
+!/browser-extension/test/xhr.test.cjs
+!/browser-extension/test/chromium.cjs
+!/browser-extension/test/clock.cjs

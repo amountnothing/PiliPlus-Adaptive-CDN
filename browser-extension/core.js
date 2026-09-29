@@ -8,13 +8,14 @@
   const DEFAULT_SETTINGS = Object.freeze({
     enabled: true,
     preferredCodec: "hevc",
-    expandKnownUpos: true,
+    expandKnownUpos: false,
     targetBufferSec: 30,
     segmentToleranceSec: 10,
     lowBufferSec: 10,
     bufferStallSec: 5,
     endToleranceSec: 5,
     cooldownSec: 60,
+    failCooldownMs: 2000,
     traverseAllCdns: true,
     maxSwitches: 3,
     stableRewardSec: 30,
@@ -44,6 +45,7 @@
     bufferStallSec: [2, 60],
     endToleranceSec: [0, 10],
     cooldownSec: [0, 600],
+    failCooldownMs: [0, 15000],
     maxSwitches: [1, 50],
     stableRewardSec: [10, 300],
   });
@@ -164,9 +166,9 @@
 
   function streamUrls(stream) {
     if (!stream || typeof stream !== "object") return [];
-    const base = stream.baseUrl || stream.base_url;
-    const backup = stream.backupUrl || stream.backup_url || [];
-    return uniqueUrls([base, ...(Array.isArray(backup) ? backup : [backup])]);
+    const list = value => Array.isArray(value) ? value : [value];
+    return uniqueUrls([stream.baseUrl, stream.base_url,
+      ...list(stream.backupUrl), ...list(stream.backup_url)]);
   }
 
   function streamKind(stream) {

@@ -3,21 +3,24 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' show Random, min;
+import 'dart:typed_data';
 
 import 'package:PiliPlus/services/cdn_score_service.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 
 enum CdnRelayTrack { video, audio }
 
-typedef CdnRelaySwitchCallback =
-    void Function(
-      CdnRelayTrack track,
-      String failedUrl,
-      String nextUrl,
-    );
+typedef CdnRelaySwitchCallback = void Function(
+  CdnRelayTrack track,
+  String failedUrl,
+  String nextUrl,
+);
 
-typedef CdnRelayRecoveryCallback =
-    void Function(CdnRelayTrack track, int offset, String reason);
+typedef CdnRelayRecoveryCallback = void Function(
+  CdnRelayTrack track,
+  int offset,
+  String reason,
+);
 
 typedef CdnRelayLogCallback = void Function(String message);
 typedef CdnRelaySwitchGuard = bool Function();
@@ -31,6 +34,7 @@ class CdnRelayServer {
   CdnRelayServer({
     Future<bool> Function()? connectivityProbe,
     Duration unreachableSwitchDelay = const Duration(seconds: 5),
+    this.upstreamSilenceTimeout = const Duration(seconds: 5),
   }) : _connectivityProbe = connectivityProbe ?? _probePublicDns,
        _offlineSwitchDelay = unreachableSwitchDelay;
 
@@ -39,7 +43,10 @@ class CdnRelayServer {
   final Map<String, CdnRelaySession> _sessions = {};
   final Future<bool> Function() _connectivityProbe;
   final Duration _offlineSwitchDelay;
+  final Duration upstreamSilenceTimeout;
   HttpServer? _server;
+  ServerSocket? _listener;
+  final Map<int, Stream<void>> _disconnects = {};
   Future<void>? _switchGate;
 
   Future<void> waitBeforeCdnSwitch() => _switchGate ??= _waitBeforeCdnSwitch()
@@ -112,10 +119,27 @@ class CdnRelayServer {
 
   Future<void> _ensureStarted() async {
     if (_server != null) return;
-    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
-    server
-      ..autoCompress = false
-      ..listen(_handleRequest);
+    final listener = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+    _listener = listener;
+    final server =
+        HttpServer.listenOn(
+            _RelayServerSocket(listener, (socket) {
+              final port = socket.remotePort;
+              final observed = _RelaySocket(socket);
+              _disconnects[port] = observed.disconnected;
+              observed.disconnected.listen(
+                null,
+                onDone: () {
+                  if (identical(_disconnects[port], observed.disconnected)) {
+                    _disconnects.remove(port);
+                  }
+                },
+              );
+              return observed;
+            }),
+          )
+          ..autoCompress = false
+          ..listen(_handleRequest);
     _server = server;
   }
 
@@ -151,8 +175,14 @@ class CdnRelayServer {
       await request.response.close();
       return;
     }
+    final disconnected = Completer<void>();
+    final subscription = _disconnects[request.connectionInfo?.remotePort]
+        ?.listen(
+          null,
+          onDone: disconnected.complete,
+        );
     try {
-      await session._serve(request, track);
+      await session._serve(request, track, disconnected.future);
     } catch (_) {
       try {
         request.response.statusCode = HttpStatus.badGateway;
@@ -160,6 +190,10 @@ class CdnRelayServer {
       } catch (_) {
         // Headers may already have been sent before every upstream failed.
       }
+    } finally {
+      // A keepalive socket can serve many ranges. Do not retain completed
+      // request closures until that socket eventually disconnects.
+      await subscription?.cancel();
     }
   }
 
@@ -170,6 +204,8 @@ class CdnRelayServer {
     final server = _server;
     _server = null;
     await server?.close(force: true);
+    await _listener?.close();
+    _listener = null;
   }
 }
 
@@ -237,6 +273,7 @@ class CdnRelaySession {
   bool _retired = false;
   bool _playbackPaused = false;
   Completer<void>? _resumeCompleter;
+  final Set<void Function()> _pauseListeners = {};
 
   bool get isDisposed => _disposed;
   int get switchCount => _videoSwitches;
@@ -269,21 +306,55 @@ class CdnRelaySession {
     _playbackPaused = paused;
     if (paused) {
       _resumeCompleter = Completer<void>();
-      // Wake a pending upstream read so it cannot expire and penalize the CDN
-      // while the user intentionally keeps the player paused.
-      _video.interrupt();
-      _audio.interrupt();
+      // Keep the active Range response and its exact byte position alive. The
+      // read loop stops requesting chunks after at most the in-flight chunk,
+      // so Dart/MPV backpressure stops upstream traffic without forcing MPV to
+      // discover a prematurely closed response when playback resumes.
     } else {
       final completer = _resumeCompleter;
       _resumeCompleter = null;
       if (completer != null && !completer.isCompleted) completer.complete();
     }
+    for (final listener in _pauseListeners.toList()) {
+      listener();
+    }
   }
 
-  Future<void> _waitUntilPlaybackResumes() async {
-    while (_playbackPaused && !_disposed) {
-      await (_resumeCompleter?.future ?? Future<void>.value());
+  // Only arm this while awaiting upstream IO, never while flushing to MPV.
+  // Pauses discard elapsed silence and resume with a fresh observation window.
+  Future<T> _waitForUpstream<T>(Future<T> future) async {
+    final timeout = Completer<T>();
+    Timer? timer;
+    void updateTimer() {
+      timer?.cancel();
+      if (!_playbackPaused && !_disposed) {
+        timer = Timer(_owner.upstreamSilenceTimeout, () {
+          if (!timeout.isCompleted) {
+            timeout.completeError(TimeoutException('Upstream silence'));
+          }
+        });
+      }
     }
+
+    _pauseListeners.add(updateTimer);
+    updateTimer();
+    try {
+      return await Future.any([future, timeout.future]);
+    } finally {
+      timer?.cancel();
+      _pauseListeners.remove(updateTimer);
+    }
+  }
+
+  Future<bool> _waitUntilPlaybackResumes(Future<Object> downstreamDone) async {
+    while (_playbackPaused && !_disposed) {
+      final result = await Future.any<Object?>([
+        _resumeCompleter?.future ?? Future<void>.value(),
+        downstreamDone,
+      ]);
+      if (result is _RelayDownstreamClosed) return false;
+    }
+    return true;
   }
 
   void updateSources({
@@ -312,7 +383,11 @@ class CdnRelaySession {
     );
   }
 
-  Future<void> _serve(HttpRequest request, CdnRelayTrack type) async {
+  Future<void> _serve(
+    HttpRequest request,
+    CdnRelayTrack type,
+    Future<void>? disconnected,
+  ) async {
     final response = request.response;
     final track = type == CdnRelayTrack.video ? _video : _audio;
     // A retired relay no longer switches or reports callbacks, but it remains
@@ -341,13 +416,30 @@ class CdnRelaySession {
     var headersSent = false;
     var responseStart = parsedRange?.start ?? 0;
     var deliveredBytes = 0;
+    var downstreamClosed = false;
+    final downstreamDone =
+        Future.any<void>([
+          response.done.then<void>((_) {}),
+          ?disconnected,
+        ]).then<Object>(
+          (_) {
+            downstreamClosed = true;
+            return const _RelayDownstreamClosed();
+          },
+          onError: (Object _, StackTrace _) {
+            downstreamClosed = true;
+            return const _RelayDownstreamClosed();
+          },
+        );
 
     while (!_disposed && attempts <= track.candidates.length) {
-      await _waitUntilPlaybackResumes();
+      if (!await _waitUntilPlaybackResumes(downstreamDone)) return;
       if (_disposed) break;
       final sourceUrl = track.currentUrl;
       final sourceGeneration = track.generation;
       StreamIterator<List<int>>? iterator;
+      HttpClientRequest? activeRequest;
+      var attemptEnded = false;
       var sourceBytes = 0;
       var scoreBytes = 0;
       var networkWait = Duration.zero;
@@ -357,29 +449,46 @@ class CdnRelaySession {
           request: request,
           sourceUrl: sourceUrl,
           range: requestedRange,
+          onRequest: (upstreamRequest) {
+            activeRequest = upstreamRequest;
+            if (attemptEnded) upstreamRequest.abort();
+          },
         );
         final sourceChanged = Object();
         final openWaiter = track.waitForChange(sourceGeneration);
         late final Object openResult;
         try {
-          openResult = await Future.any<Object>([
-            openFuture.then<Object>((response) => response),
-            openWaiter.future.then<Object>((_) => sourceChanged),
-          ]);
-        } finally {
-          openWaiter.cancel();
-        }
-        if (identical(openResult, sourceChanged)) {
+          openResult = await _waitForUpstream(
+            Future.any<Object>([
+              openFuture.then<Object>((response) => response),
+              openWaiter.future.then<Object>((_) => sourceChanged),
+              downstreamDone,
+            ]),
+          );
+        } catch (_) {
           unawaited(
             openFuture.then<void>(
               _cancelResponse,
               onError: (Object _, StackTrace _) {},
             ),
           );
+          rethrow;
+        } finally {
+          openWaiter.cancel();
+        }
+        if (identical(openResult, sourceChanged) ||
+            openResult is _RelayDownstreamClosed) {
+          unawaited(
+            openFuture.then<void>(
+              _cancelResponse,
+              onError: (Object _, StackTrace _) {},
+            ),
+          );
+          if (openResult is _RelayDownstreamClosed) throw openResult;
           throw const _RelaySourceChanged();
         }
         final upstream = openResult as HttpClientResponse;
-        if (_playbackPaused || track.generation != sourceGeneration) {
+        if (track.generation != sourceGeneration) {
           await _cancelResponse(upstream);
           throw const _RelaySourceChanged();
         }
@@ -421,7 +530,12 @@ class CdnRelaySession {
 
         iterator = StreamIterator<List<int>>(upstream);
         while (true) {
-          if (_playbackPaused || track.generation != sourceGeneration) {
+          if (!await _waitUntilPlaybackResumes(downstreamDone)) return;
+          if (_disposed) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          if (track.generation != sourceGeneration) {
             throw const _RelaySourceChanged();
           }
           final stopwatch = Stopwatch()..start();
@@ -429,21 +543,36 @@ class CdnRelaySession {
           final waiter = track.waitForChange(sourceGeneration);
           late final Object readResult;
           try {
-            readResult = await Future.any<Object>([
-              iterator.moveNext().then<Object>((value) => value),
-              waiter.future.then<Object>((_) => changed),
-            ]);
+            readResult = await _waitForUpstream(
+              Future.any<Object>([
+                iterator.moveNext().then<Object>((value) => value),
+                waiter.future.then<Object>((_) => changed),
+                downstreamDone,
+              ]),
+            );
           } finally {
             waiter.cancel();
           }
           stopwatch.stop();
           networkWait += stopwatch.elapsed;
+          if (readResult is _RelayDownstreamClosed) throw readResult;
           if (identical(readResult, changed)) {
             throw const _RelaySourceChanged();
           }
           final hasNext = readResult as bool;
           if (!hasNext) break;
           final chunk = iterator.current;
+          // A pause can arrive while moveNext is waiting on the network. Hold
+          // that single chunk and resume the same response instead of closing
+          // it and requiring a new Range request.
+          if (!await _waitUntilPlaybackResumes(downstreamDone)) return;
+          if (_disposed) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          if (track.generation != sourceGeneration) {
+            throw const _RelaySourceChanged();
+          }
           sourceBytes += chunk.length;
           scoreBytes += chunk.length;
           try {
@@ -488,12 +617,31 @@ class CdnRelaySession {
       } on _RelayDownstreamClosed {
         return;
       } on _RelaySourceChanged {
-        countAttempt = !_playbackPaused && sourceUrl != track.currentUrl;
+        countAttempt = sourceUrl != track.currentUrl;
         if (headersSent) {
           await _closeInterruptedResponse(response);
           return;
         }
       } catch (error) {
+        if (_disposed || downstreamClosed) return;
+        if (track.generation != sourceGeneration) {
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          continue;
+        }
+        if (_playbackPaused) {
+          // A connection may independently expire while held by an explicit
+          // pause. Do not score or switch the CDN for that pause-side failure.
+          countAttempt = false;
+          if (!await _waitUntilPlaybackResumes(downstreamDone)) return;
+          if (headersSent) {
+            await _closeInterruptedResponse(response);
+            return;
+          }
+          continue;
+        }
         if (_retired) {
           if (headersSent) {
             await _closeInterruptedResponse(response);
@@ -518,7 +666,22 @@ class CdnRelaySession {
           }
           rethrow;
         }
-        if (!await _switchAfterFailure(type, sourceUrl, reason: reason)) {
+        bool canSwitch() =>
+            !downstreamClosed && track.generation == sourceGeneration;
+        if (!await _switchAfterFailure(
+          type,
+          sourceUrl,
+          reason: reason,
+          canSwitch: canSwitch,
+        )) {
+          if (_disposed || downstreamClosed) return;
+          if (_playbackPaused || track.generation != sourceGeneration) {
+            if (headersSent) {
+              await _closeInterruptedResponse(response);
+              return;
+            }
+            continue;
+          }
           if (headersSent) {
             _requestRecovery(type, responseStart + deliveredBytes, reason);
             await _closeInterruptedResponse(response);
@@ -531,6 +694,8 @@ class CdnRelaySession {
           return;
         }
       } finally {
+        attemptEnded = true;
+        activeRequest?.abort();
         await iterator?.cancel();
       }
       if (countAttempt) attempts += 1;
@@ -558,12 +723,14 @@ class CdnRelaySession {
     CdnRelayTrack type,
     String expectedUrl, {
     required String reason,
+    required CdnRelaySwitchGuard canSwitch,
   }) {
     final track = type == CdnRelayTrack.video ? _video : _audio;
     return _switchTrack(
       track,
       expectedUrl: expectedUrl,
       reason: reason,
+      canSwitch: canSwitch,
     );
   }
 
@@ -592,6 +759,12 @@ class CdnRelaySession {
     final switched = track.switchNext(expectedUrl: expectedUrl);
     if (switched && failedUrl != track.currentUrl) {
       _incrementSwitches(track.type);
+      if (track.type == CdnRelayTrack.video && _audio.candidates.isNotEmpty) {
+        // Every video failover (controller-driven or Relay-detected) must
+        // restart the paired audio Range. This keeps both EDL streams attached
+        // to one timeline without changing or penalizing the healthy audio CDN.
+        _audio.interrupt();
+      }
       _log(
         'switch track=${track.type.name} reason=$reason '
         'from=${_host(failedUrl)} to=${_host(track.currentUrl)} '
@@ -629,6 +802,7 @@ class CdnRelaySession {
   static String _host(String url) => Uri.tryParse(url)?.host ?? url;
 
   static String _failureReason(Object error) => switch (error) {
+    TimeoutException() => 'upstream-silence',
     SocketException() => 'socket-error',
     HttpException() => 'http-error',
     _ => error.runtimeType.toString(),
@@ -654,11 +828,13 @@ class CdnRelaySession {
     required HttpRequest request,
     required String sourceUrl,
     required String? range,
+    required void Function(HttpClientRequest) onRequest,
   }) async {
     final upstreamRequest = await _client.openUrl(
       request.method,
       Uri.parse(sourceUrl),
     );
+    onRequest(upstreamRequest);
     upstreamRequest
       ..followRedirects = true
       ..maxRedirects = 8
@@ -680,7 +856,7 @@ class CdnRelaySession {
     final upstream = await upstreamRequest.close();
     if (upstream.statusCode != HttpStatus.ok &&
         upstream.statusCode != HttpStatus.partialContent) {
-      await upstream.drain<void>();
+      await _cancelResponse(upstream);
       throw HttpException(
         'CDN returned HTTP ${upstream.statusCode}',
         uri: Uri.parse(sourceUrl),
@@ -722,6 +898,142 @@ class CdnRelaySession {
     _owner._sessions.remove(_token);
     _client.close(force: true);
   }
+}
+
+// dart:io pauses HTTP request parsing while a response is active. Observe the
+// socket input independently so a player FIN is visible even during CDN silence.
+// Only request bytes are buffered here (never media), with a hard 64 KiB cap.
+class _RelaySocket extends Stream<Uint8List> implements Socket {
+  _RelaySocket(this._socket) {
+    _input = StreamController<Uint8List>(
+      sync: true,
+      onResume: () => _queuedBytes = 0,
+      onCancel: destroy,
+    );
+    _subscription = _socket.listen(
+      (data) {
+        if (_input.isPaused || !_input.hasListener) {
+          _queuedBytes += data.length;
+          if (_queuedBytes > 64 * 1024) {
+            destroy();
+            return;
+          }
+        }
+        _input.add(data);
+      },
+      onError: (Object error, StackTrace stack) {
+        _input.addError(error, stack);
+        destroy();
+      },
+      onDone: destroy,
+    );
+  }
+
+  final Socket _socket;
+  final _disconnected = StreamController<void>.broadcast();
+  bool _destroyed = false;
+  late final StreamController<Uint8List> _input;
+  late final StreamSubscription<Uint8List> _subscription;
+  int _queuedBytes = 0;
+  Stream<void> get disconnected => _disconnected.stream;
+
+  @override
+  StreamSubscription<Uint8List> listen(
+    void Function(Uint8List)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) => _input.stream.listen(
+    onData,
+    onError: onError,
+    onDone: onDone,
+    cancelOnError: cancelOnError,
+  );
+  @override
+  void destroy() {
+    if (_destroyed) return;
+    _destroyed = true;
+    unawaited(_disconnected.close());
+    _socket.destroy();
+    unawaited(_subscription.cancel());
+    unawaited(_input.close());
+  }
+
+  @override
+  InternetAddress get address => _socket.address;
+  @override
+  InternetAddress get remoteAddress => _socket.remoteAddress;
+  @override
+  int get port => _socket.port;
+  @override
+  int get remotePort => _socket.remotePort;
+  @override
+  Encoding get encoding => _socket.encoding;
+  @override
+  set encoding(Encoding value) => _socket.encoding = value;
+  @override
+  Future<void> get done => _socket.done;
+  @override
+  void add(List<int> data) => _socket.add(data);
+  @override
+  void addError(Object error, [StackTrace? stackTrace]) =>
+      _socket.addError(error, stackTrace);
+  @override
+  Future<void> addStream(Stream<List<int>> stream) => _socket.addStream(stream);
+  @override
+  Future<void> flush() => _socket.flush();
+  @override
+  Future<void> close() async {
+    try {
+      await _socket.close();
+    } finally {
+      destroy();
+    }
+  }
+
+  @override
+  void write(Object? object) => _socket.write(object);
+  @override
+  void writeAll(Iterable objects, [String separator = '']) =>
+      _socket.writeAll(objects, separator);
+  @override
+  void writeCharCode(int charCode) => _socket.writeCharCode(charCode);
+  @override
+  void writeln([Object? object = '']) => _socket.writeln(object);
+  @override
+  bool setOption(SocketOption option, bool enabled) =>
+      _socket.setOption(option, enabled);
+  @override
+  void setRawOption(RawSocketOption option) => _socket.setRawOption(option);
+  @override
+  Uint8List getRawOption(RawSocketOption option) =>
+      _socket.getRawOption(option);
+}
+
+class _RelayServerSocket extends Stream<Socket> implements ServerSocket {
+  _RelayServerSocket(this._server, this._observe);
+  final ServerSocket _server;
+  final Socket Function(Socket) _observe;
+  @override
+  InternetAddress get address => _server.address;
+  @override
+  int get port => _server.port;
+  @override
+  Future<ServerSocket> close() => _server.close();
+  @override
+  StreamSubscription<Socket> listen(
+    void Function(Socket)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) => _server
+      .map(_observe)
+      .listen(
+        onData,
+        onError: onError,
+        onDone: onDone,
+        cancelOnError: cancelOnError,
+      );
 }
 
 class _RelayTrackState {

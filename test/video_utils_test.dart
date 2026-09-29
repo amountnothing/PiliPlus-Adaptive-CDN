@@ -1,5 +1,6 @@
 import 'package:PiliPlus/models/common/video/cdn_type.dart';
 import 'package:PiliPlus/utils/adaptive_playback.dart';
+import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -310,6 +311,139 @@ void main() {
     );
   });
 
+  group('AdaptivePlayback.shouldRecoverStalledPlayback', () {
+    const common = (
+      playbackRequested: true,
+      temporarilyPaused: false,
+      inBackgroundWithoutPlayback: false,
+      processing: false,
+      completed: false,
+      startPosition: Duration(seconds: 10),
+      currentPosition: Duration(seconds: 10),
+      forwardBuffer: Duration(seconds: 1),
+      observedFor: Duration(seconds: 2),
+      timeout: Duration(seconds: 2),
+    );
+
+    test('recovers a still clock once useful data is buffered', () {
+      expect(
+        AdaptivePlayback.shouldRecoverStalledPlayback(
+          playbackRequested: common.playbackRequested,
+          temporarilyPaused: common.temporarilyPaused,
+          inBackgroundWithoutPlayback: common.inBackgroundWithoutPlayback,
+          processing: common.processing,
+          completed: common.completed,
+          startPosition: common.startPosition,
+          currentPosition: common.currentPosition,
+          forwardBuffer: common.forwardBuffer,
+          observedFor: common.observedFor,
+          timeout: common.timeout,
+        ),
+        isTrue,
+      );
+    });
+
+    test('does not recover normal progress, starvation, or a pause', () {
+      bool shouldRecover({
+        bool temporarilyPaused = false,
+        Duration currentPosition = const Duration(seconds: 10),
+        Duration forwardBuffer = const Duration(seconds: 1),
+      }) => AdaptivePlayback.shouldRecoverStalledPlayback(
+        playbackRequested: true,
+        temporarilyPaused: temporarilyPaused,
+        inBackgroundWithoutPlayback: false,
+        processing: false,
+        completed: false,
+        startPosition: common.startPosition,
+        currentPosition: currentPosition,
+        forwardBuffer: forwardBuffer,
+        observedFor: common.observedFor,
+        timeout: common.timeout,
+      );
+
+      expect(
+        shouldRecover(currentPosition: const Duration(milliseconds: 10500)),
+        isFalse,
+      );
+      expect(
+        shouldRecover(forwardBuffer: const Duration(milliseconds: 499)),
+        isFalse,
+      );
+      expect(shouldRecover(temporarilyPaused: true), isFalse);
+    });
+  });
+
+  group('AdaptivePlayback.shouldStartMediaDuringOpen', () {
+    test('starts an autoplay source while it is opening', () {
+      expect(
+        AdaptivePlayback.shouldStartMediaDuringOpen(
+          autoplay: true,
+          playbackRequested: true,
+          pauseGenerationAtStart: 4,
+          currentPauseGeneration: 4,
+        ),
+        isTrue,
+      );
+    });
+
+    test('does not start after a manual pause or with autoplay disabled', () {
+      expect(
+        AdaptivePlayback.shouldStartMediaDuringOpen(
+          autoplay: true,
+          playbackRequested: false,
+          pauseGenerationAtStart: 4,
+          currentPauseGeneration: 5,
+        ),
+        isFalse,
+      );
+      expect(
+        AdaptivePlayback.shouldStartMediaDuringOpen(
+          autoplay: false,
+          playbackRequested: true,
+          pauseGenerationAtStart: 4,
+          currentPauseGeneration: 4,
+        ),
+        isFalse,
+      );
+    });
+  });
+
+  group('Pref.lowLatencyBufferOptions', () {
+    test('caps startup and post-seek readahead to a small byte budget', () {
+      final options = Pref.lowLatencyBufferOptions(
+        playbackSpeed: 1,
+        configuredBytes: 4 * 0x100000,
+        bandwidthBitsPerSecond: 8 * 1000 * 1000,
+      );
+
+      expect(options['cache-pause-initial'], 'no');
+      expect(options['cache-secs'], '4.000');
+      expect(int.parse(options['demuxer-max-bytes']!), 4 * 0x100000);
+      expect(int.parse(options['demuxer-max-back-bytes']!), 0x100000);
+    });
+
+    test('does not inflate prefetch for a high bitrate stream', () {
+      final options = Pref.lowLatencyBufferOptions(
+        playbackSpeed: 1,
+        configuredBytes: 4 * 0x100000,
+        bandwidthBitsPerSecond: 80 * 1000 * 1000,
+      );
+
+      expect(
+        int.parse(options['demuxer-max-bytes']!),
+        lessThanOrEqualTo(4 * 0x100000),
+      );
+      expect(double.parse(options['cache-secs']!), lessThanOrEqualTo(4));
+    });
+  });
+
+  test(
+    'an explicit seek is issued without waiting for a future buffer event',
+    () {
+      expect(AdaptivePlayback.shouldAwaitBufferUpdateBeforeSeek, isFalse);
+    },
+  );
+
   test('recognizes relay startup format errors separately', () {
     const message = 'Failed to recognize file format.';
     expect(AdaptivePlayback.isUnrecognizedFormat(message), isTrue);
@@ -374,6 +508,65 @@ void main() {
       ),
       const Duration(seconds: 42),
     );
+  });
+
+  group('pending non-zero resume position', () {
+    const pending = Duration(seconds: 120);
+
+    test('survives transient zero and early positions during CDN rebuild', () {
+      expect(
+        AdaptivePlayback.protectPendingResumePosition(
+          reported: Duration.zero,
+          pending: pending,
+        ),
+        pending,
+      );
+      expect(
+        AdaptivePlayback.protectPendingResumePosition(
+          reported: const Duration(seconds: 2),
+          pending: pending,
+        ),
+        pending,
+      );
+      expect(
+        AdaptivePlayback.hasConfirmedPendingResume(
+          reported: Duration.zero,
+          pending: pending,
+        ),
+        isFalse,
+      );
+    });
+
+    test(
+      'releases protection when native playback reaches the resume point',
+      () {
+        const reported = Duration(seconds: 116);
+        expect(
+          AdaptivePlayback.protectPendingResumePosition(
+            reported: reported,
+            pending: pending,
+          ),
+          reported,
+        );
+        expect(
+          AdaptivePlayback.hasConfirmedPendingResume(
+            reported: reported,
+            pending: pending,
+          ),
+          isTrue,
+        );
+      },
+    );
+
+    test('does not protect an explicit zero resume', () {
+      expect(
+        AdaptivePlayback.protectPendingResumePosition(
+          reported: Duration.zero,
+          pending: Duration.zero,
+        ),
+        Duration.zero,
+      );
+    });
   });
 
   test('buffer stall requires 5s with less than 1s growth', () {
@@ -598,6 +791,139 @@ void main() {
           peerTrackAdvanced: true,
         ),
         isTrue,
+      );
+    });
+  });
+
+  group('AdaptivePlayback.shouldSwitchForFragmentedStalls', () {
+    final now = DateTime(2026, 9, 17, 12, 0, 0);
+    DateTime at(int secondsAgo) => now.subtract(Duration(seconds: secondsAgo));
+
+    List<Duration> durationsOf(List<(int, int)> stalls) =>
+        stalls.map((s) => Duration(seconds: s.$2)).toList();
+    List<DateTime> startsOf(List<(int, int)> stalls) =>
+        stalls.map((s) => at(s.$1)).toList();
+
+    bool decide(
+      List<(int, int)> stalls, {
+      DateTime? atNow,
+      Duration window = const Duration(seconds: 30),
+      int minStalls = 3,
+      Duration minTotalStall = const Duration(seconds: 3),
+    }) =>
+        AdaptivePlayback.shouldSwitchForFragmentedStalls(
+          stallStarts: startsOf(stalls),
+          stallDurations: durationsOf(stalls),
+          now: atNow ?? now,
+          window: window,
+          minStalls: minStalls,
+          minTotalStall: minTotalStall,
+        );
+
+    test('three stalls totalling 3s inside 30s trigger a switch', () {
+      expect(
+        decide([(4, 1), (10, 1), (20, 1)]),
+        isTrue,
+      );
+      expect(
+        decide([(4, 2), (10, 1), (20, 1)]),
+        isTrue,
+      );
+      // Boundary: exactly 3 stalls and exactly 3s still triggers.
+      expect(
+        decide([(4, 1), (10, 1), (20, 1)], atNow: at(4) ),
+        isTrue,
+      );
+    });
+
+    test('two stalls never trigger, regardless of total duration', () {
+      expect(
+        decide([(4, 5), (10, 5)]),
+        isFalse,
+      );
+    });
+
+    test('three stalls with less than 3s total do not trigger', () {
+      expect(
+        decide([(4, 1), (10, 1), (20, 1)],
+            minTotalStall: const Duration(seconds: 4)),
+        isFalse,
+      );
+      expect(
+        decide([(4, 1), (10, 1), (20, 0)]),
+        isFalse,
+      );
+    });
+
+    test('stalls older than the sliding window are ignored', () {
+      // The two recent stalls alone cannot trigger, and the stall 40s ago
+      // falls outside the 30s window.
+      expect(
+        decide([(35, 5), (10, 1), (4, 1)]),
+        isFalse,
+      );
+      // Same stalls with the clock moved back inside the window do trigger.
+      expect(
+        decide([(20, 1), (10, 1), (4, 1)], atNow: at(25)),
+        isTrue,
+      );
+    });
+
+    test('clearing the window after a switch resets the decision', () {
+      // Simulates the controller clearing the recorded stalls after a
+      // successful CDN switch: an empty window must never trigger.
+      expect(
+        AdaptivePlayback.shouldSwitchForFragmentedStalls(
+          stallStarts: const [],
+          stallDurations: const [],
+          now: now,
+          window: const Duration(seconds: 30),
+          minStalls: 3,
+          minTotalStall: const Duration(seconds: 3),
+        ),
+        isFalse,
+      );
+    });
+  });
+
+  group('AdaptivePlayback.shouldHoldWakelock', () {
+    bool hold({
+      bool playbackRequested = true,
+      bool isInBackground = false,
+      bool continuePlayInBackground = false,
+      bool onlyPlayAudio = false,
+    }) =>
+        AdaptivePlayback.shouldHoldWakelock(
+          playbackRequested: playbackRequested,
+          isInBackground: isInBackground,
+          continuePlayInBackground: continuePlayInBackground,
+          onlyPlayAudio: onlyPlayAudio,
+        );
+
+    test('foreground requested playback holds the wakelock', () {
+      expect(hold(), isTrue);
+    });
+
+    test('explicit pause releases it immediately', () {
+      expect(hold(playbackRequested: false), isFalse);
+    });
+
+    test('background without continuePlayInBackground releases it', () {
+      expect(hold(isInBackground: true), isFalse);
+    });
+
+    test('background with continuePlayInBackground keeps it', () {
+      expect(
+        hold(isInBackground: true, continuePlayInBackground: true),
+        isTrue,
+      );
+    });
+
+    test('audio-only background playback does not need the screen', () {
+      expect(
+        hold(isInBackground: true, continuePlayInBackground: true,
+            onlyPlayAudio: true),
+        isFalse,
       );
     });
   });

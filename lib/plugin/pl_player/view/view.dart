@@ -336,10 +336,17 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     plPlayerController.onAppLifecycleState(state);
     if (!plPlayerController.continuePlayInBackground.value) {
       late final player = plPlayerController.videoPlayerController;
-      if (const <AppLifecycleState>[.paused, .detached].contains(state)) {
+      if (const <AppLifecycleState>[
+        .paused,
+        .detached,
+        .hidden,
+      ].contains(state)) {
+        // Native `playing` is often already false while buffering. Preserve
+        // the user's playback intent instead, so returning from background
+        // always gets one guarded resume attempt.
         if (player != null &&
-            player.state.playing &&
-            plPlayerController.playbackRequested.value) {
+            plPlayerController.playbackRequested.value &&
+            !_pauseDueToPauseUponEnteringBackgroundMode) {
           _pauseDueToPauseUponEnteringBackgroundMode = true;
           _backgroundPauseGeneration = plPlayerController.manualPauseGeneration;
           unawaited(

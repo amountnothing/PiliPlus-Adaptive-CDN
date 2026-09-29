@@ -67,5 +67,5 @@ $bridge = @'
 })();
 '@
 
-Set-Content -LiteralPath $output -Value ($meta + $core + "`r`n" + $page + "`r`n" + $bridge) -Encoding UTF8
+Set-Content -LiteralPath $output -Value ($meta + $core + "`n" + $page + "`n" + $bridge) -Encoding UTF8
 Write-Output $output

@@ -1,9 +1,55 @@
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:flutter/foundation.dart';
 
+/// Seam for tests: records enable/disable instead of touching the plugin.
+abstract interface class WakelockGateway {
+  Future<void> enable();
+  Future<void> disable();
+}
+
+/// Holds the screen wakelock while the user requested playback, deduplicating
+/// consecutive identical states so repeated player events do not toggle the
+/// plugin back and forth.
+class WakelockHoldManager {
+  WakelockHoldManager(this.gateway);
+
+  final WakelockGateway gateway;
+  bool? _lastHold;
+
+  Future<void> sync({
+    required bool playbackRequested,
+    bool isInBackground = false,
+    bool continuePlayInBackground = false,
+    bool onlyPlayAudio = false,
+  }) async {
+    final hold = AdaptivePlayback.shouldHoldWakelock(
+      playbackRequested: playbackRequested,
+      isInBackground: isInBackground,
+      continuePlayInBackground: continuePlayInBackground,
+      onlyPlayAudio: onlyPlayAudio,
+    );
+    if (hold == _lastHold) return;
+    _lastHold = hold;
+    if (hold) {
+      await gateway.enable();
+    } else {
+      await gateway.disable();
+    }
+  }
+
+  /// Unconditional release used on dispose.
+  Future<void> forceDisable() async {
+    _lastHold = false;
+    await gateway.disable();
+  }
+}
+
 abstract final class AdaptivePlayback {
   static const endOfMediaTolerance = Duration(seconds: 5);
   static const endOfBufferTolerance = Duration(seconds: 2);
+  // media_kit's buffer stream is broadcast/non-replay. Waiting for `.first`
+  // before seek can therefore defer the actual seek for the full timeout.
+  static const shouldAwaitBufferUpdateBeforeSeek = false;
 
   static final ValueNotifier<bool> enabled = ValueNotifier(
     Pref.adaptivePlayback,
@@ -41,9 +87,52 @@ abstract final class AdaptivePlayback {
       playbackRequested &&
       pauseGenerationAtStart == currentPauseGeneration;
 
+  static bool shouldStartMediaDuringOpen({
+    required bool autoplay,
+    required bool playbackRequested,
+    required int pauseGenerationAtStart,
+    required int currentPauseGeneration,
+  }) => shouldAutoplayAfterAsyncOperation(
+    autoplay: autoplay,
+    playbackRequested: playbackRequested,
+    pauseGenerationAtStart: pauseGenerationAtStart,
+    currentPauseGeneration: currentPauseGeneration,
+  );
+
   static bool shouldAcceptNativePlayingEvent({
     required bool playbackRequested,
   }) => playbackRequested;
+
+  /// A native `playing` event is optimistic on some media_kit backends: it can
+  /// be emitted as soon as the play command is accepted, before a frame or the
+  /// media clock advances. Only kick/reopen a source when useful buffered data
+  /// already exists and the clock has remained still for the whole window.
+  static bool shouldRecoverStalledPlayback({
+    required bool playbackRequested,
+    required bool temporarilyPaused,
+    required bool inBackgroundWithoutPlayback,
+    required bool processing,
+    required bool completed,
+    required Duration startPosition,
+    required Duration currentPosition,
+    required Duration forwardBuffer,
+    required Duration observedFor,
+    required Duration timeout,
+    Duration minForwardBuffer = const Duration(milliseconds: 500),
+    Duration minProgress = const Duration(milliseconds: 500),
+  }) {
+    final progress = Duration(
+      milliseconds: (currentPosition - startPosition).inMilliseconds.abs(),
+    );
+    return playbackRequested &&
+        !temporarilyPaused &&
+        !inBackgroundWithoutPlayback &&
+        !processing &&
+        !completed &&
+        progress < minProgress &&
+        forwardBuffer >= minForwardBuffer &&
+        observedFor >= timeout;
+  }
 
   static bool shouldShowLoading({
     required bool dataLoading,
@@ -52,6 +141,50 @@ abstract final class AdaptivePlayback {
     required bool presentationStalled,
   }) =>
       dataLoading || presentationStalled || (playbackRequested && isBuffering);
+
+  /// The wakelock truth source is the user's playback intent, not transient
+  /// native playing events. Audio-only playback never needs the screen;
+  /// background playback keeps it only while background playing is allowed.
+  static bool shouldHoldWakelock({
+    required bool playbackRequested,
+    required bool isInBackground,
+    required bool continuePlayInBackground,
+    required bool onlyPlayAudio,
+  }) =>
+      playbackRequested &&
+      !onlyPlayAudio &&
+      (!isInBackground || continuePlayInBackground);
+
+  /// True when the sliding window contains at least [minStalls] rebuffer
+  /// onsets totalling at least [minTotalStall] of buffering time. Stalls that
+  /// started before `now - window` are ignored. [stallStarts] and
+  /// [stallDurations] are parallel lists; entries without a matching duration
+  /// contribute zero time.
+  ///
+  /// A stall is recorded from isBuffering false→true events only, never from
+  /// the forward buffer amount, so the low-latency (4s) queue cannot create
+  /// phantom stalls.
+  static bool shouldSwitchForFragmentedStalls({
+    required List<DateTime> stallStarts,
+    required List<Duration> stallDurations,
+    required DateTime now,
+    required Duration window,
+    required int minStalls,
+    required Duration minTotalStall,
+  }) {
+    final windowStart = now.subtract(window);
+    var count = 0;
+    var total = Duration.zero;
+    for (var i = 0; i < stallStarts.length; i++) {
+      final start = stallStarts[i];
+      if (start.isBefore(windowStart)) continue;
+      count += 1;
+      if (i < stallDurations.length) {
+        total += stallDurations[i];
+      }
+    }
+    return count >= minStalls && total >= minTotalStall;
+  }
 
   static Duration? rebuildResumePosition({
     required int? checkpointCid,
@@ -65,6 +198,36 @@ abstract final class AdaptivePlayback {
       ? checkpoint
       : requested;
 
+  /// MPV can briefly report zero (or an earlier keyframe) after opening a
+  /// media item with a non-zero start position. Keep the requested position
+  /// authoritative until the native clock has reached that neighbourhood, so
+  /// an early CDN rebuild cannot turn the transient value into a new start.
+  static Duration protectPendingResumePosition({
+    required Duration reported,
+    required Duration? pending,
+    Duration confirmationTolerance = const Duration(seconds: 5),
+  }) {
+    if (pending == null || pending <= Duration.zero) return reported;
+    if (reported <= Duration.zero) return pending;
+    final confirmationThreshold = pending > confirmationTolerance
+        ? pending - confirmationTolerance
+        : Duration.zero;
+    return reported < confirmationThreshold ? pending : reported;
+  }
+
+  static bool hasConfirmedPendingResume({
+    required Duration reported,
+    required Duration? pending,
+    Duration confirmationTolerance = const Duration(seconds: 5),
+  }) {
+    if (pending == null || pending <= Duration.zero) return true;
+    if (reported <= Duration.zero) return false;
+    final confirmationThreshold = pending > confirmationTolerance
+        ? pending - confirmationTolerance
+        : Duration.zero;
+    return reported >= confirmationThreshold;
+  }
+
   static bool shouldSwitchForStalledBuffer({
     required Duration forwardBuffer,
     required Duration refillThreshold,
@@ -72,10 +235,16 @@ abstract final class AdaptivePlayback {
     required Duration observationWindow,
     required Duration bufferGrowth,
     required Duration minGrowth,
+    Duration playbackProgress = Duration.zero,
   }) =>
       forwardBuffer <= refillThreshold &&
       observedFor >= observationWindow &&
-      bufferGrowth < minGrowth;
+      bufferGrowth < minGrowth &&
+      // A byte-limited queue can stay below the time-based refill line while
+      // CDN delivery keeps pace with playback. Flat is not stalled then.
+      !(forwardBuffer > Duration.zero &&
+          playbackProgress >= const Duration(seconds: 1) &&
+          bufferGrowth >= const Duration(milliseconds: -250));
 
   static bool isExpectedRelayInterruptionError(String event) {
     final lower = event.toLowerCase();

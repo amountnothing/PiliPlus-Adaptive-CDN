@@ -35,7 +35,8 @@ import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/android/android_helper.dart';
 import 'package:PiliPlus/utils/android/bindings.g.dart';
-import 'package:PiliPlus/utils/adaptive_playback.dart';
+import 'package:PiliPlus/utils/adaptive_playback.dart'
+    show AdaptivePlayback, WakelockGateway, WakelockHoldManager;
 import 'package:PiliPlus/utils/asset_utils.dart';
 import 'package:PiliPlus/utils/device_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
@@ -68,6 +69,17 @@ import 'package:screen_brightness_platform_interface/screen_brightness_platform_
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:window_manager/window_manager.dart';
 
+/// Default [WakelockGateway] backed by the wakelock_plus plugin.
+class WakelockPlusGateway implements WakelockGateway {
+  const WakelockPlusGateway();
+
+  @override
+  Future<void> enable() => WakelockPlus.enable();
+
+  @override
+  Future<void> disable() => WakelockPlus.disable();
+}
+
 typedef PlayCallback = Future<void>? Function();
 typedef PlayerErrorCallback = bool Function(String event);
 
@@ -91,14 +103,18 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   final RxInt seekPosition = RxInt(0);
   int get progress => isSeeking.value ? seekPosition.value : position.value;
 
-  int get positionInMilliseconds =>
-      videoPlayerController?.state.position.inMilliseconds ?? 0;
-  Duration get currentPosition =>
-      videoPlayerController?.state.position ??
-      Duration(seconds: position.value);
+  int get positionInMilliseconds => currentPosition.inMilliseconds;
+  Duration get currentPosition => AdaptivePlayback.protectPendingResumePosition(
+    reported:
+        videoPlayerController?.state.position ??
+        Duration(seconds: position.value),
+    pending: _pendingResumeCid == cid ? _pendingResumePosition : null,
+  );
   Duration? _rebuildPosition;
   int? _rebuildCid;
   int? _activeCid;
+  Duration? _pendingResumePosition;
+  int? _pendingResumeCid;
   int _mediaOpenGeneration = 0;
   int _openedMediaGeneration = 0;
   bool _completionEventArmed = false;
@@ -106,7 +122,8 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   bool _preserveRebuildPosition = false;
 
   final RxInt buffered = RxInt(0);
-  Duration get currentBuffered => Duration(seconds: buffered.value);
+  Duration get currentBuffered =>
+      _videoPlayerController?.state.buffer ?? Duration(seconds: buffered.value);
 
   final RxInt duration = RxInt(0);
 
@@ -157,6 +174,8 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   bool _backgroundReconnectRefreshing = false;
   Duration _lastBackgroundReconnectPosition = Duration.zero;
   Timer? _backgroundReconnectTimer;
+  Timer? _playbackRecoveryTimer;
+  bool _playbackRecoveryActionRunning = false;
 
   // 记录历史记录
   int? _aid;
@@ -633,6 +652,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     bool autoFullScreenFlag = false,
     int? expectedManualPauseGeneration,
   }) async {
+    _cancelPlaybackRecoveryWatch();
     final mediaOpenGeneration = ++_mediaOpenGeneration;
     _completionEventArmed = false;
     _hasStartedPlayback = false;
@@ -649,6 +669,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
       checkpoint: _rebuildPosition,
       requested: seekTo,
     );
+    _setPendingResume(cid, resumeAt);
     _preserveRebuildPosition =
         resumeAt != null && resumeAt > Duration.zero && _rebuildCid == cid;
     try {
@@ -690,6 +711,12 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
         resumeAt,
         volume,
         mediaOpenGeneration,
+        startDuringOpen: AdaptivePlayback.shouldStartMediaDuringOpen(
+          autoplay: autoplay,
+          playbackRequested: playbackRequested.value,
+          pauseGenerationAtStart: autoplayGeneration,
+          currentPauseGeneration: manualPauseGeneration,
+        ),
       );
       if (!opened || mediaOpenGeneration != _mediaOpenGeneration) return;
       _activeCid = cid;
@@ -710,6 +737,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
       // The old media can emit completed/paused while Player.open replaces it.
       // Only accept stream events after the latest open has taken ownership.
       _openedMediaGeneration = mediaOpenGeneration;
+      _syncWakelock();
 
       if (autoFullScreenFlag && autoEnterFullScreen) {
         triggerFullScreen(status: true);
@@ -721,6 +749,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
       if (mediaOpenGeneration == _mediaOpenGeneration) {
         dataStatus.value = DataStatus.error;
         _openedMediaGeneration = mediaOpenGeneration;
+        _syncWakelock();
       }
       if (kDebugMode) {
         debugPrint(stackTrace.toString());
@@ -834,8 +863,9 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     DataSource dataSource,
     Duration? seekTo,
     Volume? volume,
-    int mediaOpenGeneration,
-  ) async {
+    int mediaOpenGeneration, {
+    required bool startDuringOpen,
+  }) async {
     isBuffering.value = false;
     _heartDuration = 0;
     // 初始化时清空弹幕，防止上次重叠
@@ -900,7 +930,11 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
         start: seekTo,
         extras: extras.isEmpty ? null : extras,
       ),
-      play: false,
+      // Opening an autoplay source paused lets mpv aggressively fill its full
+      // demuxer cache before setDataSource can call play(). Start immediately
+      // instead; cache-pause-initial=no then needs only demux/probe data before
+      // the first frame, matching the official client's low-data startup.
+      play: startDuringOpen,
     );
     return mediaOpenGeneration == _mediaOpenGeneration;
   }
@@ -930,6 +964,20 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     _rebuildCid = null;
     _rebuildPosition = null;
     _preserveRebuildPosition = false;
+  }
+
+  void _setPendingResume(int? targetCid, Duration? position) {
+    if (targetCid != null && position != null && position > Duration.zero) {
+      _pendingResumeCid = targetCid;
+      _pendingResumePosition = position;
+    } else {
+      _clearPendingResume();
+    }
+  }
+
+  void _clearPendingResume() {
+    _pendingResumeCid = null;
+    _pendingResumePosition = null;
   }
 
   Future<void>? refreshPlayer() {
@@ -966,7 +1014,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
               pauseGenerationAtStart: pauseGeneration,
               currentPauseGeneration: manualPauseGeneration,
             )) {
-              await play();
+              await play(recoverIfStalled: false);
             } else {
               await pause(notify: false, isInterrupt: true);
             }
@@ -978,6 +1026,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
 
   // 开始播放
   Future<void> stopCurrentSource() async {
+    _cancelPlaybackRecoveryWatch();
     _checkpointForRebuild();
     _preserveRebuildPosition = _rebuildPosition != null;
     try {
@@ -1019,6 +1068,26 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     }
   }
 
+  /// Seam for tests: replace with a recording fake before driving player
+  /// events so wakelock enable/disable sequences can be asserted.
+  WakelockGateway wakelockGateway = const WakelockPlusGateway();
+  WakelockHoldManager? _wakelockHoldManagerCache;
+  WakelockHoldManager get _wakelockHoldManager =>
+      _wakelockHoldManagerCache ??= WakelockHoldManager(wakelockGateway);
+
+  /// Re-evaluates the wakelock from the user's playback intent. Safe to call
+  /// from any player event; identical consecutive states are not re-toggled.
+  void _syncWakelock() {
+    unawaited(
+      _wakelockHoldManager.sync(
+        playbackRequested: playbackRequested.value,
+        isInBackground: _isInBackground,
+        continuePlayInBackground: continuePlayInBackground.value,
+        onlyPlayAudio: onlyPlayAudio.value,
+      ),
+    );
+  }
+
   List<StreamSubscription>? _subscriptions;
   final Set<ValueChanged<Duration>> _positionListeners = {};
   final Set<ValueChanged<PlayerStatus>> _statusListeners = {};
@@ -1030,7 +1099,6 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     _subscriptions = [
       /// playing
       stream.playing.listen((bool playing) {
-        if (_isReplacingMedia) return;
         if (playing &&
             !AdaptivePlayback.shouldAcceptNativePlayingEvent(
               playbackRequested: playbackRequested.value,
@@ -1038,6 +1106,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
           // A late native/lifecycle event must never override an explicit
           // pause. Keep the player and the public state aligned.
           unawaited(_videoPlayerController?.pause());
+          _syncWakelock();
           _disableAutoEnterPip();
           playerStatus.value = PlayerStatus.paused;
           videoPlayerServiceHandler?.onStatusChange(
@@ -1047,7 +1116,8 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
           );
           return;
         }
-        WakelockPlus.toggle(enable: playing);
+        if (_isReplacingMedia) return;
+        _syncWakelock();
         if (playing) {
           _hasStartedPlayback = true;
           _completionEventArmed = true;
@@ -1092,8 +1162,11 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
           _completionEventArmed = false;
           playbackRequested.value = false;
           playerStatus.value = .completed;
+          _clearPendingResume();
           _wasPlayingOnEnterBackground = false;
+          _cancelPlaybackRecoveryWatch();
           _stopBackgroundReconnectTimer();
+          _syncWakelock();
 
           for (final element in _statusListeners) {
             element(.completed);
@@ -1107,17 +1180,32 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
       stream.position.listen((Duration event) {
         if (_isReplacingMedia) return;
         final preserved = _rebuildPosition;
-        final effectivePosition =
+        final rebuildProtectedPosition =
             _preserveRebuildPosition &&
                 event == Duration.zero &&
                 preserved != null &&
                 preserved > Duration.zero
             ? preserved
             : event;
+        final pendingResume = _pendingResumeCid == cid
+            ? _pendingResumePosition
+            : null;
+        final effectivePosition = AdaptivePlayback.protectPendingResumePosition(
+          reported: rebuildProtectedPosition,
+          pending: pendingResume,
+        );
+        if (AdaptivePlayback.hasConfirmedPendingResume(
+          reported: event,
+          pending: pendingResume,
+        )) {
+          _clearPendingResume();
+        }
         final posInSeconds = effectivePosition.inSeconds;
 
-        if (posInSeconds != this.position.value) {
-          this.position.value = posInSeconds;
+        if (posInSeconds != position.value) {
+          if (!isSeeking.value) {
+            position.value = posInSeconds;
+          }
 
           videoPlayerServiceHandler?.onPositionChange(effectivePosition);
 
@@ -1140,10 +1228,15 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
         if (_isReplacingMedia) return;
         isBuffering.value = buffering;
         videoPlayerServiceHandler?.onStatusChange(
-          playerStatus.value,
+          // Buffering with playback intent still counts as "playing" in the
+          // media notification; do not report a spurious paused state.
+          buffering && playbackRequested.value
+              ? PlayerStatus.playing
+              : playerStatus.value,
           buffering,
           isLive,
         );
+        _syncWakelock();
       }),
       if (kDebugMode)
         stream.log.listen(((PlayerLog log) {
@@ -1250,6 +1343,128 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
       _stopBackgroundReconnectTimer();
       _wasPlayingOnEnterBackground = false;
     }
+    _syncWakelock();
+  }
+
+  void _cancelPlaybackRecoveryWatch() {
+    _playbackRecoveryTimer?.cancel();
+    _playbackRecoveryTimer = null;
+    _playbackRecoveryActionRunning = false;
+  }
+
+  void _startPlaybackRecoveryWatch() {
+    _cancelPlaybackRecoveryWatch();
+    if (!Pref.adaptivePlayback || isLive || dataSource is! NetworkSource) {
+      return;
+    }
+
+    final watchCid = cid;
+    final watchMediaGeneration = _mediaOpenGeneration;
+    final watchPauseGeneration = manualPauseGeneration;
+    final startPosition = currentPosition;
+    final startedAt = DateTime.now();
+    DateTime? kickedAt;
+
+    Future<void> checkPlaybackRecovery() async {
+      if (_instance != this ||
+          cid != watchCid ||
+          _mediaOpenGeneration != watchMediaGeneration ||
+          manualPauseGeneration != watchPauseGeneration ||
+          !playbackRequested.value ||
+          _temporarilyPaused ||
+          playerStatus.isCompleted) {
+        _cancelPlaybackRecoveryWatch();
+        return;
+      }
+
+      final positionNow = currentPosition;
+      final forwardBuffer = currentBuffered > positionNow
+          ? currentBuffered - positionNow
+          : Duration.zero;
+      final progressed =
+          (positionNow - startPosition).inMilliseconds.abs() >= 500;
+      if (progressed) {
+        _cancelPlaybackRecoveryWatch();
+        return;
+      }
+
+      if (DateTime.now().difference(startedAt) >= const Duration(seconds: 12) &&
+          forwardBuffer < const Duration(milliseconds: 500)) {
+        // This is genuine network starvation. The adaptive CDN monitor owns
+        // it; reopening an empty cache would only discard useful state.
+        _cancelPlaybackRecoveryWatch();
+        return;
+      }
+
+      final kickTime = kickedAt;
+      final timeout = kickTime == null
+          ? const Duration(seconds: 2)
+          : const Duration(seconds: 3);
+      final observedFor = DateTime.now().difference(kickTime ?? startedAt);
+      if (!AdaptivePlayback.shouldRecoverStalledPlayback(
+            playbackRequested: playbackRequested.value,
+            temporarilyPaused: _temporarilyPaused,
+            inBackgroundWithoutPlayback:
+                _isInBackground && !continuePlayInBackground.value,
+            processing: processing,
+            completed: playerStatus.isCompleted,
+            startPosition: startPosition,
+            currentPosition: positionNow,
+            forwardBuffer: forwardBuffer,
+            observedFor: observedFor,
+            timeout: timeout,
+          ) ||
+          _playbackRecoveryActionRunning) {
+        return;
+      }
+
+      _playbackRecoveryActionRunning = true;
+      if (kickTime == null) {
+        kickedAt = DateTime.now();
+        Utils.reportLog(
+          () =>
+              'PlaybackRecovery: kick stalled start/resume '
+              'positionMs=${positionNow.inMilliseconds} '
+              'forwardMs=${forwardBuffer.inMilliseconds}',
+        );
+        try {
+          // Keep the demuxer cache and Relay response. A brief native
+          // pause/play edge wakes devices whose decoder stayed paused after
+          // an app or audio-focus transition.
+          await _videoPlayerController?.pause();
+          await Future<void>.delayed(const Duration(milliseconds: 60));
+          if (playbackRequested.value &&
+              manualPauseGeneration == watchPauseGeneration &&
+              cid == watchCid) {
+            await _videoPlayerController?.play();
+          }
+        } finally {
+          _playbackRecoveryActionRunning = false;
+        }
+        return;
+      }
+
+      _playbackRecoveryTimer?.cancel();
+      _playbackRecoveryTimer = null;
+      Utils.reportLog(
+        () =>
+            'PlaybackRecovery: reload stalled start/resume '
+            'positionMs=${positionNow.inMilliseconds} '
+            'forwardMs=${forwardBuffer.inMilliseconds}',
+      );
+      try {
+        final refresh = refreshPlayer();
+        if (refresh != null) await refresh;
+      } finally {
+        _playbackRecoveryActionRunning = false;
+      }
+    }
+
+    _playbackRecoveryTimer = Timer.periodic(const Duration(milliseconds: 500), (
+      _,
+    ) {
+      unawaited(checkPlaybackRecovery());
+    });
   }
 
   Future<void> resumeAfterLifecyclePause({
@@ -1267,6 +1482,12 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     final resumeCid = cid;
     final resumePosition = currentPosition;
     await play();
+    _syncWakelock();
+    if (Pref.adaptivePlayback && dataSource is NetworkSource) {
+      // The adaptive start/resume watchdog performs a cache-preserving kick
+      // followed by one guarded reload. Do not race it with a second timer.
+      return;
+    }
     await Future<void>.delayed(const Duration(seconds: 5));
     if (_isInBackground ||
         processing ||
@@ -1387,14 +1608,17 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     // An explicit seek supersedes any recovery checkpoint, including a seek
     // from the media notification while a rebuild is pending.
     _clearRebuildCheckpoint();
+    _clearPendingResume();
     if (position < Duration.zero) {
       position = Duration.zero;
     }
     _heartDuration = position.inSeconds;
 
     Future<void> seek() async {
-      if (isSeek) {
-        /// 拖动进度条调节时，不等待第一帧，防止抖动
+      if (isSeek && AdaptivePlayback.shouldAwaitBufferUpdateBeforeSeek) {
+        // Kept only as an explicit policy seam. media_kit's broadcast buffer
+        // stream does not replay the current value, so normal network seeks
+        // must never wait here before issuing the native seek command.
         try {
           await _videoPlayerController?.stream.buffer.first.timeout(
             const Duration(seconds: 2),
@@ -1404,6 +1628,9 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
       danmakuController?.clear();
       try {
         await _videoPlayerController?.seek(position);
+        if (playbackRequested.value && !_temporarilyPaused) {
+          _startPlaybackRecoveryWatch();
+        }
       } catch (e) {
         if (kDebugMode) debugPrint('seek failed: $e');
       }
@@ -1454,7 +1681,11 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   }
 
   /// 播放视频
-  Future<void> play({bool repeat = false, bool hideControls = true}) async {
+  Future<void> play({
+    bool repeat = false,
+    bool hideControls = true,
+    bool recoverIfStalled = true,
+  }) async {
     if (_playerCount == 0) return;
     playbackRequested.value = true;
     _temporarilyPaused = false;
@@ -1471,16 +1702,21 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     audioSessionHandler?.setActive(true);
 
     playerStatus.value = PlayerStatus.playing;
+    _syncWakelock();
     if (_isInBackground && continuePlayInBackground.value) {
       _wasPlayingOnEnterBackground = true;
       _lastBackgroundReconnectPosition = currentPosition;
       _startBackgroundReconnectTimer();
+    }
+    if (recoverIfStalled) {
+      _startPlaybackRecoveryWatch();
     }
     // screenManager.setOverlays(false);
   }
 
   /// 暂停播放
   Future<void> pause({bool notify = true, bool isInterrupt = false}) async {
+    _cancelPlaybackRecoveryWatch();
     _temporarilyPaused = isInterrupt;
     if (!isInterrupt) {
       playbackRequested.value = false;
@@ -1490,6 +1726,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     }
     await _videoPlayerController?.pause();
     playerStatus.value = PlayerStatus.paused;
+    _syncWakelock();
 
     // 主动暂停时让出音频焦点
     if (!isInterrupt) {
@@ -1901,6 +2138,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     }
 
     _playerCount = 0;
+    _cancelPlaybackRecoveryWatch();
     if (removeSafeArea) {
       showSystemBar();
     }
@@ -1938,7 +2176,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     _positionListeners.clear();
     _statusListeners.clear();
     if (playerStatus.isPlaying) {
-      WakelockPlus.disable();
+      unawaited(_wakelockHoldManagerCache?.forceDisable());
     }
     if (kDebugMode) {
       debugPrint('dispose player');

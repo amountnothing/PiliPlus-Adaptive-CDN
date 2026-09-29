@@ -274,10 +274,17 @@ abstract final class Pref {
     defaultValue: 30.0,
   );
 
-  static double get adaptiveLowBufferSec => _setting.get(
-    SettingBoxKey.adaptiveLowBufferSec,
-    defaultValue: 10.0,
-  );
+  static const adaptiveCacheSeconds = 4.0;
+
+  static double get adaptiveLowBufferSec {
+    final double configured = _setting.get(
+      SettingBoxKey.adaptiveLowBufferSec,
+      defaultValue: 10.0,
+    );
+    return adaptivePlayback
+        ? min(configured, adaptiveCacheSeconds / 2)
+        : configured;
+  }
 
   static double get adaptiveStallTimeoutSec => _setting.get(
     SettingBoxKey.adaptiveStallTimeoutSec,
@@ -294,10 +301,25 @@ abstract final class Pref {
     defaultValue: 1.0,
   );
 
+  static double get adaptiveFragmentStallWindowSec => _setting.get(
+    SettingBoxKey.adaptiveFragmentStallWindowSec,
+    defaultValue: 30.0,
+  );
+
+  static double get adaptiveFragmentStallCount => _setting.get(
+    SettingBoxKey.adaptiveFragmentStallCount,
+    defaultValue: 3.0,
+  );
+
+  static double get adaptiveFragmentStallTotalSec => _setting.get(
+    SettingBoxKey.adaptiveFragmentStallTotalSec,
+    defaultValue: 3.0,
+  );
+
   static double get adaptiveRefillBufferSec {
     final targetSec = max(adaptiveTargetBufferSec, 1.0);
     return min(
-      targetSec,
+      adaptivePlayback ? min(targetSec, adaptiveCacheSeconds / 2) : targetSec,
       max(
         adaptiveLowBufferSec + adaptiveSegmentToleranceSec,
         targetSec - adaptiveSegmentToleranceSec,
@@ -905,6 +927,32 @@ abstract final class Pref {
   static double get bufferSec =>
       _setting.get(SettingBoxKey.bufferSec, defaultValue: 16.0);
 
+  /// Keep network startup and out-of-cache seeks cheap.  The Relay can switch
+  /// a stalled CDN without requiring mpv to prefetch tens of MiB per track.
+  static Map<String, String> lowLatencyBufferOptions({
+    required double playbackSpeed,
+    required double configuredBytes,
+    int? bandwidthBitsPerSecond,
+  }) {
+    // Bound prefetch, not bytes required for a first frame: MPV still needs
+    // headers, keyframes and decoder initialization. Keep this independent of
+    // bitrate; health thresholds must fit inside the same temporal budget.
+    final forwardBytes = configuredBytes
+        .clamp(1 * 0x100000, 4 * 0x100000)
+        .round();
+    final backBytes = min(1 * 0x100000, max(256 * 1024, forwardBytes ~/ 4));
+    return {
+      'cache': 'yes',
+      'cache-pause': 'yes',
+      'cache-pause-initial': 'no',
+      'cache-pause-wait': '0.250',
+      'cache-secs': adaptiveCacheSeconds.toStringAsFixed(3),
+      'demuxer-hysteresis-secs': '2.000',
+      'demuxer-max-bytes': forwardBytes.toString(),
+      'demuxer-max-back-bytes': backBytes.toString(),
+    };
+  }
+
   static Map<String, String> initBuffer([
     double playbackSpeed = 1.0,
     int? bandwidth,
@@ -921,28 +969,12 @@ abstract final class Pref {
       };
     }
 
-    final targetSec = max(Pref.adaptiveTargetBufferSec, 1.0);
-    final bufSec = targetSec * playbackSpeed;
-    // Adaptive segment tolerance is the refill trigger margin. A 30s target
-    // with the default 10s tolerance refills around 20s, close to the old
-    // bufSec / 1.5 player behavior instead of forcing constant top-up.
-    final hysteresisSec = Pref.adaptiveRefillBufferSec * playbackSpeed;
     final configuredBytes = Pref.bufferSize * 0x100000;
-    final bitrateBytes = bandwidth == null || bandwidth <= 0
-        ? 0.0
-        : bandwidth * bufSec / 8 * 1.3;
-    final forwardBytes = max(
-      16 * 0x100000,
-      max(configuredBytes, bitrateBytes),
-    ).clamp(16 * 0x100000, 96 * 0x100000).round();
-    final backBytes = min(4 * 0x100000, max(1 * 0x100000, forwardBytes ~/ 8));
-    return {
-      'cache': 'yes',
-      'cache-secs': bufSec.toStringAsFixed(3),
-      'demuxer-hysteresis-secs': min(hysteresisSec, bufSec).toStringAsFixed(3),
-      'demuxer-max-bytes': forwardBytes.toString(),
-      'demuxer-max-back-bytes': backBytes.toString(),
-    };
+    return lowLatencyBufferOptions(
+      playbackSpeed: playbackSpeed,
+      configuredBytes: configuredBytes,
+      bandwidthBitsPerSecond: bandwidth,
+    );
   }
 
   static Map<String, String> initLiveBuffer() {

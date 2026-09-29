@@ -80,6 +80,30 @@ List<SettingsModel> get _adaptivePlaybackSettings => [
     enabledListenable: AdaptivePlayback.enabled,
     onTap: _showAdaptiveStallTimeoutDialog,
   ),
+  NormalModel(
+    title: '碎片化卡顿检测窗口',
+    leading: const Icon(Icons.update_outlined),
+    getSubtitle: () =>
+        '窗口 ${Pref.adaptiveFragmentStallWindowSec.round()}s 内统计碎片化卡顿次数与累计时长',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveFragmentStallWindowDialog,
+  ),
+  NormalModel(
+    title: '碎片化卡顿触发次数',
+    leading: const Icon(Icons.bolt_outlined),
+    getSubtitle: () =>
+        '窗口内卡顿 ≥${Pref.adaptiveFragmentStallCount.round()} 次且累计 ≥${Pref.adaptiveFragmentStallTotalSec.round()}s 时切换 CDN',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveFragmentStallCountDialog,
+  ),
+  NormalModel(
+    title: '碎片化卡顿累计时长',
+    leading: const Icon(Icons.timelapse_outlined),
+    getSubtitle: () =>
+        '当前：${Pref.adaptiveFragmentStallTotalSec.round()}s',
+    enabledListenable: AdaptivePlayback.enabled,
+    onTap: _showAdaptiveFragmentStallTotalDialog,
+  ),
 
   NormalModel(
     title: '故障 CDN 冷却',
@@ -839,6 +863,50 @@ void _showAdaptiveMaxSwitchesDialog(
   suffix: '次',
   minValue: 1,
   maxValue: 10,
+  integer: true,
+);
+
+void _showAdaptiveFragmentStallWindowDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveFragmentStallWindowSec,
+  defVal: Pref.adaptiveFragmentStallWindowSec,
+  title: '碎片化卡顿检测窗口',
+  suffix: 's',
+  minValue: 10,
+  maxValue: 120,
+);
+
+void _showAdaptiveFragmentStallCountDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveFragmentStallCount,
+  defVal: Pref.adaptiveFragmentStallCount,
+  title: '碎片化卡顿触发次数',
+  suffix: '次',
+  minValue: 2,
+  maxValue: 10,
+  integer: true,
+);
+
+void _showAdaptiveFragmentStallTotalDialog(
+  BuildContext context,
+  VoidCallback setState,
+) => _showDecimalDialog(
+  context,
+  setState,
+  key: SettingBoxKey.adaptiveFragmentStallTotalSec,
+  defVal: Pref.adaptiveFragmentStallTotalSec,
+  title: '碎片化卡顿累计时长',
+  suffix: 's',
+  minValue: 1,
+  maxValue: 30,
   integer: true,
 );
 

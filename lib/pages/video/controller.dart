@@ -174,6 +174,11 @@ class VideoDetailController extends GetxController
   int _audioCdnIndex = 0;
   int _adaptiveBandwidth = 0;
   bool _switchingCdn = false;
+  Worker? _relayPlaybackIntentWorker;
+  Worker? _fragmentStallWorker;
+  final List<DateTime> _fragmentStallStarts = [];
+  final List<Duration> _fragmentStallDurations = [];
+  DateTime? _openFragmentStallStart;
   bool _relayRecoveryWaitingLogged = false;
   CdnRelaySession? _cdnRelaySession;
   final List<CdnRelaySession> _retiredCdnRelays = [];
@@ -182,6 +187,7 @@ class VideoDetailController extends GetxController
   bool _lowBufferTriggered = false;
   DateTime? _lowBufferStutterSince;
   Duration _lowBufferStutterStart = Duration.zero;
+  Duration _lowBufferWatchPosition = Duration.zero;
   Duration _lastPlaybackPosition = Duration.zero;
   DateTime _lastSeekRebufferAt = DateTime.fromMillisecondsSinceEpoch(0);
   Duration? _lastVideoPts;
@@ -413,6 +419,16 @@ class VideoDetailController extends GetxController
   void onInit() {
     super.onInit();
     _activeVideoPageCount += 1;
+    _relayPlaybackIntentWorker = ever<bool>(
+      plPlayerController.playbackRequested,
+      (_) => _cdnRelaySession?.setPlaybackPaused(
+        !plPlayerController.shouldKeepRelayActive,
+      ),
+    );
+    _fragmentStallWorker = ever<bool>(
+      plPlayerController.isBuffering,
+      _onIsBufferingChanged,
+    );
     plPlayerController.onPlayerError = _onPlayerError;
     args = Get.arguments;
     videoType = args['videoType'];
@@ -891,6 +907,7 @@ class VideoDetailController extends GetxController
     _lastPlaybackPosition = plPlayerController.currentPosition;
     _resetVideoFrameHealth(now);
     _videoFreezeRecoveryCount = 0;
+    _resetFragmentStallWindow();
     final forwardBuffer = _lastBufferedPosition > _lastPlaybackPosition
         ? _lastBufferedPosition - _lastPlaybackPosition
         : Duration.zero;
@@ -1207,6 +1224,33 @@ class VideoDetailController extends GetxController
       _lastPlaybackPosition = position;
     }
 
+    if (_fragmentStallStarts.isNotEmpty &&
+        Pref.adaptivePlayback &&
+        AdaptivePlayback.shouldSwitchForFragmentedStalls(
+          stallStarts: _fragmentStallStarts,
+          stallDurations: _fragmentStallDurations,
+          now: now,
+          window: Duration(seconds: Pref.adaptiveFragmentStallWindowSec.round()),
+          minStalls: Pref.adaptiveFragmentStallCount.round(),
+          minTotalStall: Duration(
+            seconds: Pref.adaptiveFragmentStallTotalSec.round(),
+          ),
+        )) {
+      final totalStall = _totalFragmentStallTime(now);
+      _logAdaptive(
+        'fragmented-stall count=${_fragmentStallStarts.length} '
+        'windowMs=${Pref.adaptiveFragmentStallWindowSec * 1000} '
+        'totalStallMs=${totalStall.inMilliseconds} '
+        'positionMs=${position.inMilliseconds} '
+        'bufferedMs=${buffered.inMilliseconds} '
+        'switches=video:$_videoCdnSwitchCount/$_maxCdnSwitches '
+        'audio:$_audioCdnSwitchCount/$_maxAudioCdnSwitches',
+      );
+      _resetFragmentStallWindow();
+      unawaited(_switchToNextCdn(reason: 'fragmented-stall'));
+      return;
+    }
+
     if (buffered < _lastBufferedPosition ||
         buffered - _lastBufferedPosition >= const Duration(milliseconds: 500)) {
       _lastBufferedPosition = buffered;
@@ -1235,8 +1279,57 @@ class VideoDetailController extends GetxController
     }
   }
 
+  /// Records rebuffer onsets/ends driven by isBuffering events, excluding
+  /// seek-related rebuffers, manual pauses, content end and CDN switching.
+  void _onIsBufferingChanged(bool buffering) {
+    final now = DateTime.now();
+    if (!buffering) {
+      final start = _openFragmentStallStart;
+      if (start != null) {
+        _openFragmentStallStart = null;
+        if (_fragmentStallStarts.isNotEmpty) {
+          _fragmentStallDurations.add(now.difference(start));
+        }
+      }
+      return;
+    }
+    final excluded =
+        _switchingCdn ||
+        now.difference(_lastSeekRebufferAt) <= const Duration(seconds: 3) ||
+        !plPlayerController.playbackRequested.value ||
+        AdaptivePlayback.hasReachedContentEnd(
+          duration: Duration(
+            milliseconds: plPlayerController.durationInMilliseconds,
+          ),
+          position: plPlayerController.currentPosition,
+          buffered: plPlayerController.currentBuffered,
+        );
+    if (excluded) return;
+    _openFragmentStallStart = now;
+    _fragmentStallStarts.add(now);
+  }
+
+  void _resetFragmentStallWindow() {
+    _fragmentStallStarts.clear();
+    _fragmentStallDurations.clear();
+    _openFragmentStallStart = null;
+  }
+
+  Duration _totalFragmentStallTime(DateTime now) {
+    var total = Duration.zero;
+    for (final d in _fragmentStallDurations) {
+      total += d;
+    }
+    final open = _openFragmentStallStart;
+    if (open != null) {
+      total += now.difference(open);
+    }
+    return total;
+  }
+
   void _resetLowBufferWatch(DateTime now, Duration forwardBuffer) {
     _lowBufferTriggered = false;
+    _lowBufferWatchPosition = plPlayerController.currentPosition;
     if (forwardBuffer <= _refillForwardBuffer) {
       _lowBufferStutterSince = now;
       _lowBufferStutterStart = forwardBuffer;
@@ -1266,6 +1359,7 @@ class VideoDetailController extends GetxController
 
     _lowBufferStutterSince ??= now;
     if (_lowBufferStutterSince == now) {
+      _lowBufferWatchPosition = plPlayerController.currentPosition;
       _lowBufferStutterStart = forwardBuffer;
     }
     final netGrowth = forwardBuffer - _lowBufferStutterStart;
@@ -1281,7 +1375,10 @@ class VideoDetailController extends GetxController
       observationWindow: _bufferStallTimeout,
       bufferGrowth: netGrowth,
       minGrowth: _lowBufferStutterMinGrowth,
+      playbackProgress:
+          plPlayerController.currentPosition - _lowBufferWatchPosition,
     )) {
+      _lowBufferWatchPosition = plPlayerController.currentPosition;
       _lowBufferStutterSince = now;
       _lowBufferStutterStart = forwardBuffer;
       return false;
@@ -1299,6 +1396,7 @@ class VideoDetailController extends GetxController
     _lastSeekRebufferAt = now;
     _lastBufferedPosition = buffered;
     _lastPlaybackPosition = position;
+    _resetFragmentStallWindow();
     _resetLowBufferWatch(
       now,
       buffered > position ? buffered - position : Duration.zero,
@@ -1812,14 +1910,24 @@ class VideoDetailController extends GetxController
     }
     isQuerying = true;
     try {
-      await _queryVideoUrl(fromReset, autoFullScreenFlag);
+      await _queryVideoUrl(
+        fromReset,
+        autoFullScreenFlag,
+        autoplayRequested: autoplayRequested,
+        expectedManualPauseGeneration: expectedManualPauseGeneration,
+      );
     } finally {
       isQuerying = false;
     }
   }
 
   @pragma('vm:prefer-inline')
-  Future<void> _queryVideoUrl(bool fromReset, bool autoFullScreenFlag) async {
+  Future<void> _queryVideoUrl(
+    bool fromReset,
+    bool autoFullScreenFlag, {
+    required bool autoplayRequested,
+    required int expectedManualPauseGeneration,
+  }) async {
     if (plPlayerController.enableSponsorBlock && isBlock && !fromReset) {
       querySponsorBlock(bvid: bvid, cid: cid.value);
     }
@@ -1888,7 +1996,6 @@ class VideoDetailController extends GetxController
           autoplay: autoplayRequested,
           expectedManualPauseGeneration: expectedManualPauseGeneration,
         );
-        isQuerying = false;
         return;
       }
       if (data.dash == null) {
@@ -1980,9 +2087,7 @@ class VideoDetailController extends GetxController
           (e) => e.id == closestNumber,
           orElse: () => audioList.first,
         );
-        if (firstAudio.id case final int id?) {
-          currentAudioQa = AudioQuality.fromCode(id);
-        }
+        currentAudioQa = AudioQuality.fromCode(firstAudio.id);
       } else {
         audioUrl = '';
       }
@@ -2260,6 +2365,8 @@ class VideoDetailController extends GetxController
     final hasUnderlyingVideoPage =
         _activeVideoPageCount > 1 && !plPlayerController.isCloseAll;
     _cdnHealthTimer?.cancel();
+    _relayPlaybackIntentWorker?.dispose();
+    _fragmentStallWorker?.dispose();
     plPlayerController.presentationStalled.value = false;
     plPlayerController.onPlayerError = null;
     if (hasUnderlyingVideoPage) {

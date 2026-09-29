@@ -1,6 +1,6 @@
 # PiliPlus Adaptive CDN 项目上下文
 
-更新时间：2026-08-24
+更新时间：2026-09-09
 用途：给人和 Codex 快速恢复项目上下文，避免长对话压缩后丢失关键记忆。
 
 - 唯一源码基准：GitHub `amountnothing/PiliPlus-Adaptive-CDN` 的 `main` 分支。
@@ -33,7 +33,9 @@
   - App 默认全局冷却 60 秒。
   - 当前视频内不再使用该 CDN。
   - 已失败 CDN 与切换额度跨 Relay/播放器重建保留；视频轨与音频轨分别计数，视频切换不能耗尽音频的恢复额度。单轨额度耗尽后等待该轨当前连接恢复，不再通过重建重新遍历候选。
-- 使用本地 Range Relay，让播放器面对稳定的本地 URL，上游 CDN 可以切换，尽量保留已有缓冲。
+- 使用本地 Range Relay，让播放器面对稳定的本地 URL，上游 CDN 可以切换，尽量保留已有缓冲。视频 CDN 切换时同步中断但不改选健康音频 CDN 的当前 Range，让 MPV 用新 Range 将音视频重新挂接到同一 EDL 时间线，避免换源后音轨脱落。
+- 自动播放的数据源在 `Player.open` 阶段直接启动，不再先以暂停状态打开并等待完整目标缓存回填；自适应模式把 MPV 前向队列限制在 1–4 MiB、时间前瞻限制在 4 秒（不再按 30 秒码率膨胀到 16–96 MiB），并使用 `cache-pause-initial=no`，限制首播/重新打开的预取。此配置不是首帧门槛，实际出帧仍受格式探测、关键帧和解码初始化影响，尚无真机首帧流量/延迟对照。显式 seek 会立即下发到 MPV，不再先等待不可重放的 `stream.buffer.first` 最多 2 秒，避免大跨度拖动期间旧位置继续下载。手动暂停代次仍可阻止迟到的自动播放。
+- 2026-09-09 已合并 PiliPlus 上游 `9730d29a8a34e0d07fec0afb06155711961a0509`；冲突采用“保留上游新 API/网络编码选择，同时保留 Adaptive CDN Relay、恢复检查点、播放意图和 seek 保护”的组合解。项目工具链基线随上游升级到 Flutter 3.47.2。
 - 处理过的误判：
   - 视频结尾没有新内容可下载不算 CDN 超时。
   - 片尾保护窗口对短视频按总时长缩小，不再用固定 5 秒覆盖短视频的启动阶段；新 CID 也不继承上一视频“播放完成”产生的暂停状态。推荐页连续打开视频时，只有最后一次媒体打开事务可以接管播放器，旧视频在替换期间迟到的 completed/paused/position/error 事件不得覆盖新视频的启播意图和状态。
@@ -43,6 +45,7 @@
   - 每次实际切换 CDN 前并行探测 `1.1.1.1` 和阿里 DNS `223.5.5.5`；两者都不可达时保持当前 CDN 5 秒再切换，默认启用且没有开关。
 - 后台播放与中继下载以“用户是否请求播放”为准；播放器在切网或缓冲时短暂报告暂停不会主动停掉中继。playurl 查询、后台重连、CDN/Relay 重建和播放器异步打开均绑定开始时的手动暂停代次，完成前若用户明确暂停，恢复流程必须保持暂停，不能按旧的自动播放意图续播；已暂停状态进入后台时再次向原生播放器下发暂停并禁用后台重连。生命周期临时暂停恢复也校验该代次；回到前台 5 秒仍无有效进度时只重开同一播放器数据源并保留检查点。
 - 本地 Relay 的 loopback TCP 连接超时按 Relay 故障处理；用户明确暂停时只消费该错误、不重建或续播，重新请求播放后才恢复。`Invalid OBU: fragment too short` 与其他 AV1 结构损坏统一走安全重建。
+- 从云端历史或页面参数恢复到非零位置时，该起播位置在 MPV 实际时钟到达附近前保持为可靠检查点；启播阶段短暂上报的 0 或早期位置不得覆盖它。此时发生首次 CDN/Relay 重建仍从历史位置恢复，用户主动 seek（包括拖回 0）则立即取消这层保护。
 - 避免在同一个下游响应里拼接两个 CDN 的字节流；切换 CDN 时关闭当前上游响应，让后续 Range 请求走新 CDN，降低画面卡住、音频继续的风险。
 - 音频或视频任一轨道停滞都视为整体播放停滞：音画和进度一起暂停，恢复后一起继续，并进入 CDN/播放器恢复判断。短暂断网后即使前向缓冲低，只要另一轨 PTS 明确继续前进，也按音画分离处理，不再因低缓冲漏检；若此前已经产生有效 PTS 的音轨/视频轨在切网后消失，也按该轨无进展累计冻结时间。播放器启播时尚未产生过 PTS 的轨道不算冻结，避免刚开始播放就误刷新播放器。
 
@@ -133,14 +136,14 @@
     - `adaptivePreferredDecode`: HEVC。
     - `adaptiveRecoveryDecode`: AVC。
     - `adaptiveTargetBufferSec`: 30。
-    - `adaptiveLowBufferSec`: 10。
+    - `adaptiveLowBufferSec`: 持久化兼容默认 10；自适应开启时有效上限 2 秒。
     - `adaptiveStallTimeoutSec`: 5。
     - `adaptiveSegmentToleranceSec`: 10。
     - `adaptiveLowBufferStutterMinGrowthSec`: 1。
     - `adaptiveCdnCooldownSec`: 60。
     - `adaptiveMaxCdnSwitches`: 3。
     - `adaptiveTraverseAllCdns`: true。
-  - `initBuffer()` 在自适应播放开启时扩大缓存并设置回填 hysteresis。
+  - `initBuffer()` 自适应模式全程限制 4 秒、1–4 MiB 预取，hysteresis 为 2 秒；目标/容差持久值保留兼容，实际回填观察线不超过 2 秒，不能再沿用 30/10 秒大缓存检测。
 - `lib/pages/setting/models/video_settings.dart`
   - Adaptive CDN 二级设置菜单。
   - 开关联动手动 CDN / 测速 / 缓冲 / 解码相关设置。
@@ -151,8 +154,8 @@
 
 - `browser-extension/core.js`
   - 评分、冷却、候选排序、编码族判断、参数校验。
-  - 当前版本 0.2.16；与 App 默认触发参数对齐：前向缓冲回填观察 5 秒、净增长不足 1 秒时切换，画面冻结观察 8 秒且要求至少 10 秒前向缓冲，故障 CDN 冷却 60 秒；疑似整体断网时暂停切换 20 秒。只有收到 `playing` 或首个视频帧后才开始卡顿观察，网页自身取消的 XHR 不计为 CDN 故障。
-  - 后台标签页暂停健康检测，返回后重新建立画面帧观察基线；HTTP/网络失败只改写故障轨道的后续请求，缓冲停滞才中断停滞的视频请求，保留另一轨和已有 MSE 缓冲，避免切屏误判及换源黑屏。画面帧冻结与 App 一样进入播放器恢复，不再消耗 CDN 切换次数。
+  - 当前版本 0.2.18；前向缓冲回填观察 5 秒、净增长不足 1 秒时申请切换，实际自动切换统一受网页 15 秒候选观察窗口约束，画面冻结观察 8 秒且要求至少 10 秒前向缓冲，故障 CDN 冷却 60 秒；疑似整体断网时暂停切换 20 秒。只有收到 `playing` 或首个视频帧后才开始卡顿观察，网页自身取消的 XHR 不计为 CDN 故障。
+  - 后台标签页暂停健康检测，返回后重新建立画面帧观察基线；HTTP/网络失败在终态暴露前重试故障轨道的同一 Range，缓冲停滞中断并重试停滞的视频请求，保留另一轨和已有 MSE 缓冲，避免切屏误判及换源黑屏。画面帧冻结与 App 一样进入播放器恢复，不再消耗 CDN 切换次数。
 - `browser-extension/page.js`
   - 注入网页侧。
   - 拦截 playurl、fetch、XHR。
@@ -200,7 +203,7 @@
 - 不应在一个已经发给播放器的响应里拼接不同 CDN 的字节。
 - 如果播放器/网络层已接受一个响应，切 CDN 时关闭该响应，让播放器重试 Range。
 - 播放器重建时可短暂保留旧 Relay 收尾，但旧 Relay 不再回调控制器、改写当前 CDN 或触发重复恢复。
-- 解码错误恢复会先保存有效播放进度并停止旧源，再切换 CDN 和重建；播放器瞬时回报的 0 不覆盖已有检查点。
+- 解码错误恢复会先保存有效播放进度并停止旧源，再切换 CDN 和重建；播放器瞬时回报的 0 不覆盖已有检查点。初次按历史进度打开但 MPV 尚未完成 seek 时，历史起播位置本身也属于有效检查点。
 - 关闭视频页时必须释放 relay session，避免退出后仍持续下载。
 
 ### 动画设计原则
@@ -229,7 +232,7 @@
   - 断网、Wi-Fi 信号极差但仍连接时，不应疯狂切 CDN。
 - 用户偏好：
   - 能测试就给本地 arm64-v8a APK。
-  - 安装包、油猴脚本等交付文件只放在 `PiliplusAdaptiveCDN` 目录内。
+  - 安装包、油猴脚本等交付文件只放在坚果云界面路径 `Files > My Nutstore > PiliplusAdaptiveCDN`；VPS 对应目录为 `/home/Nutstore/PiliplusAdaptiveCDN`。
   - 简洁可维护优先，避免过度工程化。
   - 不要骗“已修好”；不确定就加日志定位。
   - 不希望为了动画牺牲功耗和性能。
@@ -284,6 +287,46 @@
 - 某些设备/编码不会提供某一轨的 PTS，因此“从未获得 PTS”不能作为冻结证据。只有该轨至少出现过一个有效 PTS 后，后续 PTS 停滞才允许触发音画冻结恢复。
 - PTS 音画同步保护不再依赖“至少有两个 CDN 候选”；即使当前没有可切换 CDN，也必须阻止单轨继续播放。
 - Release 5147 通过完整 50 项测试。MuMu 冷启动视频后连续播放，00:16 与 00:39 的画面不同，期间没有冻结重建、Relay 打不开或 OBU/NAL/temporal unit 错误；媒体键暂停在 02:33，后台停留 12 秒并返回仍为 02:33 和暂停状态。模拟器无法稳定注入真机解码器单轨冻结，OnePlus 真机仍需观察日志模式下的 `pts-freeze` 恢复记录。
+
+### 2026-08-26 首播与暂停/后台续播优化
+
+- 自适应模式继续保留 30 秒目标缓存和大前向缓存，但明确设置 MPV `cache-pause-initial=no`，首次播放不等待目标缓存；真实断流后的 `cache-pause-wait` 降为 0.5 秒。目标缓存只负责后续弱网余量，不再兼任首帧门槛。
+- 播放器使用 MPV 的毫秒级真实 buffer 状态判断前向缓存，不再只用取整到秒的 UI 值。每次请求播放后启动轻量看门狗：时间轴连续 2 秒不动且已有至少 500ms 前向缓存时，先做一次不丢缓存的原生 pause/play 唤醒；再过 3 秒仍不前进才按同一 CID 和检查点重开当前数据源。没有可用缓存的网络饥饿不重开，仍由 CDN/弱网逻辑处理。
+- 手动暂停或禁止后台播放时，Relay 不再主动截断正在工作的下游 Range 响应。它最多暂存一个已在途 chunk，再依靠 Dart/MPV 背压停止继续读取；恢复后沿同一响应和精确字节位置继续，避免 MPV 因暂停期间的 premature close 卡死或误罚 CDN。连接若在暂停期间自行失效，也不计 CDN 故障。
+- 生命周期进入 `hidden` / `paused` / `detached` 时以 `playbackRequested` 而不是底层瞬时 `playing` 判断是否需要回来续播；因此进入后台瞬间恰好 buffering 的视频也会获得受手动暂停代次保护的恢复。自适应看门狗统一负责前台恢复，避免与旧 5 秒生命周期刷新并发重开。
+- 当前云端验证：相关文件静态检查 0 问题，完整 51 项 Flutter 测试通过。尚未构建 APK 或做 Android 真机首帧、长暂停、锁屏和 Wi-Fi/移动网络切换验收。
+
+### 2026-09-09 fix2 修复验证与边界
+
+- Relay 在等待上游连接/响应头/响应体时观察 5 秒静默；不把下游背压算作上游超时。手动暂停停表，恢复重新计时；网络探测返回后重新检查暂停、代次、退役、下游取消和切换预算。字节已输出时仍只关闭旧响应，由后续 Range 换源，绝不在同一响应跨 CDN 拼字节。
+- Socket 包装只缓冲最多 64 KiB 请求字节；每次 HTTP 请求结束取消断开监听，避免 keepalive 累积请求闭包；关闭幂等释放 socket/订阅。暂停持有 chunk 时下游取消也立即取消上游，不等用户继续播放。
+- 实际 Hive 偏好 → `Pref.initBuffer()` → 健康判定回归已先复现：4 秒满队列被 20 秒回填线误判、10 秒冻结门槛不可达。现将有效回填/冻结缓冲阈值限制到 2 秒，并识别字节上限导致的稳定小队列：观察期播放推进至少 1 秒且缓存净变化不低于 -250ms 时，不仅因未净增长 1 秒就换 CDN。明显耗尽/下降仍可换源，PTS 音画同步保护保留。
+- 预取上限不是首帧等待条件，也不是流量或首帧延迟已经改善的实测证明。4 秒是全程策略，不是首帧后自动恢复 30 秒；高码率可先触及字节上限。下方 2026-08-26 的 30 秒/0.5 秒策略是历史记录，已由本节 4 秒/0.25 秒配置取代。
+- 本次尚未连接 Android 真机：首帧、连续推荐、跨缓存 seek、长暂停、后台/锁屏、Wi-Fi/移动网络切换及单轨冻结恢复均待真机验收。自动测试和 APK 构建不能替代这些验收。
+
+### 2026-09-13 PC 扩展/油猴 0.2.17
+
+- 仅取 playurl 四种 camel/snake URL 字段的真实签名候选；网页不再调用旧 UPOS 主机扩展工具，设置页移除该开关。
+- fetch/XHR 在终态暴露前有限重试同一 Range；HTTP/网络错误不再只改后续 URL 而把首次失败直接交给播放器。主动切换重试与会话退休彻底取消分离，退休同时取消网络保护等待和 XHR 定时重试。
+- fatal MediaError 每源只准备一次下一候选并重试在途请求；没有经过验证的网页播放器重载接口，明确提示手动/网页重载。不能宣称已 fatal 的 MSE 因换 URL 恢复，也不自动 play/seek。fatal 状态暂停普通健康监测，避免误改位置。
+- 2026-09-13 既有匿名审计（未重复联网）：BV1rp4y1e745 / cid244954665，playurl 200/code0；7 流四字段共存相等，Akamai 音视频和 cos 备用 1024-byte Range 均 206 video/mp4。与 2026-06 主机记录一致，不能证明全局换域名。证据为 `/home/amountnothing/workspace/PiliplusAdaptiveCDN/bilibili-cdn-audit-20260913.json`；不复制签名 URL。
+- 最终验证：Node 单测 49/49；Chromium 源文件模式 20/20，生成油猴包模式 20/20；10 个 JS/CJS 文件语法检查及 `git diff --check` 通过。使用现有 PowerShell 脚本真实生成 `dist/PiliPlus-Adaptive-CDN-Web.user.js`，元数据版本 0.2.17。验证与打包入口见 `browser-extension/README.md`；真实 Chromium 传输夹具不替代线上完整 MSE 播放验收。
+
+### PC 扩展/油猴 0.2.18：候选级串行重试
+
+- 修复 0.2.17 收到即时 HTTP 错误便在微任务/零延迟定时器循环内遍历候选的问题；不是调高单请求 timeout。每资源/代次共享恢复 Promise、15 秒观察截止时间和一次切换提交。HTTP 确定失败也等待剩余窗口；原先健康检测的 5 秒只申请恢复，不绕过 15 秒候选窗口。
+- fetch/XHR 与并发 Range、fatal、健康检查复用同一协调器；旧代次错误不影响新代次，整体网络保护按候选采样并只追加一次有界等待。音视频失败集合/冷却快照独立，仍保留全局评分和下次会话冷却。重复 playurl 不能依据另一轨的全局冷却旁路变更当前候选。
+- 暂停、abort、禁用、换视频立即取消等待；单个 abort 不取消其他并发请求的所有权。XHR 隐藏 DONE 后的取消显式补一次 abort/loadend，最终 HTTP 响应体仍可读取。手动换源可立即生效；不 play/seek、不重建 MSE。
+- 真实 RED：4 路 Range 同时 403 在不推进测试时钟的情况下访问 A/B/C 共 12 次。GREEN：访问批次为 0/15/30 秒，45 秒结束，切换计数 2；后续推进时钟不再发请求。音频因视频冷却而漏候选、重注册旁路切换、最后一个请求取消后仍后台切换也均先复现后修复。
+- 最终验证：Node 58/58；Chromium 源码 32/32，实际油猴产物 32/32（含 fetch/XHR 混合并发、403/原生超时、取消）。原生网络事件由路由夹具产生，时钟窗口由 Playwright clock 控制；不是线上完整 MSE 播放验收。完整说明见 `browser-extension/RETRY-0.2.18.md`。
+- 真实 PowerShell 打包 `dist/PiliPlus-Adaptive-CDN-Web.user.js`，版本 0.2.18、50,893 字节、SHA-256 `72406f2d0a9cc7b4780a0135cbbfd69ae440ed97b28f232f210e71a896e59cb5`。core/page/bridge 逐字及顺序核对通过。
+
+### 2026-09-17 三项修复（方案2/3安卓侧；方案1见 browser-extension/RETRY 文档）
+
+- **碎片化卡顿切 CDN**：新增 `AdaptivePlayback.shouldSwitchForFragmentedStalls`——检测窗口（默认 30 s）内缓冲停顿 ≥3 次、累计 ≥3 s 即触发 `_switchToNextCdn(reason: 'fragmented-stall')`，由 `isBuffering` 的 ever worker 记录停顿起止；排除 seek 后 3 s、手动暂停、内容末尾与切换进行中；复用现有切换预算，切换后清空窗口。参数 `adaptiveFragmentStallWindowSec/Count/TotalSec`（默认 30/3/3）已入设置页。背景：旧判定只有 PTS 冻结 8 s 与持续低缓冲，缓冲一越阈值计时即清零，反复短卡永远不触发。
+- **息屏修复**：Wakelock 真值源从原生瞬时 `playing` 事件改为播放意图——`AdaptivePlayback.shouldHoldWakelock` + `WakelockHoldManager`（去重 sync），`PlPlayerController._syncWakelock()` 在换媒体结束、buffering、play/pause/completed、生命周期恢复后统一同步；CDN 切换（`_isReplacingMedia`）期间不再丢锁，后台且未开启后台播放或显式暂停立即释放。通知栏在 buffering 且请求播放时保持 playing/buffering，不误报 paused。
+- 验证：完整 `flutter test` 97 项通过（基线 80 + 新增 17），相关 5 文件 `flutter analyze` 无问题。真机息屏/切换行为未验证。
+- **方案1 PC 油猴 0.2.19**：确定失败（HTTP 4xx/5xx、TypeError）等 `failCooldownMs`（默认 2 s，options 可配 0–15000）即切下一候选，沉默/超时仍等满 15 s 窗口；pause 不再中止在途重试；XHR 耗尽路径终态分发修复（`recoverCandidate().then` 绕过假时钟直接调度重试）。产物 `dist/PiliPlus-Adaptive-CDN-Web.user.js` 55,856 字节、SHA-256 `c0b88caed37932b9cd9cf51766de04d2a8a8b785c1614fb13073367202a87c16`；node --test 63/63，Chromium 源码与打包产物各 34/34（打包产物连续三轮稳定，测试夹具确定性收尾见 `browser-extension/RETRY-0.2.18.md`）。非登录态线上 MSE 播放未验收。
 
 ### 继续项目时先做什么
 

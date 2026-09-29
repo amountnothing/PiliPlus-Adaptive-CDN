@@ -29,10 +29,7 @@
             <option value="default">网页默认</option>
           </select>
         </label>
-        <label class="setting toggle-row">
-          <span><strong>扩展 UPOS 候选</strong><small>把网页签名路径扩展到已验证支持 Range 与网页 CORS 的阿里、腾讯和华为节点。</small></span>
-          <input data-setting="expandKnownUpos" type="checkbox" />
-        </label>
+        <p>仅采用当前接口返回的签名候选；不替换主机生成额外 UPOS 地址。</p>
       </section>
 
       <section class="settings-group">
@@ -41,6 +38,7 @@
         <label class="setting"><span><strong>回填触发容差</strong><small>浏览器不能强制播放器拉满缓冲；低于目标约该秒数后开始观察并换 CDN；默认 10 秒。</small></span><input data-setting="segmentToleranceSec" type="number" min="0" max="30" step="0.5" /><em>秒</em></label>
         <label class="setting"><span><strong>低缓冲阈值</strong><small>缓冲低于该值时切换。</small></span><input data-setting="lowBufferSec" type="number" min="2" max="30" step="1" /><em>秒</em></label>
         <label class="setting"><span><strong>缓冲停滞判定</strong><small>每次开始回填后观察该时长，缓冲净增长不足 1 秒则换源。</small></span><input data-setting="bufferStallSec" type="number" min="2" max="60" step="1" /><em>秒</em></label>
+        <label class="setting"><span><strong>确定失败冷却</strong><small>收到 403/404/5xx 等确定失败后等待该时长再切下一候选；0 为立即切换。</small></span><input data-setting="failCooldownMs" type="number" min="0" max="15000" step="100" /><em>毫秒</em></label>
         <label class="setting"><span><strong>片尾排除范围</strong><small>播放位置真正到达片尾时不把“无新数据”判作故障。</small></span><input data-setting="endToleranceSec" type="number" min="0" max="10" step="0.1" /><em>秒</em></label>
       </section>
 

@@ -26,6 +26,9 @@ abstract final class SettingBoxKey {
       adaptiveSegmentToleranceSec = 'adaptiveSegmentToleranceSec',
       adaptiveLowBufferStutterMinGrowthSec =
           'adaptiveLowBufferStutterMinGrowthSec',
+      adaptiveFragmentStallWindowSec = 'adaptiveFragmentStallWindowSec',
+      adaptiveFragmentStallCount = 'adaptiveFragmentStallCount',
+      adaptiveFragmentStallTotalSec = 'adaptiveFragmentStallTotalSec',
       adaptiveCdnPullGraceSec = 'adaptiveCdnPullGraceSec',
       adaptiveCdnCooldownSec = 'adaptiveCdnCooldownSec',
       adaptiveMaxCdnSwitches = 'adaptiveMaxCdnSwitches',

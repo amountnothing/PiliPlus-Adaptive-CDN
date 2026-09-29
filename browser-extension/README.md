@@ -1,57 +1,41 @@
 # PiliPlus Adaptive CDN for Web
 
-面向 Chrome / Edge 111+ 的 Manifest V3 扩展。它把 PiliPlus Adaptive CDN 的核心策略移植到哔哩哔哩网页版，但不会照搬 App 端 CDN 名单。
+Chromium / Edge 111+ 扩展与 Tampermonkey 油猴脚本，当前版本 **0.2.19**。
 
 ## 工作方式
 
-- 从当前视频网页 `playurl` 响应里的 `baseUrl` / `backupUrl` 动态取得候选。
-- 对标准 `/upgcxcode/` 地址，可选扩展到已验证接受相同签名、Range 与网页 CORS 的 UPOS 主机。
-- 对视频和音频 DASH 请求分别建立候选映射，不把某个固定域名当成“海外最优”。
-- 按持久化稳定性评分排序；故障扣 28 分，稳定播放逐步加分。
-- 默认目标缓冲 30 秒：低于“目标缓冲 - 回填触发容差”后开始观察；任何回填场景观察 5 秒，净增长不足 1 秒时切换。
-- 换源时只中断当前媒体请求，后续 Range 请求改走新 CDN；不会重建 `<video>` 或 `MediaSource`，已有 MSE 缓冲会保留。
-- 请求报错时只处罚实际失败的音频或视频资源；换源主动中止的并发请求不会再次触发换源。
-- 已经切到新 CDN 后，旧 CDN 并发请求的迟到错误会被忽略；单页复用同一视频元素时也会注销旧帧监听，避免重复判定。
-- 画面停滞时回退到最后显示的视频帧并换源，让播放器进入 `seeking` / `waiting`；音频和进度不会越过画面，数据恢复后自动继续。
-- 已失败主机在当前视频内不再使用，并进入默认 30 秒冷却。
-- 首选编码可选 AV1、HEVC/H.265、AVC/H.264 或网页默认；仅在浏览器通过 `MediaSource.isTypeSupported` 报告支持时调整同清晰度顺序。
+- 仅取当前 playurl 的 `baseUrl`、`base_url`、`backupUrl`、`backup_url` 实际签名候选，合并四字段，不猜测或替换 UPOS 主机。旧 `expandKnownUpos` 设置不参与网页候选生成。
+- 视频/音频分别映射，分别限制切换预算。评分排序、失败扣 28 分、同视频排除失败主机、跨视频冷却默认 60 秒。
+- 每个资源/CDN 代次共享一个 15 秒候选观察窗口，从首次请求或切入候选开始计时；HTTP 403/404/5xx 等确定失败也等待剩余窗口，不能立即遍历。并发 fetch/XHR、多 Range、fatal 和健康监测合并到同一恢复事务，只有一次切换提交；旧代次错误不扣新候选预算。候选失败集合与冷却快照按资源隔离，全局评分和下次会话冷却仍保留。
+- HTTP 错误、网络拒绝、响应头超时在向播放器暴露终态前，有限重试同一 GET/Range 到下一候选。保留请求头、XHR responseType/credentials；不拼接跨 CDN 响应字节。
+- 主动换源重启在途请求；网页主动 abort 和视频会话退休则彻底取消，包括等待中的重试定时器。手动暂停立即取消候选/网络保护等待，不自动播放或 seek；单个请求 abort 只释放自己的等待所有权，最后一个请求取消后不留下后台切换。迟到的旧请求不处罚新会话。
+- 首次真正播放后才监测回填；默认目标 30 秒、回填观察 5 秒、净增长不足 1 秒时申请换源，但仍受统一 15 秒候选窗口约束。整体网络故障暂停切换 20 秒。后台标签页不监测冻结。
+- 画面冻结走已有 seek/重新缓冲保护，不消耗 CDN 预算。常规换源不重建 video/MSE，也不调用 play() 或更改手动暂停和位置。
+- 首选 HEVC，可选 AVC/AV1/网页默认；只在 MediaSource 报告支持时调整同清晰度编码顺序。
 
-2026-06-24 在德国网络环境抽样当前热门视频时，普通网页接口主要只主动返回：
+## 致命错误边界
 
-- `upos-sz-mirrorcosov.bilivideo.com`
-- `upos-hz-mirrorakam.akamaized.net`
+`video.error` 每个源只处理一次，并与请求/健康检测共享候选窗口而非旁路扣预算：准备下一候选并实际重试仍在途的请求；后续网页请求也使用该候选。所有候选用尽即停止。已进入 fatal 的 MSE **不会**因改 URL 或成功取得字节而恢复。本项目尚无经验证的 B 站播放器重载接口，因此明确提示“需网页播放器或手动重载”，不调用猜测的私有 API、不强行自动播放、不重置进度。若网页已停止请求且没有在途请求，不会伪造下载或宣称恢复成功。
 
-同日对一条有效网页签名做 1KB Range 验证后，下列额外节点均返回 HTTP 206，并允许 B 站网页 Origin：
+响应头已交给播放器后的 fetch 响应体失败不在本层重新拼接/重放；需要网页播放器重试。Service Worker / WebTransport 等绕过 fetch/XHR 的路径也不保证覆盖。仅一个 API 候选时无法切换到第二个主机。
 
-- 阿里：`ali`、`alib`、`alio1`、`aliov`
-- 腾讯：`cos`、`cosb`、`coso1`、`cosov`
-- 华为：`hw`、`hwb`、`hwo1`
-- Akamai：`mirrorakam`
+## 网络审计记录
 
-`hwov` 在本次验证中不可用，因此没有加入扩展列表。不同视频、清晰度和编码的首选顺序仍可能变化；扩展不会用单次测速决定优先级，而是用持续播放评分排序。若希望严格只使用接口原始候选，可在设置里关闭“扩展 UPOS 候选”。
+2026-09-13 既有匿名审计：BV1rp4y1e745 / cid244954665，playurl HTTP 200、code 0；7 条流四 URL 字段共存且同名语义值相等。Akamai 视频/音频及 cos 备用的 1024 字节 Range 均为 206、video/mp4。地址与 2026-06 文档一致，不能证明 B 站全局换域名或某固定节点对所有签名有效。本次没有重复网络审计，也不在文档复制带签名 URL。
 
 ## 安装
 
-1. 解压发布包。
-2. Chrome / Edge 打开扩展管理页。
-3. 开启“开发者模式”。
-4. 选择“加载已解压的扩展程序”，指向本目录。
-5. 刷新已经打开的哔哩哔哩视频页面。
+- 扩展：Chrome/Edge 开发者模式 → 加载已解压扩展 → 选择本目录 → 刷新视频页。
+- 油猴：安装 `dist/PiliPlus-Adaptive-CDN-Web.user.js`，适用视频页和番剧播放页，document-start 注入。
+- 工具栏提供 CDN/缓冲状态、手动换源和扩展设置；浏览器阈值不能强制网页播放器下载满缓存。
 
-点击工具栏图标可查看当前 CDN、缓冲和切换原因，也可手动换源。完整阈值与首选编码在扩展设置页中调整。浏览器端不能像 mpv 一样直接设置 demuxer 回填阈值，因此“回填触发容差”用于更早判断和切 CDN，不强制网页播放器拉满缓冲。
+## 测试与打包（仓库根目录）
 
-## 边界
-
-- 目前针对 Chromium 的哔哩哔哩原生 DASH/MSE 播放器。
-- 如果网页播放器改为 Service Worker、WebTransport 或私有二进制协议，需要跟随网页实现更新拦截层。
-- 非 `/upgcxcode/` 地址不会进行主机扩展；如果接口只返回一个不可扩展地址，此时无法换源。
-- 换源依赖播放器在被中断后重试 Range 请求。扩展不会通过重新加载视频来伪造“切换成功”。
-
-## 测试与打包
-
-```powershell
-node --test test/core.test.cjs
-.\package.ps1
+```sh
+node --test browser-extension/test/*.test.cjs
+node browser-extension/test/chromium.cjs
+USERSCRIPT_FILE=dist/PiliPlus-Adaptive-CDN-Web.user.js node browser-extension/test/chromium.cjs
+.tooling/powershell/pwsh -NoProfile -File browser-extension/package-userscript.ps1
 ```
 
-压缩包会输出到仓库的 `dist` 目录。
+Chromium 测试需要 `dist/.qa/node_modules/playwright` 及已安装浏览器（可用 `PLAYWRIGHT_MODULE` 指定模块路径）。测试使用路由夹具，不是线上完整 B 站 MSE 播放验收。产物由 manifest/core/page 与打包脚本内 bridge 生成，输出到 `dist/`。
