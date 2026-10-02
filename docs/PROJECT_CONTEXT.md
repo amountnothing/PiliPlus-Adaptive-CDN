@@ -36,6 +36,7 @@
 - 使用本地 Range Relay，让播放器面对稳定的本地 URL，上游 CDN 可以切换，尽量保留已有缓冲。视频 CDN 切换时同步中断但不改选健康音频 CDN 的当前 Range，让 MPV 用新 Range 将音视频重新挂接到同一 EDL 时间线，避免换源后音轨脱落。
 - 自动播放的数据源在 `Player.open` 阶段直接启动，不再先以暂停状态打开并等待完整目标缓存回填；自适应模式把 MPV 前向队列限制在 1–4 MiB、时间前瞻限制在 4 秒（不再按 30 秒码率膨胀到 16–96 MiB），并使用 `cache-pause-initial=no`，限制首播/重新打开的预取。此配置不是首帧门槛，实际出帧仍受格式探测、关键帧和解码初始化影响，尚无真机首帧流量/延迟对照。显式 seek 会立即下发到 MPV，不再先等待不可重放的 `stream.buffer.first` 最多 2 秒，避免大跨度拖动期间旧位置继续下载。手动暂停代次仍可阻止迟到的自动播放。
 - 2026-09-09 已合并 PiliPlus 上游 `9730d29a8a34e0d07fec0afb06155711961a0509`；冲突采用“保留上游新 API/网络编码选择，同时保留 Adaptive CDN Relay、恢复检查点、播放意图和 seek 保护”的组合解。项目工具链基线随上游升级到 Flutter 3.47.2。
+- 2026-10-01 已合并 PiliPlus 上游 `a30fcc310`（Release 2.1.5，87 提交）；5 个冲突（pl_player/controller、member_home/video/season_series、settings.gradle.kts）按“保留我们全部修复 + 吸收上游 playerStatus/_updatePlaybackState/seek 重构”解决，AGP 9.1.1 + Kotlin 2.4.0。工具链升到 Flutter 3.47.5（`.tooling/flutter-3.47.5`，本地框架补丁与 material_ui 补丁已迁移），定向 analyze 0 issue、全项目 41→38（剩余为合并前既有）。详见 `docs/plans/2026-10-01-upstream-2.1.5-merge.md`。合并提交未推送（gh 令牌缺 `workflow` 作用域，推送前需 `gh auth refresh`）。
 - 处理过的误判：
   - 视频结尾没有新内容可下载不算 CDN 超时。
   - 片尾保护窗口对短视频按总时长缩小，不再用固定 5 秒覆盖短视频的启动阶段；新 CID 也不继承上一视频“播放完成”产生的暂停状态。推荐页连续打开视频时，只有最后一次媒体打开事务可以接管播放器，旧视频在替换期间迟到的 completed/paused/position/error 事件不得覆盖新视频的启播意图和状态。

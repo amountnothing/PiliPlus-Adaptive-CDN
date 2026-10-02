@@ -40,6 +40,7 @@ class _MemberCheeseState extends State<MemberCheese>
   Widget build(BuildContext context) {
     super.build(context);
     return refreshIndicator(
+      isClampingScrollPhysics: true,
       onRefresh: _controller.onRefresh,
       child: CustomScrollView(
         scrollCacheExtent: Style.feedCacheExtent,

@@ -29,6 +29,7 @@ class _MemberAudioState extends State<MemberAudio>
     with AutomaticKeepAliveClientMixin, GridMixin {
   late final MemberAudioController _controller;
 
+  @override
   void initState() {
     super.initState();
     _controller = Get.put(
@@ -42,6 +43,7 @@ class _MemberAudioState extends State<MemberAudio>
     super.build(context);
     final colorScheme = ColorScheme.of(context);
     return refreshIndicator(
+      isClampingScrollPhysics: true,
       onRefresh: _controller.onRefresh,
       child: CustomScrollView(
         scrollCacheExtent: Style.feedCacheExtent,
