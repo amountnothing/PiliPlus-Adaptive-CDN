@@ -1,37 +1,38 @@
 # PiliPlus class and function index
 
-Generated: 2026-09-13 16:02:22 +02:00
+Generated: 2026-10-02 03:50:35 +02:00
 
 Handwritten sources include types and recognizable named functions/methods. Generated protobuf, JSON, and plugin registration files list top-level types only. Local closures, operators, and multiline anonymous functions remain discoverable in source.
 
 ## `android/app/src/main/java/com/example/piliplus/AndroidHelper.java`
 
-- L43 - **class `AndroidHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L56 - `private AndroidHelper() {` - performs one operation in its enclosing type or module
-- L59 - `private static Context getContext() {` - reads, requests, or synchronizes data
-- L63 - `public static int sdkInt() {` - performs one operation in its enclosing type or module
-- L67 - `public static void back() {` - performs one operation in its enclosing type or module
-- L74 - `public static void biliSendCommAntifraud(` - performs one operation in its enclosing type or module
-- L103 - `public static void openLinkVerifySettings() {` - handles interaction, lifecycle, or playback events
-- L126 - `public static boolean openMusic(@NonNull String title, String artist, String album) {` - handles interaction, lifecycle, or playback events
-- L162 - `public static void enterPip(long engineId, int width, int height, boolean autoEnter, boolean isLive, boolean isPlaying) {` - handles interaction, lifecycle, or playback events
-- L181 - `public static void updatePipActions(long engineId, boolean isLive, boolean isPlaying) {` - updates, stores, or records state
-- L190 - `private static void setPipActions(Activity activity, PictureInPictureParams.Builder builder, boolean isLive, boolean isPlaying) {` - updates, stores, or records state
-- L209 - `private static RemoteAction getRemoteAction(@NonNull ComponentName mbrComponent, Activity activity, @DrawableRes int resId, String title, int action) {` - reads, requests, or synchronizes data
-- L218 - `public static void disableAutoEnterPip(long engineId) {` - performs one operation in its enclosing type or module
-- L230 - `public static int[] maxScreenSize() {` - performs one operation in its enclosing type or module
-- L248 - `public static void createShortcut(@NonNull String id, @NonNull String uri, @NonNull String label, @NonNull String icon) {` - performs one operation in its enclosing type or module
-- L270 - `public static String[] fontFamilies() {` - performs one operation in its enclosing type or module
-- L290 - `public static void updateDocProvider(boolean enabled) {` - updates, stores, or records state
-- L299 - **class `ToDart`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L303 - `private ToDart() {` - performs one operation in its enclosing type or module
+- L45 - **class `AndroidHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L58 - `private AndroidHelper() {` - performs one operation in its enclosing type or module
+- L61 - `private static Context getContext() {` - reads, requests, or synchronizes data
+- L65 - `public static int sdkInt() {` - performs one operation in its enclosing type or module
+- L69 - `public static void back() {` - performs one operation in its enclosing type or module
+- L76 - `public static void biliSendCommAntifraud(` - performs one operation in its enclosing type or module
+- L105 - `public static void openLinkVerifySettings() {` - handles interaction, lifecycle, or playback events
+- L128 - `public static boolean openMusic(@NonNull String title, String artist, String album) {` - handles interaction, lifecycle, or playback events
+- L164 - `public static void enterPip(long engineId, int width, int height, boolean autoEnter, boolean isLive, boolean isPlaying) {` - handles interaction, lifecycle, or playback events
+- L185 - `public static void updatePipActions(long engineId, boolean isLive, boolean isPlaying) {` - updates, stores, or records state
+- L194 - `private static void setPipActions(Context context, PictureInPictureParams.Builder builder, boolean isLive, boolean isPlaying) {` - updates, stores, or records state
+- L211 - `private static RemoteAction getRemoteAction(Context context, @DrawableRes int resId, String title, int action) {` - reads, requests, or synchronizes data
+- L220 - `public static void disableAutoEnterPip(long engineId) {` - performs one operation in its enclosing type or module
+- L232 - `public static int[] maxScreenSize() {` - performs one operation in its enclosing type or module
+- L250 - `public static void createShortcut(@NonNull String id, @NonNull String uri, @NonNull String label, @NonNull String icon) {` - performs one operation in its enclosing type or module
+- L272 - `public static String[] fontFamilies() {` - performs one operation in its enclosing type or module
+- L292 - `public static void updateDocProvider(boolean enabled) {` - updates, stores, or records state
+- L301 - `public static boolean isDomainVerified(@NonNull String domain) {` - predicate, validation, or lookup
+- L319 - `public static String openUrl(@NonNull String url) {` - handles interaction, lifecycle, or playback events
+- L352 - **class `ToDart`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L356 - `private ToDart() {` - performs one operation in its enclosing type or module
 
 ## `android/app/src/main/java/com/example/piliplus/MediaHelper.java`
 
-- L32 - **class `MediaHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35 - `static PendingIntent buildMediaButtonPendingIntent(Context context, ComponentName mbrComponent, int action) {` - performs one operation in its enclosing type or module
-- L54 - `private static int PlaybackStateCompat_toKeyCode(int action) {` - handles interaction, lifecycle, or playback events
-- L68 - `static ComponentName getMediaButtonReceiverComponent(Context context) {` - reads, requests, or synchronizes data
+- L26 - **class `MediaHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L27 - `static PendingIntent buildMediaButtonPendingIntent(Context context, int action) {` - performs one operation in its enclosing type or module
+- L37 - `private static int PlaybackStateCompat_toKeyCode(int action) {` - handles interaction, lifecycle, or playback events
 
 ## `android/app/src/main/kotlin/com/example/piliplus/BiliDocumentsProvider.kt`
 
@@ -54,12 +55,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `android/app/src/main/kotlin/com/example/piliplus/MainActivity.kt`
 
-- L10 - **class `MainActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11 - `override fun onConfigurationChanged(newConfig: Configuration) {` - handles interaction, lifecycle, or playback events
-- L18 - `override fun onCreate(savedInstanceState: Bundle?) {` - handles interaction, lifecycle, or playback events
-- L26 - `override fun onDestroy() {` - handles interaction, lifecycle, or playback events
-- L31 - `override fun onUserLeaveHint() {` - handles interaction, lifecycle, or playback events
-- L36 - `override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {` - handles interaction, lifecycle, or playback events
+- L9 - **class `MainActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10 - `override fun onConfigurationChanged(newConfig: Configuration) {` - handles interaction, lifecycle, or playback events
+- L17 - `override fun onCreate(savedInstanceState: Bundle?) {` - handles interaction, lifecycle, or playback events
+- L25 - `override fun onUserLeaveHint() {` - handles interaction, lifecycle, or playback events
+- L30 - `override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {` - handles interaction, lifecycle, or playback events
 
 ## `browser-extension/bridge.js`
 
@@ -68,33 +68,33 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `browser-extension/core.js`
 
-- L52 - `function clamp(value, min, max) {` - performs one operation in its enclosing type or module
-- L56 - `function normalizeSettings(input) {` - performs one operation in its enclosing type or module
-- L74 - `function hostOf(value) {` - performs one operation in its enclosing type or module
-- L82 - `function resourceKey(value) {` - performs one operation in its enclosing type or module
-- L91 - `function isMediaUrl(value) {` - predicate, validation, or lookup
-- L101 - `function isPlayUrlApi(value) {` - predicate, validation, or lookup
-- L113 - `function uniqueUrls(values) {` - performs one operation in its enclosing type or module
-- L126 - `function expandUposCandidates(values, enabled = true) {` - performs one operation in its enclosing type or module
-- L148 - `function scoreOf(scores, urlOrHost) {` - performs one operation in its enclosing type or module
-- L154 - `function rankCandidates(values, scores, cooldowns, failedHosts, now = Date.now()) {` - performs one operation in its enclosing type or module
-- L165 - `function streamUrls(stream) {` - performs one operation in its enclosing type or module
-- L172 - `function streamKind(stream) {` - performs one operation in its enclosing type or module
-- L181 - `function selectSwitchTargets(resources, failedResource) {` - switches, recovers, or refreshes runtime state
-- L187 - `function collectStreams(rootValue) {` - performs one operation in its enclosing type or module
-- L190 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
-- L204 - `function isAv1Codec(codec) {` - predicate, validation, or lookup
-- L208 - `function codecFamily(codec) {` - performs one operation in its enclosing type or module
-- L216 - `function reorderVideoArrays(rootValue, preferredCodec, canPlayCodec) {` - performs one operation in its enclosing type or module
-- L220 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
-- L237 - `function createHealthState(now = 0) {` - performs one operation in its enclosing type or module
-- L250 - `function resetAtMediaTail(state, sample, now) {` - stops, releases, or resets state and resources
-- L259 - `function evaluateHealth(state, sample, rawSettings, now) {` - performs one operation in its enclosing type or module
-- L337 - `function shouldPauseForVideoFrameStall(sample, now) {` - predicate, validation, or lookup
-- L353 - `function shouldSwitchForRequestFailure(status, aborted) {` - predicate, validation, or lookup
-- L357 - `function isCurrentResourceFailure(currentUrl, failedHost) {` - predicate, validation, or lookup
-- L361 - `function createNetworkGuardState() {` - performs one operation in its enclosing type or module
-- L365 - `function shouldPauseNetworkSwitch(state, sample, now) {` - predicate, validation, or lookup
+- L54 - `function clamp(value, min, max) {` - performs one operation in its enclosing type or module
+- L58 - `function normalizeSettings(input) {` - performs one operation in its enclosing type or module
+- L76 - `function hostOf(value) {` - performs one operation in its enclosing type or module
+- L84 - `function resourceKey(value) {` - performs one operation in its enclosing type or module
+- L93 - `function isMediaUrl(value) {` - predicate, validation, or lookup
+- L103 - `function isPlayUrlApi(value) {` - predicate, validation, or lookup
+- L115 - `function uniqueUrls(values) {` - performs one operation in its enclosing type or module
+- L128 - `function expandUposCandidates(values, enabled = true) {` - performs one operation in its enclosing type or module
+- L150 - `function scoreOf(scores, urlOrHost) {` - performs one operation in its enclosing type or module
+- L156 - `function rankCandidates(values, scores, cooldowns, failedHosts, now = Date.now()) {` - performs one operation in its enclosing type or module
+- L167 - `function streamUrls(stream) {` - performs one operation in its enclosing type or module
+- L174 - `function streamKind(stream) {` - performs one operation in its enclosing type or module
+- L183 - `function selectSwitchTargets(resources, failedResource) {` - switches, recovers, or refreshes runtime state
+- L189 - `function collectStreams(rootValue) {` - performs one operation in its enclosing type or module
+- L192 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
+- L206 - `function isAv1Codec(codec) {` - predicate, validation, or lookup
+- L210 - `function codecFamily(codec) {` - performs one operation in its enclosing type or module
+- L218 - `function reorderVideoArrays(rootValue, preferredCodec, canPlayCodec) {` - performs one operation in its enclosing type or module
+- L222 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
+- L239 - `function createHealthState(now = 0) {` - performs one operation in its enclosing type or module
+- L252 - `function resetAtMediaTail(state, sample, now) {` - stops, releases, or resets state and resources
+- L261 - `function evaluateHealth(state, sample, rawSettings, now) {` - performs one operation in its enclosing type or module
+- L339 - `function shouldPauseForVideoFrameStall(sample, now) {` - predicate, validation, or lookup
+- L355 - `function shouldSwitchForRequestFailure(status, aborted) {` - predicate, validation, or lookup
+- L359 - `function isCurrentResourceFailure(currentUrl, failedHost) {` - predicate, validation, or lookup
+- L363 - `function createNetworkGuardState() {` - performs one operation in its enclosing type or module
+- L367 - `function shouldPauseNetworkSwitch(state, sample, now) {` - predicate, validation, or lookup
 
 ## `browser-extension/options.js`
 
@@ -112,39 +112,42 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L7 - `function markInstalled() {` - updates, stores, or records state
 - L40 - `let stopFrameTracking = () => {};` - stops, releases, or resets state and resources
-- L63 - `function post(type, payload) {` - performs one operation in its enclosing type or module
-- L67 - `function canPlayCodec(codec) {` - predicate, validation, or lookup
-- L72 - `function cleanExpiredState(now = Date.now()) {` - performs one operation in its enclosing type or module
-- L79 - `function updateScore(host, delta) {` - updates, stores, or records state
-- L86 - `function markFailed(host) {` - updates, stores, or records state
-- L94 - `function candidatesFor(resource, excludeFailed = true) {` - predicate, validation, or lookup
-- L104 - `function setStreamUrls(stream, ordered) {` - updates, stores, or records state
-- L120 - `function registerStream(stream) {` - starts or initializes state and resources
-- L158 - `function processPlayInfo(value) {` - performs one operation in its enclosing type or module
-- L171 - `function trapInitialPlayInfo(name) {` - performs one operation in its enclosing type or module
-- L193 - `function scanEmbeddedPlayInfo() {` - performs one operation in its enclosing type or module
-- L211 - `function lookupResource(url) {` - performs one operation in its enclosing type or module
-- L215 - `function rewriteMediaUrl(url) {` - performs one operation in its enclosing type or module
-- L224 - `function abortInflightMedia(targets = null, cancel = false) {` - performs one operation in its enclosing type or module
-- L244 - `function activeResources() {` - performs one operation in its enclosing type or module
-- L250 - `function switchCdn(reason, manual = false, failedHost = null, failedResource = null, coordinated = false) {` - switches, recovers, or refreshes runtime state
-- L305 - `function recoverCandidate(reason, resource, generation, owner = null) {` - switches, recovers, or refreshes runtime state
-- L339 - `function releaseRecovery(resource, owner) {` - switches, recovers, or refreshes runtime state
-- L382 - `function reasonLabel(reason) {` - performs one operation in its enclosing type or module
-- L394 - `function combineSignal(controller, input, init) {` - performs one operation in its enclosing type or module
-- L404 - `function waitUntil(deadline, signal) {` - performs one operation in its enclosing type or module
-- L414 - `function mediaFetchInput(input, targetUrl) {` - performs one operation in its enclosing type or module
-- L430 - `async function patchPlayUrlResponse(response, path, sequence) {` - performs one operation in its enclosing type or module
-- L531 - `function scheduleXhrRetry(xhr, state) {` - switches, recovers, or refreshes runtime state
-- L566 - `function observeXhr(xhr) {` - performs one operation in its enclosing type or module
-- L681 - `function bufferedEnd(video) {` - performs one operation in its enclosing type or module
-- L691 - `function trackVideoFrames(video) {` - performs one operation in its enclosing type or module
-- L745 - `function rewardStablePlayback(video, now) {` - performs one operation in its enclosing type or module
-- L759 - `function monitorVideo() {` - performs one operation in its enclosing type or module
-- L813 - `function resetVideoSession() {` - stops, releases, or resets state and resources
-- L839 - `function currentStatus() {` - performs one operation in its enclosing type or module
-- L859 - `function emitStatus() {` - performs one operation in its enclosing type or module
-- L871 - `function showToast(text, warning = false) {` - handles interaction, lifecycle, or playback events
+- L71 - `function post(type, payload) {` - performs one operation in its enclosing type or module
+- L75 - `function canPlayCodec(codec) {` - predicate, validation, or lookup
+- L80 - `function cleanExpiredState(now = Date.now()) {` - performs one operation in its enclosing type or module
+- L87 - `function updateScore(host, delta) {` - updates, stores, or records state
+- L94 - `function markFailed(host) {` - updates, stores, or records state
+- L102 - `function candidatesFor(resource, excludeFailed = true) {` - predicate, validation, or lookup
+- L112 - `function setStreamUrls(stream, ordered) {` - updates, stores, or records state
+- L128 - `function registerStream(stream) {` - starts or initializes state and resources
+- L168 - `function processPlayInfo(value) {` - performs one operation in its enclosing type or module
+- L181 - `function trapInitialPlayInfo(name) {` - performs one operation in its enclosing type or module
+- L203 - `function scanEmbeddedPlayInfo() {` - performs one operation in its enclosing type or module
+- L221 - `function lookupResource(url) {` - performs one operation in its enclosing type or module
+- L225 - `function rewriteMediaUrl(url) {` - performs one operation in its enclosing type or module
+- L234 - `function abortInflightMedia(targets = null, cancel = false) {` - performs one operation in its enclosing type or module
+- L254 - `function activeResources() {` - performs one operation in its enclosing type or module
+- L260 - `function switchCdn(reason, manual = false, failedHost = null, failedResource = null, coordinated = false) {` - switches, recovers, or refreshes runtime state
+- L317 - `function candidateDeadline(resource, reason) {` - predicate, validation, or lookup
+- L328 - `function waitForDeadline(deadline, signal, recovery) {` - performs one operation in its enclosing type or module
+- L345 - `function recoverCandidate(reason, resource, generation, owner = null) {` - switches, recovers, or refreshes runtime state
+- L392 - `function releaseRecovery(resource, owner) {` - switches, recovers, or refreshes runtime state
+- L446 - `function reasonLabel(reason) {` - performs one operation in its enclosing type or module
+- L458 - `function combineSignal(controller, input, init) {` - performs one operation in its enclosing type or module
+- L468 - `function waitUntil(deadline, signal) {` - performs one operation in its enclosing type or module
+- L478 - `function mediaFetchInput(input, targetUrl) {` - performs one operation in its enclosing type or module
+- L494 - `async function patchPlayUrlResponse(response, path, sequence) {` - performs one operation in its enclosing type or module
+- L605 - `function fireXhrRetry(xhr, state) {` - switches, recovers, or refreshes runtime state
+- L638 - `function scheduleXhrRetry(xhr, state) {` - switches, recovers, or refreshes runtime state
+- L644 - `function observeXhr(xhr) {` - performs one operation in its enclosing type or module
+- L790 - `function bufferedEnd(video) {` - performs one operation in its enclosing type or module
+- L800 - `function trackVideoFrames(video) {` - performs one operation in its enclosing type or module
+- L854 - `function rewardStablePlayback(video, now) {` - performs one operation in its enclosing type or module
+- L868 - `function monitorVideo() {` - performs one operation in its enclosing type or module
+- L922 - `function resetVideoSession() {` - stops, releases, or resets state and resources
+- L948 - `function currentStatus() {` - performs one operation in its enclosing type or module
+- L968 - `function emitStatus() {` - performs one operation in its enclosing type or module
+- L980 - `function showToast(text, warning = false) {` - handles interaction, lifecycle, or playback events
 
 ## `browser-extension/popup.js`
 
@@ -153,71 +156,74 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `dist/PiliPlus-Adaptive-CDN-Web.user.js`
 
-- L63 - `function clamp(value, min, max) {` - performs one operation in its enclosing type or module
-- L67 - `function normalizeSettings(input) {` - performs one operation in its enclosing type or module
-- L85 - `function hostOf(value) {` - performs one operation in its enclosing type or module
-- L93 - `function resourceKey(value) {` - performs one operation in its enclosing type or module
-- L102 - `function isMediaUrl(value) {` - predicate, validation, or lookup
-- L112 - `function isPlayUrlApi(value) {` - predicate, validation, or lookup
-- L124 - `function uniqueUrls(values) {` - performs one operation in its enclosing type or module
-- L137 - `function expandUposCandidates(values, enabled = true) {` - performs one operation in its enclosing type or module
-- L159 - `function scoreOf(scores, urlOrHost) {` - performs one operation in its enclosing type or module
-- L165 - `function rankCandidates(values, scores, cooldowns, failedHosts, now = Date.now()) {` - performs one operation in its enclosing type or module
-- L176 - `function streamUrls(stream) {` - performs one operation in its enclosing type or module
-- L183 - `function streamKind(stream) {` - performs one operation in its enclosing type or module
-- L192 - `function selectSwitchTargets(resources, failedResource) {` - switches, recovers, or refreshes runtime state
-- L198 - `function collectStreams(rootValue) {` - performs one operation in its enclosing type or module
-- L201 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
-- L215 - `function isAv1Codec(codec) {` - predicate, validation, or lookup
-- L219 - `function codecFamily(codec) {` - performs one operation in its enclosing type or module
-- L227 - `function reorderVideoArrays(rootValue, preferredCodec, canPlayCodec) {` - performs one operation in its enclosing type or module
-- L231 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
-- L248 - `function createHealthState(now = 0) {` - performs one operation in its enclosing type or module
-- L261 - `function resetAtMediaTail(state, sample, now) {` - stops, releases, or resets state and resources
-- L270 - `function evaluateHealth(state, sample, rawSettings, now) {` - performs one operation in its enclosing type or module
-- L348 - `function shouldPauseForVideoFrameStall(sample, now) {` - predicate, validation, or lookup
-- L364 - `function shouldSwitchForRequestFailure(status, aborted) {` - predicate, validation, or lookup
-- L368 - `function isCurrentResourceFailure(currentUrl, failedHost) {` - predicate, validation, or lookup
-- L372 - `function createNetworkGuardState() {` - performs one operation in its enclosing type or module
-- L376 - `function shouldPauseNetworkSwitch(state, sample, now) {` - predicate, validation, or lookup
-- L426 - `function markInstalled() {` - updates, stores, or records state
-- L459 - `let stopFrameTracking = () => {};` - stops, releases, or resets state and resources
-- L482 - `function post(type, payload) {` - performs one operation in its enclosing type or module
-- L486 - `function canPlayCodec(codec) {` - predicate, validation, or lookup
-- L491 - `function cleanExpiredState(now = Date.now()) {` - performs one operation in its enclosing type or module
-- L498 - `function updateScore(host, delta) {` - updates, stores, or records state
-- L505 - `function markFailed(host) {` - updates, stores, or records state
-- L513 - `function candidatesFor(resource, excludeFailed = true) {` - predicate, validation, or lookup
-- L523 - `function setStreamUrls(stream, ordered) {` - updates, stores, or records state
-- L539 - `function registerStream(stream) {` - starts or initializes state and resources
-- L577 - `function processPlayInfo(value) {` - performs one operation in its enclosing type or module
-- L590 - `function trapInitialPlayInfo(name) {` - performs one operation in its enclosing type or module
-- L612 - `function scanEmbeddedPlayInfo() {` - performs one operation in its enclosing type or module
-- L630 - `function lookupResource(url) {` - performs one operation in its enclosing type or module
-- L634 - `function rewriteMediaUrl(url) {` - performs one operation in its enclosing type or module
-- L643 - `function abortInflightMedia(targets = null, cancel = false) {` - performs one operation in its enclosing type or module
-- L663 - `function activeResources() {` - performs one operation in its enclosing type or module
-- L669 - `function switchCdn(reason, manual = false, failedHost = null, failedResource = null, coordinated = false) {` - switches, recovers, or refreshes runtime state
-- L724 - `function recoverCandidate(reason, resource, generation, owner = null) {` - switches, recovers, or refreshes runtime state
-- L758 - `function releaseRecovery(resource, owner) {` - switches, recovers, or refreshes runtime state
-- L801 - `function reasonLabel(reason) {` - performs one operation in its enclosing type or module
-- L813 - `function combineSignal(controller, input, init) {` - performs one operation in its enclosing type or module
-- L823 - `function waitUntil(deadline, signal) {` - performs one operation in its enclosing type or module
-- L833 - `function mediaFetchInput(input, targetUrl) {` - performs one operation in its enclosing type or module
-- L849 - `async function patchPlayUrlResponse(response, path, sequence) {` - performs one operation in its enclosing type or module
-- L950 - `function scheduleXhrRetry(xhr, state) {` - switches, recovers, or refreshes runtime state
-- L985 - `function observeXhr(xhr) {` - performs one operation in its enclosing type or module
-- L1100 - `function bufferedEnd(video) {` - performs one operation in its enclosing type or module
-- L1110 - `function trackVideoFrames(video) {` - performs one operation in its enclosing type or module
-- L1164 - `function rewardStablePlayback(video, now) {` - performs one operation in its enclosing type or module
-- L1178 - `function monitorVideo() {` - performs one operation in its enclosing type or module
-- L1232 - `function resetVideoSession() {` - stops, releases, or resets state and resources
-- L1258 - `function currentStatus() {` - performs one operation in its enclosing type or module
-- L1278 - `function emitStatus() {` - performs one operation in its enclosing type or module
-- L1290 - `function showToast(text, warning = false) {` - handles interaction, lifecycle, or playback events
-- L1350 - `function readJson(key, fallback) {` - reads, requests, or synchronizes data
-- L1358 - `function writeJson(key, value) {` - updates, stores, or records state
-- L1363 - `function post(type, payload) {` - performs one operation in its enclosing type or module
+- L65 - `function clamp(value, min, max) {` - performs one operation in its enclosing type or module
+- L69 - `function normalizeSettings(input) {` - performs one operation in its enclosing type or module
+- L87 - `function hostOf(value) {` - performs one operation in its enclosing type or module
+- L95 - `function resourceKey(value) {` - performs one operation in its enclosing type or module
+- L104 - `function isMediaUrl(value) {` - predicate, validation, or lookup
+- L114 - `function isPlayUrlApi(value) {` - predicate, validation, or lookup
+- L126 - `function uniqueUrls(values) {` - performs one operation in its enclosing type or module
+- L139 - `function expandUposCandidates(values, enabled = true) {` - performs one operation in its enclosing type or module
+- L161 - `function scoreOf(scores, urlOrHost) {` - performs one operation in its enclosing type or module
+- L167 - `function rankCandidates(values, scores, cooldowns, failedHosts, now = Date.now()) {` - performs one operation in its enclosing type or module
+- L178 - `function streamUrls(stream) {` - performs one operation in its enclosing type or module
+- L185 - `function streamKind(stream) {` - performs one operation in its enclosing type or module
+- L194 - `function selectSwitchTargets(resources, failedResource) {` - switches, recovers, or refreshes runtime state
+- L200 - `function collectStreams(rootValue) {` - performs one operation in its enclosing type or module
+- L203 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
+- L217 - `function isAv1Codec(codec) {` - predicate, validation, or lookup
+- L221 - `function codecFamily(codec) {` - performs one operation in its enclosing type or module
+- L229 - `function reorderVideoArrays(rootValue, preferredCodec, canPlayCodec) {` - performs one operation in its enclosing type or module
+- L233 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
+- L250 - `function createHealthState(now = 0) {` - performs one operation in its enclosing type or module
+- L263 - `function resetAtMediaTail(state, sample, now) {` - stops, releases, or resets state and resources
+- L272 - `function evaluateHealth(state, sample, rawSettings, now) {` - performs one operation in its enclosing type or module
+- L350 - `function shouldPauseForVideoFrameStall(sample, now) {` - predicate, validation, or lookup
+- L366 - `function shouldSwitchForRequestFailure(status, aborted) {` - predicate, validation, or lookup
+- L370 - `function isCurrentResourceFailure(currentUrl, failedHost) {` - predicate, validation, or lookup
+- L374 - `function createNetworkGuardState() {` - performs one operation in its enclosing type or module
+- L378 - `function shouldPauseNetworkSwitch(state, sample, now) {` - predicate, validation, or lookup
+- L428 - `function markInstalled() {` - updates, stores, or records state
+- L461 - `let stopFrameTracking = () => {};` - stops, releases, or resets state and resources
+- L492 - `function post(type, payload) {` - performs one operation in its enclosing type or module
+- L496 - `function canPlayCodec(codec) {` - predicate, validation, or lookup
+- L501 - `function cleanExpiredState(now = Date.now()) {` - performs one operation in its enclosing type or module
+- L508 - `function updateScore(host, delta) {` - updates, stores, or records state
+- L515 - `function markFailed(host) {` - updates, stores, or records state
+- L523 - `function candidatesFor(resource, excludeFailed = true) {` - predicate, validation, or lookup
+- L533 - `function setStreamUrls(stream, ordered) {` - updates, stores, or records state
+- L549 - `function registerStream(stream) {` - starts or initializes state and resources
+- L589 - `function processPlayInfo(value) {` - performs one operation in its enclosing type or module
+- L602 - `function trapInitialPlayInfo(name) {` - performs one operation in its enclosing type or module
+- L624 - `function scanEmbeddedPlayInfo() {` - performs one operation in its enclosing type or module
+- L642 - `function lookupResource(url) {` - performs one operation in its enclosing type or module
+- L646 - `function rewriteMediaUrl(url) {` - performs one operation in its enclosing type or module
+- L655 - `function abortInflightMedia(targets = null, cancel = false) {` - performs one operation in its enclosing type or module
+- L675 - `function activeResources() {` - performs one operation in its enclosing type or module
+- L681 - `function switchCdn(reason, manual = false, failedHost = null, failedResource = null, coordinated = false) {` - switches, recovers, or refreshes runtime state
+- L738 - `function candidateDeadline(resource, reason) {` - predicate, validation, or lookup
+- L749 - `function waitForDeadline(deadline, signal, recovery) {` - performs one operation in its enclosing type or module
+- L766 - `function recoverCandidate(reason, resource, generation, owner = null) {` - switches, recovers, or refreshes runtime state
+- L813 - `function releaseRecovery(resource, owner) {` - switches, recovers, or refreshes runtime state
+- L867 - `function reasonLabel(reason) {` - performs one operation in its enclosing type or module
+- L879 - `function combineSignal(controller, input, init) {` - performs one operation in its enclosing type or module
+- L889 - `function waitUntil(deadline, signal) {` - performs one operation in its enclosing type or module
+- L899 - `function mediaFetchInput(input, targetUrl) {` - performs one operation in its enclosing type or module
+- L915 - `async function patchPlayUrlResponse(response, path, sequence) {` - performs one operation in its enclosing type or module
+- L1026 - `function fireXhrRetry(xhr, state) {` - switches, recovers, or refreshes runtime state
+- L1059 - `function scheduleXhrRetry(xhr, state) {` - switches, recovers, or refreshes runtime state
+- L1065 - `function observeXhr(xhr) {` - performs one operation in its enclosing type or module
+- L1211 - `function bufferedEnd(video) {` - performs one operation in its enclosing type or module
+- L1221 - `function trackVideoFrames(video) {` - performs one operation in its enclosing type or module
+- L1275 - `function rewardStablePlayback(video, now) {` - performs one operation in its enclosing type or module
+- L1289 - `function monitorVideo() {` - performs one operation in its enclosing type or module
+- L1343 - `function resetVideoSession() {` - stops, releases, or resets state and resources
+- L1369 - `function currentStatus() {` - performs one operation in its enclosing type or module
+- L1389 - `function emitStatus() {` - performs one operation in its enclosing type or module
+- L1401 - `function showToast(text, warning = false) {` - handles interaction, lifecycle, or playback events
+- L1461 - `function readJson(key, fallback) {` - reads, requests, or synchronizes data
+- L1469 - `function writeJson(key, value) {` - updates, stores, or records state
+- L1474 - `function post(type, payload) {` - performs one operation in its enclosing type or module
 
 ## `ios/Runner/AppDelegate.swift`
 
@@ -452,7 +458,6 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L3 - `Widget dynTextMenuBuilder(` - performs one operation in its enclosing type or module
 - L36 - `void _showEmoteDialog(ModuleDynamicModel? moduleDynamic) {` - performs one operation in its enclosing type or module
 - L92 - `void _showTextDialog(String text) {` - performs one operation in its enclosing type or module
-- L112 - `Widget openUrlMenuBuilder(_, SelectableRegionState state) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/common/widgets/context_menu/live_menu_helper.dart`
 
@@ -528,44 +533,35 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/custom_tooltip.dart`
 
-- L10 - **class `CustomTooltip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11 - `const CustomTooltip({` - performs one operation in its enclosing type or module
-- L23 - `State<CustomTooltip> createState() => _CustomTooltipState();` - builds UI or state
-- L26 - **class `_CustomTooltipState`** - data structure or state carrier
-- L34 - `void _scheduleShowTooltip() {` - performs one operation in its enclosing type or module
-- L38 - `void _scheduleDismissTooltip() {` - performs one operation in its enclosing type or module
-- L42 - `void _handlePointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
-- L47 - `Widget _buildCustomTooltipOverlay(` - performs one operation in its enclosing type or module
-- L68 - `void dispose() {` - stops, releases, or resets state and resources
-- L78 - `Widget build(BuildContext context) {` - builds UI or state
-- L102 - **class `_CustomTooltipOverlay`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L103 - `const _CustomTooltipOverlay({` - performs one operation in its enclosing type or module
-- L116 - `Widget build(BuildContext context) {` - builds UI or state
-- L129 - **class `_ToolTip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L130 - `const _ToolTip({` - performs one operation in its enclosing type or module
-- L142 - `RenderObject createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
-- L151 - `void updateRenderObject(BuildContext context, _RenderToolTip renderObject) {` - updates, stores, or records state
-- L159 - **class `_RenderToolTip`** - reusable UI or rendering component
-- L163 - `_RenderToolTip({` - performs one operation in its enclosing type or module
-- L175 - `set onTap(VoidCallback? value) {` - handles interaction, lifecycle, or playback events
-- L180 - `void dispose() {` - stops, releases, or resets state and resources
-- L190 - `bool hitTestSelf(Offset position) => _hitTestSelf;` - performs one operation in its enclosing type or module
-- L193 - `void handleEvent(PointerEvent event, HitTestEntry<HitTestTarget> entry) {` - handles interaction, lifecycle, or playback events
-- L201 - `set target(Offset value) {` - performs one operation in its enclosing type or module
-- L209 - `set preferBelow(bool value) {` - performs one operation in its enclosing type or module
-- L216 - `void setupParentData(RenderBox child) {` - starts or initializes state and resources
-- L223 - `void performLayout() {` - performs one operation in its enclosing type or module
-- L252 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
-- L257 - **class `Triangle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L258 - `const Triangle({` - performs one operation in its enclosing type or module
-- L268 - `RenderObject createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
-- L276 - `void updateRenderObject(` - updates, stores, or records state
-- L286 - **class `RenderTriangle`** - reusable UI or rendering component
-- L287 - `RenderTriangle({` - performs one operation in its enclosing type or module
-- L294 - `set color(Color value) {` - performs one operation in its enclosing type or module
-- L301 - `set preferredSize(Size value) {` - performs one operation in its enclosing type or module
-- L308 - `void performLayout() {` - performs one operation in its enclosing type or module
-- L313 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
+- L17 - **enum `TriggerMode_`** - finite state or option set
+- L19 - **class `CustomTooltip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20 - `const CustomTooltip({` - performs one operation in its enclosing type or module
+- L38 - `State<CustomTooltip> createState() => _CustomTooltipState();` - builds UI or state
+- L41 - **class `_CustomTooltipState`** - data structure or state carrier
+- L54 - `void _scheduleShowTooltip([_]) {` - performs one operation in its enclosing type or module
+- L58 - `void _scheduleDismissTooltip([_]) {` - performs one operation in its enclosing type or module
+- L62 - `void _handlePointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
+- L74 - `Widget _buildCustomTooltipOverlay(` - performs one operation in its enclosing type or module
+- L101 - `void dispose() {` - stops, releases, or resets state and resources
+- L115 - `Widget build(BuildContext context) {` - builds UI or state
+- L137 - **class `_CustomTooltipOverlay`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L138 - `const _CustomTooltipOverlay({` - performs one operation in its enclosing type or module
+- L157 - `Widget build(BuildContext context) {` - builds UI or state
+- L171 - **class `_ToolTip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L172 - `const _ToolTip({` - performs one operation in its enclosing type or module
+- L192 - `RenderObject createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
+- L204 - `void updateRenderObject(BuildContext context, _RenderToolTip renderObject) {` - updates, stores, or records state
+- L212 - **class `_RenderToolTip`** - reusable UI or rendering component
+- L214 - `_RenderToolTip({` - performs one operation in its enclosing type or module
+- L237 - `bool hitTestSelf(Offset position) => _hitTestSelf;` - performs one operation in its enclosing type or module
+- L240 - `void handleEvent(PointerEvent event, HitTestEntry<HitTestTarget> entry) {` - handles interaction, lifecycle, or playback events
+- L251 - `bool hitTest(BoxHitTestResult result, {required Offset position}) {` - performs one operation in its enclosing type or module
+- L261 - `void dispose() {` - stops, releases, or resets state and resources
+- L273 - `set color(Color value) {` - performs one operation in its enclosing type or module
+- L281 - `set shadow(Color value) {` - performs one operation in its enclosing type or module
+- L289 - `set target(Offset value) {` - performs one operation in its enclosing type or module
+- L300 - `void performLayout() {` - performs one operation in its enclosing type or module
+- L332 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
 
 ## `lib/common/widgets/dialog/dialog.dart`
 
@@ -706,6 +702,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L129 - `void moveRenderObjectChild(` - performs one operation in its enclosing type or module
 - L138 - `void removeRenderObjectChild(covariant RenderObject child, Object? slot) {` - stops, releases, or resets state and resources
 - L143 - `void visitChildren(ElementVisitor visitor) {` - performs one operation in its enclosing type or module
+
+## `lib/common/widgets/emote_tooltip.dart`
+
+- L13 - `Widget emoteTooltipBuilder({` - performs one operation in its enclosing type or module
 
 ## `lib/common/widgets/expandable.dart`
 
@@ -1982,42 +1982,42 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L16 - **class `MouseInteractiveViewer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L17 - `const MouseInteractiveViewer({` - performs one operation in its enclosing type or module
-- L76 - `State<MouseInteractiveViewer> createState() => _MouseInteractiveViewerState();` - builds UI or state
-- L79 - **class `_MouseInteractiveViewerState`** - data structure or state carrier
-- L134 - `Matrix4 _matrixTranslate(Matrix4 matrix, Offset translation) {` - performs one operation in its enclosing type or module
-- L219 - `Matrix4 _matrixScale(Matrix4 matrix, double scale) {` - performs one operation in its enclosing type or module
-- L246 - `Matrix4 _matrixRotate(Matrix4 matrix, double rotation, Offset focalPoint) {` - performs one operation in its enclosing type or module
-- L257 - `bool _gestureIsSupported(_GestureType? gestureType) {` - performs one operation in its enclosing type or module
-- L265 - `_GestureType _getGestureType(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
-- L281 - `void _onScaleStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
-- L311 - `void _onScaleUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
-- L405 - `void _onScaleEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
-- L492 - `void _receivedPointerSignal(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
-- L499 - `void _handlePointerScroll(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
-- L547 - `void _handlePointerScrollEvent(PointerScrollEvent event) {` - performs one operation in its enclosing type or module
-- L564 - `void _handleMouseWheelScale(` - performs one operation in its enclosing type or module
-- L582 - `void _handleMouseWheelPanAsScale(` - performs one operation in its enclosing type or module
-- L602 - `void _handleInertiaAnimation() {` - performs one operation in its enclosing type or module
-- L619 - `void _handleScaleAnimation() {` - performs one operation in its enclosing type or module
-- L644 - `void _handleTransformation() {` - performs one operation in its enclosing type or module
-- L645 - `setState(() {});` - updates, stores, or records state
-- L649 - `void initState() {` - starts or initializes state and resources
-- L664 - `void didUpdateWidget(MouseInteractiveViewer oldWidget) {` - handles interaction, lifecycle, or playback events
-- L677 - `void dispose() {` - stops, releases, or resets state and resources
-- L685 - `Widget build(BuildContext context) {` - builds UI or state
-- L708 - **class `_InteractiveViewerBuilt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L709 - `const _InteractiveViewerBuilt({` - performs one operation in its enclosing type or module
-- L726 - `Widget build(BuildContext context) {` - builds UI or state
-- L752 - **enum `_GestureType`** - finite state or option set
-- L754 - `double _getFinalTime(` - performs one operation in its enclosing type or module
-- L762 - `Offset _getMatrixTranslation(Matrix4 matrix) {` - performs one operation in its enclosing type or module
-- L767 - `Quad _transformViewport(Matrix4 matrix, Rect viewport) {` - performs one operation in its enclosing type or module
-- L785 - `Quad _getAxisAlignedBoundingBoxWithRotation(Rect rect, double rotation) {` - performs one operation in its enclosing type or module
-- L800 - `Offset _exceedsBy(Quad boundary, Quad viewport) {` - performs one operation in its enclosing type or module
-- L829 - `Offset _round(Offset offset) {` - performs one operation in its enclosing type or module
-- L836 - `Offset _alignAxis(Offset offset, Axis axis) {` - performs one operation in its enclosing type or module
-- L843 - `Axis? _getPanAxis(Offset point1, Offset point2) {` - performs one operation in its enclosing type or module
-- L852 - **extension `on`** - adds convenience behavior to an existing type
+- L80 - `State<MouseInteractiveViewer> createState() => _MouseInteractiveViewerState();` - builds UI or state
+- L83 - **class `_MouseInteractiveViewerState`** - data structure or state carrier
+- L138 - `Matrix4 _matrixTranslate(Matrix4 matrix, Offset translation) {` - performs one operation in its enclosing type or module
+- L223 - `Matrix4 _matrixScale(Matrix4 matrix, double scale) {` - performs one operation in its enclosing type or module
+- L250 - `Matrix4 _matrixRotate(Matrix4 matrix, double rotation, Offset focalPoint) {` - performs one operation in its enclosing type or module
+- L261 - `bool _gestureIsSupported(_GestureType? gestureType) {` - performs one operation in its enclosing type or module
+- L269 - `_GestureType _getGestureType(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
+- L285 - `void _onScaleStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
+- L315 - `void _onScaleUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
+- L409 - `void _onScaleEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
+- L496 - `void _receivedPointerSignal(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
+- L503 - `void _handlePointerScroll(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
+- L551 - `void _handlePointerScrollEvent(PointerScrollEvent event) {` - performs one operation in its enclosing type or module
+- L568 - `void _handleMouseWheelScale(` - performs one operation in its enclosing type or module
+- L586 - `void _handleMouseWheelPanAsScale(` - performs one operation in its enclosing type or module
+- L606 - `void _handleInertiaAnimation() {` - performs one operation in its enclosing type or module
+- L623 - `void _handleScaleAnimation() {` - performs one operation in its enclosing type or module
+- L648 - `void _handleTransformation() {` - performs one operation in its enclosing type or module
+- L649 - `setState(() {});` - updates, stores, or records state
+- L653 - `void initState() {` - starts or initializes state and resources
+- L668 - `void didUpdateWidget(MouseInteractiveViewer oldWidget) {` - handles interaction, lifecycle, or playback events
+- L681 - `void dispose() {` - stops, releases, or resets state and resources
+- L689 - `Widget build(BuildContext context) {` - builds UI or state
+- L714 - **class `_InteractiveViewerBuilt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L715 - `const _InteractiveViewerBuilt({` - performs one operation in its enclosing type or module
+- L732 - `Widget build(BuildContext context) {` - builds UI or state
+- L758 - **enum `_GestureType`** - finite state or option set
+- L760 - `double _getFinalTime(` - performs one operation in its enclosing type or module
+- L768 - `Offset _getMatrixTranslation(Matrix4 matrix) {` - performs one operation in its enclosing type or module
+- L773 - `Quad _transformViewport(Matrix4 matrix, Rect viewport) {` - performs one operation in its enclosing type or module
+- L791 - `Quad _getAxisAlignedBoundingBoxWithRotation(Rect rect, double rotation) {` - performs one operation in its enclosing type or module
+- L806 - `Offset _exceedsBy(Quad boundary, Quad viewport) {` - performs one operation in its enclosing type or module
+- L835 - `Offset _round(Offset offset) {` - performs one operation in its enclosing type or module
+- L842 - `Offset _alignAxis(Offset offset, Axis axis) {` - performs one operation in its enclosing type or module
+- L849 - `Axis? _getPanAxis(Offset point1, Offset point2) {` - performs one operation in its enclosing type or module
+- L858 - **extension `on`** - adds convenience behavior to an existing type
 
 ## `lib/common/widgets/gesture/player_gesture_recognizer.dart`
 
@@ -2097,31 +2097,32 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/image_viewer/gallery_viewer.dart`
 
-- L53 - **class `GalleryViewer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L54 - `const GalleryViewer({` - performs one operation in its enclosing type or module
-- L74 - `State<GalleryViewer> createState() => _GalleryViewerState();` - builds UI or state
-- L77 - **class `_GalleryViewerState`** - data structure or state carrier
-- L95 - `ImageHorizontalDragGestureRecognizer horizontalDragGestureRecognizer() {` - performs one operation in its enclosing type or module
-- L108 - `String _getActualUrl(String url) {` - performs one operation in its enclosing type or module
-- L114 - `Future<void> _initPlayer() async {` - performs one operation in its enclosing type or module
-- L132 - `void initState() {` - starts or initializes state and resources
-- L184 - `void _initHideSystemBar() {` - performs one operation in its enclosing type or module
-- L203 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L220 - `Matrix4 _onTransform(double val) {` - performs one operation in its enclosing type or module
-- L237 - `void _updateMoveAnimation() {` - performs one operation in its enclosing type or module
-- L246 - `void _onDragStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
-- L258 - `void _onDragUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
-- L271 - `void _onDragEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
-- L288 - `void dispose() {` - stops, releases, or resets state and resources
-- L314 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
-- L321 - `Widget build(BuildContext context) {` - builds UI or state
-- L386 - `void _playIfNeeded(SourceModel item) {` - performs one operation in its enclosing type or module
-- L397 - `void _onPageChanged(int index) {` - performs one operation in its enclosing type or module
-- L421 - `Widget _itemBuilder(BuildContext context, int index) {` - performs one operation in its enclosing type or module
-- L528 - `void _onTap() {` - performs one operation in its enclosing type or module
-- L536 - `void _onLongPress() {` - performs one operation in its enclosing type or module
-- L607 - `void _showDesktopMenu(TapUpDetails details) {` - performs one operation in its enclosing type or module
-- L644 - `Widget loadingBuilder(` - reads, requests, or synchronizes data
+- L54 - **class `GalleryViewer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L55 - `const GalleryViewer({` - performs one operation in its enclosing type or module
+- L75 - `State<GalleryViewer> createState() => _GalleryViewerState();` - builds UI or state
+- L78 - **class `_GalleryViewerState`** - data structure or state carrier
+- L96 - `ImageHorizontalDragGestureRecognizer horizontalDragGestureRecognizer() {` - performs one operation in its enclosing type or module
+- L109 - `String _getActualUrl(String url) {` - performs one operation in its enclosing type or module
+- L115 - `Future<void> _initPlayer() async {` - performs one operation in its enclosing type or module
+- L133 - `void initState() {` - starts or initializes state and resources
+- L162 - `Timer(const Duration(milliseconds: 300), () {` - performs one operation in its enclosing type or module
+- L185 - `void _initHideSystemBar() {` - performs one operation in its enclosing type or module
+- L204 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L221 - `Matrix4 _onTransform(double val) {` - performs one operation in its enclosing type or module
+- L238 - `void _updateMoveAnimation() {` - performs one operation in its enclosing type or module
+- L247 - `void _onDragStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
+- L259 - `void _onDragUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
+- L272 - `void _onDragEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
+- L289 - `void dispose() {` - stops, releases, or resets state and resources
+- L315 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
+- L322 - `Widget build(BuildContext context) {` - builds UI or state
+- L387 - `void _playIfNeeded(SourceModel item) {` - performs one operation in its enclosing type or module
+- L398 - `void _onPageChanged(int index) {` - performs one operation in its enclosing type or module
+- L422 - `Widget _itemBuilder(BuildContext context, int index) {` - performs one operation in its enclosing type or module
+- L529 - `void _onTap() {` - performs one operation in its enclosing type or module
+- L537 - `void _onLongPress() {` - performs one operation in its enclosing type or module
+- L608 - `void _showDesktopMenu(TapUpDetails details) {` - performs one operation in its enclosing type or module
+- L653 - `Widget loadingBuilder(` - reads, requests, or synchronizes data
 
 ## `lib/common/widgets/image_viewer/hero_dialog_route.dart`
 
@@ -2244,17 +2245,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/image/image_save.dart`
 
-- L14 - `void imageSaveDialog({` - performs one operation in its enclosing type or module
-- L121 - **class `_ImageDecoration`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L122 - `const _ImageDecoration({` - performs one operation in its enclosing type or module
-- L133 - `Path getClipPath(Rect rect, TextDirection textDirection) {` - reads, requests, or synchronizes data
-- L154 - `bool hitTest(Size size, Offset position, {TextDirection? textDirection}) {` - performs one operation in its enclosing type or module
-- L159 - `BoxPainter createBoxPainter([VoidCallback? onChanged]) {` - performs one operation in its enclosing type or module
-- L165 - **class `_ImageDecorationPainter`** - reusable UI or rendering component
-- L166 - `_ImageDecorationPainter(this._decoration, super.onChanged);` - performs one operation in its enclosing type or module
-- L171 - `Paint _getBackgroundPaint(Rect rect) {` - performs one operation in its enclosing type or module
-- L181 - `void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {` - performs one operation in its enclosing type or module
-- L191 - `String toString() {` - performs one operation in its enclosing type or module
+- L16 - `void imageSaveDialog({` - performs one operation in its enclosing type or module
+- L128 - **class `_ImageDecoration`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L129 - `const _ImageDecoration({` - performs one operation in its enclosing type or module
+- L140 - `Path getClipPath(Rect rect, TextDirection textDirection) {` - reads, requests, or synchronizes data
+- L162 - `bool hitTest(Size size, Offset position, {TextDirection? textDirection}) {` - performs one operation in its enclosing type or module
+- L167 - `BoxPainter createBoxPainter([VoidCallback? onChanged]) {` - performs one operation in its enclosing type or module
+- L173 - **class `_ImageDecorationPainter`** - reusable UI or rendering component
+- L174 - `_ImageDecorationPainter(this._decoration, super.onChanged);` - performs one operation in its enclosing type or module
+- L179 - `Paint _getBackgroundPaint(Rect rect) {` - performs one operation in its enclosing type or module
+- L189 - `void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {` - performs one operation in its enclosing type or module
+- L199 - `String toString() {` - performs one operation in its enclosing type or module
 
 ## `lib/common/widgets/image/network_img_layer.dart`
 
@@ -2565,6 +2566,18 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L150 - `void registerClient(RadioClient<T> radio) {}` - starts or initializes state and resources
 - L153 - `void unregisterClient(RadioClient<T> radio) {}` - performs one operation in its enclosing type or module
 
+## `lib/common/widgets/refresh_indicator.dart`
+
+- L5 - **class `RefreshIndicator_`** - reusable UI or rendering component
+- L6 - `const RefreshIndicator_({` - switches, recovers, or refreshes runtime state
+- L14 - `State<RefreshIndicator_> createState() => _RefreshIndicatorState();` - builds UI or state
+- L17 - **class `_RefreshIndicatorState`** - reusable UI or rendering component
+- L24 - `void initState() {` - starts or initializes state and resources
+- L37 - `void dispose() {` - stops, releases, or resets state and resources
+- L44 - `void didUpdateWidget(RefreshIndicator_ oldWidget) {` - handles interaction, lifecycle, or playback events
+- L60 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L69 - `Widget build(BuildContext context) {` - builds UI or state
+
 ## `lib/common/widgets/refresh_layout.dart`
 
 - L7 - **enum `RefreshType`** - finite state or option set
@@ -2707,11 +2720,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/selection_text.dart`
 
-- L3 - **class `SelectionText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4 - `const SelectionText(` - performs one operation in its enclosing type or module
-- L12 - `const SelectionText.rich(` - performs one operation in its enclosing type or module
-- L26 - `static Widget _defaultContextMenuBuilder(` - performs one operation in its enclosing type or module
-- L36 - `Widget build(BuildContext context) {` - builds UI or state
+- L4 - **class `SelectionText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5 - `const SelectionText(` - performs one operation in its enclosing type or module
+- L13 - `const SelectionText.rich(` - performs one operation in its enclosing type or module
+- L28 - `Widget build(BuildContext context) {` - builds UI or state
+- L43 - `Widget openUrlMenuBuilder(_, SelectableRegionState state) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/common/widgets/self_sized_horizontal_list.dart`
 
@@ -3032,9 +3045,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L18 - **class `VideoCardH`** - reusable UI or rendering component
 - L19 - `const VideoCardH({` - performs one operation in its enclosing type or module
-- L32 - `Widget build(BuildContext context) {` - builds UI or state
-- L33 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
-- L182 - `Widget content(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L31 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
+- L38 - `Widget build(BuildContext context) {` - builds UI or state
+- L142 - `Widget content(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L219 - `Future<void> pushVideoH(HorizontalVideoModel videoItem) async {` - handles interaction, lifecycle, or playback events
 
 ## `lib/common/widgets/video_card/video_card_v.dart`
 
@@ -3092,8 +3106,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/account/service/v1.pb.dart`
 
 - L24 - **class `Color`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L90 - **class `ColorsInfo`** - data structure or state carrier
-- L144 - **class `NameRender`** - reusable UI or rendering component
+- L92 - **class `ColorsInfo`** - data structure or state carrier
+- L149 - **class `NameRender`** - reusable UI or rendering component
 
 ## `lib/grpc/bilibili/account/service/v1.pbenum.dart`
 
@@ -3110,84 +3124,84 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/archive/v1.pb.dart`
 
 - L20 - **class `Arc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L510 - **class `Author`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L592 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L674 - **class `Page`** - page or visual structure
-- L853 - **class `Rights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1076 - **class `SeasonTheme`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1156 - **class `StaffInfo`** - data structure or state carrier
-- L1238 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L513 - **class `Author`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L597 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L681 - **class `Page`** - page or visual structure
+- L862 - **class `Rights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1087 - **class `SeasonTheme`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1170 - **class `StaffInfo`** - data structure or state carrier
+- L1254 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/card/v1.pb.dart`
 
 - L20 - **class `AdInfo`** - data structure or state carrier
-- L282 - **class `Args`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L456 - **class `Avatar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L582 - **class `Base`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L876 - **class `Bubble`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L954 - **class `Button`** - reusable UI or rendering component
-- L1095 - **enum `Card_Item`** - reusable UI or rendering component
-- L1111 - **class `Card`** - reusable UI or rendering component
-- L1377 - **class `CreativeContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1552 - **class `DislikeReason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1619 - **enum `DoubleCards_Card`** - reusable UI or rendering component
-- L1621 - **class `DoubleCards`** - reusable UI or rendering component
-- L1725 - **class `DynamicHot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1875 - **class `EntranceItem`** - reusable UI or rendering component
-- L2019 - **class `FunctionalButton`** - reusable UI or rendering component
-- L2081 - **class `FunctionalButtonMeta`** - reusable UI or rendering component
-- L2172 - **class `HotTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2247 - **class `HotTopicItem`** - reusable UI or rendering component
-- L2338 - **class `HotwordEntrance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2429 - **class `InlineProgressBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2520 - **class `LargeCoverV1`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2841 - **class `LargeCoverV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3062 - **class `LargeCoverV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3261 - **class `LargeCoverV4`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3452 - **class `LikeButton`** - reusable UI or rendering component
-- L3566 - **class `Mask`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3636 - **class `MiddleCoverV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3729 - **class `MiddleCoverV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3825 - **class `MultiItem`** - reusable UI or rendering component
-- L3912 - **class `OnePicV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4082 - **class `OnePicV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4226 - **class `PanelMeta`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4312 - **class `PlayerArgs`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4474 - **class `PopularTopEntrance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4538 - **class `RcmdOneItem`** - reusable UI or rendering component
-- L4626 - **class `ReasonStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4862 - **class `Relation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4952 - **class `SharePlane`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5137 - **class `SmallChannelSpecial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5257 - **class `SmallCoverConvergeV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5416 - **class `SmallCoverRcmdItem`** - reusable UI or rendering component
-- L5620 - **class `SmallCoverV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5918 - **class `SmallCoverV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6079 - **class `SmallCoverV4`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6184 - **class `SmallCoverV5`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6418 - **class `SmallCoverV5Ad`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6651 - **class `SmallCoverV7`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6720 - **class `SmallCoverV9`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6922 - **class `ThreeItemAllV2`** - reusable UI or rendering component
-- L7002 - **class `ThreeItemV1`** - reusable UI or rendering component
-- L7102 - **class `ThreeItemV1Item`** - reusable UI or rendering component
-- L7219 - **class `ThreeItemV2`** - reusable UI or rendering component
-- L7319 - **class `ThreeItemV2Item`** - reusable UI or rendering component
-- L7448 - **class `ThreePicV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7691 - **class `ThreePicV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7895 - **class `ThreePoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7963 - **class `ThreePointV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8061 - **class `ThreePointV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8231 - **class `ThreePointV4`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8304 - **class `TopicButton`** - reusable UI or rendering component
-- L8383 - **class `TopicList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8485 - **class `TopicListItem`** - reusable UI or rendering component
-- L8612 - **class `TwoItemHV1Item`** - reusable UI or rendering component
-- L8765 - **class `TwoItemV2`** - reusable UI or rendering component
-- L8828 - **class `TwoItemV2Item`** - reusable UI or rendering component
-- L8921 - **class `Up`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9052 - **class `UpArgs`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9142 - **class `WatchLater`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L284 - **class `Args`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L460 - **class `Avatar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L588 - **class `Base`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L886 - **class `Bubble`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L966 - **class `Button`** - reusable UI or rendering component
+- L1109 - **enum `Card_Item`** - reusable UI or rendering component
+- L1125 - **class `Card`** - reusable UI or rendering component
+- L1393 - **class `CreativeContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1571 - **class `DislikeReason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1641 - **enum `DoubleCards_Card`** - reusable UI or rendering component
+- L1643 - **class `DoubleCards`** - reusable UI or rendering component
+- L1750 - **class `DynamicHot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1903 - **class `EntranceItem`** - reusable UI or rendering component
+- L2051 - **class `FunctionalButton`** - reusable UI or rendering component
+- L2116 - **class `FunctionalButtonMeta`** - reusable UI or rendering component
+- L2211 - **class `HotTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2289 - **class `HotTopicItem`** - reusable UI or rendering component
+- L2383 - **class `HotwordEntrance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2477 - **class `InlineProgressBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2571 - **class `LargeCoverV1`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2897 - **class `LargeCoverV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3123 - **class `LargeCoverV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3327 - **class `LargeCoverV4`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3522 - **class `LikeButton`** - reusable UI or rendering component
+- L3638 - **class `Mask`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3712 - **class `MiddleCoverV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3809 - **class `MiddleCoverV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3909 - **class `MultiItem`** - reusable UI or rendering component
+- L3999 - **class `OnePicV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4173 - **class `OnePicV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4320 - **class `PanelMeta`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4408 - **class `PlayerArgs`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4572 - **class `PopularTopEntrance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4640 - **class `RcmdOneItem`** - reusable UI or rendering component
+- L4732 - **class `ReasonStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4971 - **class `Relation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5063 - **class `SharePlane`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5250 - **class `SmallChannelSpecial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5375 - **class `SmallCoverConvergeV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5539 - **class `SmallCoverRcmdItem`** - reusable UI or rendering component
+- L5746 - **class `SmallCoverV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6048 - **class `SmallCoverV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6214 - **class `SmallCoverV4`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6323 - **class `SmallCoverV5`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6561 - **class `SmallCoverV5Ad`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6798 - **class `SmallCoverV7`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6871 - **class `SmallCoverV9`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7077 - **class `ThreeItemAllV2`** - reusable UI or rendering component
+- L7161 - **class `ThreeItemV1`** - reusable UI or rendering component
+- L7265 - **class `ThreeItemV1Item`** - reusable UI or rendering component
+- L7386 - **class `ThreeItemV2`** - reusable UI or rendering component
+- L7490 - **class `ThreeItemV2Item`** - reusable UI or rendering component
+- L7623 - **class `ThreePicV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7869 - **class `ThreePicV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8076 - **class `ThreePoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8146 - **class `ThreePointV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8247 - **class `ThreePointV3`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8420 - **class `ThreePointV4`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8496 - **class `TopicButton`** - reusable UI or rendering component
+- L8578 - **class `TopicList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8683 - **class `TopicListItem`** - reusable UI or rendering component
+- L8813 - **class `TwoItemHV1Item`** - reusable UI or rendering component
+- L8970 - **class `TwoItemV2`** - reusable UI or rendering component
+- L9036 - **class `TwoItemV2Item`** - reusable UI or rendering component
+- L9133 - **class `Up`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9267 - **class `UpArgs`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9359 - **class `WatchLater`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/dynamic/common.pb.dart`
 
@@ -3200,117 +3214,117 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/dynamic/v1.pb.dart`
 
 - L25 - **class `AdInfo`** - data structure or state carrier
-- L129 - **class `AddressComponent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L244 - **class `BubbleInfo`** - data structure or state carrier
-- L318 - **enum `BubbleModule_Module`** - finite state or option set
-- L320 - **class `BubbleModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L457 - **class `BubbleModuleColoredTip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L552 - **class `BubbleModulePic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L668 - **class `BubbleModuleText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L723 - **class `BubbleModuleUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L774 - **class `CardCurrBatch`** - reusable UI or rendering component
-- L899 - **class `CardCurrSeason`** - reusable UI or rendering component
-- L1024 - **class `CardPGC`** - reusable UI or rendering component
-- L1291 - **class `CardUGC`** - reusable UI or rendering component
-- L1488 - **class `Color`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1554 - **class `CornerInfo`** - data structure or state carrier
-- L1676 - **class `DecoCardFan`** - reusable UI or rendering component
-- L1759 - **class `DecorateCard`** - reusable UI or rendering component
-- L1858 - **class `Description`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1967 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2049 - **class `DynDetailsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2101 - **class `DynDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2235 - **class `DynMixUpListSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2286 - **class `DynMixUpListSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2342 - **class `DynMixUpListViewMoreReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2406 - **class `DynOurCityItem`** - reusable UI or rendering component
-- L2525 - **enum `DynOurCityModule_ModuleItem`** - reusable UI or rendering component
-- L2534 - **class `DynOurCityModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2681 - **class `DynOurCityModuleAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2778 - **class `DynOurCityModuleCover`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2922 - **class `DynOurCityModuleDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2978 - **enum `DynOurCityModuleExtend_Extend`** - finite state or option set
-- L2981 - **class `DynOurCityModuleExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3065 - **class `DynOurCityModuleExtendLBS`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3161 - **class `DynOurCityReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3307 - **class `DynOurCityReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3575 - **class `DynOurCitySwitchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3631 - **class `DynRedItem`** - reusable UI or rendering component
-- L3687 - **class `DynRedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3820 - **class `DynRedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3915 - **class `DynRedStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4050 - **class `DynRedStyleUp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4146 - **class `DynTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4338 - **class `DynTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4389 - **class `DynTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4445 - **class `DynUpdOffsetReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4515 - **class `DynVideoPersonalReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4607 - **class `DynVideoPersonalReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4783 - **class `DynVideoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4960 - **class `DynVideoReqReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5064 - **class `DynamicItem`** - reusable UI or rendering component
-- L5200 - **class `Exp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5266 - **class `ExpConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5327 - **class `ExtInfoGame`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5410 - **class `ExtInfoHot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5492 - **class `ExtInfoLBS`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5586 - **class `ExtInfoTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5668 - **enum `Extend_Extend`** - finite state or option set
-- L5671 - **class `Extend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5815 - **class `FollowListItem`** - reusable UI or rendering component
-- L5925 - **class `GeoCoderReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6009 - **class `GeoCoderReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6088 - **class `Gps`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6155 - **class `LikeAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6251 - **class `LikeInfo`** - data structure or state carrier
-- L6323 - **class `LikeUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6405 - **class `LiveInfo`** - data structure or state carrier
-- L6473 - **class `MixUpListItem`** - reusable UI or rendering component
-- L6659 - **class `MixUpListLiveItem`** - reusable UI or rendering component
-- L6738 - **enum `Module_ModuleItem`** - reusable UI or rendering component
-- L6754 - **class `Module`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7027 - **class `ModuleAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7129 - **class `ModuleDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7179 - **class `ModuleDispute`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7262 - **class `ModuleDynUpList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7339 - **enum `ModuleDynamic_Card`** - reusable UI or rendering component
-- L7348 - **class `ModuleDynamic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7494 - **class `ModuleExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7544 - **class `ModuleFold`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7649 - **class `ModuleFollowList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7714 - **class `ModuleForward`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7779 - **class `ModuleLikeUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7844 - **class `ModuleState`** - data structure or state carrier
-- L7969 - **class `Nameplate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8090 - **class `NewEP`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8171 - **class `NoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8209 - **class `NoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8248 - **class `OfficialVerify`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8331 - **class `OurCityClickReportReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8371 - **class `OurCityClickReportReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8464 - **class `PGCSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8545 - **class `PlayerPreloadParams`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8649 - **class `Popup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8730 - **class `Relation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8821 - **class `SVideoItem`** - reusable UI or rendering component
-- L8906 - **enum `SVideoModule_ModuleItem`** - reusable UI or rendering component
-- L8914 - **class `SVideoModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9050 - **class `SVideoModuleAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9165 - **class `SVideoModuleDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9232 - **class `SVideoModulePlayer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9362 - **class `SVideoModuleStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9427 - **class `SVideoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9517 - **class `SVideoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9722 - **class `SVideoStatInfo`** - data structure or state carrier
-- L9813 - **class `SVideoTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9880 - **class `ShareInfo`** - data structure or state carrier
-- L10014 - **class `TabOffset`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10084 - **class `UpListItem`** - reusable UI or rendering component
-- L10179 - **class `UserInfo`** - data structure or state carrier
-- L10353 - **class `UserPendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10449 - **class `VideoBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10596 - **class `VipInfo`** - data structure or state carrier
-- L10707 - **class `VipLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L131 - **class `AddressComponent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L249 - **class `BubbleInfo`** - data structure or state carrier
+- L325 - **enum `BubbleModule_Module`** - finite state or option set
+- L327 - **class `BubbleModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L467 - **class `BubbleModuleColoredTip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L566 - **class `BubbleModulePic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L685 - **class `BubbleModuleText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L743 - **class `BubbleModuleUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L797 - **class `CardCurrBatch`** - reusable UI or rendering component
+- L925 - **class `CardCurrSeason`** - reusable UI or rendering component
+- L1053 - **class `CardPGC`** - reusable UI or rendering component
+- L1322 - **class `CardUGC`** - reusable UI or rendering component
+- L1521 - **class `Color`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1589 - **class `CornerInfo`** - data structure or state carrier
+- L1713 - **class `DecoCardFan`** - reusable UI or rendering component
+- L1799 - **class `DecorateCard`** - reusable UI or rendering component
+- L1901 - **class `Description`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2013 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2097 - **class `DynDetailsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2152 - **class `DynDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2289 - **class `DynMixUpListSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2344 - **class `DynMixUpListSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2404 - **class `DynMixUpListViewMoreReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2474 - **class `DynOurCityItem`** - reusable UI or rendering component
+- L2596 - **enum `DynOurCityModule_ModuleItem`** - reusable UI or rendering component
+- L2605 - **class `DynOurCityModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2755 - **class `DynOurCityModuleAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2856 - **class `DynOurCityModuleCover`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3004 - **class `DynOurCityModuleDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3064 - **enum `DynOurCityModuleExtend_Extend`** - finite state or option set
+- L3067 - **class `DynOurCityModuleExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3155 - **class `DynOurCityModuleExtendLBS`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3257 - **class `DynOurCityReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3406 - **class `DynOurCityReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3677 - **class `DynOurCitySwitchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3737 - **class `DynRedItem`** - reusable UI or rendering component
+- L3795 - **class `DynRedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3931 - **class `DynRedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4028 - **class `DynRedStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4166 - **class `DynRedStyleUp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4265 - **class `DynTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4460 - **class `DynTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4515 - **class `DynTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4573 - **class `DynUpdOffsetReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4646 - **class `DynVideoPersonalReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4742 - **class `DynVideoPersonalReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4922 - **class `DynVideoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5102 - **class `DynVideoReqReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5209 - **class `DynamicItem`** - reusable UI or rendering component
+- L5348 - **class `Exp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5416 - **class `ExpConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5480 - **class `ExtInfoGame`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5566 - **class `ExtInfoHot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5650 - **class `ExtInfoLBS`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5746 - **class `ExtInfoTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5831 - **enum `Extend_Extend`** - finite state or option set
+- L5834 - **class `Extend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5980 - **class `FollowListItem`** - reusable UI or rendering component
+- L6094 - **class `GeoCoderReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6182 - **class `GeoCoderReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6264 - **class `Gps`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6333 - **class `LikeAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6432 - **class `LikeInfo`** - data structure or state carrier
+- L6506 - **class `LikeUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6590 - **class `LiveInfo`** - data structure or state carrier
+- L6660 - **class `MixUpListItem`** - reusable UI or rendering component
+- L6850 - **class `MixUpListLiveItem`** - reusable UI or rendering component
+- L6932 - **enum `Module_ModuleItem`** - reusable UI or rendering component
+- L6948 - **class `Module`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7223 - **class `ModuleAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7328 - **class `ModuleDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7380 - **class `ModuleDispute`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7466 - **class `ModuleDynUpList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7546 - **enum `ModuleDynamic_Card`** - reusable UI or rendering component
+- L7555 - **class `ModuleDynamic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7704 - **class `ModuleExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7758 - **class `ModuleFold`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7865 - **class `ModuleFollowList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7933 - **class `ModuleForward`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8001 - **class `ModuleLikeUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8069 - **class `ModuleState`** - data structure or state carrier
+- L8197 - **class `Nameplate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8320 - **class `NewEP`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8403 - **class `NoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8443 - **class `NoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8484 - **class `OfficialVerify`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8570 - **class `OurCityClickReportReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8614 - **class `OurCityClickReportReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8711 - **class `PGCSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8794 - **class `PlayerPreloadParams`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8902 - **class `Popup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8985 - **class `Relation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9078 - **class `SVideoItem`** - reusable UI or rendering component
+- L9165 - **enum `SVideoModule_ModuleItem`** - reusable UI or rendering component
+- L9173 - **class `SVideoModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9312 - **class `SVideoModuleAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9430 - **class `SVideoModuleDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9500 - **class `SVideoModulePlayer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9633 - **class `SVideoModuleStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9701 - **class `SVideoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9794 - **class `SVideoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10001 - **class `SVideoStatInfo`** - data structure or state carrier
+- L10095 - **class `SVideoTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10164 - **class `ShareInfo`** - data structure or state carrier
+- L10300 - **class `TabOffset`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10372 - **class `UpListItem`** - reusable UI or rendering component
+- L10469 - **class `UserInfo`** - data structure or state carrier
+- L10646 - **class `UserPendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10745 - **class `VideoBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10894 - **class `VipInfo`** - data structure or state carrier
+- L11007 - **class `VipLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/dynamic/v1.pbenum.dart`
 
@@ -3328,451 +3342,451 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/dynamic/v2.pb.dart`
 
 - L31 - **class `AdParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L97 - **class `AdditionArticle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L215 - **class `AdditionCommon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L394 - **enum `AdditionEsport_Item`** - reusable UI or rendering component
-- L396 - **class `AdditionEsport`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L504 - **class `AdditionEsportMoba`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L671 - **class `AdditionEsportMobaStatus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L773 - **class `AdditionEsportMobaStatusDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L855 - **class `AdditionGoods`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1002 - **class `AdditionLiveRoom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1135 - **class `AdditionMusic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1205 - **class `AdditionUP`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1491 - **class `AdditionUgc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1642 - **class `AdditionUserInfo`** - data structure or state carrier
-- L1709 - **class `AdditionVote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1812 - **enum `AdditionVote2_Item`** - reusable UI or rendering component
-- L1819 - **class `AdditionVote2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2159 - **class `AdditionVoteDefaule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2208 - **class `AdditionVotePic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2258 - **class `AdditionVotePicItem`** - reusable UI or rendering component
-- L2385 - **class `AdditionVoteWord`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2435 - **class `AdditionVoteWordItem`** - reusable UI or rendering component
-- L2550 - **class `AdditionalActSkin`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2629 - **class `AdditionalButton`** - reusable UI or rendering component
-- L2768 - **class `AdditionalButtonInteractive`** - reusable UI or rendering component
-- L2862 - **class `AdditionalButtonShare`** - reusable UI or rendering component
-- L2943 - **class `AdditionalButtonStyle`** - reusable UI or rendering component
-- L3079 - **class `AdditionalPGC`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3246 - **class `AlumniDynamicsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3308 - **class `AlumniDynamicsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3427 - **class `AuthorBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3498 - **class `BasicUserInfoV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3684 - **class `ButtonWithSubTitle`** - reusable UI or rendering component
-- L3763 - **class `ButtonWithSubscribeParam`** - reusable UI or rendering component
-- L3843 - **class `CampusBannerInfo`** - data structure or state carrier
-- L3910 - **class `CampusBillBoardReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4083 - **class `CampusBillBoardReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4178 - **class `CampusBillboardInternalReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4259 - **class `CampusEntryTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4314 - **class `CampusEntryTabResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4370 - **class `CampusFeatureProgress`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4477 - **class `CampusFeedbackInfo`** - data structure or state carrier
-- L4568 - **class `CampusFeedbackReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4623 - **class `CampusFeedbackReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4699 - **class `CampusHomePagesReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4784 - **class `CampusHomePagesReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4903 - **class `CampusHomeRcmdTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4968 - **class `CampusInfo`** - data structure or state carrier
-- L5070 - **class `CampusLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5149 - **class `CampusMateLikeListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5200 - **class `CampusMateLikeListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5269 - **class `CampusMngBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5348 - **class `CampusMngBasicInfo`** - data structure or state carrier
-- L5427 - **class `CampusMngDetailReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5526 - **class `CampusMngDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5581 - **enum `CampusMngItem_Item`** - reusable UI or rendering component
-- L5583 - **class `CampusMngItem`** - reusable UI or rendering component
-- L5768 - **class `CampusMngQuiz`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5874 - **class `CampusMngQuizDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5984 - **class `CampusMngQuizOperateReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6059 - **class `CampusMngQuizOperateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6135 - **class `CampusMngSlogan`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6214 - **class `CampusMngSubmitReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6269 - **class `CampusMngSubmitReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6331 - **class `CampusNoticeInfo`** - data structure or state carrier
-- L6413 - **class `CampusRcmdFeedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6514 - **class `CampusRcmdFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6657 - **class `CampusRcmdInfo`** - data structure or state carrier
-- L6719 - **class `CampusRcmdItem`** - reusable UI or rendering component
-- L6808 - **class `CampusRcmdReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6920 - **class `CampusRcmdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7052 - **class `CampusRcmdTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7347 - **class `CampusRecommendReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7409 - **class `CampusRecommendReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7504 - **class `CampusRedDotReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7559 - **class `CampusRedDotReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7627 - **class `CampusShowTabInfo`** - data structure or state carrier
-- L7731 - **class `CampusSquareReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7808 - **class `CampusSquareReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7887 - **class `CampusTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8126 - **class `CampusTopicRcmdFeedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8228 - **class `CampusTopicRcmdFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8336 - **enum `CampusWaterFlowItem_FlowItem`** - reusable UI or rendering component
-- L8338 - **class `CampusWaterFlowItem`** - reusable UI or rendering component
-- L8436 - **class `CardParagraph`** - reusable UI or rendering component
-- L8519 - **class `CardVideoDynList`** - reusable UI or rendering component
-- L8617 - **class `CardVideoFollowList`** - reusable UI or rendering component
-- L8679 - **class `CardVideoUpList`** - reusable UI or rendering component
-- L8859 - **class `ChannelInfo`** - data structure or state carrier
-- L8993 - **class `CmtShowItem`** - reusable UI or rendering component
-- L9084 - **class `CodeParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9199 - **class `ColoredText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9268 - **class `Colors`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9334 - **class `CommentDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9401 - **class `CommonShareCardInfo`** - reusable UI or rendering component
-- L9480 - **class `Config`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9557 - **class `CooperationStaffListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9613 - **class `CooperationStaffListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9664 - **class `CooperationUpInfo`** - data structure or state carrier
-- L9734 - **class `CoverIconWithText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9814 - **class `CreationClassification`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9908 - **class `CreationItemAction`** - reusable UI or rendering component
-- L10046 - **class `CreationSortType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10125 - **class `DecoCardFan`** - reusable UI or rendering component
-- L10243 - **class `DecoCardFanNumColorFormat`** - reusable UI or rendering component
-- L10324 - **class `DecorateCard`** - reusable UI or rendering component
-- L10433 - **class `Description`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10628 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10718 - **class `DynAdditionCommonFollowReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10777 - **class `DynAdditionCommonFollowReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10859 - **class `DynAllPersonalReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10999 - **class `DynAllPersonalReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11183 - **class `DynAllReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11330 - **class `DynAllReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11594 - **class `DynAllUpdOffsetReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11685 - **class `DynDetailReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11743 - **class `DynDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11939 - **class `DynDetailsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11989 - **class `DynDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12100 - **class `DynFakeCardReply`** - reusable UI or rendering component
-- L12158 - **class `DynFakeCardReq`** - reusable UI or rendering component
-- L12213 - **class `DynFeatureGate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12269 - **class `DynFriendReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12343 - **class `DynFriendReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12425 - **class `DynLightReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12483 - **class `DynLightReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12614 - **class `DynMixUpListSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12665 - **class `DynMixUpListSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12721 - **class `DynMixUpListViewMoreReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12815 - **class `DynMixUpListViewMoreReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12871 - **class `DynRcmdReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12944 - **class `DynRcmdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13037 - **class `DynRcmdUpExchangeReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13096 - **class `DynRcmdUpExchangeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13175 - **class `DynRegionRcmd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13240 - **class `DynRegionRcmdItem`** - reusable UI or rendering component
-- L13314 - **class `DynScreenTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13432 - **class `DynSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13520 - **class `DynSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13614 - **class `DynServerDetailsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13670 - **class `DynServerDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13838 - **class `DynSpaceReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13956 - **class `DynSpaceRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14030 - **class `DynSpaceSearchDetailsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14087 - **class `DynSpaceSearchDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14280 - **class `DynTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14496 - **class `DynTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14552 - **class `DynTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14619 - **class `DynThumbReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14723 - **class `DynVideoPersonalReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14864 - **class `DynVideoPersonalReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15045 - **class `DynVideoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15148 - **class `DynVideoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15321 - **class `DynVideoUpdOffsetReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15412 - **class `DynVoteReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15482 - **class `DynVoteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15579 - **class `DynamicItem`** - reusable UI or rendering component
-- L15693 - **class `DynamicList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15791 - **class `EmojiSizeSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15846 - **class `EmoteNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16019 - **class `EmoteSize`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16085 - **class `ExtInfoCommon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16274 - **class `ExtInfoGame`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16353 - **class `ExtInfoHot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16431 - **class `ExtInfoLBS`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16521 - **class `ExtInfoOGV`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16570 - **class `ExtInfoTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16649 - **class `Extend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17092 - **class `ExtendReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17203 - **class `ExtendReplyParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17270 - **class `FeedFilterReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17344 - **class `FeedFilterReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17477 - **class `FeedSortConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17539 - **class `FeedSortOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17631 - **class `FeedSortOptionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17698 - **class `FetchTabSettingReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17754 - **class `FlowItemOpus`** - reusable UI or rendering component
-- L17902 - **class `FollowListItem`** - reusable UI or rendering component
-- L18031 - **class `FormulaNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18116 - **class `GoodsItem`** - reusable UI or rendering component
-- L18346 - **class `GuideBarInfo`** - data structure or state carrier
-- L18461 - **class `HighlightText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18553 - **class `HomeSubscribeReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18609 - **class `HomeSubscribeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18676 - **class `IconBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18742 - **class `IconButton`** - reusable UI or rendering component
-- L18845 - **class `ImageSet`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18911 - **class `ImgInlineCfg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18992 - **class `InfoOGV`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19082 - **class `InteractionFace`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19149 - **class `InteractionItem`** - reusable UI or rendering component
-- L19314 - **class `InteractionStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19381 - **class `LbsPoiDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19484 - **class `LbsPoiReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19573 - **class `LbsPoiReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19691 - **class `LegacyTopicFeedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19780 - **class `LegacyTopicFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19889 - **class `LikeAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19980 - **class `LikeInfo`** - data structure or state carrier
-- L20049 - **class `LikeListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20123 - **class `LikeListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20226 - **class `LikeUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20304 - **class `LineParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20362 - **class `LinkNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20564 - **class `ListCreationReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20651 - **class `ListCreationResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20730 - **class `ListFavReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20799 - **class `ListFavResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20864 - **class `LiveInfo`** - data structure or state carrier
-- L20943 - **class `LivePendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L21022 - **class `MangaLikeBrowserGuidance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L21092 - **class `MangaLikePic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L21174 - **class `MangaProperty`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L21265 - **class `MatchTeam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L21367 - **class `MdlDynApplet`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L21506 - **class `MdlDynArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L21929 - **class `MdlDynArticle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L22050 - **class `MdlDynChargingArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L22275 - **class `MdlDynCommon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L22449 - **class `MdlDynCourBatch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L22699 - **class `MdlDynCourSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L22913 - **class `MdlDynCourUp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L23127 - **class `MdlDynDraw`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L23248 - **class `MdlDynDrawItem`** - reusable UI or rendering component
-- L23394 - **class `MdlDynDrawTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L23465 - **class `MdlDynDrawTagItem`** - reusable UI or rendering component
-- L23640 - **class `MdlDynForward`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L23710 - **class `MdlDynLive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L23865 - **class `MdlDynLiveRcmd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L23948 - **class `MdlDynMedialist`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L24091 - **class `MdlDynMusic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L24218 - **class `MdlDynPGC`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L24522 - **class `MdlDynShareChargingQA`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L24662 - **class `MdlDynSubscription`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L24804 - **enum `MdlDynSubscriptionNew_Item`** - reusable UI or rendering component
-- L24806 - **class `MdlDynSubscriptionNew`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L24908 - **class `MdlDynTopicSet`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L24997 - **class `MdlDynUGCSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L25230 - **class `MixUpListItem`** - reusable UI or rendering component
-- L25446 - **class `MixUpListLiveItem`** - reusable UI or rendering component
-- L25525 - **enum `Module_ModuleItem`** - reusable UI or rendering component
-- L25572 - **class `Module`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L26484 - **class `ModuleAd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L26604 - **enum `ModuleAdditional_Item`** - reusable UI or rendering component
-- L26619 - **class `ModuleAdditional`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L26906 - **class `ModuleAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L27170 - **class `ModuleAuthorBadgeButton`** - reusable UI or rendering component
-- L27262 - **class `ModuleAuthorForSubscribe`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L27357 - **class `ModuleAuthorForward`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L27489 - **class `ModuleAuthorForwardTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L27557 - **class `ModuleAuthorSlim`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L27627 - **enum `ModuleBanner_Item`** - reusable UI or rendering component
-- L27629 - **class `ModuleBanner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L27744 - **class `ModuleBannerUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L27794 - **class `ModuleBannerUserItem`** - reusable UI or rendering component
-- L27969 - **class `ModuleBlocked`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28154 - **class `ModuleButtom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28251 - **class `ModuleButton`** - reusable UI or rendering component
-- L28309 - **class `ModuleComment`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28359 - **class `ModuleCooperation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28455 - **class `ModuleCopyright`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28522 - **class `ModuleDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28595 - **class `ModuleDescGoods`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28753 - **class `ModuleDispute`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28832 - **enum `ModuleDynamic_ModuleItem`** - reusable UI or rendering component
-- L28856 - **class `ModuleDynamic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L29308 - **class `ModuleExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L29370 - **enum `ModuleExtendItem_Extend`** - reusable UI or rendering component
-- L29380 - **class `ModuleExtendItem`** - reusable UI or rendering component
-- L29553 - **class `ModuleFold`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L29655 - **class `ModuleInteraction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L29705 - **class `ModuleItemNull`** - reusable UI or rendering component
-- L29772 - **class `ModuleLikeUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L29834 - **class `ModuleMangaCollection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L29981 - **class `ModuleMangaCoverPicContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30054 - **class `ModuleMangaHorizontalPagePicContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30150 - **class `ModuleMangaVerticalSlidePicContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30226 - **class `ModuleNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30329 - **class `ModuleOnetimeNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30411 - **class `ModuleOpusCollection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30517 - **class `ModuleOpusSummary`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30610 - **class `ModuleParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30695 - **class `ModuleRcmd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30771 - **class `ModuleRecommend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30880 - **class `ModuleShareInfo`** - data structure or state carrier
-- L30978 - **class `ModuleSneakingAd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31033 - **class `ModuleStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31234 - **class `ModuleStory`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31357 - **class `ModuleTextNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31415 - **class `ModuleTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31497 - **class `ModuleTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31603 - **class `ModuleTopTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31658 - **class `ModuleTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31737 - **class `ModuleTopicBrief`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31795 - **class `ModuleTopicDetailsExt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L31851 - **class `NFTInfo`** - data structure or state carrier
-- L31931 - **class `Nameplate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32045 - **class `NewEP`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32123 - **class `NoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32161 - **class `NoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32199 - **class `NoteVideoTS`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32362 - **class `OfficialAccountInfo`** - data structure or state carrier
-- L32483 - **class `OfficialAccountsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32558 - **class `OfficialAccountsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32650 - **class `OfficialDynamicsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32740 - **class `OfficialDynamicsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32832 - **enum `OfficialItem_RcmdItem`** - reusable UI or rendering component
-- L32834 - **class `OfficialItem`** - reusable UI or rendering component
-- L32935 - **class `OfficialRcmdArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33160 - **class `OfficialRcmdDynamic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33361 - **class `OfficialVerify`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33440 - **class `OneLineText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33490 - **class `OnlyFans`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33559 - **class `OnlyFansProperty`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33650 - **class `OnlyFansVoteProperty`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33767 - **class `OpusCollection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33868 - **class `OpusCollectionDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33984 - **class `OpusCollectionDetailResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L34176 - **class `OpusCollectionItem`** - reusable UI or rendering component
-- L34317 - **class `OpusCollectionWithCover`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L34415 - **class `OpusCreationItem`** - reusable UI or rendering component
-- L34587 - **class `OpusDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L34772 - **class `OpusDetailResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L34830 - **class `OpusFavItem`** - reusable UI or rendering component
-- L34954 - **enum `OpusFlowItem_Data`** - reusable UI or rendering component
-- L34956 - **class `OpusFlowItem`** - reusable UI or rendering component
-- L35061 - **class `OpusItem`** - reusable UI or rendering component
-- L35161 - **class `OpusSpaceFlowReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35255 - **class `OpusSpaceFlowResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35353 - **class `PGCSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35431 - **class `ParaSpacing`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35510 - **class `Paragraph_ListFormat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35589 - **class `Paragraph_ParagraphFormat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35661 - **enum `Paragraph_Content`** - finite state or option set
-- L35663 - **class `Paragraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35831 - **class `PicParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L35902 - **class `PlayurlParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36005 - **class `Popup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36083 - **class `ProtectedStaticResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36163 - **class `QuickConsumeMoreAvatarListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36241 - **class `QuickConsumeMoreAvatarListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36299 - **class `RcmdArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36531 - **class `RcmdAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36615 - **class `RcmdCampusBrief`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36706 - **enum `RcmdItem_RcmdItem`** - reusable UI or rendering component
-- L36708 - **class `RcmdItem`** - reusable UI or rendering component
-- L36787 - **class `RcmdOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36841 - **class `RcmdReason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L36932 - **class `RcmdTopButton`** - reusable UI or rendering component
-- L36999 - **class `RcmdUPsParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37054 - **class `ReactionListItem`** - reusable UI or rendering component
-- L37151 - **class `ReactionListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37237 - **class `ReactionListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37328 - **class `Relation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37419 - **class `RepostExtraInfo`** - data structure or state carrier
-- L37474 - **class `RepostListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37590 - **class `RepostListRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37689 - **class `SchoolRecommendReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37739 - **class `SchoolRecommendReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37819 - **class `SchoolSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37884 - **class `SchoolSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37952 - **class `SearchChannel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38029 - **class `SearchInfo`** - data structure or state carrier
-- L38138 - **class `SearchToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38205 - **class `SearchTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38282 - **class `SearchTopicButton`** - reusable UI or rendering component
-- L38349 - **class `SearchTopicItem`** - reusable UI or rendering component
-- L38500 - **class `SectionNoteNavigationBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38580 - **class `SectionOpusCollection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38643 - **class `SelectedClassificationAndSortType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38716 - **class `SetDecisionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38784 - **class `SetRecentCampusReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38864 - **class `ShareChannel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L38958 - **class `ShareReserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39076 - **class `SignResourcesReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39126 - **class `SignResourcesResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39176 - **class `SignedStaticResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39243 - **class `SortType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39309 - **class `StoryArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39403 - **enum `StoryItem_RcmdItem`** - reusable UI or rendering component
-- L39405 - **class `StoryItem`** - reusable UI or rendering component
-- L39526 - **class `SubscribeButton`** - reusable UI or rendering component
-- L39627 - **class `SubscribeCampusReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39707 - **class `SubscriptionClickReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39762 - **class `SubscriptionClickResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39818 - **enum `TextNode_Text`** - finite state or option set
-- L39820 - **class `TextNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39966 - **class `TextParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40016 - **class `TextWithPriority`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40083 - **class `ThreePointAttention`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40199 - **class `ThreePointAutoPlay`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40362 - **class `ThreePointComment`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40459 - **class `ThreePointDefault`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40565 - **class `ThreePointDefaultToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40633 - **class `ThreePointDislike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40712 - **class `ThreePointDynCoin`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40803 - **class `ThreePointDynEdit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L40894 - **class `ThreePointFavorite`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L41009 - **class `ThreePointHide`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L41115 - **class `ThreePointHideInteractive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L41207 - **enum `ThreePointItem_Item`** - reusable UI or rendering component
-- L41226 - **class `ThreePointItem`** - reusable UI or rendering component
-- L41564 - **class `ThreePointShare`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L41665 - **class `ThreePointShareChannel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L41733 - **class `ThreePointTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L41812 - **class `ThreePointTopicIrrelevant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L41940 - **class `ThreePointTopicTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L42031 - **class `ThreePointVisibilityChange`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L42119 - **class `ThreePointVisibilityChangeItem`** - reusable UI or rendering component
-- L42228 - **class `ThreePointWait`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L42331 - **class `TopAdditionUP`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L42393 - **class `TopicButton`** - reusable UI or rendering component
-- L42484 - **class `TopicItem`** - reusable UI or rendering component
-- L42613 - **class `TopicList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L42767 - **class `TopicListItem`** - reusable UI or rendering component
-- L42954 - **class `TopicListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L43043 - **class `TopicListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L43123 - **class `TopicMergedResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L43190 - **class `TopicRcmdCard`** - reusable UI or rendering component
-- L43320 - **class `TopicSquareInfo`** - data structure or state carrier
-- L43405 - **class `TopicSquareReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L43463 - **class `TopicSquareReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L43531 - **class `Unfollow`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L43604 - **class `UnfollowMatchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L43659 - **class `UnfollowUserItem`** - reusable UI or rendering component
-- L43855 - **class `UpListItem`** - reusable UI or rendering component
-- L44151 - **class `UpListMoreLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L44218 - **class `UpListTextBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L44273 - **class `UpdateTabSettingReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L44329 - **class `UserInfo`** - data structure or state carrier
-- L44598 - **class `UserItemStyle`** - reusable UI or rendering component
-- L44701 - **class `UserPendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L44792 - **class `VideoBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L44979 - **class `VipInfo`** - data structure or state carrier
-- L45108 - **class `VipLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L45186 - **class `WFItemDefault`** - reusable UI or rendering component
-- L45335 - **class `WaterFlowRcmdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L45433 - **class `WaterFlowRcmdResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L45498 - **class `Weight`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L45571 - **class `WeightButton`** - reusable UI or rendering component
-- L45638 - **class `WeightDislike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L45717 - **enum `WeightItem_Item`** - reusable UI or rendering component
-- L45719 - **class `WeightItem`** - reusable UI or rendering component
-- L45817 - **class `WordNode_UnderlineStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L45888 - **class `WordNode_WordNodeStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L45980 - **class `WordNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L99 - **class `AdditionArticle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L220 - **class `AdditionCommon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L402 - **enum `AdditionEsport_Item`** - reusable UI or rendering component
+- L404 - **class `AdditionEsport`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L515 - **class `AdditionEsportMoba`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L685 - **class `AdditionEsportMobaStatus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L792 - **class `AdditionEsportMobaStatusDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L880 - **class `AdditionGoods`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1030 - **class `AdditionLiveRoom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1166 - **class `AdditionMusic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1239 - **class `AdditionUP`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1527 - **class `AdditionUgc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1681 - **class `AdditionUserInfo`** - data structure or state carrier
+- L1751 - **class `AdditionVote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1857 - **enum `AdditionVote2_Item`** - reusable UI or rendering component
+- L1864 - **class `AdditionVote2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2207 - **class `AdditionVoteDefaule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2260 - **class `AdditionVotePic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2313 - **class `AdditionVotePicItem`** - reusable UI or rendering component
+- L2444 - **class `AdditionVoteWord`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2497 - **class `AdditionVoteWordItem`** - reusable UI or rendering component
+- L2616 - **class `AdditionalActSkin`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2698 - **class `AdditionalButton`** - reusable UI or rendering component
+- L2840 - **class `AdditionalButtonInteractive`** - reusable UI or rendering component
+- L2940 - **class `AdditionalButtonShare`** - reusable UI or rendering component
+- L3025 - **class `AdditionalButtonStyle`** - reusable UI or rendering component
+- L3165 - **class `AdditionalPGC`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3335 - **class `AlumniDynamicsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3401 - **class `AlumniDynamicsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3523 - **class `AuthorBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3597 - **class `BasicUserInfoV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3787 - **class `ButtonWithSubTitle`** - reusable UI or rendering component
+- L3869 - **class `ButtonWithSubscribeParam`** - reusable UI or rendering component
+- L3954 - **class `CampusBannerInfo`** - data structure or state carrier
+- L4024 - **class `CampusBillBoardReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4201 - **class `CampusBillBoardReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4299 - **class `CampusBillboardInternalReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4386 - **class `CampusEntryTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4444 - **class `CampusEntryTabResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4503 - **class `CampusFeatureProgress`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4614 - **class `CampusFeedbackInfo`** - data structure or state carrier
+- L4708 - **class `CampusFeedbackReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4767 - **class `CampusFeedbackReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4846 - **class `CampusHomePagesReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4935 - **class `CampusHomePagesReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5057 - **class `CampusHomeRcmdTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5126 - **class `CampusInfo`** - data structure or state carrier
+- L5230 - **class `CampusLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5312 - **class `CampusMateLikeListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5367 - **class `CampusMateLikeListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5440 - **class `CampusMngBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5522 - **class `CampusMngBasicInfo`** - data structure or state carrier
+- L5604 - **class `CampusMngDetailReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5707 - **class `CampusMngDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5765 - **enum `CampusMngItem_Item`** - reusable UI or rendering component
+- L5767 - **class `CampusMngItem`** - reusable UI or rendering component
+- L5955 - **class `CampusMngQuiz`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6064 - **class `CampusMngQuizDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6178 - **class `CampusMngQuizOperateReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6259 - **class `CampusMngQuizOperateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6339 - **class `CampusMngSlogan`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6421 - **class `CampusMngSubmitReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6480 - **class `CampusMngSubmitReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6545 - **class `CampusNoticeInfo`** - data structure or state carrier
+- L6630 - **class `CampusRcmdFeedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6735 - **class `CampusRcmdFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6881 - **class `CampusRcmdInfo`** - data structure or state carrier
+- L6946 - **class `CampusRcmdItem`** - reusable UI or rendering component
+- L7038 - **class `CampusRcmdReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7153 - **class `CampusRcmdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7288 - **class `CampusRcmdTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7586 - **class `CampusRecommendReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7652 - **class `CampusRecommendReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7750 - **class `CampusRedDotReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7808 - **class `CampusRedDotReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7879 - **class `CampusShowTabInfo`** - data structure or state carrier
+- L7986 - **class `CampusSquareReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8066 - **class `CampusSquareReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8148 - **class `CampusTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8389 - **class `CampusTopicRcmdFeedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8496 - **class `CampusTopicRcmdFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8608 - **enum `CampusWaterFlowItem_FlowItem`** - reusable UI or rendering component
+- L8610 - **class `CampusWaterFlowItem`** - reusable UI or rendering component
+- L8712 - **class `CardParagraph`** - reusable UI or rendering component
+- L8798 - **class `CardVideoDynList`** - reusable UI or rendering component
+- L8899 - **class `CardVideoFollowList`** - reusable UI or rendering component
+- L8965 - **class `CardVideoUpList`** - reusable UI or rendering component
+- L9148 - **class `ChannelInfo`** - data structure or state carrier
+- L9285 - **class `CmtShowItem`** - reusable UI or rendering component
+- L9379 - **class `CodeParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9497 - **class `ColoredText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9570 - **class `Colors`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9638 - **class `CommentDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9708 - **class `CommonShareCardInfo`** - reusable UI or rendering component
+- L9791 - **class `Config`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9870 - **class `CooperationStaffListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9930 - **class `CooperationStaffListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9986 - **class `CooperationUpInfo`** - data structure or state carrier
+- L10059 - **class `CoverIconWithText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10142 - **class `CreationClassification`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10240 - **class `CreationItemAction`** - reusable UI or rendering component
+- L10381 - **class `CreationSortType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10463 - **class `DecoCardFan`** - reusable UI or rendering component
+- L10584 - **class `DecoCardFanNumColorFormat`** - reusable UI or rendering component
+- L10671 - **class `DecorateCard`** - reusable UI or rendering component
+- L10783 - **class `Description`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10981 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11073 - **class `DynAdditionCommonFollowReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11138 - **class `DynAdditionCommonFollowReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11226 - **class `DynAllPersonalReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11370 - **class `DynAllPersonalReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11557 - **class `DynAllReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11708 - **class `DynAllReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11974 - **class `DynAllUpdOffsetReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12068 - **class `DynDetailReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12129 - **class `DynDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12328 - **class `DynDetailsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12381 - **class `DynDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12496 - **class `DynFakeCardReply`** - reusable UI or rendering component
+- L12557 - **class `DynFakeCardReq`** - reusable UI or rendering component
+- L12615 - **class `DynFeatureGate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12674 - **class `DynFriendReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12751 - **class `DynFriendReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12836 - **class `DynLightReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12897 - **class `DynLightReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13031 - **class `DynMixUpListSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13086 - **class `DynMixUpListSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13146 - **class `DynMixUpListViewMoreReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13246 - **class `DynMixUpListViewMoreReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13306 - **class `DynRcmdReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13382 - **class `DynRcmdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13477 - **class `DynRcmdUpExchangeReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13540 - **class `DynRcmdUpExchangeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13623 - **class `DynRegionRcmd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13691 - **class `DynRegionRcmdItem`** - reusable UI or rendering component
+- L13768 - **class `DynScreenTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13889 - **class `DynSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13980 - **class `DynSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14077 - **class `DynServerDetailsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14137 - **class `DynServerDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14309 - **class `DynSpaceReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14430 - **class `DynSpaceRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14507 - **class `DynSpaceSearchDetailsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14570 - **class `DynSpaceSearchDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14768 - **class `DynTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14987 - **class `DynTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15047 - **class `DynTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15116 - **class `DynThumbReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15223 - **class `DynVideoPersonalReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15368 - **class `DynVideoPersonalReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15553 - **class `DynVideoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15659 - **class `DynVideoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15835 - **class `DynVideoUpdOffsetReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15930 - **class `DynVoteReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16003 - **class `DynVoteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16102 - **class `DynamicItem`** - reusable UI or rendering component
+- L16220 - **class `DynamicList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16321 - **class `EmojiSizeSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16379 - **class `EmoteNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16554 - **class `EmoteSize`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16622 - **class `ExtInfoCommon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16814 - **class `ExtInfoGame`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16896 - **class `ExtInfoHot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16976 - **class `ExtInfoLBS`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17068 - **class `ExtInfoOGV`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17119 - **class `ExtInfoTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17201 - **class `Extend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17646 - **class `ExtendReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17760 - **class `ExtendReplyParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17830 - **class `FeedFilterReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17907 - **class `FeedFilterReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18043 - **class `FeedSortConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18108 - **class `FeedSortOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18203 - **class `FeedSortOptionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18273 - **class `FetchTabSettingReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18333 - **class `FlowItemOpus`** - reusable UI or rendering component
+- L18484 - **class `FollowListItem`** - reusable UI or rendering component
+- L18617 - **class `FormulaNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18705 - **class `GoodsItem`** - reusable UI or rendering component
+- L18937 - **class `GuideBarInfo`** - data structure or state carrier
+- L19055 - **class `HighlightText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19150 - **class `HomeSubscribeReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19209 - **class `HomeSubscribeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19279 - **class `IconBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19347 - **class `IconButton`** - reusable UI or rendering component
+- L19452 - **class `ImageSet`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19520 - **class `ImgInlineCfg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19605 - **class `InfoOGV`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19697 - **class `InteractionFace`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19767 - **class `InteractionItem`** - reusable UI or rendering component
+- L19935 - **class `InteractionStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20005 - **class `LbsPoiDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20111 - **class `LbsPoiReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20203 - **class `LbsPoiReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20323 - **class `LegacyTopicFeedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20416 - **class `LegacyTopicFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20528 - **class `LikeAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20622 - **class `LikeInfo`** - data structure or state carrier
+- L20693 - **class `LikeListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20770 - **class `LikeListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20876 - **class `LikeUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20956 - **class `LineParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21017 - **class `LinkNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21221 - **class `ListCreationReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21311 - **class `ListCreationResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21393 - **class `ListFavReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21464 - **class `ListFavResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21532 - **class `LiveInfo`** - data structure or state carrier
+- L21613 - **class `LivePendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21695 - **class `MangaLikeBrowserGuidance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21770 - **class `MangaLikePic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21855 - **class `MangaProperty`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21949 - **class `MatchTeam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L22053 - **class `MdlDynApplet`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L22195 - **class `MdlDynArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L22621 - **class `MdlDynArticle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L22745 - **class `MdlDynChargingArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L22974 - **class `MdlDynCommon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L23151 - **class `MdlDynCourBatch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L23404 - **class `MdlDynCourSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L23621 - **class `MdlDynCourUp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L23838 - **class `MdlDynDraw`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L23961 - **class `MdlDynDrawItem`** - reusable UI or rendering component
+- L24110 - **class `MdlDynDrawTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L24184 - **class `MdlDynDrawTagItem`** - reusable UI or rendering component
+- L24362 - **class `MdlDynForward`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L24435 - **class `MdlDynLive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L24592 - **class `MdlDynLiveRcmd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L24678 - **class `MdlDynMedialist`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L24824 - **class `MdlDynMusic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L24954 - **class `MdlDynPGC`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L25260 - **class `MdlDynShareChargingQA`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L25404 - **class `MdlDynSubscription`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L25549 - **enum `MdlDynSubscriptionNew_Item`** - reusable UI or rendering component
+- L25551 - **class `MdlDynSubscriptionNew`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L25657 - **class `MdlDynTopicSet`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L25749 - **class `MdlDynUGCSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L25985 - **class `MixUpListItem`** - reusable UI or rendering component
+- L26205 - **class `MixUpListLiveItem`** - reusable UI or rendering component
+- L26287 - **enum `Module_ModuleItem`** - reusable UI or rendering component
+- L26334 - **class `Module`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L27248 - **class `ModuleAd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L27370 - **enum `ModuleAdditional_Item`** - reusable UI or rendering component
+- L27385 - **class `ModuleAdditional`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L27675 - **class `ModuleAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L27942 - **class `ModuleAuthorBadgeButton`** - reusable UI or rendering component
+- L28038 - **class `ModuleAuthorForSubscribe`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28138 - **class `ModuleAuthorForward`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28274 - **class `ModuleAuthorForwardTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28347 - **class `ModuleAuthorSlim`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28420 - **enum `ModuleBanner_Item`** - reusable UI or rendering component
+- L28422 - **class `ModuleBanner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28540 - **class `ModuleBannerUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28593 - **class `ModuleBannerUserItem`** - reusable UI or rendering component
+- L28773 - **class `ModuleBlocked`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28961 - **class `ModuleButtom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29061 - **class `ModuleButton`** - reusable UI or rendering component
+- L29122 - **class `ModuleComment`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29175 - **class `ModuleCooperation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29274 - **class `ModuleCopyright`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29344 - **class `ModuleDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29419 - **class `ModuleDescGoods`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29580 - **class `ModuleDispute`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29662 - **enum `ModuleDynamic_ModuleItem`** - reusable UI or rendering component
+- L29686 - **class `ModuleDynamic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L30141 - **class `ModuleExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L30206 - **enum `ModuleExtendItem_Extend`** - reusable UI or rendering component
+- L30216 - **class `ModuleExtendItem`** - reusable UI or rendering component
+- L30392 - **class `ModuleFold`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L30496 - **class `ModuleInteraction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L30549 - **class `ModuleItemNull`** - reusable UI or rendering component
+- L30619 - **class `ModuleLikeUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L30684 - **class `ModuleMangaCollection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L30835 - **class `ModuleMangaCoverPicContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L30914 - **class `ModuleMangaHorizontalPagePicContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31016 - **class `ModuleMangaVerticalSlidePicContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31097 - **class `ModuleNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31203 - **class `ModuleOnetimeNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31289 - **class `ModuleOpusCollection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31399 - **class `ModuleOpusSummary`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31495 - **class `ModuleParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31583 - **class `ModuleRcmd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31661 - **class `ModuleRecommend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31774 - **class `ModuleShareInfo`** - data structure or state carrier
+- L31875 - **class `ModuleSneakingAd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31933 - **class `ModuleStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32136 - **class `ModuleStory`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32262 - **class `ModuleTextNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32323 - **class `ModuleTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32408 - **class `ModuleTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32516 - **class `ModuleTopTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32574 - **class `ModuleTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32656 - **class `ModuleTopicBrief`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32717 - **class `ModuleTopicDetailsExt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32777 - **class `NFTInfo`** - data structure or state carrier
+- L32859 - **class `Nameplate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32975 - **class `NewEP`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33055 - **class `NoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33095 - **class `NoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33135 - **class `NoteVideoTS`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33301 - **class `OfficialAccountInfo`** - data structure or state carrier
+- L33426 - **class `OfficialAccountsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33505 - **class `OfficialAccountsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33601 - **class `OfficialDynamicsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33695 - **class `OfficialDynamicsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33791 - **enum `OfficialItem_RcmdItem`** - reusable UI or rendering component
+- L33793 - **class `OfficialItem`** - reusable UI or rendering component
+- L33897 - **class `OfficialRcmdArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34126 - **class `OfficialRcmdDynamic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34331 - **class `OfficialVerify`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34413 - **class `OneLineText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34466 - **class `OnlyFans`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34537 - **class `OnlyFansProperty`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34631 - **class `OnlyFansVoteProperty`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34752 - **class `OpusCollection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34856 - **class `OpusCollectionDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L34976 - **class `OpusCollectionDetailResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L35173 - **class `OpusCollectionItem`** - reusable UI or rendering component
+- L35317 - **class `OpusCollectionWithCover`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L35419 - **class `OpusCreationItem`** - reusable UI or rendering component
+- L35595 - **class `OpusDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L35783 - **class `OpusDetailResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L35844 - **class `OpusFavItem`** - reusable UI or rendering component
+- L35971 - **enum `OpusFlowItem_Data`** - reusable UI or rendering component
+- L35973 - **class `OpusFlowItem`** - reusable UI or rendering component
+- L36082 - **class `OpusItem`** - reusable UI or rendering component
+- L36185 - **class `OpusSpaceFlowReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L36282 - **class `OpusSpaceFlowResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L36383 - **class `PGCSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L36463 - **class `ParaSpacing`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L36545 - **class `Paragraph_ListFormat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L36628 - **class `Paragraph_ParagraphFormat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L36706 - **enum `Paragraph_Content`** - finite state or option set
+- L36708 - **class `Paragraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L36878 - **class `PicParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L36952 - **class `PlayurlParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37058 - **class `Popup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37138 - **class `ProtectedStaticResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37222 - **class `QuickConsumeMoreAvatarListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37305 - **class `QuickConsumeMoreAvatarListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37369 - **class `RcmdArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37604 - **class `RcmdAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37690 - **class `RcmdCampusBrief`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37784 - **enum `RcmdItem_RcmdItem`** - reusable UI or rendering component
+- L37786 - **class `RcmdItem`** - reusable UI or rendering component
+- L37867 - **class `RcmdOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L37923 - **class `RcmdReason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38016 - **class `RcmdTopButton`** - reusable UI or rendering component
+- L38086 - **class `RcmdUPsParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38144 - **class `ReactionListItem`** - reusable UI or rendering component
+- L38244 - **class `ReactionListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38333 - **class `ReactionListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38427 - **class `Relation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38520 - **class `RepostExtraInfo`** - data structure or state carrier
+- L38578 - **class `RepostListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38697 - **class `RepostListRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38799 - **class `SchoolRecommendReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38853 - **class `SchoolRecommendReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38936 - **class `SchoolSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39004 - **class `SchoolSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39075 - **class `SearchChannel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39155 - **class `SearchInfo`** - data structure or state carrier
+- L39266 - **class `SearchToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39336 - **class `SearchTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39416 - **class `SearchTopicButton`** - reusable UI or rendering component
+- L39486 - **class `SearchTopicItem`** - reusable UI or rendering component
+- L39640 - **class `SectionNoteNavigationBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39725 - **class `SectionOpusCollection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39792 - **class `SelectedClassificationAndSortType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39870 - **class `SetDecisionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L39941 - **class `SetRecentCampusReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40024 - **class `ShareChannel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40121 - **class `ShareReserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40242 - **class `SignResourcesReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40295 - **class `SignResourcesResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40348 - **class `SignedStaticResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40419 - **class `SortType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40487 - **class `StoryArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40584 - **enum `StoryItem_RcmdItem`** - reusable UI or rendering component
+- L40586 - **class `StoryItem`** - reusable UI or rendering component
+- L40709 - **class `SubscribeButton`** - reusable UI or rendering component
+- L40813 - **class `SubscribeCampusReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40896 - **class `SubscriptionClickReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L40955 - **class `SubscriptionClickResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41015 - **enum `TextNode_Text`** - finite state or option set
+- L41017 - **class `TextNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41165 - **class `TextParagraph`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41218 - **class `TextWithPriority`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41288 - **class `ThreePointAttention`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41408 - **class `ThreePointAutoPlay`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41574 - **class `ThreePointComment`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41674 - **class `ThreePointDefault`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41783 - **class `ThreePointDefaultToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41855 - **class `ThreePointDislike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41937 - **class `ThreePointDynCoin`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L42031 - **class `ThreePointDynEdit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L42125 - **class `ThreePointFavorite`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L42243 - **class `ThreePointHide`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L42352 - **class `ThreePointHideInteractive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L42450 - **enum `ThreePointItem_Item`** - reusable UI or rendering component
+- L42469 - **class `ThreePointItem`** - reusable UI or rendering component
+- L42810 - **class `ThreePointShare`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L42914 - **class `ThreePointShareChannel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L42986 - **class `ThreePointTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L43068 - **class `ThreePointTopicIrrelevant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L43202 - **class `ThreePointTopicTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L43296 - **class `ThreePointVisibilityChange`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L43390 - **class `ThreePointVisibilityChangeItem`** - reusable UI or rendering component
+- L43505 - **class `ThreePointWait`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L43611 - **class `TopAdditionUP`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L43676 - **class `TopicButton`** - reusable UI or rendering component
+- L43770 - **class `TopicItem`** - reusable UI or rendering component
+- L43901 - **class `TopicList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44057 - **class `TopicListItem`** - reusable UI or rendering component
+- L44247 - **class `TopicListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44339 - **class `TopicListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44422 - **class `TopicMergedResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44493 - **class `TopicRcmdCard`** - reusable UI or rendering component
+- L44626 - **class `TopicSquareInfo`** - data structure or state carrier
+- L44714 - **class `TopicSquareReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44775 - **class `TopicSquareReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44846 - **class `Unfollow`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44921 - **class `UnfollowMatchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44979 - **class `UnfollowUserItem`** - reusable UI or rendering component
+- L45179 - **class `UpListItem`** - reusable UI or rendering component
+- L45477 - **class `UpListMoreLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L45547 - **class `UpListTextBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L45605 - **class `UpdateTabSettingReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L45665 - **class `UserInfo`** - data structure or state carrier
+- L45937 - **class `UserItemStyle`** - reusable UI or rendering component
+- L46043 - **class `UserPendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L46137 - **class `VideoBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L46326 - **class `VipInfo`** - data structure or state carrier
+- L46457 - **class `VipLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L46537 - **class `WFItemDefault`** - reusable UI or rendering component
+- L46689 - **class `WaterFlowRcmdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L46790 - **class `WaterFlowRcmdResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L46858 - **class `Weight`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L46933 - **class `WeightButton`** - reusable UI or rendering component
+- L47003 - **class `WeightDislike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L47085 - **enum `WeightItem_Item`** - reusable UI or rendering component
+- L47087 - **class `WeightItem`** - reusable UI or rendering component
+- L47187 - **class `WordNode_UnderlineStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L47262 - **class `WordNode_WordNodeStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L47358 - **class `WordNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/dynamic/v2.pbenum.dart`
 
@@ -3861,97 +3875,97 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/im/v1.pb.dart`
 
 - L26 - **class `AirDropShareUserInfo`** - data structure or state carrier
-- L117 - **class `AirDropToImReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L167 - **class `AirDropToImReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L223 - **class `AutoReplyToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L290 - **class `BehaviorAlertToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L382 - **class `BorderedLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L449 - **class `CancelInterceptInDustbinReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L491 - **class `CancelInterceptInDustbinReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L552 - **class `ClearAlertReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L591 - **class `ClearAlertReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L647 - **class `ClearUnreadReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L686 - **class `ClearUnreadReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L757 - **class `Contact`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L913 - **class `ContactTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L980 - **class `ContactsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1065 - **class `ContactsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1136 - **class `ContactsSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1201 - **class `ContactsSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1284 - **class `CustomerId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1350 - **class `DeleteSessionListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1390 - **class `DeleteSessionListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1446 - **class `DeleteSessionReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1485 - **class `DeleteSessionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1543 - **class `FilledLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1598 - **class `FilterConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1661 - **class `FoldId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1716 - **class `GetImSettingsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1783 - **class `GetImSettingsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1839 - **class `GetQuickLinkUnreadReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1890 - **class `GetQuickLinkUnreadReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1930 - **class `GetTotalUnreadReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1987 - **class `GetTotalUnreadReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2026 - **class `GroupId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2080 - **class `ImageLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2158 - **class `KeywordBlockingAddReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2229 - **class `KeywordBlockingAddReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2285 - **class `KeywordBlockingDeleteReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2342 - **class `KeywordBlockingDeleteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2398 - **class `KeywordBlockingItem`** - reusable UI or rendering component
-- L2453 - **class `KeywordBlockingListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2540 - **class `KeywordBlockingListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2580 - **class `Medal`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2790 - **class `MsgSummary`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2881 - **class `Offset`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2947 - **class `OperationContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3014 - **class `PaginationParams`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3081 - **class `PinSessionReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3160 - **class `PinSessionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3230 - **class `PrivateId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3284 - **class `QuickLinkBubble`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3401 - **class `QuickLinkConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3478 - **class `QuickLinkItem`** - reusable UI or rendering component
-- L3596 - **class `QuickLinkUnreadItem`** - reusable UI or rendering component
-- L3666 - **class `RestrictedMode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3733 - **class `SelectItem`** - reusable UI or rendering component
-- L3811 - **class `Session`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3997 - **enum `SessionId_Id`** - finite state or option set
-- L3999 - **class `SessionId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4137 - **class `SessionInfo`** - data structure or state carrier
-- L4261 - **class `SessionListExtraInfo`** - data structure or state carrier
-- L4360 - **class `SessionListUpdateReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4427 - **class `SessionListUpdateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4526 - **class `SessionMainReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4666 - **class `SessionMainReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4752 - **class `SessionOperation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4870 - **class `SessionSecondaryReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4966 - **class `SessionSecondaryReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5052 - **class `SessionUpdateReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5110 - **class `SessionUpdateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5181 - **class `SessionsFilter`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5249 - **class `SetImSettingsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5304 - **class `SetImSettingsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5359 - **enum `Setting_Content`** - finite state or option set
-- L5361 - **class `Setting`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5482 - **enum `SettingRedirect_Content`** - finite state or option set
-- L5490 - **class `SettingRedirect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5650 - **class `SettingSelect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5700 - **class `SettingSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5779 - **class `SettingText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5834 - **class `SystemId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5889 - **class `ThreeDotItem`** - reusable UI or rendering component
-- L5993 - **class `UnPinSessionReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6048 - **class `UnPinSessionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6106 - **class `Unread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6185 - **class `UpdateSessionParams`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6240 - **class `UserLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6310 - **enum `UserLabelStyle_Style`** - finite state or option set
-- L6318 - **class `UserLabelStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6442 - **class `redirect2OtherPage`** - page or visual structure
-- L6497 - **class `redirect2Popup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6576 - **class `redirect2SettingPage`** - page or visual structure
-- L6668 - **class `redirectWindowSelect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L121 - **class `AirDropToImReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L174 - **class `AirDropToImReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L233 - **class `AutoReplyToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L303 - **class `BehaviorAlertToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L398 - **class `BorderedLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L468 - **class `CancelInterceptInDustbinReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L516 - **class `CancelInterceptInDustbinReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L583 - **class `ClearAlertReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L625 - **class `ClearAlertReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L684 - **class `ClearUnreadReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L726 - **class `ClearUnreadReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L800 - **class `Contact`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L958 - **class `ContactTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1027 - **class `ContactsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1115 - **class `ContactsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1189 - **class `ContactsSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1258 - **class `ContactsSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1344 - **class `CustomerId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1412 - **class `DeleteSessionListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1456 - **class `DeleteSessionListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1516 - **class `DeleteSessionReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1558 - **class `DeleteSessionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1619 - **class `FilledLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1677 - **class `FilterConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1743 - **class `FoldId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1800 - **class `GetImSettingsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1870 - **class `GetImSettingsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1929 - **class `GetQuickLinkUnreadReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1984 - **class `GetQuickLinkUnreadReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2028 - **class `GetTotalUnreadReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2090 - **class `GetTotalUnreadReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2132 - **class `GroupId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2188 - **class `ImageLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2268 - **class `KeywordBlockingAddReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2343 - **class `KeywordBlockingAddReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2403 - **class `KeywordBlockingDeleteReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2466 - **class `KeywordBlockingDeleteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2527 - **class `KeywordBlockingItem`** - reusable UI or rendering component
+- L2586 - **class `KeywordBlockingListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2678 - **class `KeywordBlockingListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2722 - **class `Medal`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2934 - **class `MsgSummary`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3027 - **class `Offset`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3095 - **class `OperationContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3165 - **class `PaginationParams`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3235 - **class `PinSessionReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3317 - **class `PinSessionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3390 - **class `PrivateId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3446 - **class `QuickLinkBubble`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3566 - **class `QuickLinkConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3646 - **class `QuickLinkItem`** - reusable UI or rendering component
+- L3768 - **class `QuickLinkUnreadItem`** - reusable UI or rendering component
+- L3843 - **class `RestrictedMode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3913 - **class `SelectItem`** - reusable UI or rendering component
+- L3993 - **class `Session`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4182 - **enum `SessionId_Id`** - finite state or option set
+- L4184 - **class `SessionId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4325 - **class `SessionInfo`** - data structure or state carrier
+- L4452 - **class `SessionListExtraInfo`** - data structure or state carrier
+- L4555 - **class `SessionListUpdateReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4626 - **class `SessionListUpdateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4729 - **class `SessionMainReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4872 - **class `SessionMainReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4961 - **class `SessionOperation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5082 - **class `SessionSecondaryReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5182 - **class `SessionSecondaryReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5272 - **class `SessionUpdateReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5333 - **class `SessionUpdateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5407 - **class `SessionsFilter`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5478 - **class `SetImSettingsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5536 - **class `SetImSettingsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5594 - **enum `Setting_Content`** - finite state or option set
+- L5596 - **class `Setting`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5719 - **enum `SettingRedirect_Content`** - finite state or option set
+- L5727 - **class `SettingRedirect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5890 - **class `SettingSelect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5943 - **class `SettingSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6025 - **class `SettingText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6083 - **class `SystemId`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6140 - **class `ThreeDotItem`** - reusable UI or rendering component
+- L6247 - **class `UnPinSessionReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6305 - **class `UnPinSessionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6366 - **class `Unread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6447 - **class `UpdateSessionParams`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6506 - **class `UserLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6578 - **enum `UserLabelStyle_Style`** - finite state or option set
+- L6586 - **class `UserLabelStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6713 - **class `redirect2OtherPage`** - page or visual structure
+- L6771 - **class `redirect2Popup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6853 - **class `redirect2SettingPage`** - page or visual structure
+- L6949 - **class `redirectWindowSelect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/im/v1.pbenum.dart`
 
@@ -3972,95 +3986,95 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/interfaces/v1.pb.dart`
 
 - L28 - **class `Arc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L187 - **class `Badge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L253 - **class `BigItem`** - reusable UI or rendering component
-- L517 - **class `Button`** - reusable UI or rendering component
-- L645 - **class `CardArticle`** - reusable UI or rendering component
-- L764 - **class `CardCheese`** - reusable UI or rendering component
-- L871 - **class `CardLive`** - reusable UI or rendering component
-- L1008 - **class `CardOGV`** - reusable UI or rendering component
-- L1128 - **class `CardUGC`** - reusable UI or rendering component
-- L1408 - **class `Cast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1469 - **class `ChannelInfo`** - data structure or state carrier
-- L1536 - **class `ClearReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1590 - **class `CommentItem`** - reusable UI or rendering component
-- L1707 - **class `Cursor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1775 - **enum `CursorItem_CardItem`** - reusable UI or rendering component
-- L1785 - **class `CursorItem`** - reusable UI or rendering component
-- L2065 - **class `CursorReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2153 - **class `CursorReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2261 - **class `CursorTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2356 - **class `CursorV2Reply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2445 - **class `CursorV2Req`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2556 - **class `DefaultWordsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2757 - **class `DefaultWordsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2981 - **class `DeleteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3044 - **class `DeviceType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3112 - **class `Dynamic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3169 - **class `FacialRecognitionVerifyReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3211 - **class `FacialRecognitionVerifyReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3281 - **class `HisInfo`** - data structure or state carrier
-- L3347 - **class `HistoryTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3397 - **class `HistoryTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3477 - **class `LatestHistoryReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3571 - **class `LatestHistoryReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3641 - **class `LikeButton`** - reusable UI or rendering component
-- L3816 - **class `LikeButtonResource`** - reusable UI or rendering component
-- L3883 - **class `LikeCard`** - reusable UI or rendering component
-- L3949 - **class `MediaCard`** - reusable UI or rendering component
-- L4083 - **class `MediaCommentReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4138 - **class `MediaCommentReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4193 - **class `MediaDetailReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4279 - **class `MediaDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4346 - **class `MediaFollowReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4385 - **class `MediaFollowReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4452 - **class `MediaPerson`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4555 - **class `MediaRelationReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4629 - **class `MediaRelationReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4732 - **class `MediaTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4823 - **class `MediaTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4924 - **class `MediaVideoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4997 - **class `MediaVideoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5115 - **class `ModeStatusReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5165 - **class `ModeStatusReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5220 - **class `ModifyPwdReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5259 - **class `ModifyPwdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5338 - **class `NftFaceIcon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5417 - **class `NoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5455 - **class `OfficialVerify`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5522 - **class `Overview`** - page or visual structure
-- L5588 - **class `Page`** - page or visual structure
-- L5654 - **class `PlayerPreloadParams`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5757 - **class `Policy`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5823 - **class `ReasonStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5963 - **class `Relation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6055 - **class `ResultItem`** - reusable UI or rendering component
-- L6470 - **class `Scores`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6524 - **class `SearchArchiveReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6585 - **class `SearchArchiveReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6691 - **class `SearchDynamicReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6753 - **class `SearchDynamicReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6859 - **class `SearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6935 - **class `SearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7013 - **class `SearchTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7074 - **class `SearchTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7153 - **class `SetTeenagersModelAgeReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7193 - **class `SetTeenagersModelAgeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7298 - **class `ShowTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7377 - **class `SmallItem`** - reusable UI or rendering component
-- L7539 - **class `Staff`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7605 - **class `SuggestionResult3Reply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7680 - **class `SuggestionResult3Req`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7771 - **class `Supernatant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7833 - **class `Tab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7899 - **class `UpdateReserveStartTimeReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7957 - **class `UpdateReserveStartTimeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8026 - **class `UpdateStatusReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8065 - **class `UpdateStatusReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8157 - **class `UserCard`** - reusable UI or rendering component
-- L8247 - **class `UserModel`** - data structure or state carrier
-- L8412 - **class `VerifyPwdReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8451 - **class `VerifyPwdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L189 - **class `Badge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L257 - **class `BigItem`** - reusable UI or rendering component
+- L523 - **class `Button`** - reusable UI or rendering component
+- L653 - **class `CardArticle`** - reusable UI or rendering component
+- L775 - **class `CardCheese`** - reusable UI or rendering component
+- L884 - **class `CardLive`** - reusable UI or rendering component
+- L1023 - **class `CardOGV`** - reusable UI or rendering component
+- L1145 - **class `CardUGC`** - reusable UI or rendering component
+- L1428 - **class `Cast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1491 - **class `ChannelInfo`** - data structure or state carrier
+- L1561 - **class `ClearReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1617 - **class `CommentItem`** - reusable UI or rendering component
+- L1737 - **class `Cursor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1807 - **enum `CursorItem_CardItem`** - reusable UI or rendering component
+- L1817 - **class `CursorItem`** - reusable UI or rendering component
+- L2099 - **class `CursorReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2191 - **class `CursorReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2302 - **class `CursorTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2399 - **class `CursorV2Reply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2492 - **class `CursorV2Req`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2607 - **class `DefaultWordsReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2811 - **class `DefaultWordsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3038 - **class `DeleteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3103 - **class `DeviceType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3173 - **class `Dynamic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3232 - **class `FacialRecognitionVerifyReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3280 - **class `FacialRecognitionVerifyReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3356 - **class `HisInfo`** - data structure or state carrier
+- L3424 - **class `HistoryTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3477 - **class `HistoryTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3560 - **class `LatestHistoryReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3657 - **class `LatestHistoryReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3730 - **class `LikeButton`** - reusable UI or rendering component
+- L3907 - **class `LikeButtonResource`** - reusable UI or rendering component
+- L3977 - **class `LikeCard`** - reusable UI or rendering component
+- L4045 - **class `MediaCard`** - reusable UI or rendering component
+- L4182 - **class `MediaCommentReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4240 - **class `MediaCommentReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4298 - **class `MediaDetailReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4389 - **class `MediaDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4459 - **class `MediaFollowReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4501 - **class `MediaFollowReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4571 - **class `MediaPerson`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4677 - **class `MediaRelationReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4754 - **class `MediaRelationReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4860 - **class `MediaTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4955 - **class `MediaTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5059 - **class `MediaVideoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5136 - **class `MediaVideoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5257 - **class `ModeStatusReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5310 - **class `ModeStatusReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5368 - **class `ModifyPwdReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5410 - **class `ModifyPwdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5492 - **class `NftFaceIcon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5574 - **class `NoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5614 - **class `OfficialVerify`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5684 - **class `Overview`** - page or visual structure
+- L5752 - **class `Page`** - page or visual structure
+- L5820 - **class `PlayerPreloadParams`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5927 - **class `Policy`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5995 - **class `ReasonStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6138 - **class `Relation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6232 - **class `ResultItem`** - reusable UI or rendering component
+- L6649 - **class `Scores`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6705 - **class `SearchArchiveReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6770 - **class `SearchArchiveReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6879 - **class `SearchDynamicReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6944 - **class `SearchDynamicReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7053 - **class `SearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7133 - **class `SearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7213 - **class `SearchTabReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7278 - **class `SearchTabReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7360 - **class `SetTeenagersModelAgeReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7406 - **class `SetTeenagersModelAgeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7515 - **class `ShowTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7596 - **class `SmallItem`** - reusable UI or rendering component
+- L7760 - **class `Staff`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7828 - **class `SuggestionResult3Reply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7907 - **class `SuggestionResult3Req`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8002 - **class `Supernatant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8067 - **class `Tab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8135 - **class `UpdateReserveStartTimeReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8199 - **class `UpdateReserveStartTimeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8274 - **class `UpdateStatusReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8316 - **class `UpdateStatusReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8411 - **class `UserCard`** - reusable UI or rendering component
+- L8503 - **class `UserModel`** - data structure or state carrier
+- L8671 - **class `VerifyPwdReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8713 - **class `VerifyPwdReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/interfaces/v1.pbenum.dart`
 
@@ -4077,118 +4091,118 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/listener/v1.pb.dart`
 
 - L28 - **class `Author`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L121 - **class `BKArcDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L186 - **class `BKArcDetailsResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L236 - **class `BKArcPart`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L338 - **class `BKArcRights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L393 - **class `BKArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L570 - **class `BKStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L744 - **enum `CardModule_Module`** - reusable UI or rendering component
-- L746 - **class `CardModule`** - reusable UI or rendering component
-- L863 - **class `ClickReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L930 - **class `ClickResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L968 - **class `CoinAddReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1049 - **class `CoinAddResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1104 - **class `DashItem`** - reusable UI or rendering component
-- L1263 - **class `DashSegmentBase`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1330 - **class `DetailItem`** - reusable UI or rendering component
-- L1566 - **class `EventReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1636 - **class `EventResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1674 - **class `EventTracking`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1789 - **class `FavFolder`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2074 - **class `FavFolderAction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2154 - **class `FavFolderAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2221 - **class `FavFolderCreateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2312 - **class `FavFolderCreateResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2391 - **class `FavFolderDeleteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2458 - **class `FavFolderDeleteResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2513 - **class `FavFolderDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2631 - **class `FavFolderDetailResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2720 - **class `FavFolderListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2784 - **class `FavFolderListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2834 - **class `FavFolderMeta`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2901 - **class `FavItem`** - reusable UI or rendering component
-- L3030 - **enum `FavItemAddReq_Item`** - reusable UI or rendering component
-- L3032 - **class `FavItemAddReq`** - reusable UI or rendering component
-- L3154 - **class `FavItemAddResp`** - reusable UI or rendering component
-- L3209 - **class `FavItemAuthor`** - reusable UI or rendering component
-- L3276 - **enum `FavItemBatchReq_Item`** - reusable UI or rendering component
-- L3278 - **class `FavItemBatchReq`** - reusable UI or rendering component
-- L3372 - **class `FavItemBatchResp`** - reusable UI or rendering component
-- L3427 - **enum `FavItemDelReq_Item`** - reusable UI or rendering component
-- L3429 - **class `FavItemDelReq`** - reusable UI or rendering component
-- L3551 - **class `FavItemDelResp`** - reusable UI or rendering component
-- L3606 - **class `FavItemDetail`** - reusable UI or rendering component
-- L3765 - **class `FavItemStat`** - reusable UI or rendering component
-- L3856 - **class `FavTabShowReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3911 - **class `FavTabShowResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3966 - **class `FavoredInAnyFoldersReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4031 - **class `FavoredInAnyFoldersResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4097 - **class `FollowRelation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4153 - **class `FormatDescription`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4256 - **class `MainFavMusicMenuListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4324 - **class `MainFavMusicMenuListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4411 - **class `MainFavMusicSubTabListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4451 - **class `MainFavMusicSubTabListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4533 - **class `MedialistItem`** - reusable UI or rendering component
-- L4735 - **class `MedialistReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4814 - **class `MedialistResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4915 - **class `MedialistUpInfo`** - data structure or state carrier
-- L5006 - **class `MenuDeleteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5061 - **class `MenuDeleteResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5116 - **class `MenuEditReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5207 - **class `MenuEditResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5262 - **class `MenuSubscribeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5330 - **class `MenuSubscribeResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5385 - **class `MusicMenu`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5577 - **class `MusicMenuAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5656 - **class `MusicMenuStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5723 - **class `MusicSubTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5802 - **class `PageOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5884 - **class `PickArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6077 - **class `PickArchiveAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6144 - **class `PickCard`** - reusable UI or rendering component
-- L6229 - **class `PickCardDetailReq`** - reusable UI or rendering component
-- L6296 - **class `PickCardDetailResp`** - reusable UI or rendering component
-- L6370 - **class `PickFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6425 - **class `PickFeedResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6487 - **class `PkcmArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6557 - **class `PkcmCenterButton`** - reusable UI or rendering component
-- L6648 - **class `PkcmHeader`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6750 - **class `PlayActionReportReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6820 - **class `PlayDASH`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6894 - **class `PlayHistoryAddReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6988 - **class `PlayHistoryDelReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7050 - **class `PlayHistoryReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7135 - **class `PlayHistoryResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7224 - **enum `PlayInfo_Info`** - data structure or state carrier
-- L7226 - **class `PlayInfo`** - data structure or state carrier
-- L7453 - **class `PlayItem`** - reusable UI or rendering component
-- L7552 - **class `PlayURL`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7601 - **class `PlayURLReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7673 - **class `PlayURLResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7767 - **enum `PlaylistAddReq_Pos`** - finite state or option set
-- L7769 - **class `PlaylistAddReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7875 - **class `PlaylistDelReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7937 - **class `PlaylistOffset`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8040 - **class `PlaylistReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8195 - **class `PlaylistResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8323 - **class `RandomOrderStatus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8373 - **class `RcmdOffset`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8475 - **class `RcmdPlaylistReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8607 - **class `RcmdPlaylistResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8691 - **class `ResponseUrl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8824 - **class `SortOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8904 - **class `ThumbUpReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8974 - **class `ThumbUpResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9029 - **enum `TopCard_Card`** - reusable UI or rendering component
-- L9031 - **class `TopCard`** - reusable UI or rendering component
-- L9214 - **class `TpcdFavFolder`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9320 - **class `TpcdHistory`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9402 - **class `TpcdPickToday`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9508 - **class `TpcdUpRecall`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9626 - **class `TripleLikeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9684 - **class `TripleLikeResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L123 - **class `BKArcDetailsReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L191 - **class `BKArcDetailsResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L244 - **class `BKArcPart`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L348 - **class `BKArcRights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L406 - **class `BKArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L585 - **class `BKStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L761 - **enum `CardModule_Module`** - reusable UI or rendering component
+- L763 - **class `CardModule`** - reusable UI or rendering component
+- L882 - **class `ClickReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L951 - **class `ClickResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L991 - **class `CoinAddReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1074 - **class `CoinAddResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1132 - **class `DashItem`** - reusable UI or rendering component
+- L1293 - **class `DashSegmentBase`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1363 - **class `DetailItem`** - reusable UI or rendering component
+- L1603 - **class `EventReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1675 - **class `EventResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1715 - **class `EventTracking`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1833 - **class `FavFolder`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2120 - **class `FavFolderAction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2203 - **class `FavFolderAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2273 - **class `FavFolderCreateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2367 - **class `FavFolderCreateResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2450 - **class `FavFolderDeleteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2520 - **class `FavFolderDeleteResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2579 - **class `FavFolderDetailReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2700 - **class `FavFolderDetailResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2793 - **class `FavFolderListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2860 - **class `FavFolderListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2913 - **class `FavFolderMeta`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2983 - **class `FavItem`** - reusable UI or rendering component
+- L3114 - **enum `FavItemAddReq_Item`** - reusable UI or rendering component
+- L3116 - **class `FavItemAddReq`** - reusable UI or rendering component
+- L3242 - **class `FavItemAddResp`** - reusable UI or rendering component
+- L3300 - **class `FavItemAuthor`** - reusable UI or rendering component
+- L3370 - **enum `FavItemBatchReq_Item`** - reusable UI or rendering component
+- L3372 - **class `FavItemBatchReq`** - reusable UI or rendering component
+- L3470 - **class `FavItemBatchResp`** - reusable UI or rendering component
+- L3528 - **enum `FavItemDelReq_Item`** - reusable UI or rendering component
+- L3530 - **class `FavItemDelReq`** - reusable UI or rendering component
+- L3656 - **class `FavItemDelResp`** - reusable UI or rendering component
+- L3714 - **class `FavItemDetail`** - reusable UI or rendering component
+- L3877 - **class `FavItemStat`** - reusable UI or rendering component
+- L3971 - **class `FavTabShowReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4029 - **class `FavTabShowResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4087 - **class `FavoredInAnyFoldersReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4156 - **class `FavoredInAnyFoldersResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4226 - **class `FollowRelation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4285 - **class `FormatDescription`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4391 - **class `MainFavMusicMenuListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4463 - **class `MainFavMusicMenuListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4555 - **class `MainFavMusicSubTabListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4601 - **class `MainFavMusicSubTabListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4689 - **class `MedialistItem`** - reusable UI or rendering component
+- L4894 - **class `MedialistReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4976 - **class `MedialistResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5080 - **class `MedialistUpInfo`** - data structure or state carrier
+- L5174 - **class `MenuDeleteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5232 - **class `MenuDeleteResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5290 - **class `MenuEditReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5384 - **class `MenuEditResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5442 - **class `MenuSubscribeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5513 - **class `MenuSubscribeResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5571 - **class `MusicMenu`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5765 - **class `MusicMenuAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5847 - **class `MusicMenuStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5917 - **class `MusicSubTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5999 - **class `PageOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6083 - **class `PickArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6279 - **class `PickArchiveAuthor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6349 - **class `PickCard`** - reusable UI or rendering component
+- L6436 - **class `PickCardDetailReq`** - reusable UI or rendering component
+- L6506 - **class `PickCardDetailResp`** - reusable UI or rendering component
+- L6583 - **class `PickFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6641 - **class `PickFeedResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6706 - **class `PkcmArchive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6779 - **class `PkcmCenterButton`** - reusable UI or rendering component
+- L6873 - **class `PkcmHeader`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6977 - **class `PlayActionReportReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7051 - **class `PlayDASH`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7127 - **class `PlayHistoryAddReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7224 - **class `PlayHistoryDelReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7289 - **class `PlayHistoryReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7377 - **class `PlayHistoryResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7469 - **enum `PlayInfo_Info`** - data structure or state carrier
+- L7471 - **class `PlayInfo`** - data structure or state carrier
+- L7700 - **class `PlayItem`** - reusable UI or rendering component
+- L7801 - **class `PlayURL`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7852 - **class `PlayURLReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7926 - **class `PlayURLResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8023 - **enum `PlaylistAddReq_Pos`** - finite state or option set
+- L8025 - **class `PlaylistAddReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8134 - **class `PlaylistDelReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8199 - **class `PlaylistOffset`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8305 - **class `PlaylistReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8463 - **class `PlaylistResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8594 - **class `RandomOrderStatus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8647 - **class `RcmdOffset`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8751 - **class `RcmdPlaylistReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8886 - **class `RcmdPlaylistResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8973 - **class `ResponseUrl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9109 - **class `SortOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9191 - **class `ThumbUpReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9263 - **class `ThumbUpResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9321 - **enum `TopCard_Card`** - reusable UI or rendering component
+- L9323 - **class `TopCard`** - reusable UI or rendering component
+- L9508 - **class `TpcdFavFolder`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9617 - **class `TpcdHistory`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9702 - **class `TpcdPickToday`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9811 - **class `TpcdUpRecall`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9932 - **class `TripleLikeReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9993 - **class `TripleLikeResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/listener/v1.pbenum.dart`
 
@@ -4211,59 +4225,59 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/playurl/v1.pb.dart`
 
 - L24 - **class `AB`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L92 - **class `ArcConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L180 - **class `ButtonInfo`** - reusable UI or rendering component
-- L345 - **class `ButtonStyle`** - reusable UI or rendering component
-- L436 - **class `Chronos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L502 - **class `CloudConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L599 - **class `ComprehensiveToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L711 - **enum `ConfValue_Value`** - finite state or option set
-- L713 - **class `ConfValue`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L792 - **class `DashItem`** - reusable UI or rendering component
-- L948 - **class `DashVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1140 - **class `Dialog`** - page or visual structure
-- L1246 - **class `DolbyItem`** - reusable UI or rendering component
-- L1308 - **class `Event`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1364 - **class `ExtraContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1431 - **enum `FieldValue_Value`** - finite state or option set
-- L1433 - **class `FieldValue`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1497 - **class `FormatDescription`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1612 - **class `Glance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1690 - **class `LossLessItem`** - reusable UI or rendering component
-- L1772 - **class `MultiDashVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1822 - **class `PlayAbilityConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2316 - **class `PlayArc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2370 - **class `PlayArcConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2895 - **class `PlayConfEditReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2934 - **class `PlayConfEditReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2984 - **class `PlayConfReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3042 - **class `PlayConfReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3081 - **class `PlayConfState`** - data structure or state carrier
-- L3179 - **class `PlayLimit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3273 - **class `PlayURLReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3484 - **class `PlayURLReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3646 - **class `PlayViewReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3836 - **class `PlayViewReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4049 - **class `ProjectReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4107 - **class `ProjectReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4293 - **class `PromptBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4410 - **class `Report`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4488 - **class `ResponseDash`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4545 - **class `ResponseUrl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4666 - **class `Scheme`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4733 - **class `SegmentVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4783 - **class `Shake`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4837 - **enum `Stream_Content`** - finite state or option set
-- L4839 - **class `Stream`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4957 - **class `StreamInfo`** - data structure or state carrier
-- L5222 - **class `StreamLimit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5301 - **class `TextInfo`** - data structure or state carrier
-- L5379 - **class `UpgradeButton`** - reusable UI or rendering component
-- L5446 - **class `UpgradeLimit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5540 - **class `VideoInfo`** - data structure or state carrier
-- L5701 - **class `ViewInfo`** - data structure or state carrier
-- L5777 - **class `VipRisk`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5867 - **class `VolumeInfo`** - data structure or state carrier
+- L95 - **class `ArcConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L185 - **class `ButtonInfo`** - reusable UI or rendering component
+- L353 - **class `ButtonStyle`** - reusable UI or rendering component
+- L447 - **class `Chronos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L515 - **class `CloudConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L614 - **class `ComprehensiveToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L730 - **enum `ConfValue_Value`** - finite state or option set
+- L732 - **class `ConfValue`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L813 - **class `DashItem`** - reusable UI or rendering component
+- L971 - **class `DashVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1165 - **class `Dialog`** - page or visual structure
+- L1274 - **class `DolbyItem`** - reusable UI or rendering component
+- L1338 - **class `Event`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1397 - **class `ExtraContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1467 - **enum `FieldValue_Value`** - finite state or option set
+- L1469 - **class `FieldValue`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1535 - **class `FormatDescription`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1653 - **class `Glance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1733 - **class `LossLessItem`** - reusable UI or rendering component
+- L1818 - **class `MultiDashVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1871 - **class `PlayAbilityConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2368 - **class `PlayArc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2424 - **class `PlayArcConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2952 - **class `PlayConfEditReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2994 - **class `PlayConfEditReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3047 - **class `PlayConfReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3108 - **class `PlayConfReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3150 - **class `PlayConfState`** - data structure or state carrier
+- L3251 - **class `PlayLimit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3347 - **class `PlayURLReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3561 - **class `PlayURLReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3725 - **class `PlayViewReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3920 - **class `PlayViewReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4136 - **class `ProjectReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4197 - **class `ProjectReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4385 - **class `PromptBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4505 - **class `Report`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4585 - **class `ResponseDash`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4645 - **class `ResponseUrl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4769 - **class `Scheme`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4838 - **class `SegmentVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4891 - **class `Shake`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4947 - **enum `Stream_Content`** - finite state or option set
+- L4949 - **class `Stream`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5069 - **class `StreamInfo`** - data structure or state carrier
+- L5336 - **class `StreamLimit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5418 - **class `TextInfo`** - data structure or state carrier
+- L5498 - **class `UpgradeButton`** - reusable UI or rendering component
+- L5568 - **class `UpgradeLimit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5665 - **class `VideoInfo`** - data structure or state carrier
+- L5828 - **class `ViewInfo`** - data structure or state carrier
+- L5906 - **class `VipRisk`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5998 - **class `VolumeInfo`** - data structure or state carrier
 
 ## `lib/grpc/bilibili/app/playurl/v1.pbenum.dart`
 
@@ -4283,194 +4297,194 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/viewunite/common.pb.dart`
 
 - L29 - **class `ActBannerItem`** - reusable UI or rendering component
-- L119 - **class `ActPageItems`** - reusable UI or rendering component
-- L194 - **class `Activity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L374 - **class `ActivityEntrance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L542 - **class `ActivityEntranceModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L594 - **class `ActivityGuidanceBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L779 - **class `ActivityIFrame`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L846 - **class `ActivityReserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L945 - **class `ActivityResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1012 - **class `ActivityStarRail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1074 - **class `ActivityTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1271 - **class `AggEpCard`** - reusable UI or rendering component
-- L1373 - **class `AggEps`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1434 - **class `ArcRights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1488 - **class `AttentionRecommend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1527 - **class `Audio`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1581 - **class `AudioInfo`** - data structure or state carrier
-- L1719 - **class `Author`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1785 - **class `BadgeInfo`** - data structure or state carrier
-- L1947 - **class `Banner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2008 - **class `BgInfo`** - data structure or state carrier
-- L2098 - **class `BizFavParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2153 - **class `BizReserveActivityParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2257 - **class `Button`** - reusable UI or rendering component
-- L2375 - **class `ButtonWidget`** - reusable UI or rendering component
-- L2481 - **class `CardBasicInfo`** - reusable UI or rendering component
-- L2733 - **class `CardStyle`** - reusable UI or rendering component
-- L2799 - **class `CatalogTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2853 - **class `Celebrity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3089 - **class `CellFluid`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3167 - **class `CharacterGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3229 - **class `Characters`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3278 - **class `CoinExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3380 - **class `CombinationEp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3545 - **class `ContractText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3612 - **class `Covenanter`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3693 - **class `CoverDimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3760 - **enum `DeliveryData_Data`** - data structure or state carrier
-- L3769 - **class `DeliveryData`** - data structure or state carrier
-- L3970 - **class `Desc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4036 - **class `DescV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4127 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4205 - **class `DislikeReasons`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4308 - **class `EpBgInfo`** - data structure or state carrier
-- L4380 - **class `ExtTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4447 - **class `FollowLayer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4528 - **class `Headline`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4596 - **class `HistoryNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4675 - **enum `Honor_Extend`** - finite state or option set
-- L4677 - **class `Honor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4912 - **class `IconFont`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4978 - **class `ImagesWidget`** - reusable UI or rendering component
-- L5039 - **class `Interaction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5145 - **class `Item`** - reusable UI or rendering component
-- L5211 - **enum `KingPos_Extend`** - finite state or option set
-- L5213 - **class `KingPos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5359 - **class `KingPosition`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5416 - **class `Label`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5564 - **class `LikeComment`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5631 - **class `LikeExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5730 - **class `Live`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5820 - **class `LiveOrder`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5938 - **class `Merchandise`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6015 - **class `MerchandiseButton`** - reusable UI or rendering component
-- L6094 - **class `MerchandiseCard`** - reusable UI or rendering component
-- L6198 - **class `MerchandiseTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6301 - **class `Mine`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6379 - **enum `Module_Data`** - data structure or state carrier
-- L6429 - **class `Module`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7382 - **class `MultiViewEp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7437 - **class `Neutral`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7503 - **class `NewEp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7629 - **class `OfficialVerify`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7696 - **class `OgvIntroduction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7826 - **class `OgvLiveReserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8120 - **class `OgvSeasons`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8194 - **class `OgvTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8373 - **class `OperateAction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8440 - **class `Owner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8707 - **class `Page`** - page or visual structure
-- L8836 - **class `Pendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8914 - **class `PlayList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9059 - **class `PlayListSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9184 - **class `PlayerAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9251 - **class `PointActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9330 - **class `PowerIconStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9421 - **class `ProfessionApproval`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9500 - **class `ProfessionHonorExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9583 - **class `ProfessionPopup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9650 - **class `PugvCooperationApplication`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9755 - **class `PugvFaq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9819 - **class `PugvFaqContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9898 - **class `PugvPackage`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9963 - **class `PugvPackageItem`** - reusable UI or rendering component
-- L10117 - **class `PugvPackageSaleInfo`** - data structure or state carrier
-- L10184 - **class `PugvSeasonCooperator`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10311 - **enum `PugvSeasonDescription_Content`** - finite state or option set
-- L10313 - **class `PugvSeasonDescription`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10430 - **class `PugvSeasonDescriptionImage`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10506 - **class `PugvSeasonDescriptionImageItem`** - reusable UI or rendering component
-- L10576 - **class `PugvSeasonDescriptionText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10632 - **class `PugvSeasonNav`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10711 - **class `PugvSeasonPrimaryBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10791 - **class `PugvSeasonPrimaryCustomInfo`** - data structure or state carrier
-- L10849 - **class `PugvSeasonPrimaryHotRank`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10917 - **class `PugvSeasonPrimaryInfo`** - data structure or state carrier
-- L11074 - **class `PugvSeasonPrimaryRankInfo`** - data structure or state carrier
-- L11133 - **class `PugvSeasonPrimarySellPoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11202 - **class `PugvSeasonPrimarySellPointInfo`** - data structure or state carrier
-- L11268 - **class `PugvSeasonPublisher`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11360 - **class `PugvSeasonPublisherSkuContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11425 - **class `PugvSeasonPublisherSkuContentItem`** - reusable UI or rendering component
-- L11509 - **class `PugvSeasonRecommend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11602 - **class `PugvSeasonRecommendContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11761 - **class `PugvSeasonRecommendMore`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11841 - **class `PugvSeasonSelection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11899 - **class `PugvSeries`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11963 - **class `PugvSeriesItem`** - reusable UI or rendering component
-- L12079 - **class `PugvShoppingNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12156 - **class `PugvShoppingNoticeContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12236 - **class `PugvZone`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12285 - **class `PugvZoneItem`** - reusable UI or rendering component
-- L12389 - **class `Rank`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12467 - **class `RankInfo`** - data structure or state carrier
-- L12605 - **class `Rating`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12671 - **class `RelateAVCard`** - reusable UI or rendering component
-- L12830 - **class `RelateBangumiAvCard`** - reusable UI or rendering component
-- L12940 - **class `RelateBangumiCard`** - reusable UI or rendering component
-- L13098 - **class `RelateBangumiResourceCard`** - reusable UI or rendering component
-- L13284 - **class `RelateBangumiUGCCard`** - reusable UI or rendering component
-- L13370 - **class `RelateCMCard`** - reusable UI or rendering component
-- L13478 - **enum `RelateCard_Card`** - reusable UI or rendering component
-- L13495 - **class `RelateCard`** - reusable UI or rendering component
-- L13836 - **class `RelateConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13945 - **class `RelateCourseCard`** - reusable UI or rendering component
-- L14068 - **class `RelateDislike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14202 - **class `RelateGameCard`** - reusable UI or rendering component
-- L14406 - **class `RelateHistoryAVCard`** - reusable UI or rendering component
-- L14497 - **class `RelateItem`** - reusable UI or rendering component
-- L14575 - **class `RelateLiveCard`** - reusable UI or rendering component
-- L14720 - **class `RelateMiniProgramCard`** - reusable UI or rendering component
-- L14778 - **class `RelateSpecial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14863 - **class `RelateTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14929 - **class `RelateThreePoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15026 - **class `RelatedAICard`** - reusable UI or rendering component
-- L15143 - **class `Relates`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15214 - **enum `ReserveButton_OrderParam`** - reusable UI or rendering component
-- L15216 - **class `ReserveButton`** - reusable UI or rendering component
-- L15353 - **class `ReserveCalendarInfo`** - data structure or state carrier
-- L15456 - **class `Rights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15582 - **class `SeasonHead`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15677 - **class `SeasonShow`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L15779 - **class `SectionData`** - data structure or state carrier
-- L15993 - **class `SerialSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16183 - **class `SkipRange`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16249 - **class `SpecialCell`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16485 - **class `SpecialTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16546 - **class `Sponsor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16662 - **class `SponsorRank`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16767 - **class `Staff`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16937 - **class `Staffs`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16997 - **class `StarRail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17159 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17302 - **class `StatInfo`** - data structure or state carrier
-- L17392 - **class `Style`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17464 - **class `Tag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17554 - **class `TextWidget`** - reusable UI or rendering component
-- L17644 - **class `TheatreHotTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17818 - **class `Threshold`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17896 - **class `TitleDeliveryButton`** - reusable UI or rendering component
-- L17997 - **class `UgcEpisode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18227 - **class `UgcIntroduction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18358 - **class `UgcSeasonActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18563 - **class `UgcSeasons`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18745 - **class `UgcSection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18830 - **class `UpDataModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18916 - **class `UpLikeImg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19006 - **class `UpTool`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19112 - **class `UpVideoTool`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19173 - **class `User`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19263 - **class `UserActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19378 - **class `UserList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19438 - **class `UserStatus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19504 - **class `ViewEpisode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20079 - **class `ViewMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20182 - **class `Vip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20287 - **class `VipLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20365 - **class `WikiInfo`** - data structure or state carrier
-- L20431 - **class `WinShowCondition`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L122 - **class `ActPageItems`** - reusable UI or rendering component
+- L200 - **class `Activity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L383 - **class `ActivityEntrance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L555 - **class `ActivityEntranceModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L611 - **class `ActivityGuidanceBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L800 - **class `ActivityIFrame`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L870 - **class `ActivityReserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L973 - **class `ActivityResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1043 - **class `ActivityStarRail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1108 - **class `ActivityTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1308 - **class `AggEpCard`** - reusable UI or rendering component
+- L1412 - **class `AggEps`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1475 - **class `ArcRights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1531 - **class `AttentionRecommend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1573 - **class `Audio`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1629 - **class `AudioInfo`** - data structure or state carrier
+- L1769 - **class `Author`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1837 - **class `BadgeInfo`** - data structure or state carrier
+- L2001 - **class `Banner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2064 - **class `BgInfo`** - data structure or state carrier
+- L2156 - **class `BizFavParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2214 - **class `BizReserveActivityParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2322 - **class `Button`** - reusable UI or rendering component
+- L2442 - **class `ButtonWidget`** - reusable UI or rendering component
+- L2551 - **class `CardBasicInfo`** - reusable UI or rendering component
+- L2807 - **class `CardStyle`** - reusable UI or rendering component
+- L2875 - **class `CatalogTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2931 - **class `Celebrity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3169 - **class `CellFluid`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3249 - **class `CharacterGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3314 - **class `Characters`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3365 - **class `CoinExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3469 - **class `CombinationEp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3637 - **class `ContractText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3707 - **class `Covenanter`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3790 - **class `CoverDimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3860 - **enum `DeliveryData_Data`** - data structure or state carrier
+- L3869 - **class `DeliveryData`** - data structure or state carrier
+- L4074 - **class `Desc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4142 - **class `DescV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4235 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4315 - **class `DislikeReasons`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4421 - **class `EpBgInfo`** - data structure or state carrier
+- L4495 - **class `ExtTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4564 - **class `FollowLayer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4650 - **class `Headline`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4721 - **class `HistoryNode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4803 - **enum `Honor_Extend`** - finite state or option set
+- L4805 - **class `Honor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5042 - **class `IconFont`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5110 - **class `ImagesWidget`** - reusable UI or rendering component
+- L5174 - **class `Interaction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5283 - **class `Item`** - reusable UI or rendering component
+- L5351 - **enum `KingPos_Extend`** - finite state or option set
+- L5353 - **class `KingPos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5501 - **class `KingPosition`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5561 - **class `Label`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5711 - **class `LikeComment`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5781 - **class `LikeExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5882 - **class `Live`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5974 - **class `LiveOrder`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6094 - **class `Merchandise`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6174 - **class `MerchandiseButton`** - reusable UI or rendering component
+- L6256 - **class `MerchandiseCard`** - reusable UI or rendering component
+- L6363 - **class `MerchandiseTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6469 - **class `Mine`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6549 - **enum `Module_Data`** - data structure or state carrier
+- L6599 - **class `Module`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7557 - **class `MultiViewEp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7615 - **class `Neutral`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7683 - **class `NewEp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7811 - **class `OfficialVerify`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7881 - **class `OgvIntroduction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8014 - **class `OgvLiveReserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8311 - **class `OgvSeasons`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8387 - **class `OgvTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8568 - **class `OperateAction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8638 - **class `Owner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8908 - **class `Page`** - page or visual structure
+- L9039 - **class `Pendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9119 - **class `PlayList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9267 - **class `PlayListSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9395 - **class `PlayerAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9465 - **class `PointActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9547 - **class `PowerIconStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9641 - **class `ProfessionApproval`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9723 - **class `ProfessionHonorExtend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9810 - **class `ProfessionPopup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9880 - **class `PugvCooperationApplication`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9991 - **class `PugvFaq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10057 - **class `PugvFaqContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10139 - **class `PugvPackage`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10207 - **class `PugvPackageItem`** - reusable UI or rendering component
+- L10364 - **class `PugvPackageSaleInfo`** - data structure or state carrier
+- L10435 - **class `PugvSeasonCooperator`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10566 - **enum `PugvSeasonDescription_Content`** - finite state or option set
+- L10568 - **class `PugvSeasonDescription`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10689 - **class `PugvSeasonDescriptionImage`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10771 - **class `PugvSeasonDescriptionImageItem`** - reusable UI or rendering component
+- L10847 - **class `PugvSeasonDescriptionText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10909 - **class `PugvSeasonNav`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10991 - **class `PugvSeasonPrimaryBadge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11075 - **class `PugvSeasonPrimaryCustomInfo`** - data structure or state carrier
+- L11139 - **class `PugvSeasonPrimaryHotRank`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11212 - **class `PugvSeasonPrimaryInfo`** - data structure or state carrier
+- L11373 - **class `PugvSeasonPrimaryRankInfo`** - data structure or state carrier
+- L11438 - **class `PugvSeasonPrimarySellPoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11513 - **class `PugvSeasonPrimarySellPointInfo`** - data structure or state carrier
+- L11585 - **class `PugvSeasonPublisher`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11681 - **class `PugvSeasonPublisherSkuContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11752 - **class `PugvSeasonPublisherSkuContentItem`** - reusable UI or rendering component
+- L11841 - **class `PugvSeasonRecommend`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11938 - **class `PugvSeasonRecommendContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12103 - **class `PugvSeasonRecommendMore`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12187 - **class `PugvSeasonSelection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12249 - **class `PugvSeries`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12315 - **class `PugvSeriesItem`** - reusable UI or rendering component
+- L12434 - **class `PugvShoppingNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12514 - **class `PugvShoppingNoticeContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12600 - **class `PugvZone`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12651 - **class `PugvZoneItem`** - reusable UI or rendering component
+- L12758 - **class `Rank`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12838 - **class `RankInfo`** - data structure or state carrier
+- L12978 - **class `Rating`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13046 - **class `RelateAVCard`** - reusable UI or rendering component
+- L13209 - **class `RelateBangumiAvCard`** - reusable UI or rendering component
+- L13325 - **class `RelateBangumiCard`** - reusable UI or rendering component
+- L13489 - **class `RelateBangumiResourceCard`** - reusable UI or rendering component
+- L13681 - **class `RelateBangumiUGCCard`** - reusable UI or rendering component
+- L13773 - **class `RelateCMCard`** - reusable UI or rendering component
+- L13885 - **enum `RelateCard_Card`** - reusable UI or rendering component
+- L13902 - **class `RelateCard`** - reusable UI or rendering component
+- L14245 - **class `RelateConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14357 - **class `RelateCourseCard`** - reusable UI or rendering component
+- L14484 - **class `RelateDislike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14621 - **class `RelateGameCard`** - reusable UI or rendering component
+- L14829 - **class `RelateHistoryAVCard`** - reusable UI or rendering component
+- L14924 - **class `RelateItem`** - reusable UI or rendering component
+- L15004 - **class `RelateLiveCard`** - reusable UI or rendering component
+- L15152 - **class `RelateMiniProgramCard`** - reusable UI or rendering component
+- L15215 - **class `RelateSpecial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15303 - **class `RelateTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15371 - **class `RelateThreePoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15471 - **class `RelatedAICard`** - reusable UI or rendering component
+- L15593 - **class `Relates`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15666 - **enum `ReserveButton_OrderParam`** - reusable UI or rendering component
+- L15668 - **class `ReserveButton`** - reusable UI or rendering component
+- L15808 - **class `ReserveCalendarInfo`** - data structure or state carrier
+- L15915 - **class `Rights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16043 - **class `SeasonHead`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16141 - **class `SeasonShow`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16245 - **class `SectionData`** - data structure or state carrier
+- L16462 - **class `SerialSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16656 - **class `SkipRange`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16724 - **class `SpecialCell`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16963 - **class `SpecialTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17026 - **class `Sponsor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17145 - **class `SponsorRank`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17253 - **class `Staff`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17425 - **class `Staffs`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17488 - **class `StarRail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17652 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17798 - **class `StatInfo`** - data structure or state carrier
+- L17890 - **class `Style`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17964 - **class `Tag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18056 - **class `TextWidget`** - reusable UI or rendering component
+- L18148 - **class `TheatreHotTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18325 - **class `Threshold`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18405 - **class `TitleDeliveryButton`** - reusable UI or rendering component
+- L18510 - **class `UgcEpisode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18745 - **class `UgcIntroduction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18883 - **class `UgcSeasonActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19091 - **class `UgcSeasons`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19275 - **class `UgcSection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19362 - **class `UpDataModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19451 - **class `UpLikeImg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19543 - **class `UpTool`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19651 - **class `UpVideoTool`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19716 - **class `User`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19808 - **class `UserActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19926 - **class `UserList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19989 - **class `UserStatus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20057 - **class `ViewEpisode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20637 - **class `ViewMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20743 - **class `Vip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20850 - **class `VipLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L20930 - **class `WikiInfo`** - data structure or state carrier
+- L20998 - **class `WinShowCondition`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/viewunite/common.pbenum.dart`
 
@@ -4498,111 +4512,111 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/app/viewunite/pgcanymodel.pb.dart`
 
 - L22 - **class `Earphone`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L112 - **class `EarphoneConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L162 - **class `MultiViewInfo`** - data structure or state carrier
-- L229 - **class `OgvData`** - data structure or state carrier
-- L636 - **class `OgvSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L754 - **class `PlayFloatLayerActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L909 - **class `PlayStrategy`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L983 - **class `Publish`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1133 - **class `Reserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1194 - **class `Rights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1428 - **class `Skin`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1643 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1712 - **class `UserStatus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1853 - **class `ViewPgcAny`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1923 - **class `WatchProgress`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L114 - **class `EarphoneConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L167 - **class `MultiViewInfo`** - data structure or state carrier
+- L237 - **class `OgvData`** - data structure or state carrier
+- L649 - **class `OgvSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L769 - **class `PlayFloatLayerActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L928 - **class `PlayStrategy`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1005 - **class `Publish`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1157 - **class `Reserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1220 - **class `Rights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1456 - **class `Skin`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1673 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1744 - **class `UserStatus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1887 - **class `ViewPgcAny`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1959 - **class `WatchProgress`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/viewunite/v1.pb.dart`
 
 - L29 - **class `ActivityResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L144 - **class `Arc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L310 - **class `ArcRefreshReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L456 - **class `ArcRefreshReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L536 - **class `AttentionCard`** - reusable UI or rendering component
-- L586 - **class `BgPlayNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L677 - **class `BizFollowVideoParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L732 - **class `BizGameBackflowParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L787 - **class `BizJumpLinkParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L842 - **class `BizReserveActivityParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L946 - **class `BizReserveGameParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1001 - **class `Button`** - reusable UI or rendering component
-- L1092 - **class `CM`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1194 - **class `CacheAuthenticationReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1250 - **class `CacheAuthenticationReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1301 - **class `CachePlayAv`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1356 - **class `CachePlayAvRly`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1412 - **class `ChargingPlus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1474 - **class `Chronos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1552 - **class `ChronosParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1631 - **class `CommandDm`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1793 - **class `Config`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1894 - **class `ContractCard`** - reusable UI or rendering component
-- L2089 - **class `ContractText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2168 - **class `Control`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2222 - **class `DmResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2293 - **class `ECodeConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2360 - **class `FloorAdSearchItem`** - reusable UI or rendering component
-- L2418 - **class `FloorAdSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2483 - **class `FloorAdSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2574 - **class `FloorAdSearchTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2653 - **class `FragmentArc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2720 - **class `FragmentParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2770 - **class `FragmentRes`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2825 - **class `IconData`** - data structure or state carrier
-- L2891 - **class `IntroductionTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2953 - **class `LikeConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3022 - **class `Material`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3208 - **class `OldFan`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3274 - **class `Online`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3328 - **enum `OperationCard_Param`** - reusable UI or rendering component
-- L3330 - **class `OperationCard`** - reusable UI or rendering component
-- L3548 - **class `OperationCardContent`** - reusable UI or rendering component
-- L3664 - **class `PadRelateCM`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3721 - **class `PageControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3809 - **class `PlayListReqParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3948 - **class `PlayToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4027 - **class `PlayerIcon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4183 - **class `PointMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4251 - **class `Relate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4320 - **class `RelateCM`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4430 - **class `RelatesFeedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4495 - **class `RelatesFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4712 - **class `ReplyStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4790 - **class `ReplyTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4874 - **class `ReqUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5060 - **class `ReqUserExtra`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5115 - **class `Rights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5205 - **class `ShowTime`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5295 - **class `SimpleArc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5349 - **class `SimpleOwner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5407 - **class `SimpleReqUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5486 - **class `SourceContentAV`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5555 - **enum `SourceContentItem_Data`** - reusable UI or rendering component
-- L5557 - **class `SourceContentItem`** - reusable UI or rendering component
-- L5655 - **enum `StoryActualCardWrapper_ActualCard`** - reusable UI or rendering component
-- L5657 - **class `StoryActualCardWrapper`** - reusable UI or rendering component
-- L5728 - **class `StoryEntrance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5831 - **class `StoryReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5881 - **enum `StoryReq_Param`** - finite state or option set
-- L5883 - **class `StoryReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6055 - **class `StoryReqParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6154 - **class `StoryVideoCard`** - reusable UI or rendering component
-- L6276 - **class `Tab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6364 - **class `TabControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6442 - **enum `TabModule_Tab`** - finite state or option set
-- L6444 - **class `TabModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6578 - **class `UpperInfos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6669 - **class `VideoGuide`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6763 - **class `VideoPlayData`** - data structure or state carrier
-- L6869 - **class `VideoPoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7007 - **class `VideoShot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7115 - **class `VideoViewPoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7192 - **class `ViewBase`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7304 - **class `ViewProgressReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7422 - **class `ViewProgressReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7569 - **class `ViewReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7750 - **class `ViewReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L147 - **class `Arc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L317 - **class `ArcRefreshReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L468 - **class `ArcRefreshReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L551 - **class `AttentionCard`** - reusable UI or rendering component
+- L604 - **class `BgPlayNotice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L698 - **class `BizFollowVideoParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L757 - **class `BizGameBackflowParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L816 - **class `BizJumpLinkParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L874 - **class `BizReserveActivityParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L982 - **class `BizReserveGameParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1041 - **class `Button`** - reusable UI or rendering component
+- L1134 - **class `CM`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1238 - **class `CacheAuthenticationReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1299 - **class `CacheAuthenticationReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1354 - **class `CachePlayAv`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1412 - **class `CachePlayAvRly`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1471 - **class `ChargingPlus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1536 - **class `Chronos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1616 - **class `ChronosParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1698 - **class `CommandDm`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1862 - **class `Config`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1966 - **class `ContractCard`** - reusable UI or rendering component
+- L2164 - **class `ContractText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2246 - **class `Control`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2302 - **class `DmResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2375 - **class `ECodeConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2445 - **class `FloorAdSearchItem`** - reusable UI or rendering component
+- L2506 - **class `FloorAdSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2574 - **class `FloorAdSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2668 - **class `FloorAdSearchTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2750 - **class `FragmentArc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2820 - **class `FragmentParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2873 - **class `FragmentRes`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2931 - **class `IconData`** - data structure or state carrier
+- L2999 - **class `IntroductionTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3064 - **class `LikeConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3135 - **class `Material`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3323 - **class `OldFan`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3391 - **class `Online`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3447 - **enum `OperationCard_Param`** - reusable UI or rendering component
+- L3449 - **class `OperationCard`** - reusable UI or rendering component
+- L3670 - **class `OperationCardContent`** - reusable UI or rendering component
+- L3790 - **class `PadRelateCM`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3851 - **class `PageControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3942 - **class `PlayListReqParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4084 - **class `PlayToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4165 - **class `PlayerIcon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4323 - **class `PointMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4394 - **class `Relate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4465 - **class `RelateCM`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4578 - **class `RelatesFeedReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4646 - **class `RelatesFeedReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4866 - **class `ReplyStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4946 - **class `ReplyTab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5032 - **class `ReqUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5220 - **class `ReqUserExtra`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5278 - **class `Rights`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5370 - **class `ShowTime`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5462 - **class `SimpleArc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5518 - **class `SimpleOwner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5579 - **class `SimpleReqUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5661 - **class `SourceContentAV`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5734 - **enum `SourceContentItem_Data`** - reusable UI or rendering component
+- L5736 - **class `SourceContentItem`** - reusable UI or rendering component
+- L5837 - **enum `StoryActualCardWrapper_ActualCard`** - reusable UI or rendering component
+- L5839 - **class `StoryActualCardWrapper`** - reusable UI or rendering component
+- L5914 - **class `StoryEntrance`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6020 - **class `StoryReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6072 - **enum `StoryReq_Param`** - finite state or option set
+- L6074 - **class `StoryReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6248 - **class `StoryReqParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6350 - **class `StoryVideoCard`** - reusable UI or rendering component
+- L6475 - **class `Tab`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6565 - **class `TabControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6645 - **enum `TabModule_Tab`** - finite state or option set
+- L6647 - **class `TabModule`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6783 - **class `UpperInfos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6876 - **class `VideoGuide`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6972 - **class `VideoPlayData`** - data structure or state carrier
+- L7081 - **class `VideoPoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7221 - **class `VideoShot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7331 - **class `VideoViewPoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7411 - **class `ViewBase`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7526 - **class `ViewProgressReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7647 - **class `ViewProgressReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7797 - **class `ViewReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7980 - **class `ViewReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/app/viewunite/v1.pbenum.dart`
 
@@ -4622,92 +4636,92 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/community/service/dm/v1.pb.dart`
 
 - L24 - **class `Avatar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L103 - **class `Bubble`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L169 - **class `BubbleV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L273 - **class `Button`** - reusable UI or rendering component
-- L340 - **class `BuzzwordConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L390 - **class `BuzzwordShowConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L505 - **class `CheckBox`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L596 - **class `CheckBoxV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L675 - **class `ClickButton`** - reusable UI or rendering component
-- L783 - **class `ClickButtonV2`** - reusable UI or rendering component
-- L902 - **class `Command`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L951 - **class `CommandDm`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1161 - **class `DanmakuAIFlag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1211 - **class `DanmakuElem`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1522 - **class `DanmakuFlag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1589 - **class `DanmakuFlagConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1668 - **class `DanmuDefaultPlayerConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1957 - **class `DanmuPlayerConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2376 - **class `DanmuPlayerConfigPanel`** - page or visual structure
-- L2432 - **class `DanmuPlayerDynamicConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2502 - **class `DanmuPlayerViewConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2608 - **class `DanmuWebPlayerConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2961 - **class `DmColorful`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3028 - **class `DmExpoReportReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3120 - **class `DmExpoReportRes`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3159 - **class `DmHerdView`** - page or visual structure
-- L3220 - **class `DmMaskWall`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3331 - **class `DmMaskWallContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3399 - **class `DmPlayerConfigReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3853 - **class `DmSegCacheReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3932 - **class `DmSegConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3999 - **class `DmSegMobileReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4102 - **class `DmSegMobileReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4277 - **class `DmSegOttReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4339 - **class `DmSegOttReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4430 - **class `DmSegSDKReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4492 - **class `DmSegSDKReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4583 - **class `DmSubView`** - page or visual structure
-- L4668 - **class `DmViewReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4995 - **class `DmViewReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5109 - **class `DmWebViewReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5325 - **class `ExpoReport`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5410 - **class `Expression`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5476 - **class `Expressions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5526 - **class `InlinePlayerDanmakuSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5582 - **class `Label`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5642 - **class `LabelV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5727 - **class `Period`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5793 - **class `PlayerDanmakuAiRecommendedLevel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5852 - **class `PlayerDanmakuAiRecommendedLevelV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5912 - **class `PlayerDanmakuAiRecommendedSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5972 - **class `PlayerDanmakuBlockbottom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6028 - **class `PlayerDanmakuBlockcolorful`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6085 - **class `PlayerDanmakuBlockrepeat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6141 - **class `PlayerDanmakuBlockscroll`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6197 - **class `PlayerDanmakuBlockspecial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6253 - **class `PlayerDanmakuBlocktop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6309 - **class `PlayerDanmakuBlocktopBottom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6367 - **class `PlayerDanmakuDensity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6422 - **class `PlayerDanmakuDomain`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6477 - **class `PlayerDanmakuDomainV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6533 - **class `PlayerDanmakuEnableHerdDm`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6589 - **class `PlayerDanmakuEnableblocklist`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6647 - **class `PlayerDanmakuOpacity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6702 - **class `PlayerDanmakuPeopleProof`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6758 - **class `PlayerDanmakuScalingfactor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6815 - **class `PlayerDanmakuSeniorModeSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6873 - **class `PlayerDanmakuSpeed`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6928 - **class `PlayerDanmakuSubtitleProof`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6985 - **class `PlayerDanmakuSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7052 - **class `PlayerDanmakuSwitchSave`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7108 - **class `PlayerDanmakuUseDefaultConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7166 - **class `PostPanel`** - page or visual structure
-- L7328 - **class `PostPanelV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7511 - **class `QoeInfo`** - data structure or state carrier
-- L7565 - **class `ReportDuration`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7632 - **class `Response`** - data structure or state carrier
-- L7698 - **class `SubtitleItem`** - reusable UI or rendering component
-- L7880 - **class `TextInput`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8006 - **class `TextInputV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8106 - **class `Toast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8198 - **class `ToastButtonV2`** - reusable UI or rendering component
-- L8266 - **class `ToastV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8347 - **class `UserInfo`** - data structure or state carrier
-- L8461 - **class `VideoMask`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8563 - **class `VideoSubtitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8637 - **class `ViewHerdDmElem`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L105 - **class `Bubble`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L173 - **class `BubbleV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L279 - **class `Button`** - reusable UI or rendering component
+- L348 - **class `BuzzwordConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L401 - **class `BuzzwordShowConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L519 - **class `CheckBox`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L612 - **class `CheckBoxV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L693 - **class `ClickButton`** - reusable UI or rendering component
+- L805 - **class `ClickButtonV2`** - reusable UI or rendering component
+- L927 - **class `Command`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L978 - **class `CommandDm`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1190 - **class `DanmakuAIFlag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1243 - **class `DanmakuElem`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1557 - **class `DanmakuFlag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1627 - **class `DanmakuFlagConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1709 - **class `DanmuDefaultPlayerConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2003 - **class `DanmuPlayerConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2425 - **class `DanmuPlayerConfigPanel`** - page or visual structure
+- L2485 - **class `DanmuPlayerDynamicConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2560 - **class `DanmuPlayerViewConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2670 - **class `DanmuWebPlayerConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3027 - **class `DmColorful`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3096 - **class `DmExpoReportReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3191 - **class `DmExpoReportRes`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3233 - **class `DmHerdView`** - page or visual structure
+- L3296 - **class `DmMaskWall`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3409 - **class `DmMaskWallContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3480 - **class `DmPlayerConfigReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3937 - **class `DmSegCacheReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4019 - **class `DmSegConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4089 - **class `DmSegMobileReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4195 - **class `DmSegMobileReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4373 - **class `DmSegOttReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4438 - **class `DmSegOttReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4532 - **class `DmSegSDKReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4597 - **class `DmSegSDKReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4691 - **class `DmSubView`** - page or visual structure
+- L4778 - **class `DmViewReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5109 - **class `DmViewReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5225 - **class `DmWebViewReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5445 - **class `ExpoReport`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5532 - **class `Expression`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5601 - **class `Expressions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5654 - **class `InlinePlayerDanmakuSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5716 - **class `Label`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5778 - **class `LabelV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5865 - **class `Period`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5933 - **class `PlayerDanmakuAiRecommendedLevel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5997 - **class `PlayerDanmakuAiRecommendedLevelV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6062 - **class `PlayerDanmakuAiRecommendedSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6127 - **class `PlayerDanmakuBlockbottom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6188 - **class `PlayerDanmakuBlockcolorful`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6251 - **class `PlayerDanmakuBlockrepeat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6312 - **class `PlayerDanmakuBlockscroll`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6373 - **class `PlayerDanmakuBlockspecial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6435 - **class `PlayerDanmakuBlocktop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6495 - **class `PlayerDanmakuBlocktopBottom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6559 - **class `PlayerDanmakuDensity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6618 - **class `PlayerDanmakuDomain`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6677 - **class `PlayerDanmakuDomainV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6737 - **class `PlayerDanmakuEnableHerdDm`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6799 - **class `PlayerDanmakuEnableblocklist`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6863 - **class `PlayerDanmakuOpacity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6922 - **class `PlayerDanmakuPeopleProof`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6983 - **class `PlayerDanmakuScalingfactor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7046 - **class `PlayerDanmakuSeniorModeSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7110 - **class `PlayerDanmakuSpeed`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7168 - **class `PlayerDanmakuSubtitleProof`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7231 - **class `PlayerDanmakuSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7302 - **class `PlayerDanmakuSwitchSave`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7362 - **class `PlayerDanmakuUseDefaultConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7426 - **class `PostPanel`** - page or visual structure
+- L7591 - **class `PostPanelV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7777 - **class `QoeInfo`** - data structure or state carrier
+- L7833 - **class `ReportDuration`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7903 - **class `Response`** - data structure or state carrier
+- L7971 - **class `SubtitleItem`** - reusable UI or rendering component
+- L8156 - **class `TextInput`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8286 - **class `TextInputV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8390 - **class `Toast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8485 - **class `ToastButtonV2`** - reusable UI or rendering component
+- L8556 - **class `ToastV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8639 - **class `UserInfo`** - data structure or state carrier
+- L8755 - **class `VideoMask`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8859 - **class `VideoSubtitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8936 - **class `ViewHerdDmElem`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/community/service/dm/v1.pbenum.dart`
 
@@ -4731,16 +4745,16 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/dagw/component/avatar/common.pb.dart`
 
 - L23 - **class `BasicRenderSpec`** - reusable UI or rendering component
-- L78 - **class `ColorConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L163 - **class `ColorSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L217 - **class `LayerGeneralSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L305 - **class `MaskProperty`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L378 - **class `NativeDrawRes`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L474 - **class `PositionSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L554 - **class `RemoteRes`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L620 - **enum `ResourceSource_Res`** - finite state or option set
-- L622 - **class `ResourceSource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L750 - **class `SizeSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L81 - **class `ColorConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L169 - **class `ColorSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L225 - **class `LayerGeneralSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L316 - **class `MaskProperty`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L392 - **class `NativeDrawRes`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L491 - **class `PositionSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L574 - **class `RemoteRes`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L642 - **enum `ResourceSource_Res`** - finite state or option set
+- L644 - **class `ResourceSource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L775 - **class `SizeSpec`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/dagw/component/avatar/common.pbenum.dart`
 
@@ -4753,17 +4767,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/dagw/component/avatar/v1.pb.dart`
 
 - L26 - **class `AvatarItem`** - reusable UI or rendering component
-- L117 - **enum `BasicLayerResource_Payload`** - finite state or option set
-- L124 - **class `BasicLayerResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L243 - **class `GeneralConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L296 - **class `Layer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L407 - **class `LayerConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L501 - **class `LayerGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L588 - **enum `LayerTagConfig_Config`** - finite state or option set
-- L599 - **class `LayerTagConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L795 - **class `ResAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L853 - **class `ResImage`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L910 - **class `ResNativeDraw`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L119 - **enum `BasicLayerResource_Payload`** - finite state or option set
+- L126 - **class `BasicLayerResource`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L248 - **class `GeneralConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L304 - **class `Layer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L417 - **class `LayerConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L514 - **class `LayerGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L604 - **enum `LayerTagConfig_Config`** - finite state or option set
+- L615 - **class `LayerTagConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L814 - **class `ResAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L875 - **class `ResImage`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L934 - **class `ResNativeDraw`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/dagw/component/avatar/v1.pbenum.dart`
 
@@ -4773,86 +4787,86 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/dagw/component/avatar/v1/plugin.pb.dart`
 
 - L22 - **class `BorderConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L104 - **class `CommentDoubleClickConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L175 - **class `FollowActionConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L308 - **class `FollowIconConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L417 - **class `GyroConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L474 - **class `GyroscopeContentV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L550 - **class `GyroscopeEntityV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L612 - **class `Interaction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L703 - **class `LiveAnimeConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L787 - **class `LiveAnimeItem`** - reusable UI or rendering component
-- L905 - **class `LiveTextConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1038 - **class `NFTImageV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1087 - **class `PhysicalOrientationAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1163 - **class `PhysicalOrientationV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1232 - **class `WebLiveAnimeConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L107 - **class `CommentDoubleClickConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L183 - **class `FollowActionConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L319 - **class `FollowIconConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L431 - **class `GyroConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L490 - **class `GyroscopeContentV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L569 - **class `GyroscopeEntityV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L634 - **class `Interaction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L728 - **class `LiveAnimeConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L815 - **class `LiveAnimeItem`** - reusable UI or rendering component
+- L936 - **class `LiveTextConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1072 - **class `NFTImageV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1123 - **class `PhysicalOrientationAnimation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1205 - **class `PhysicalOrientationV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1278 - **class `WebLiveAnimeConfig`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/im/interfaces/v1.pb.dart`
 
 - L25 - **class `DummyReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L79 - **class `DummyRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L117 - **class `EmotionInfo`** - data structure or state carrier
-- L208 - **class `GetUserCosmoStateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L275 - **class `GetUserCosmoStateRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L378 - **class `HasLikeState`** - data structure or state carrier
-- L434 - **class `MsgDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L500 - **class `MsgFeedUnreadRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L553 - **class `NewTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L620 - **class `ReqAckAssisMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L675 - **class `ReqAckSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L754 - **class `ReqBatRmSess`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L793 - **class `ReqCloseClearUnreadUI`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L833 - **class `ReqGetDiscussListInImPage`** - page or visual structure
-- L873 - **class `ReqGetMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L946 - **class `ReqGetSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1115 - **class `ReqGetSpecificSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1166 - **class `ReqGroupAssisMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1233 - **class `ReqLikeMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1300 - **class `ReqLiveInfo`** - data structure or state carrier
-- L1367 - **class `ReqMsgHasLike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1416 - **class `ReqNewSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1513 - **class `ReqRelationSync`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1569 - **class `ReqRemoveSession`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1660 - **class `ReqSendMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1764 - **class `ReqSessionDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1843 - **class `ReqSessionDetails`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1893 - **class `ReqSessionMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2056 - **class `ReqSetTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2158 - **class `ReqShareList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2225 - **class `ReqShowClearUnreadUI`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2304 - **class `ReqSingleUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2395 - **class `ReqSpecificSingleUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2446 - **class `ReqSyncAck`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2500 - **class `ReqTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2627 - **class `ReqUpdateAck`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2706 - **class `ReqUpdateIntercept`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2785 - **class `ReqUpdateTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2841 - **class `RspCloseClearUnreadUI`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2881 - **class `RspGetDiscussListInImPage`** - page or visual structure
-- L2932 - **class `RspGetMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2980 - **class `RspLiveInfo`** - data structure or state carrier
-- L3047 - **class `RspMsgHasLike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3102 - **class `RspMyGroupUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3157 - **class `RspRelationSync`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3246 - **class `RspSendMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3362 - **class `RspSessionDetails`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3412 - **class `RspSessionMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3505 - **class `RspSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3615 - **class `RspShareList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3678 - **class `RspShowClearUnreadUI`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3745 - **class `RspSingleUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3874 - **class `RspSpecificSingleUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3943 - **class `RspSyncAck`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3981 - **class `RspTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4113 - **class `RspUpdateTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4152 - **class `SessionSingleUnreadRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4306 - **class `ShareSessionInfo`** - data structure or state carrier
-- L4397 - **class `SimpleSession`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4464 - **class `SingleDiscussInImPage`** - page or visual structure
-- L4580 - **class `SysMsgInterfaceLastMsgRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4672 - **class `UpdateUserCosmoStateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4764 - **class `UpdateUserCosmoStateRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L81 - **class `DummyRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L121 - **class `EmotionInfo`** - data structure or state carrier
+- L215 - **class `GetUserCosmoStateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L286 - **class `GetUserCosmoStateRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L393 - **class `HasLikeState`** - data structure or state carrier
+- L452 - **class `MsgDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L520 - **class `MsgFeedUnreadRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L576 - **class `NewTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L646 - **class `ReqAckAssisMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L704 - **class `ReqAckSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L786 - **class `ReqBatRmSess`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L828 - **class `ReqCloseClearUnreadUI`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L872 - **class `ReqGetDiscussListInImPage`** - page or visual structure
+- L918 - **class `ReqGetMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L993 - **class `ReqGetSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1165 - **class `ReqGetSpecificSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1220 - **class `ReqGroupAssisMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1290 - **class `ReqLikeMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1359 - **class `ReqLiveInfo`** - data structure or state carrier
+- L1429 - **class `ReqMsgHasLike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1481 - **class `ReqNewSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1581 - **class `ReqRelationSync`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1640 - **class `ReqRemoveSession`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1734 - **class `ReqSendMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1841 - **class `ReqSessionDetail`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1923 - **class `ReqSessionDetails`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1976 - **class `ReqSessionMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2142 - **class `ReqSetTop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2246 - **class `ReqShareList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2316 - **class `ReqShowClearUnreadUI`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2399 - **class `ReqSingleUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2493 - **class `ReqSpecificSingleUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2548 - **class `ReqSyncAck`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2604 - **class `ReqTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2734 - **class `ReqUpdateAck`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2816 - **class `ReqUpdateIntercept`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2898 - **class `ReqUpdateTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2958 - **class `RspCloseClearUnreadUI`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3002 - **class `RspGetDiscussListInImPage`** - page or visual structure
+- L3059 - **class `RspGetMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3110 - **class `RspLiveInfo`** - data structure or state carrier
+- L3180 - **class `RspMsgHasLike`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3238 - **class `RspMyGroupUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3296 - **class `RspRelationSync`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3388 - **class `RspSendMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3506 - **class `RspSessionDetails`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3559 - **class `RspSessionMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3655 - **class `RspSessions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3768 - **class `RspShareList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3834 - **class `RspShowClearUnreadUI`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3905 - **class `RspSingleUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4037 - **class `RspSpecificSingleUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4110 - **class `RspSyncAck`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4150 - **class `RspTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4285 - **class `RspUpdateTotalUnread`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4328 - **class `SessionSingleUnreadRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4486 - **class `ShareSessionInfo`** - data structure or state carrier
+- L4580 - **class `SimpleSession`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4650 - **class `SingleDiscussInImPage`** - page or visual structure
+- L4770 - **class `SysMsgInterfaceLastMsgRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4868 - **class `UpdateUserCosmoStateReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4964 - **class `UpdateUserCosmoStateRsp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/im/interfaces/v1.pbenum.dart`
 
@@ -4863,42 +4877,42 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/im/type.pb.dart`
 
 - L26 - **class `AILogo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L92 - **class `AccountInfo`** - data structure or state carrier
-- L159 - **class `AiCardInfo`** - reusable UI or rendering component
-- L289 - **class `AiEntry`** - data structure or state carrier
-- L367 - **class `AiInfo`** - data structure or state carrier
-- L467 - **class `AttestationDisplay`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L576 - **class `Card`** - reusable UI or rendering component
-- L941 - **class `CommonInfo`** - data structure or state carrier
-- L1019 - **class `ExpertInfo`** - data structure or state carrier
-- L1109 - **class `FriendRelation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1200 - **class `GptMsgContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1354 - **class `GptRcmdQuestionBizInfo`** - data structure or state carrier
-- L1410 - **class `GroupRelation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1585 - **class `HighText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1663 - **class `HonourTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1795 - **class `ImInfo`** - data structure or state carrier
-- L1879 - **class `ImgInfo`** - data structure or state carrier
-- L1969 - **class `KeyHitInfos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2043 - **class `Medal`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2253 - **class `Msg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2533 - **class `NameplateInfo`** - data structure or state carrier
-- L2648 - **class `OfficialInfo`** - data structure or state carrier
-- L2739 - **class `PendantInfo`** - data structure or state carrier
-- L2854 - **class `Prompt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2908 - **class `RelationLog`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3005 - **class `RichTextMsgContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3055 - **class `SessionInfo`** - data structure or state carrier
-- L3510 - **class `SessionInfoExt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3577 - **class `SpliceInfo`** - data structure or state carrier
-- L3631 - **class `Story`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3692 - **class `StoryItem`** - reusable UI or rendering component
-- L3789 - **class `UInfo`** - data structure or state carrier
-- L3860 - **class `UserHonourInfo`** - data structure or state carrier
-- L3937 - **class `UserHonourStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4004 - **class `UserLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4084 - **class `VipInfo`** - data structure or state carrier
-- L4286 - **class `VipLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L94 - **class `AccountInfo`** - data structure or state carrier
+- L164 - **class `AiCardInfo`** - reusable UI or rendering component
+- L298 - **class `AiEntry`** - data structure or state carrier
+- L378 - **class `AiInfo`** - data structure or state carrier
+- L482 - **class `AttestationDisplay`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L594 - **class `Card`** - reusable UI or rendering component
+- L962 - **class `CommonInfo`** - data structure or state carrier
+- L1042 - **class `ExpertInfo`** - data structure or state carrier
+- L1134 - **class `FriendRelation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1228 - **class `GptMsgContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1385 - **class `GptRcmdQuestionBizInfo`** - data structure or state carrier
+- L1445 - **class `GroupRelation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1623 - **class `HighText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1703 - **class `HonourTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1837 - **class `ImInfo`** - data structure or state carrier
+- L1923 - **class `ImgInfo`** - data structure or state carrier
+- L2015 - **class `KeyHitInfos`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2092 - **class `Medal`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2304 - **class `Msg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2586 - **class `NameplateInfo`** - data structure or state carrier
+- L2704 - **class `OfficialInfo`** - data structure or state carrier
+- L2798 - **class `PendantInfo`** - data structure or state carrier
+- L2916 - **class `Prompt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2972 - **class `RelationLog`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3072 - **class `RichTextMsgContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3125 - **class `SessionInfo`** - data structure or state carrier
+- L3585 - **class `SessionInfoExt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3655 - **class `SpliceInfo`** - data structure or state carrier
+- L3711 - **class `Story`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3774 - **class `StoryItem`** - reusable UI or rendering component
+- L3873 - **class `UInfo`** - data structure or state carrier
+- L3947 - **class `UserHonourInfo`** - data structure or state carrier
+- L4027 - **class `UserHonourStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4097 - **class `UserLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4180 - **class `VipInfo`** - data structure or state carrier
+- L4384 - **class `VipLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/im/type.pbenum.dart`
 
@@ -4908,145 +4922,145 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/main/community/reply/v1.pb.dart`
 
 - L30 - **class `Activity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L109 - **class `AnswerQuestionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L176 - **class `AnswerQuestionResp_MemberPassedPopup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L260 - **class `AnswerQuestionResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L371 - **class `ArticleSearchItem`** - reusable UI or rendering component
-- L444 - **class `AtGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L517 - **class `AtItem`** - reusable UI or rendering component
-- L620 - **class `AtSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L670 - **class `AtSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L737 - **class `CM`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L794 - **class `Content`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L954 - **class `CursorReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1069 - **class `CursorReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1147 - **class `DetailListReply_SubjectTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1254 - **class `DetailListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1439 - **class `DetailListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1621 - **class `DialogListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1743 - **class `DialogListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1888 - **class `DoVoteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1978 - **class `DoVoteResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2016 - **class `ESportsGradeCard`** - reusable UI or rendering component
-- L2107 - **class `Effects`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2161 - **class `Emote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2311 - **class `EmptyPage_Button`** - reusable UI or rendering component
-- L2379 - **class `EmptyPage_Text`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2462 - **class `EmptyPage`** - page or visual structure
-- L2553 - **class `Form`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2614 - **class `GoodsSearchItem`** - reusable UI or rendering component
-- L2729 - **class `LikeInfo_Item`** - reusable UI or rendering component
-- L2786 - **class `LikeInfo`** - data structure or state carrier
-- L2847 - **class `Lottery`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3017 - **class `MainListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3422 - **class `MainListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3614 - **class `Member_NftInteraction_Region`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3700 - **class `Member_NftInteraction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3795 - **class `Member`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4266 - **class `MemberV2_Basic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4399 - **class `MemberV2_Contractor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4466 - **class `MemberV2_Garb_FanNumColorFormat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4550 - **class `MemberV2_Garb`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4707 - **class `MemberV2_Medal`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4882 - **class `MemberV2_Nft_Interaction_Region`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4969 - **class `MemberV2_Nft_Interaction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5064 - **class `MemberV2_Nft`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5134 - **class `MemberV2_Official`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5189 - **class `MemberV2_Senior`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5257 - **class `MemberV2_Vip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5396 - **class `MemberV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5573 - **enum `MixedCard_Item`** - reusable UI or rendering component
-- L5575 - **class `MixedCard`** - reusable UI or rendering component
-- L5679 - **class `Notice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5757 - **class `OgvGradeCard`** - reusable UI or rendering component
-- L5848 - **class `Operation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5981 - **class `OperationTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6048 - **class `OperationV2_Icon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6116 - **class `OperationV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6235 - **class `PGCVideoSearchItem`** - reusable UI or rendering component
-- L6314 - **class `Picture`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6428 - **class `PictureListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6570 - **class `PictureListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6683 - **class `PreviewListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6808 - **class `PreviewListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6890 - **class `QoeInfo`** - data structure or state carrier
-- L7025 - **class `QoeOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7109 - **class `QoeOptionDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7158 - **class `QoeScoreItem`** - reusable UI or rendering component
-- L7237 - **class `QuestionCard_Option`** - reusable UI or rendering component
-- L7304 - **class `QuestionCard_Question`** - reusable UI or rendering component
-- L7391 - **class `QuestionCard`** - reusable UI or rendering component
-- L7476 - **class `QuestionCardStat`** - reusable UI or rendering component
-- L7555 - **class `ReplyCardLabel`** - reusable UI or rendering component
-- L7755 - **class `ReplyControl_EasterEggLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7825 - **class `ReplyControl_GradeRecord_Text`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7898 - **class `ReplyControl_GradeRecord`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7961 - **class `ReplyControl_InsertEffect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8029 - **class `ReplyControl_VoteOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8124 - **class `ReplyControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8635 - **class `ReplyExtra`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8809 - **class `ReplyInAppPushPayload_Content`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8896 - **class `ReplyInAppPushPayload_Member`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L8978 - **class `ReplyInAppPushPayload_Reply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9150 - **class `ReplyInAppPushPayload_Subject`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9232 - **class `ReplyInAppPushPayload_SubjectMaterial_Archive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9320 - **enum `ReplyInAppPushPayload_SubjectMaterial_Item`** - reusable UI or rendering component
-- L9322 - **class `ReplyInAppPushPayload_SubjectMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9399 - **class `ReplyInAppPushPayload`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9505 - **class `ReplyInfo`** - data structure or state carrier
-- L9761 - **class `ReplyInfoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9819 - **class `ReplyInfoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9887 - **class `ReplyTrackInfo`** - data structure or state carrier
-- L9942 - **enum `RichText_Item`** - reusable UI or rendering component
-- L9944 - **class `RichText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10029 - **class `RichTextNote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10114 - **enum `SearchItem_Item`** - reusable UI or rendering component
-- L10116 - **class `SearchItem`** - reusable UI or rendering component
-- L10231 - **class `SearchItemCursorReply`** - reusable UI or rendering component
-- L10299 - **class `SearchItemCursorReq`** - reusable UI or rendering component
-- L10367 - **class `SearchItemPreHookReply`** - reusable UI or rendering component
-- L10441 - **class `SearchItemPreHookReq`** - reusable UI or rendering component
-- L10508 - **class `SearchItemReply`** - reusable UI or rendering component
-- L10588 - **class `SearchItemReplyExtraInfo`** - reusable UI or rendering component
-- L10644 - **class `SearchItemReq`** - reusable UI or rendering component
-- L10738 - **class `ShareRepliesInfoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10811 - **class `ShareRepliesInfoResp_ShareExtra`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10870 - **class `ShareRepliesInfoResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11022 - **class `ShareReplyInfo`** - data structure or state carrier
-- L11142 - **class `ShareReplyMaterialReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11222 - **class `ShareReplyMaterialResp_ArchiveMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11318 - **class `ShareReplyMaterialResp_ArticleMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11390 - **class `ShareReplyMaterialResp_DynamicMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11462 - **class `ShareReplyMaterialResp_ExtraData`** - data structure or state carrier
-- L11546 - **enum `ShareReplyMaterialResp_SubjectMaterial_Item`** - reusable UI or rendering component
-- L11553 - **class `ShareReplyMaterialResp_SubjectMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11670 - **class `ShareReplyMaterialResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11806 - **class `ShareReplyTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11875 - **class `SubjectControl_CmTopReplyProtection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L11959 - **class `SubjectControl_FilterTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12027 - **class `SubjectControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12433 - **enum `SubjectTopCards_Item`** - reusable UI or rendering component
-- L12435 - **class `SubjectTopCards`** - reusable UI or rendering component
-- L12530 - **class `SuggestEmotesReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12597 - **class `SuggestEmotesResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12646 - **class `TextStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12737 - **class `Topic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12803 - **class `UGCVideoSearchItem`** - reusable UI or rendering component
-- L12894 - **class `UpSelection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12961 - **class `UpdateSingleReplyNotificationConfigReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13058 - **class `UpdateSingleReplyNotificationConfigResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13102 - **class `Url_Extra`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13244 - **class `Url`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13458 - **class `UserCallbackReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13497 - **class `UserCallbackReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13608 - **enum `VideoSearchItem_VideoItem`** - reusable UI or rendering component
-- L13610 - **class `VideoSearchItem`** - reusable UI or rendering component
-- L13711 - **class `Vote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L13789 - **class `VoteCard_Option`** - reusable UI or rendering component
-- L13868 - **class `VoteCard`** - reusable UI or rendering component
-- L13965 - **class `WordSearchParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14020 - **class `TranslateReplyReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14093 - **class `TranslateReplyResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L111 - **class `AnswerQuestionReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L181 - **class `AnswerQuestionResp_MemberPassedPopup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L271 - **class `AnswerQuestionResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L385 - **class `ArticleSearchItem`** - reusable UI or rendering component
+- L461 - **class `AtGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L537 - **class `AtItem`** - reusable UI or rendering component
+- L642 - **class `AtSearchReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L695 - **class `AtSearchReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L765 - **class `CM`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L824 - **class `Content`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L987 - **class `CursorReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1105 - **class `CursorReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1185 - **class `DetailListReply_SubjectTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1298 - **class `DetailListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1486 - **class `DetailListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1671 - **class `DialogListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1796 - **class `DialogListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1944 - **class `DoVoteReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2036 - **class `DoVoteResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2076 - **class `ESportsGradeCard`** - reusable UI or rendering component
+- L2170 - **class `Effects`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2226 - **class `Emote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2378 - **class `EmptyPage_Button`** - reusable UI or rendering component
+- L2449 - **class `EmptyPage_Text`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2535 - **class `EmptyPage`** - page or visual structure
+- L2628 - **class `Form`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2691 - **class `GoodsSearchItem`** - reusable UI or rendering component
+- L2809 - **class `LikeInfo_Item`** - reusable UI or rendering component
+- L2870 - **class `LikeInfo`** - data structure or state carrier
+- L2933 - **class `Lottery`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3106 - **class `MainListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3516 - **class `MainListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3711 - **class `Member_NftInteraction_Region`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3803 - **class `Member_NftInteraction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3902 - **class `Member`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4375 - **class `MemberV2_Basic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4511 - **class `MemberV2_Contractor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4582 - **class `MemberV2_Garb_FanNumColorFormat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4671 - **class `MemberV2_Garb`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4831 - **class `MemberV2_Medal`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5009 - **class `MemberV2_Nft_Interaction_Region`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5101 - **class `MemberV2_Nft_Interaction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5201 - **class `MemberV2_Nft`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5274 - **class `MemberV2_Official`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5332 - **class `MemberV2_Senior`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5403 - **class `MemberV2_Vip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5545 - **class `MemberV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5724 - **enum `MixedCard_Item`** - reusable UI or rendering component
+- L5726 - **class `MixedCard`** - reusable UI or rendering component
+- L5832 - **class `Notice`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5912 - **class `OgvGradeCard`** - reusable UI or rendering component
+- L6006 - **class `Operation`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6141 - **class `OperationTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6211 - **class `OperationV2_Icon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6282 - **class `OperationV2`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6404 - **class `PGCVideoSearchItem`** - reusable UI or rendering component
+- L6486 - **class `Picture`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6602 - **class `PictureListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6747 - **class `PictureListResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6863 - **class `PreviewListReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6991 - **class `PreviewListReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7076 - **class `QoeInfo`** - data structure or state carrier
+- L7214 - **class `QoeOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7300 - **class `QoeOptionDesc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7352 - **class `QoeScoreItem`** - reusable UI or rendering component
+- L7434 - **class `QuestionCard_Option`** - reusable UI or rendering component
+- L7505 - **class `QuestionCard_Question`** - reusable UI or rendering component
+- L7596 - **class `QuestionCard`** - reusable UI or rendering component
+- L7684 - **class `QuestionCardStat`** - reusable UI or rendering component
+- L7766 - **class `ReplyCardLabel`** - reusable UI or rendering component
+- L7969 - **class `ReplyControl_EasterEggLabel`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8045 - **class `ReplyControl_GradeRecord_Text`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8124 - **class `ReplyControl_GradeRecord`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8192 - **class `ReplyControl_InsertEffect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8266 - **class `ReplyControl_VoteOption`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8365 - **class `ReplyControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8879 - **class `ReplyExtra`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9055 - **class `ReplyInAppPushPayload_Content`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9148 - **class `ReplyInAppPushPayload_Member`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9236 - **class `ReplyInAppPushPayload_Reply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9414 - **class `ReplyInAppPushPayload_Subject`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9502 - **class `ReplyInAppPushPayload_SubjectMaterial_Archive`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9598 - **enum `ReplyInAppPushPayload_SubjectMaterial_Item`** - reusable UI or rendering component
+- L9600 - **class `ReplyInAppPushPayload_SubjectMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9685 - **class `ReplyInAppPushPayload`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9795 - **class `ReplyInfo`** - data structure or state carrier
+- L10053 - **class `ReplyInfoReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10114 - **class `ReplyInfoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10185 - **class `ReplyTrackInfo`** - data structure or state carrier
+- L10243 - **enum `RichText_Item`** - reusable UI or rendering component
+- L10245 - **class `RichText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10332 - **class `RichTextNote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10420 - **enum `SearchItem_Item`** - reusable UI or rendering component
+- L10422 - **class `SearchItem`** - reusable UI or rendering component
+- L10539 - **class `SearchItemCursorReply`** - reusable UI or rendering component
+- L10611 - **class `SearchItemCursorReq`** - reusable UI or rendering component
+- L10683 - **class `SearchItemPreHookReply`** - reusable UI or rendering component
+- L10761 - **class `SearchItemPreHookReq`** - reusable UI or rendering component
+- L10832 - **class `SearchItemReply`** - reusable UI or rendering component
+- L10915 - **class `SearchItemReplyExtraInfo`** - reusable UI or rendering component
+- L10976 - **class `SearchItemReq`** - reusable UI or rendering component
+- L11073 - **class `ShareRepliesInfoReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11150 - **class `ShareRepliesInfoResp_ShareExtra`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11214 - **class `ShareRepliesInfoResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11370 - **class `ShareReplyInfo`** - data structure or state carrier
+- L11494 - **class `ShareReplyMaterialReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11578 - **class `ShareReplyMaterialResp_ArchiveMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11681 - **class `ShareReplyMaterialResp_ArticleMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11760 - **class `ShareReplyMaterialResp_DynamicMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11839 - **class `ShareReplyMaterialResp_ExtraData`** - data structure or state carrier
+- L11928 - **enum `ShareReplyMaterialResp_SubjectMaterial_Item`** - reusable UI or rendering component
+- L11935 - **class `ShareReplyMaterialResp_SubjectMaterial`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12059 - **class `ShareReplyMaterialResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12199 - **class `ShareReplyTopic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12272 - **class `SubjectControl_CmTopReplyProtection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12362 - **class `SubjectControl_FilterTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12435 - **class `SubjectControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L12844 - **enum `SubjectTopCards_Item`** - reusable UI or rendering component
+- L12846 - **class `SubjectTopCards`** - reusable UI or rendering component
+- L12944 - **class `SuggestEmotesReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13014 - **class `SuggestEmotesResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13067 - **class `TextStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13160 - **class `Topic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13228 - **class `UGCVideoSearchItem`** - reusable UI or rendering component
+- L13322 - **class `UpSelection`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13392 - **class `UpdateSingleReplyNotificationConfigReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13496 - **class `UpdateSingleReplyNotificationConfigResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13549 - **class `Url_Extra`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13693 - **class `Url`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13909 - **class `UserCallbackReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13951 - **class `UserCallbackReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14065 - **enum `VideoSearchItem_VideoItem`** - reusable UI or rendering component
+- L14067 - **class `VideoSearchItem`** - reusable UI or rendering component
+- L14171 - **class `Vote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14251 - **class `VoteCard_Option`** - reusable UI or rendering component
+- L14333 - **class `VoteCard`** - reusable UI or rendering component
+- L14432 - **class `WordSearchParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14490 - **class `TranslateReplyReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14566 - **class `TranslateReplyResp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/main/community/reply/v1.pbenum.dart`
 
@@ -5085,24 +5099,24 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/metadata/device.pb.dart`
 
 - L20 - **class `Device`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L254 - **class `DeviceType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L292 - **class `MobiApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L330 - **class `Platform`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L256 - **class `DeviceType`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L296 - **class `MobiApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L336 - **class `Platform`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/metadata/fawkes.pb.dart`
 
 - L19 - **class `FawkesReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L98 - **class `FawkesReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L101 - **class `FawkesReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/metadata/locale.pb.dart`
 
 - L19 - **class `Locale`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L151 - **class `LocaleIds`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L153 - **class `LocaleIds`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/metadata/network.pb.dart`
 
 - L24 - **class `NetQuality`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L114 - **class `Network`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L116 - **class `Network`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/metadata/network.pbenum.dart`
 
@@ -5112,7 +5126,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/metadata/parabox.pb.dart`
 
 - L20 - **class `Exp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L86 - **class `Exps`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L88 - **class `Exps`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/metadata/restriction.pb.dart`
 
@@ -5125,96 +5139,96 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/pagination.pb.dart`
 
 - L19 - **class `FeedPagination`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L98 - **class `FeedPaginationReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L177 - **class `Pagination`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L243 - **class `PaginationReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L101 - **class `FeedPaginationReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L184 - **class `Pagination`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L252 - **class `PaginationReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/playershared.pb.dart`
 
 - L25 - **class `AIAudio`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L160 - **class `AIAudioItem`** - reusable UI or rendering component
-- L246 - **class `ArcConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L347 - **class `AutoQnCtl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L473 - **class `AutoQnRange`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L540 - **class `BackgroundInfo`** - data structure or state carrier
-- L620 - **class `Badge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L758 - **class `BadgeInfo`** - data structure or state carrier
-- L875 - **class `Banner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L967 - **class `BenefitInfo`** - data structure or state carrier
-- L1034 - **class `BottomDisplay`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1104 - **class `Button`** - reusable UI or rendering component
-- L1180 - **class `ButtonInfo`** - reusable UI or rendering component
-- L1492 - **class `ChargingExt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1547 - **class `ComprehensiveToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1685 - **enum `ConfValue_Value`** - finite state or option set
-- L1687 - **class `ConfValue`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1766 - **class `CountDownItem`** - reusable UI or rendering component
-- L1851 - **class `DashItem`** - reusable UI or rendering component
-- L2007 - **class `DashVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2199 - **class `DeviceConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2256 - **class `Dialog`** - page or visual structure
-- L2515 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2605 - **class `DolbyItem`** - reusable UI or rendering component
-- L2667 - **class `EpInlineVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2746 - **class `EpInlineVideoInfo`** - data structure or state carrier
-- L2796 - **class `Event`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2866 - **class `ExpSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L2930 - **enum `ExtData_Data`** - data structure or state carrier
-- L2939 - **class `ExtData`** - data structure or state carrier
-- L3089 - **class `ExtraContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3156 - **enum `FoldData_Data`** - data structure or state carrier
-- L3158 - **class `FoldData`** - data structure or state carrier
-- L3238 - **class `Fragment`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3287 - **class `FragmentInfo`** - data structure or state carrier
-- L3418 - **class `FragmentVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3468 - **class `FragmentVideoInfo`** - data structure or state carrier
-- L3608 - **class `FullPromptBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3777 - **class `GradientColor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3844 - **class `History`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L3916 - **class `HistoryInfo`** - data structure or state carrier
-- L4024 - **class `ImageInfo`** - data structure or state carrier
-- L4078 - **class `Interaction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4172 - **class `LossLessItem`** - reusable UI or rendering component
-- L4254 - **class `MultiDashVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4304 - **class `Node`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4382 - **class `PayWallOnshowAction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4463 - **class `PlayArc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4646 - **class `PlayArcConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4701 - **class `PlayDeviceConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4756 - **class `PlayList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L4861 - **class `PlayListInfo`** - data structure or state carrier
-- L4911 - **class `PromptBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5128 - **class `QnExp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5194 - **class `QnTip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5248 - **class `QnTrialInfo`** - data structure or state carrier
-- L5395 - **class `QrCode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5461 - **class `Report`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5539 - **class `ResidentBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5662 - **class `ResponseDash`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5719 - **class `ResponseUrl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5828 - **class `Scheme`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5895 - **class `SegmentVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5945 - **class `SettingBase`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6050 - **class `SettingControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6129 - **class `SettingGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6204 - **enum `SettingItem_Value`** - reusable UI or rendering component
-- L6206 - **class `SettingItem`** - reusable UI or rendering component
-- L6339 - **class `SettingMore`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6457 - **class `SettingSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6514 - **class `SettingVertical`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6608 - **class `Shake`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6662 - **enum `Stream_Content`** - finite state or option set
-- L6664 - **class `Stream`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6782 - **class `StreamInfo`** - data structure or state carrier
-- L7035 - **class `StreamLimit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7114 - **class `TaskParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7192 - **class `TextInfo`** - data structure or state carrier
-- L7282 - **class `Toast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7350 - **class `VideoCtrl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7421 - **class `VideoVod`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L7621 - **class `ViewInfo`** - data structure or state carrier
-- L7758 - **class `VodInfo`** - data structure or state carrier
-- L7934 - **class `VolumeInfo`** - data structure or state carrier
+- L163 - **class `AIAudioItem`** - reusable UI or rendering component
+- L252 - **class `ArcConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L355 - **class `AutoQnCtl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L483 - **class `AutoQnRange`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L553 - **class `BackgroundInfo`** - data structure or state carrier
+- L636 - **class `Badge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L776 - **class `BadgeInfo`** - data structure or state carrier
+- L895 - **class `Banner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L990 - **class `BenefitInfo`** - data structure or state carrier
+- L1060 - **class `BottomDisplay`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1133 - **class `Button`** - reusable UI or rendering component
+- L1211 - **class `ButtonInfo`** - reusable UI or rendering component
+- L1526 - **class `ChargingExt`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1584 - **class `ComprehensiveToast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1726 - **enum `ConfValue_Value`** - finite state or option set
+- L1728 - **class `ConfValue`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1809 - **class `CountDownItem`** - reusable UI or rendering component
+- L1897 - **class `DashItem`** - reusable UI or rendering component
+- L2055 - **class `DashVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2249 - **class `DeviceConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2308 - **class `Dialog`** - page or visual structure
+- L2570 - **class `Dimension`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2662 - **class `DolbyItem`** - reusable UI or rendering component
+- L2726 - **class `EpInlineVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2808 - **class `EpInlineVideoInfo`** - data structure or state carrier
+- L2861 - **class `Event`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L2935 - **class `ExpSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3001 - **enum `ExtData_Data`** - data structure or state carrier
+- L3010 - **class `ExtData`** - data structure or state carrier
+- L3164 - **class `ExtraContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3234 - **enum `FoldData_Data`** - data structure or state carrier
+- L3236 - **class `FoldData`** - data structure or state carrier
+- L3318 - **class `Fragment`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3369 - **class `FragmentInfo`** - data structure or state carrier
+- L3504 - **class `FragmentVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3557 - **class `FragmentVideoInfo`** - data structure or state carrier
+- L3700 - **class `FullPromptBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3873 - **class `GradientColor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L3943 - **class `History`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4017 - **class `HistoryInfo`** - data structure or state carrier
+- L4129 - **class `ImageInfo`** - data structure or state carrier
+- L4185 - **class `Interaction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4282 - **class `LossLessItem`** - reusable UI or rendering component
+- L4367 - **class `MultiDashVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4420 - **class `Node`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4500 - **class `PayWallOnshowAction`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4585 - **class `PlayArc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4770 - **class `PlayArcConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4828 - **class `PlayDeviceConf`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4886 - **class `PlayList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L4993 - **class `PlayListInfo`** - data structure or state carrier
+- L5046 - **class `PromptBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5266 - **class `QnExp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5334 - **class `QnTip`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5390 - **class `QnTrialInfo`** - data structure or state carrier
+- L5541 - **class `QrCode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5609 - **class `Report`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5689 - **class `ResidentBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5816 - **class `ResponseDash`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5876 - **class `ResponseUrl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5988 - **class `Scheme`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6057 - **class `SegmentVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6110 - **class `SettingBase`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6218 - **class `SettingControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6300 - **class `SettingGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6378 - **enum `SettingItem_Value`** - reusable UI or rendering component
+- L6380 - **class `SettingItem`** - reusable UI or rendering component
+- L6516 - **class `SettingMore`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6638 - **class `SettingSwitch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6699 - **class `SettingVertical`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6797 - **class `Shake`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6853 - **enum `Stream_Content`** - finite state or option set
+- L6855 - **class `Stream`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6975 - **class `StreamInfo`** - data structure or state carrier
+- L7230 - **class `StreamLimit`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7312 - **class `TaskParam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7392 - **class `TextInfo`** - data structure or state carrier
+- L7484 - **class `Toast`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7555 - **class `VideoCtrl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7629 - **class `VideoVod`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L7831 - **class `ViewInfo`** - data structure or state carrier
+- L7970 - **class `VodInfo`** - data structure or state carrier
+- L8148 - **class `VolumeInfo`** - data structure or state carrier
 
 ## `lib/grpc/bilibili/playershared.pbenum.dart`
 
@@ -5254,20 +5268,20 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/grpc/bilibili/vas/garb/model.pb.dart`
 
 - L20 - **class `FanNumColorFormat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L100 - **class `ImageGroup_VisualEffect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L168 - **class `ImageGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L237 - **class `UserCardBG`** - reusable UI or rendering component
-- L369 - **class `UserFanShow`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L499 - **class `UserPendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L626 - **class `UserSailing`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L103 - **class `ImageGroup_VisualEffect`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L175 - **class `ImageGroup`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L246 - **class `UserCardBG`** - reusable UI or rendering component
+- L380 - **class `UserFanShow`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L513 - **class `UserPendant`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L643 - **class `UserSailing`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/grpc/bilibili/vas/garb/service.pb.dart`
 
 - L23 - **class `SailingEquipMultiReply`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L79 - **class `SailingEquipMultiReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L191 - **class `UserCard`** - reusable UI or rendering component
-- L383 - **class `UserCardMultiReply`** - reusable UI or rendering component
-- L438 - **class `UserCardMultiReq`** - reusable UI or rendering component
+- L83 - **class `SailingEquipMultiReq`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L199 - **class `UserCard`** - reusable UI or rendering component
+- L393 - **class `UserCardMultiReply`** - reusable UI or rendering component
+- L451 - **class `UserCardMultiReq`** - reusable UI or rendering component
 
 ## `lib/grpc/dm.dart`
 
@@ -5480,31 +5494,31 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L34 - **class `LiveHttp`** - network API wrapper for its business domain
 - L37 - `static Future<LoadingState<void>> sendLiveMsg({` - performs one operation in its enclosing type or module
-- L83 - `static Future<LoadingState<RoomPlayInfoData>> liveRoomInfo({` - performs one operation in its enclosing type or module
-- L115 - `static Future<LoadingState<RoomInfoH5Data>> liveRoomInfoH5({` - performs one operation in its enclosing type or module
-- L131 - `static Future<LoadingState<List<DanmakuMsg>?>> liveRoomDmPrefetch({` - performs one operation in its enclosing type or module
-- L159 - `static Future<LoadingState<LiveDmInfoData>> liveRoomGetDanmakuToken({` - performs one operation in its enclosing type or module
-- L180 - `static Future<LoadingState<List<LiveEmoteDatum>?>> getLiveEmoticons({` - reads, requests, or synchronizes data
-- L197 - `static Future<LoadingState<LiveIndexData>> liveFeedIndex({` - performs one operation in its enclosing type or module
-- L251 - `static Future<LoadingState<LiveFollowData>> liveFollow(int page) async {` - performs one operation in its enclosing type or module
-- L268 - `static Future<LoadingState<LiveSecondData>> liveSecondList({` - performs one operation in its enclosing type or module
-- L329 - `static Future<LoadingState<List<AreaList>?>> liveAreaList() async {` - performs one operation in its enclosing type or module
-- L360 - `static Future<LoadingState<List<AreaItem>>> getLiveFavTag() async {` - reads, requests, or synchronizes data
-- L393 - `static Future<LoadingState<void>> setLiveFavTag({` - updates, stores, or records state
-- L425 - `static Future<LoadingState<List<AreaItem>?>> liveRoomAreaList({` - performs one operation in its enclosing type or module
-- L459 - `static Future<LoadingState<LiveSearchData>> liveSearch({` - performs one operation in its enclosing type or module
-- L494 - `static Future<LoadingState<ShieldInfo?>> getLiveInfoByUser(` - reads, requests, or synchronizes data
-- L513 - `static Future<LoadingState<void>> liveSetSilent({` - performs one operation in its enclosing type or module
-- L535 - `static Future<LoadingState<void>> addShieldKeyword({` - updates, stores, or records state
-- L555 - `static Future<LoadingState<void>> delShieldKeyword({` - performs one operation in its enclosing type or module
-- L575 - `static Future<LoadingState<ShieldUserList>> liveShieldUser({` - performs one operation in its enclosing type or module
-- L599 - `static Future<LoadingState<void>> liveLikeReport({` - performs one operation in its enclosing type or module
-- L625 - `static Future<LoadingState<SuperChatData>> superChatMsg(` - performs one operation in its enclosing type or module
-- L645 - `static Future<LoadingState<void>> liveDmReport({` - performs one operation in its enclosing type or module
-- L685 - `static Future<LoadingState<LiveContributionRankData>> liveContributionRank({` - performs one operation in its enclosing type or module
-- L715 - `static Future<LoadingState<void>> superChatReport({` - performs one operation in its enclosing type or module
-- L751 - `static Future<LoadingState<MedalWallData>> liveMedalWall({` - performs one operation in its enclosing type or module
-- L765 - `static Future<LoadingState<void>> liveFeedback(` - performs one operation in its enclosing type or module
+- L81 - `static Future<LoadingState<RoomPlayInfoData>> liveRoomInfo({` - performs one operation in its enclosing type or module
+- L113 - `static Future<LoadingState<RoomInfoH5Data>> liveRoomInfoH5({` - performs one operation in its enclosing type or module
+- L127 - `static Future<LoadingState<List<DanmakuMsg>?>> liveRoomDmPrefetch({` - performs one operation in its enclosing type or module
+- L155 - `static Future<LoadingState<LiveDmInfoData>> liveRoomGetDanmakuToken({` - performs one operation in its enclosing type or module
+- L176 - `static Future<LoadingState<List<LiveEmoteDatum>?>> getLiveEmoticons({` - reads, requests, or synchronizes data
+- L193 - `static Future<LoadingState<LiveIndexData>> liveFeedIndex({` - performs one operation in its enclosing type or module
+- L247 - `static Future<LoadingState<LiveFollowData>> liveFollow(int page) async {` - performs one operation in its enclosing type or module
+- L264 - `static Future<LoadingState<LiveSecondData>> liveSecondList({` - performs one operation in its enclosing type or module
+- L325 - `static Future<LoadingState<List<AreaList>?>> liveAreaList() async {` - performs one operation in its enclosing type or module
+- L356 - `static Future<LoadingState<List<AreaItem>>> getLiveFavTag() async {` - reads, requests, or synchronizes data
+- L389 - `static Future<LoadingState<void>> setLiveFavTag({` - updates, stores, or records state
+- L421 - `static Future<LoadingState<List<AreaItem>?>> liveRoomAreaList({` - performs one operation in its enclosing type or module
+- L455 - `static Future<LoadingState<LiveSearchData>> liveSearch({` - performs one operation in its enclosing type or module
+- L490 - `static Future<LoadingState<ShieldInfo?>> getLiveInfoByUser(` - reads, requests, or synchronizes data
+- L509 - `static Future<LoadingState<void>> liveSetSilent({` - performs one operation in its enclosing type or module
+- L531 - `static Future<LoadingState<void>> addShieldKeyword({` - updates, stores, or records state
+- L551 - `static Future<LoadingState<void>> delShieldKeyword({` - performs one operation in its enclosing type or module
+- L571 - `static Future<LoadingState<ShieldUserList>> liveShieldUser({` - performs one operation in its enclosing type or module
+- L595 - `static Future<LoadingState<void>> liveLikeReport({` - performs one operation in its enclosing type or module
+- L621 - `static Future<LoadingState<SuperChatData>> superChatMsg(` - performs one operation in its enclosing type or module
+- L641 - `static Future<LoadingState<void>> liveDmReport({` - performs one operation in its enclosing type or module
+- L681 - `static Future<LoadingState<LiveContributionRankData>> liveContributionRank({` - performs one operation in its enclosing type or module
+- L711 - `static Future<LoadingState<void>> superChatReport({` - performs one operation in its enclosing type or module
+- L747 - `static Future<LoadingState<MedalWallData>> liveMedalWall({` - performs one operation in its enclosing type or module
+- L761 - `static Future<LoadingState<void>> liveFeedback(` - performs one operation in its enclosing type or module
 
 ## `lib/http/loading_state.dart`
 
@@ -5644,23 +5658,22 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/http/retry_interceptor.dart`
 
-- L4 - **class `RetryInterceptor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9 - `RetryInterceptor(this._client, this._count, this._delay);` - switches, recovers, or refreshes runtime state
-- L12 - `void onError(DioException err, ErrorInterceptorHandler handler) {` - handles interaction, lifecycle, or playback events
-- L80 - `RetryInterceptor copyWith({Dio? client, int? count, int? delay}) =>` - performs one operation in its enclosing type or module
+- L6 - **class `RetryInterceptor`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11 - `RetryInterceptor(this._client, this._count, this._delay);` - switches, recovers, or refreshes runtime state
+- L14 - `void onError(DioException err, ErrorInterceptorHandler handler) {` - handles interaction, lifecycle, or playback events
+- L82 - `RetryInterceptor copyWith({Dio? client, int? count, int? delay}) =>` - performs one operation in its enclosing type or module
 
 ## `lib/http/search.dart`
 
-- L21 - **class `SearchHttp`** - network API wrapper for its business domain
+- L20 - **class `SearchHttp`** - network API wrapper for its business domain
 - L23 - `static Future<LoadingState<SearchSuggestModel>> searchSuggest({` - performs one operation in its enclosing type or module
-- L134 - `static Future<LoadingState<SearchAllData>> searchAll({` - performs one operation in its enclosing type or module
-- L176 - `static Future<int?> ab2c({dynamic aid, dynamic bvid, int? part}) async {` - performs one operation in its enclosing type or module
-- L180 - `static Future<PageItem?> ab2cWithDimension({` - performs one operation in its enclosing type or module
-- L205 - `static Future<LoadingState<PgcInfoModel>> pgcInfo({` - performs one operation in its enclosing type or module
-- L223 - `static Future<LoadingState<PgcInfoModel>> pugvInfo({` - performs one operation in its enclosing type or module
-- L255 - `static Future<LoadingState<SearchTrendingData>> searchTrending({` - performs one operation in its enclosing type or module
-- L274 - `static Future<LoadingState<SearchRcmdData>> searchRecommend() async {` - performs one operation in its enclosing type or module
-- L295 - `static Future<LoadingState<TopicPubSearchData>> topicPubSearch({` - performs one operation in its enclosing type or module
+- L123 - `static Future<int?> ab2c({dynamic aid, dynamic bvid, int? part}) async {` - performs one operation in its enclosing type or module
+- L127 - `static Future<PageItem?> ab2cWithDimension({` - performs one operation in its enclosing type or module
+- L152 - `static Future<LoadingState<PgcInfoModel>> pgcInfo({` - performs one operation in its enclosing type or module
+- L170 - `static Future<LoadingState<PgcInfoModel>> pugvInfo({` - performs one operation in its enclosing type or module
+- L202 - `static Future<LoadingState<SearchTrendingData>> searchTrending({` - performs one operation in its enclosing type or module
+- L221 - `static Future<LoadingState<SearchRcmdData>> searchRecommend() async {` - performs one operation in its enclosing type or module
+- L242 - `static Future<LoadingState<TopicPubSearchData>> topicPubSearch({` - performs one operation in its enclosing type or module
 
 ## `lib/http/sponsor_block_api.dart`
 
@@ -5720,47 +5733,47 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/http/video.dart`
 
-- L47 - **class `VideoHttp`** - network API wrapper for its business domain
-- L52 - `static Future<LoadingState<List<RcmdVideoItemModel>>> rcmdVideoList({` - performs one operation in its enclosing type or module
-- L88 - `static Future<LoadingState<List<RcmdVideoItemAppModel>>> rcmdVideoListApp({` - performs one operation in its enclosing type or module
-- L167 - `static Future<LoadingState<List<HotVideoItemModel>>> hotVideoList({` - performs one operation in its enclosing type or module
-- L200 - `static Future<LoadingState<PlayUrlModel>> videoUrl({` - performs one operation in its enclosing type or module
-- L278 - `static String _parseVideoErr(int? code, String? msg) {` - performs one operation in its enclosing type or module
-- L287 - `static Future<LoadingState<VideoDetailData>> videoIntro({` - performs one operation in its enclosing type or module
-- L301 - `static Future<LoadingState<VideoRelation>> videoRelation({` - performs one operation in its enclosing type or module
-- L316 - `static Future<LoadingState<List<HotVideoItemModel>?>> relatedVideoList({` - performs one operation in its enclosing type or module
-- L337 - `static Future<LoadingState<PgcLCF>> pgcLikeCoinFav({` - performs one operation in its enclosing type or module
-- L352 - `static Future<LoadingState<void>> coinVideo({` - performs one operation in its enclosing type or module
-- L376 - `static Future<LoadingState<PgcTriple>> pgcTriple({` - performs one operation in its enclosing type or module
-- L401 - `static Future<LoadingState<UgcTriple>> ugcTriple({` - performs one operation in its enclosing type or module
-- L433 - `static Future<LoadingState<String>> likeVideo({` - performs one operation in its enclosing type or module
-- L450 - `static Future<LoadingState<void>> dislikeVideo({` - performs one operation in its enclosing type or module
-- L473 - `static Future<LoadingState<void>> feedDislike({` - performs one operation in its enclosing type or module
-- L502 - `static Future<LoadingState<void>> feedDislikeCancel({` - performs one operation in its enclosing type or module
-- L537 - `static Future<LoadingState<ReplyInfo?>> replyAdd({` - performs one operation in its enclosing type or module
-- L584 - `static Future<LoadingState<void>> replyDel({` - performs one operation in its enclosing type or module
-- L608 - `static Future<LoadingState<void>> relationMod({` - performs one operation in its enclosing type or module
-- L656 - `static Future<void> roomEntryAction({required Object roomId}) {` - performs one operation in its enclosing type or module
-- L664 - `static Future<void> historyReport({` - performs one operation in its enclosing type or module
-- L676 - `static Future<void> heartBeat({` - performs one operation in its enclosing type or module
-- L703 - `static Future<void> medialistHistory({` - performs one operation in its enclosing type or module
-- L721 - `static Future<LoadingState<String>> pgcAdd({int? seasonId}) async {` - performs one operation in its enclosing type or module
-- L735 - `static Future<LoadingState<String>> pgcDel({int? seasonId}) async {` - performs one operation in its enclosing type or module
-- L748 - `static Future<LoadingState<String>> pgcUpdate({` - performs one operation in its enclosing type or module
-- L769 - `static Future<LoadingState<String>> onlineTotal({` - handles interaction, lifecycle, or playback events
-- L786 - `static Future<LoadingState<AiConclusionData>> aiConclusion({` - performs one operation in its enclosing type or module
-- L810 - `static Future<LoadingState<PlayInfoData>> playInfo({` - handles interaction, lifecycle, or playback events
-- L835 - `static Future<String?> getSubtitles(` - reads, requests, or synchronizes data
-- L853 - `static bool _canAddRank(Map i) {` - performs one operation in its enclosing type or module
-- L871 - `static Future<LoadingState<List<HotVideoItemModel>>> getRankVideoList(` - reads, requests, or synchronizes data
-- L900 - `static Future<LoadingState<List<PgcRankItemModel>?>> pgcRankList({` - performs one operation in its enclosing type or module
-- L923 - `static Future<LoadingState<List<PgcRankItemModel>?>> pgcSeasonRankList({` - performs one operation in its enclosing type or module
-- L945 - `static Future<LoadingState<VideoNoteData>> getVideoNoteList({` - reads, requests, or synchronizes data
-- L969 - `popularSeriesList() async {` - performs one operation in its enclosing type or module
-- L987 - `static Future<LoadingState<PopularSeriesOneData>> popularSeriesOne({` - performs one operation in its enclosing type or module
-- L1004 - `static Future<LoadingState<PopularPreciousData>> popularPrecious({` - performs one operation in its enclosing type or module
-- L1022 - `static Future<LoadingState<PlayUrlModel>> tvPlayUrl({` - performs one operation in its enclosing type or module
-- L1052 - `static Future<LoadingState<VideoShotData>> videoshot({` - performs one operation in its enclosing type or module
+- L48 - **class `VideoHttp`** - network API wrapper for its business domain
+- L53 - `static Future<LoadingState<List<RcmdVideoItemModel>>> rcmdVideoList({` - performs one operation in its enclosing type or module
+- L89 - `static Future<LoadingState<List<RcmdVideoItemAppModel>>> rcmdVideoListApp({` - performs one operation in its enclosing type or module
+- L168 - `static Future<LoadingState<List<HotVideoItemModel>>> hotVideoList({` - performs one operation in its enclosing type or module
+- L201 - `static Future<LoadingState<PlayUrlModel>> videoUrl({` - performs one operation in its enclosing type or module
+- L279 - `static String _parseVideoErr(int? code, String? msg) {` - performs one operation in its enclosing type or module
+- L288 - `static Future<LoadingState<VideoDetailData>> videoIntro({` - performs one operation in its enclosing type or module
+- L302 - `static Future<LoadingState<VideoRelation>> videoRelation({` - performs one operation in its enclosing type or module
+- L317 - `static Future<LoadingState<List<HotVideoItemModel>?>> relatedVideoList({` - performs one operation in its enclosing type or module
+- L338 - `static Future<LoadingState<PgcLCF>> pgcLikeCoinFav({` - performs one operation in its enclosing type or module
+- L353 - `static Future<LoadingState<void>> coinVideo({` - performs one operation in its enclosing type or module
+- L377 - `static Future<LoadingState<PgcTriple>> pgcTriple({` - performs one operation in its enclosing type or module
+- L402 - `static Future<LoadingState<UgcTriple>> ugcTriple({` - performs one operation in its enclosing type or module
+- L434 - `static Future<LoadingState<String>> likeVideo({` - performs one operation in its enclosing type or module
+- L451 - `static Future<LoadingState<void>> dislikeVideo({` - performs one operation in its enclosing type or module
+- L474 - `static Future<LoadingState<void>> feedDislike({` - performs one operation in its enclosing type or module
+- L503 - `static Future<LoadingState<void>> feedDislikeCancel({` - performs one operation in its enclosing type or module
+- L538 - `static Future<LoadingState<ReplyInfo?>> replyAdd({` - performs one operation in its enclosing type or module
+- L585 - `static Future<LoadingState<void>> replyDel({` - performs one operation in its enclosing type or module
+- L609 - `static Future<LoadingState<void>> relationMod({` - performs one operation in its enclosing type or module
+- L657 - `static Future<void> roomEntryAction({required Object roomId}) {` - performs one operation in its enclosing type or module
+- L665 - `static Future<void> historyReport({` - performs one operation in its enclosing type or module
+- L677 - `static Future<void> heartBeat({` - performs one operation in its enclosing type or module
+- L704 - `static Future<void> medialistHistory({` - performs one operation in its enclosing type or module
+- L722 - `static Future<LoadingState<String>> pgcAdd({int? seasonId}) async {` - performs one operation in its enclosing type or module
+- L736 - `static Future<LoadingState<String>> pgcDel({int? seasonId}) async {` - performs one operation in its enclosing type or module
+- L749 - `static Future<LoadingState<String>> pgcUpdate({` - performs one operation in its enclosing type or module
+- L770 - `static Future<LoadingState<String>> onlineTotal({` - handles interaction, lifecycle, or playback events
+- L787 - `static Future<LoadingState<AiConclusionData>> aiConclusion({` - performs one operation in its enclosing type or module
+- L811 - `static Future<LoadingState<PlayInfoData>> playInfo({` - handles interaction, lifecycle, or playback events
+- L836 - `static Future<String?> getSubtitles(` - reads, requests, or synchronizes data
+- L854 - `static bool _canAddRank(Map i) {` - performs one operation in its enclosing type or module
+- L872 - `static Future<LoadingState<List<HotVideoItemModel>>> getRankVideoList(` - reads, requests, or synchronizes data
+- L901 - `static Future<LoadingState<List<PgcRankItemModel>?>> pgcRankList({` - performs one operation in its enclosing type or module
+- L924 - `static Future<LoadingState<List<PgcRankItemModel>?>> pgcSeasonRankList({` - performs one operation in its enclosing type or module
+- L946 - `static Future<LoadingState<VideoNoteData>> getVideoNoteList({` - reads, requests, or synchronizes data
+- L970 - `popularSeriesList() async {` - performs one operation in its enclosing type or module
+- L995 - `static Future<LoadingState<PopularSeriesOneData>> popularSeriesOne({` - performs one operation in its enclosing type or module
+- L1019 - `static Future<LoadingState<PopularPreciousData>> popularPrecious({` - performs one operation in its enclosing type or module
+- L1044 - `static Future<LoadingState<PlayUrlModel>> tvPlayUrl({` - performs one operation in its enclosing type or module
+- L1074 - `static Future<LoadingState<VideoShotData>> videoshot({` - performs one operation in its enclosing type or module
 
 ## `lib/main.dart`
 
@@ -5774,23 +5787,23 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L246 - **class `MyApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L247 - `const MyApp({super.key});` - performs one operation in its enclosing type or module
 - L251 - `static (ThemeData, ThemeData) getAllTheme() {` - performs one operation in its enclosing type or module
-- L273 - `Widget build(BuildContext context) {` - builds UI or state
-- L305 - `static Widget _builder(BuildContext context, Widget? child) {` - performs one operation in its enclosing type or module
-- L343 - `static Future<bool> initPlatformState() async {` - starts or initializes state and resources
-- L391 - **class `_PredictiveBackGestureDispatcher`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L392 - `const _PredictiveBackGestureDispatcher({required this.child});` - performs one operation in its enclosing type or module
-- L397 - `State<_PredictiveBackGestureDispatcher> createState() =>` - builds UI or state
-- L398 - `_PredictiveBackGestureDispatcherState();` - performs one operation in its enclosing type or module
-- L401 - **class `_PredictiveBackGestureDispatcherState`** - data structure or state carrier
-- L407 - `bool handleStartBackGesture(PredictiveBackEvent backEvent) {` - handles interaction, lifecycle, or playback events
-- L425 - `void handleUpdateBackGestureProgress(PredictiveBackEvent backEvent) {` - handles interaction, lifecycle, or playback events
-- L435 - `void handleCancelBackGesture() {` - handles interaction, lifecycle, or playback events
-- L444 - `void handleCommitBackGesture() {` - handles interaction, lifecycle, or playback events
-- L475 - `void initState() {` - starts or initializes state and resources
-- L481 - `void dispose() {` - stops, releases, or resets state and resources
-- L487 - `Widget build(BuildContext context) =>` - builds UI or state
-- L497 - **class `_CustomHttpOverrides`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L499 - `HttpClient createHttpClient(SecurityContext? context) {` - performs one operation in its enclosing type or module
+- L283 - `Widget build(BuildContext context) {` - builds UI or state
+- L315 - `static Widget _builder(BuildContext context, Widget? child) {` - performs one operation in its enclosing type or module
+- L353 - `static Future<bool> initPlatformState() async {` - starts or initializes state and resources
+- L401 - **class `_PredictiveBackGestureDispatcher`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L402 - `const _PredictiveBackGestureDispatcher({required this.child});` - performs one operation in its enclosing type or module
+- L407 - `State<_PredictiveBackGestureDispatcher> createState() =>` - builds UI or state
+- L408 - `_PredictiveBackGestureDispatcherState();` - performs one operation in its enclosing type or module
+- L411 - **class `_PredictiveBackGestureDispatcherState`** - data structure or state carrier
+- L417 - `bool handleStartBackGesture(PredictiveBackEvent backEvent) {` - handles interaction, lifecycle, or playback events
+- L435 - `void handleUpdateBackGestureProgress(PredictiveBackEvent backEvent) {` - handles interaction, lifecycle, or playback events
+- L445 - `void handleCancelBackGesture() {` - handles interaction, lifecycle, or playback events
+- L454 - `void handleCommitBackGesture() {` - handles interaction, lifecycle, or playback events
+- L485 - `void initState() {` - starts or initializes state and resources
+- L491 - `void dispose() {` - stops, releases, or resets state and resources
+- L497 - `Widget build(BuildContext context) =>` - builds UI or state
+- L507 - **class `_CustomHttpOverrides`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L509 - `HttpClient createHttpClient(SecurityContext? context) {` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/account_myinfo/data.dart`
 
@@ -5964,26 +5977,26 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/download/bili_download_entry_info.dart`
 
-- L13 - **class `BiliDownloadEntryInfo`** - data structure or state carrier
-- L62 - `Widget moreBtn(ColorScheme colorScheme) => SizedBox(` - performs one operation in its enclosing type or module
-- L144 - `BiliDownloadEntryInfo({` - performs one operation in its enclosing type or module
-- L174 - `factory BiliDownloadEntryInfo.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
-- L175 - `BiliDownloadEntryInfo(` - performs one operation in its enclosing type or module
-- L212 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
-- L257 - **class `PageInfo`** - data structure or state carrier
-- L275 - `PageInfo({` - performs one operation in its enclosing type or module
-- L290 - `factory PageInfo.fromJson(Map<String, dynamic> json) => PageInfo(` - performs one operation in its enclosing type or module
-- L305 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
-- L321 - **class `SourceInfo`** - data structure or state carrier
-- L325 - `SourceInfo({` - performs one operation in its enclosing type or module
-- L330 - `factory SourceInfo.fromJson(Map<String, dynamic> json) => SourceInfo(` - performs one operation in its enclosing type or module
-- L335 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
-- L341 - **class `EpInfo`** - data structure or state carrier
-- L359 - `EpInfo({` - performs one operation in its enclosing type or module
-- L378 - `factory EpInfo.fromJson(Map<String, dynamic> json) => EpInfo(` - performs one operation in its enclosing type or module
-- L397 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
-- L417 - **enum `DownloadStatus`** - finite state or option set
-- L433 - `const DownloadStatus(this.message);` - reads, requests, or synchronizes data
+- L11 - **class `BiliDownloadEntryInfo`** - data structure or state carrier
+- L60 - `Widget moreBtn(ColorScheme colorScheme) => SizedBox(` - performs one operation in its enclosing type or module
+- L126 - `BiliDownloadEntryInfo({` - performs one operation in its enclosing type or module
+- L156 - `factory BiliDownloadEntryInfo.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L157 - `BiliDownloadEntryInfo(` - performs one operation in its enclosing type or module
+- L194 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L239 - **class `PageInfo`** - data structure or state carrier
+- L257 - `PageInfo({` - performs one operation in its enclosing type or module
+- L272 - `factory PageInfo.fromJson(Map<String, dynamic> json) => PageInfo(` - performs one operation in its enclosing type or module
+- L287 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L303 - **class `SourceInfo`** - data structure or state carrier
+- L307 - `SourceInfo({` - performs one operation in its enclosing type or module
+- L312 - `factory SourceInfo.fromJson(Map<String, dynamic> json) => SourceInfo(` - performs one operation in its enclosing type or module
+- L317 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L323 - **class `EpInfo`** - data structure or state carrier
+- L341 - `EpInfo({` - performs one operation in its enclosing type or module
+- L360 - `factory EpInfo.fromJson(Map<String, dynamic> json) => EpInfo(` - performs one operation in its enclosing type or module
+- L379 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L399 - **enum `DownloadStatus`** - finite state or option set
+- L415 - `const DownloadStatus(this.message);` - reads, requests, or synchronizes data
 
 ## `lib/models_new/download/bili_download_media_file_info.dart`
 
@@ -6645,15 +6658,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L3 - **class `SuperChatData`** - data structure or state carrier
 - L6 - `SuperChatData({this.list});` - performs one operation in its enclosing type or module
-- L8 - `factory SuperChatData.fromJson(Map<String, dynamic> json) => SuperChatData(` - performs one operation in its enclosing type or module
+- L8 - `factory SuperChatData.fromJson(Map<String, dynamic> json, int roomId) =>` - performs one operation in its enclosing type or module
+- L9 - `SuperChatData(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/live/live_superchat/item.dart`
 
 - L9 - **class `SuperChatItem`** - reusable UI or rendering component
-- L28 - `SuperChatItem({` - performs one operation in its enclosing type or module
-- L75 - `factory SuperChatItem.fromJson(Map<String, dynamic> json) => SuperChatItem(` - performs one operation in its enclosing type or module
-- L95 - `SuperChatItem copyWith({` - performs one operation in its enclosing type or module
-- L131 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L29 - `SuperChatItem({` - performs one operation in its enclosing type or module
+- L80 - `factory SuperChatItem.fromJson(Map<String, dynamic> json, int roomid) =>` - performs one operation in its enclosing type or module
+- L81 - `SuperChatItem(` - performs one operation in its enclosing type or module
+- L102 - `SuperChatItem copyWith({` - performs one operation in its enclosing type or module
+- L139 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
 
 ## `lib/models_new/live/live_superchat/user_info.dart`
 
@@ -6940,8 +6955,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/models_new/msg/msg_like/user.dart`
 
 - L1 - **class `User`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5 - `User({` - performs one operation in its enclosing type or module
-- L10 - `factory User.fromJson(Map<String, dynamic> json) => User(` - performs one operation in its enclosing type or module
+- L6 - `User({` - performs one operation in its enclosing type or module
+- L12 - `factory User.fromJson(Map<String, dynamic> json) => User(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/msg/msg_reply/content.dart`
 
@@ -7403,9 +7418,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/models_new/search/search_trending/list.dart`
 
 - L1 - **class `SearchTrendingItemModel`** - reusable UI or rendering component
-- L7 - `SearchTrendingItemModel({` - performs one operation in its enclosing type or module
-- L14 - `factory SearchTrendingItemModel.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
-- L15 - `SearchTrendingItemModel(` - performs one operation in its enclosing type or module
+- L8 - `SearchTrendingItemModel({` - performs one operation in its enclosing type or module
+- L16 - `factory SearchTrendingItemModel.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L17 - `SearchTrendingItemModel(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/single_unread/data.dart`
 
@@ -8388,8 +8403,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models/common/search/search_type.dart`
 
-- L2 - **enum `SearchType`** - finite state or option set
-- L28 - `const SearchType(this.label);` - performs one operation in its enclosing type or module
+- L5 - **enum `SearchType`** - finite state or option set
+- L33 - `const SearchType(this.label, {this.api = Api.searchByType});` - performs one operation in its enclosing type or module
 
 ## `lib/models/common/search/user_search_type.dart`
 
@@ -8709,34 +8724,34 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L1149 - `RichTextNodeItem({` - performs one operation in its enclosing type or module
 - L1166 - `RichTextNodeItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
 - L1179 - **class `Emoji`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1183 - `Emoji.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1192 - **class `DynamicNoneModel`** - data structure or state carrier
-- L1193 - `DynamicNoneModel({` - performs one operation in its enclosing type or module
-- L1199 - `DynamicNoneModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1204 - **class `PicModel`** - data structure or state carrier
-- L1206 - **class `FilePicModel`** - data structure or state carrier
-- L1209 - `FilePicModel({` - performs one operation in its enclosing type or module
-- L1214 - **class `OpusPicModel`** - data structure or state carrier
-- L1215 - `OpusPicModel({` - performs one operation in its enclosing type or module
-- L1230 - `OpusPicModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1239 - `Map<String, dynamic> toJson() => {` - serializes or exports data
-- L1247 - **class `DynamicLiveModel`** - data structure or state carrier
-- L1255 - `DynamicLiveModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1272 - **class `DynamicLive2Model`** - data structure or state carrier
-- L1273 - `DynamicLive2Model({` - performs one operation in its enclosing type or module
-- L1289 - `DynamicLive2Model.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1299 - **class `ModuleTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1300 - `ModuleTag({` - performs one operation in its enclosing type or module
-- L1306 - `ModuleTag.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1312 - **class `ModuleStatModel`** - data structure or state carrier
-- L1313 - `ModuleStatModel({` - performs one operation in its enclosing type or module
-- L1325 - `ModuleStatModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1340 - **class `DynamicStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1341 - `DynamicStat({` - performs one operation in its enclosing type or module
-- L1349 - `DynamicStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1357 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1358 - `Stat({` - performs one operation in its enclosing type or module
-- L1366 - `Stat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1184 - `Emoji.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1194 - **class `DynamicNoneModel`** - data structure or state carrier
+- L1195 - `DynamicNoneModel({` - performs one operation in its enclosing type or module
+- L1201 - `DynamicNoneModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1206 - **class `PicModel`** - data structure or state carrier
+- L1208 - **class `FilePicModel`** - data structure or state carrier
+- L1211 - `FilePicModel({` - performs one operation in its enclosing type or module
+- L1216 - **class `OpusPicModel`** - data structure or state carrier
+- L1217 - `OpusPicModel({` - performs one operation in its enclosing type or module
+- L1232 - `OpusPicModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1241 - `Map<String, dynamic> toJson() => {` - serializes or exports data
+- L1249 - **class `DynamicLiveModel`** - data structure or state carrier
+- L1257 - `DynamicLiveModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1274 - **class `DynamicLive2Model`** - data structure or state carrier
+- L1275 - `DynamicLive2Model({` - performs one operation in its enclosing type or module
+- L1291 - `DynamicLive2Model.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1301 - **class `ModuleTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1302 - `ModuleTag({` - performs one operation in its enclosing type or module
+- L1308 - `ModuleTag.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1314 - **class `ModuleStatModel`** - data structure or state carrier
+- L1315 - `ModuleStatModel({` - performs one operation in its enclosing type or module
+- L1327 - `ModuleStatModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1342 - **class `DynamicStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1343 - `DynamicStat({` - performs one operation in its enclosing type or module
+- L1351 - `DynamicStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1359 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1360 - `Stat({` - performs one operation in its enclosing type or module
+- L1368 - `Stat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
 
 ## `lib/models/dynamics/up.dart`
 
@@ -8773,14 +8788,14 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L7 - **class `RcmdVideoItemAppModel`** - reusable UI or rendering component
 - L14 - `RcmdVideoItemAppModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L55 - **class `RcmdStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L56 - `RcmdStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L62 - **class `RcmdOwner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L63 - `RcmdOwner.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L71 - **class `ThreePoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L76 - `ThreePoint.fromJson(List json) {` - performs one operation in its enclosing type or module
-- L97 - **class `Reason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L102 - `Reason.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L56 - **class `RcmdStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L57 - `RcmdStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L63 - **class `RcmdOwner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L64 - `RcmdOwner.fromJson(Map<String, dynamic> json, String? goto) {` - performs one operation in its enclosing type or module
+- L72 - **class `ThreePoint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L77 - `ThreePoint.fromJson(List json) {` - performs one operation in its enclosing type or module
+- L98 - **class `Reason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L103 - `Reason.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
 
 ## `lib/models/horizontal_video_model.dart`
 
@@ -8871,44 +8886,63 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models/search/result.dart`
 
-- L10 - **class `SearchNumData`** - data structure or state carrier
-- L11 - `SearchNumData({` - performs one operation in its enclosing type or module
-- L20 - **class `SearchAllData`** - data structure or state carrier
-- L21 - `SearchAllData({` - performs one operation in its enclosing type or module
-- L26 - `SearchAllData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L54 - **class `SearchVideoData`** - data structure or state carrier
-- L55 - `SearchVideoData({` - performs one operation in its enclosing type or module
-- L60 - `SearchVideoData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L68 - **class `SearchVideoItemModel`** - reusable UI or rendering component
-- L77 - `SearchVideoItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L107 - **class `SearchStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L113 - `SearchStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L122 - **class `SearchOwner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L123 - `SearchOwner.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L130 - **class `SearchUserData`** - data structure or state carrier
-- L131 - `SearchUserData({` - performs one operation in its enclosing type or module
-- L136 - `SearchUserData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L144 - **class `SearchUserItemModel`** - reusable UI or rendering component
-- L145 - `SearchUserItemModel({` - performs one operation in its enclosing type or module
-- L183 - `SearchUserItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L206 - **class `SearchLiveData`** - data structure or state carrier
-- L207 - `SearchLiveData({` - performs one operation in its enclosing type or module
-- L212 - `SearchLiveData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L220 - **class `SearchLiveItemModel`** - reusable UI or rendering component
-- L221 - `SearchLiveItemModel({` - performs one operation in its enclosing type or module
-- L262 - `SearchLiveItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L284 - **class `SearchPgcData`** - data structure or state carrier
-- L285 - `SearchPgcData({` - performs one operation in its enclosing type or module
-- L290 - `SearchPgcData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L298 - **class `SearchPgcItemModel`** - reusable UI or rendering component
-- L299 - `SearchPgcItemModel({` - performs one operation in its enclosing type or module
-- L353 - `SearchPgcItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L382 - **class `SearchArticleData`** - data structure or state carrier
-- L383 - `SearchArticleData({` - performs one operation in its enclosing type or module
-- L388 - `SearchArticleData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L396 - **class `SearchArticleItemModel`** - reusable UI or rendering component
-- L397 - `SearchArticleItemModel({` - performs one operation in its enclosing type or module
-- L433 - `SearchArticleItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L15 - **class `SearchNumData`** - data structure or state carrier
+- L16 - `SearchNumData({` - performs one operation in its enclosing type or module
+- L25 - **class `SearchVideoData`** - data structure or state carrier
+- L26 - `SearchVideoData({` - performs one operation in its enclosing type or module
+- L31 - `SearchVideoData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L43 - `SearchVideoData.fromSearchAll(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L90 - **class `SearchActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L100 - `SearchActivity({` - performs one operation in its enclosing type or module
+- L111 - `factory SearchActivity.fromJson(Map<String, dynamic> json, String url) {` - performs one operation in its enclosing type or module
+- L125 - **class `SearchUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L142 - `SearchUser({` - performs one operation in its enclosing type or module
+- L160 - `factory SearchUser.fromJson(Map<String, dynamic> json) => SearchUser(` - performs one operation in its enclosing type or module
+- L185 - **class `SearchVideoItemModel`** - reusable UI or rendering component
+- L194 - `SearchVideoItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L224 - **class `SearchStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L230 - `SearchStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L239 - **class `SearchOwner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L240 - `SearchOwner.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L247 - **class `SearchUserData`** - data structure or state carrier
+- L248 - `SearchUserData({` - performs one operation in its enclosing type or module
+- L253 - `SearchUserData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L261 - **class `SearchUserItemModel`** - reusable UI or rendering component
+- L262 - `SearchUserItemModel({` - performs one operation in its enclosing type or module
+- L300 - `SearchUserItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L323 - **class `SearchLiveData`** - data structure or state carrier
+- L324 - `SearchLiveData({` - performs one operation in its enclosing type or module
+- L329 - `SearchLiveData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L337 - **class `SearchLiveItemModel`** - reusable UI or rendering component
+- L338 - `SearchLiveItemModel({` - performs one operation in its enclosing type or module
+- L379 - `SearchLiveItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L401 - **class `SearchPgcData`** - data structure or state carrier
+- L402 - `SearchPgcData({` - performs one operation in its enclosing type or module
+- L407 - `SearchPgcData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L415 - **class `SearchPgcItemModel`** - reusable UI or rendering component
+- L416 - `SearchPgcItemModel({` - performs one operation in its enclosing type or module
+- L470 - `SearchPgcItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L499 - **class `SearchArticleData`** - data structure or state carrier
+- L500 - `SearchArticleData({` - performs one operation in its enclosing type or module
+- L505 - `SearchArticleData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L513 - **class `SearchArticleItemModel`** - reusable UI or rendering component
+- L514 - `SearchArticleItemModel({` - performs one operation in its enclosing type or module
+- L550 - `SearchArticleItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+
+## `lib/models/search/search_esports.dart`
+
+- L3 - **class `SearchEsports`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6 - `SearchEsports({required this.contest});` - performs one operation in its enclosing type or module
+- L8 - `factory SearchEsports.fromJson(Map<String, dynamic> json) => SearchEsports(` - performs one operation in its enclosing type or module
+- L15 - **class `EsportsContest`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28 - `EsportsContest({` - performs one operation in its enclosing type or module
+- L42 - `factory EsportsContest.fromJson(Map<String, dynamic> json) => EsportsContest(` - performs one operation in its enclosing type or module
+- L57 - **class `EsportsTeam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L61 - `EsportsTeam({required this.title, required this.logoFull});` - performs one operation in its enclosing type or module
+- L63 - `factory EsportsTeam.fromJson(Map<String, dynamic> json) => EsportsTeam(` - performs one operation in its enclosing type or module
+- L69 - **class `EsportsBtnList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L73 - `EsportsBtnList({required this.text, required this.link});` - performs one operation in its enclosing type or module
+- L75 - `factory EsportsBtnList.fromJson(Map<String, dynamic> json) => EsportsBtnList(` - performs one operation in its enclosing type or module
 
 ## `lib/models/search/suggest.dart`
 
@@ -9090,55 +9124,58 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L34 - **class `OpusContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L40 - `const OpusContent({` - performs one operation in its enclosing type or module
 - L48 - `static InlineSpan _node2Widget({` - performs one operation in its enclosing type or module
-- L145 - `static TextStyle _getStyle(Style? style, [Color? color, double? fontSize]) =>` - performs one operation in its enclosing type or module
-- L157 - `static TextSpan _getSpan(` - performs one operation in its enclosing type or module
-- L189 - `Widget build(BuildContext context) {` - builds UI or state
-- L198 - `double getSurfaceLuminance() =>` - reads, requests, or synchronizes data
-- L765 - `Widget moduleBlockedItem(` - performs one operation in its enclosing type or module
-- L772 - `BoxDecoration? bgImg(double width) {` - performs one operation in its enclosing type or module
-- L792 - `Widget icon(double width) {` - performs one operation in its enclosing type or module
-- L804 - `Widget btn(` - performs one operation in its enclosing type or module
-- L927 - `Widget opusCollection(ThemeData theme, ModuleCollection item) {` - performs one operation in its enclosing type or module
+- L152 - `static TextStyle _getStyle(Style? style, [Color? color, double? fontSize]) =>` - performs one operation in its enclosing type or module
+- L164 - `static TextSpan _getSpan(` - performs one operation in its enclosing type or module
+- L196 - `Widget build(BuildContext context) {` - builds UI or state
+- L205 - `double getSurfaceLuminance() =>` - reads, requests, or synchronizes data
+- L772 - `Widget moduleBlockedItem(` - performs one operation in its enclosing type or module
+- L779 - `BoxDecoration? bgImg(double width) {` - performs one operation in its enclosing type or module
+- L799 - `Widget icon(double width) {` - performs one operation in its enclosing type or module
+- L811 - `Widget btn(` - performs one operation in its enclosing type or module
+- L934 - `Widget opusCollection(ThemeData theme, ModuleCollection item) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/audio/controller.dart`
 
-- L56 - **class `AudioController`** - page or business state controller
-- L110 - `void toggleVolume() {` - handles interaction, lifecycle, or playback events
-- L119 - `void setVolume(double volume, {bool clearLastVolme = true}) {` - updates, stores, or records state
-- L127 - `void syncVolume([_]) {` - reads, requests, or synchronizes data
-- L136 - `void onInit() {` - starts or initializes state and resources
-- L192 - `bool isPlaying() {` - predicate, validation, or lookup
-- L196 - `Future<void>? onPlay() {` - handles interaction, lifecycle, or playback events
-- L200 - `Future<void>? onPause() {` - handles interaction, lifecycle, or playback events
-- L204 - `Future<void>? onSeek(Duration duration) {` - handles interaction, lifecycle, or playback events
-- L208 - `void _updateCurrItem(DetailItem item) {` - performs one operation in its enclosing type or module
-- L220 - `Future<void> _queryPlayList({` - performs one operation in its enclosing type or module
-- L268 - `void _querySponsorBlock() {` - performs one operation in its enclosing type or module
-- L278 - `Future<bool> _queryPlayUrl() async {` - performs one operation in its enclosing type or module
-- L294 - `void _onPlay(PlayURLResp data) {` - performs one operation in its enclosing type or module
-- L335 - `Future<void> _onOpenMedia(` - performs one operation in its enclosing type or module
-- L353 - `Future<void> _initPlayerIfNeeded() async {` - performs one operation in its enclosing type or module
-- L438 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
-- L467 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
-- L504 - `Future<void> onPayCoin(int coin, bool coinWithLike) async {` - handles interaction, lifecycle, or playback events
-- L536 - `void showFavBottomSheet(BuildContext context, {bool isLongPress = false}) {` - handles interaction, lifecycle, or playback events
-- L552 - `void showReply() {` - handles interaction, lifecycle, or playback events
-- L559 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
-- L657 - `Future<void>? playOrPause() {` - handles interaction, lifecycle, or playback events
-- L661 - `bool playPrev() {` - handles interaction, lifecycle, or playback events
-- L672 - `bool playNext({bool nextPart = false}) {` - handles interaction, lifecycle, or playback events
-- L682 - `_queryPlayUrl().then((res) {` - performs one operation in its enclosing type or module
-- L705 - `void playIndex(int index, {List<Int64>? subId}) {` - handles interaction, lifecycle, or playback events
-- L715 - `_queryPlayUrl().then((res) {` - performs one operation in its enclosing type or module
-- L723 - `void setSpeed(double speed) {` - updates, stores, or records state
-- L734 - `void updateFavCount(int count) {` - updates, stores, or records state
-- L743 - `Future<void> loadPrev(BuildContext context) async {` - reads, requests, or synchronizes data
-- L752 - `Future<void> loadNext(BuildContext context) async {` - reads, requests, or synchronizes data
-- L761 - `void onChangeOrder(ListOrder value) {` - handles interaction, lifecycle, or playback events
-- L778 - `Future<void>? seekTo(Duration duration, {required bool isSeek}) =>` - handles interaction, lifecycle, or playback events
-- L788 - `void onClose() {` - stops, releases, or resets state and resources
-- L808 - **extension `on`** - adds convenience behavior to an existing type
-- L815 - **extension `on`** - adds convenience behavior to an existing type
+- L55 - **class `AudioController`** - page or business state controller
+- L92 - `void setSpeed(double value) {` - updates, stores, or records state
+- L119 - `void _startStatusTimer() {` - performs one operation in its enclosing type or module
+- L127 - `void _stopStatusTimer() {` - performs one operation in its enclosing type or module
+- L132 - `void toggleVolume() {` - handles interaction, lifecycle, or playback events
+- L141 - `void setVolume(double volume, {bool clearLastVolme = true}) {` - updates, stores, or records state
+- L149 - `void syncVolume([_]) {` - reads, requests, or synchronizes data
+- L158 - `void onInit() {` - starts or initializes state and resources
+- L214 - `bool isPlaying() {` - predicate, validation, or lookup
+- L218 - `Future<void>? onPlay() {` - handles interaction, lifecycle, or playback events
+- L222 - `Future<void>? onPause() {` - handles interaction, lifecycle, or playback events
+- L226 - `Future<void>? onSeek(Duration duration) {` - handles interaction, lifecycle, or playback events
+- L231 - `void _updateCurrItem(DetailItem item) {` - performs one operation in its enclosing type or module
+- L243 - `Future<void> _queryPlayList({` - performs one operation in its enclosing type or module
+- L291 - `void _querySponsorBlock() {` - performs one operation in its enclosing type or module
+- L301 - `Future<bool> _queryPlayUrl() async {` - performs one operation in its enclosing type or module
+- L317 - `void _onPlay(PlayURLResp data) {` - performs one operation in its enclosing type or module
+- L358 - `Future<void> _onOpenMedia(` - performs one operation in its enclosing type or module
+- L377 - `void _updatePlaybackState({Duration? position, String? debugLabel}) {` - performs one operation in its enclosing type or module
+- L388 - `Future<void> _initPlayerIfNeeded() async {` - performs one operation in its enclosing type or module
+- L478 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
+- L507 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
+- L544 - `Future<void> onPayCoin(int coin, bool coinWithLike) async {` - handles interaction, lifecycle, or playback events
+- L576 - `void showFavBottomSheet(BuildContext context, {bool isLongPress = false}) {` - handles interaction, lifecycle, or playback events
+- L592 - `void showReply() {` - handles interaction, lifecycle, or playback events
+- L599 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
+- L697 - `Future<void>? playOrPause() {` - handles interaction, lifecycle, or playback events
+- L701 - `bool playPrev() {` - handles interaction, lifecycle, or playback events
+- L712 - `bool playNext({bool nextPart = false}) {` - handles interaction, lifecycle, or playback events
+- L722 - `_queryPlayUrl().then((res) {` - performs one operation in its enclosing type or module
+- L745 - `void playIndex(int index, {List<Int64>? subId}) {` - handles interaction, lifecycle, or playback events
+- L755 - `_queryPlayUrl().then((res) {` - performs one operation in its enclosing type or module
+- L767 - `void updateFavCount(int count) {` - updates, stores, or records state
+- L776 - `Future<void> loadPrev(BuildContext context) async {` - reads, requests, or synchronizes data
+- L785 - `Future<void> loadNext(BuildContext context) async {` - reads, requests, or synchronizes data
+- L794 - `void onChangeOrder(ListOrder value) {` - handles interaction, lifecycle, or playback events
+- L811 - `Future<void>? seekTo(Duration duration, {required bool isSeek}) =>` - handles interaction, lifecycle, or playback events
+- L821 - `void onClose() {` - stops, releases, or resets state and resources
+- L843 - **extension `on`** - adds convenience behavior to an existing type
+- L850 - **extension `on`** - adds convenience behavior to an existing type
 
 ## `lib/pages/audio/view.dart`
 
@@ -9347,10 +9384,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/common/dyn/like_list/controller.dart`
 
-- L8 - **class `DynLikeController`** - page or business state controller
-- L10 - `DynLikeController(this.id, {int count = -1}) : count = RxInt(count);` - performs one operation in its enclosing type or module
-- L16 - `List<ModuleAuthor>? getDataList(LikeListReply response) {` - reads, requests, or synchronizes data
-- L25 - `Future<LoadingState<LikeListReply>> customGetData() =>` - performs one operation in its enclosing type or module
+- L9 - **class `DynLikeController`** - page or business state controller
+- L11 - `DynLikeController(this.id, {int count = -1}) : count = RxInt(count);` - performs one operation in its enclosing type or module
+- L18 - `List<ModuleAuthor>? getDataList(LikeListReply response) {` - reads, requests, or synchronizes data
+- L29 - `Future<LoadingState<LikeListReply>> customGetData() => DynGrpc.likeList(` - performs one operation in its enclosing type or module
+- L36 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
 
 ## `lib/pages/common/dyn/like_list/view.dart`
 
@@ -9388,11 +9426,12 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/common/dyn/repost_list/widgets/item.dart`
 
-- L22 - **class `DynRepostItem`** - reusable UI or rendering component
-- L23 - `const DynRepostItem({` - performs one operation in its enclosing type or module
-- L31 - `Widget build(BuildContext context) {` - builds UI or state
-- L169 - `List<InlineSpan> _parseSummary(` - performs one operation in its enclosing type or module
-- L248 - `List<InlineSpan> _parseDesc(ColorScheme colorScheme, List<Description> desc) {` - performs one operation in its enclosing type or module
+- L23 - **class `DynRepostItem`** - reusable UI or rendering component
+- L24 - `const DynRepostItem({` - performs one operation in its enclosing type or module
+- L32 - `Widget build(BuildContext context) {` - builds UI or state
+- L61 - `void pushMember() => Get.toNamed('/member?mid=${author.mid}');` - handles interaction, lifecycle, or playback events
+- L177 - `List<InlineSpan> _parseSummary(` - performs one operation in its enclosing type or module
+- L300 - `List<InlineSpan> _parseDesc(ColorScheme colorScheme, List<Description> desc) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/common/fab_mixin.dart`
 
@@ -9676,12 +9715,13 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/download/detail/widgets/item.dart`
 
-- L29 - **class `DetailItem`** - reusable UI or rendering component
-- L30 - `const DetailItem({` - performs one operation in its enclosing type or module
-- L56 - `Widget build(BuildContext context) {` - builds UI or state
-- L62 - `void onLongPress() => canDel && !enableMultiSelect` - handles interaction, lifecycle, or playback events
-- L392 - `Widget entryProgress(ThemeData theme) => progressWidget(` - performs one operation in its enclosing type or module
-- L404 - `Widget progressWidget({` - performs one operation in its enclosing type or module
+- L30 - **class `DetailItem`** - reusable UI or rendering component
+- L31 - `const DetailItem({` - performs one operation in its enclosing type or module
+- L57 - `Widget build(BuildContext context) {` - builds UI or state
+- L63 - `void onLongPress() => canDel && !enableMultiSelect` - handles interaction, lifecycle, or playback events
+- L127 - `Timer(const Duration(milliseconds: 400), () {` - performs one operation in its enclosing type or module
+- L393 - `Widget entryProgress(ThemeData theme) => progressWidget(` - performs one operation in its enclosing type or module
+- L405 - `Widget progressWidget({` - performs one operation in its enclosing type or module
 
 ## `lib/pages/download/downloading/view.dart`
 
@@ -9791,48 +9831,40 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/dynamics_detail/controller.dart`
 
-- L11 - **class `DynamicDetailController`** - page or business state controller
-- L12 - `DynamicDetailController({super.count});` - performs one operation in its enclosing type or module
-- L24 - `void onInit() {` - starts or initializes state and resources
-- L45 - `void _init(String commentIdStr, int commentType) {` - performs one operation in its enclosing type or module
-- L51 - `Future<LoadingState> onSetPubSetting(bool isPrivate, Object dynId) async {` - handles interaction, lifecycle, or playback events
-- L65 - `Future<void> onSetReplySubject(int action) async {` - handles interaction, lifecycle, or playback events
-- L81 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L13 - **class `DynamicDetailController`** - page or business state controller
+- L14 - `DynamicDetailController({super.count});` - performs one operation in its enclosing type or module
+- L26 - `void onInit() {` - starts or initializes state and resources
+- L47 - `void _init(String commentIdStr, int commentType) {` - performs one operation in its enclosing type or module
+- L53 - `Future<LoadingState> onSetPubSetting(bool isPrivate, Object dynId) async {` - handles interaction, lifecycle, or playback events
+- L67 - `Future<void> onSetReplySubject(int action) async {` - handles interaction, lifecycle, or playback events
+- L74 - `Timer(const Duration(milliseconds: 500), () {` - performs one operation in its enclosing type or module
+- L83 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/dynamics_detail/view.dart`
 
-- L52 - **class `DynamicDetailPage`** - page or visual structure
-- L53 - `const DynamicDetailPage({super.key});` - performs one operation in its enclosing type or module
-- L56 - `State<DynamicDetailPage> createState() => _DynamicDetailPageState();` - builds UI or state
-- L59 - **class `_DynamicDetailPageState`** - data structure or state carrier
-- L68 - `void _stopRefresh() {` - switches, recovers, or refreshes runtime state
-- L73 - `void _onRefresh(Future<void> future) {` - switches, recovers, or refreshes runtime state
-- L82 - `void initState() {` - starts or initializes state and resources
-- L108 - `void dispose() {` - stops, releases, or resets state and resources
-- L114 - `Widget build(BuildContext context) {` - builds UI or state
-- L132 - `void _onEdit() {` - performs one operation in its enclosing type or module
-- L258 - `setState(() {});` - updates, stores, or records state
-- L267 - `PreferredSizeWidget _buildAppBar() => AppBar(` - performs one operation in its enclosing type or module
-- L295 - `Widget _buildTabBar() {` - performs one operation in its enclosing type or module
-- L347 - `Widget _buildTabBody([bool isPortrait = true]) {` - performs one operation in its enclosing type or module
-- L356 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
-- L406 - `Widget _buildDynPanel() {` - performs one operation in its enclosing type or module
-- L426 - `Widget _buildPortrait(double padding) {` - performs one operation in its enclosing type or module
-- L444 - `Widget _buildHorizontal(double padding) {` - performs one operation in its enclosing type or module
-- L490 - `Widget _buildBody() {` - performs one operation in its enclosing type or module
-- L501 - `Widget _buildBottom() {` - performs one operation in its enclosing type or module
-- L514 - `Widget textIconButton({` - performs one operation in its enclosing type or module
-- L643 - `Widget buildReplyHeader([bool isPortrait = true]) {` - performs one operation in its enclosing type or module
-- L674 - `void _jumpToComment([_]) {` - performs one operation in its enclosing type or module
-- L683 - **class `_RefreshIndicator`** - reusable UI or rendering component
-- L684 - `const _RefreshIndicator({` - switches, recovers, or refreshes runtime state
-- L691 - `State<_RefreshIndicator> createState() => _RefreshIndicatorState();` - builds UI or state
-- L694 - **class `_RefreshIndicatorState`** - reusable UI or rendering component
-- L701 - `void initState() {` - starts or initializes state and resources
-- L714 - `void dispose() {` - stops, releases, or resets state and resources
-- L721 - `void didUpdateWidget(_RefreshIndicator oldWidget) {` - handles interaction, lifecycle, or playback events
-- L737 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L746 - `Widget build(BuildContext context) {` - builds UI or state
+- L53 - **class `DynamicDetailPage`** - page or visual structure
+- L54 - `const DynamicDetailPage({super.key});` - performs one operation in its enclosing type or module
+- L57 - `State<DynamicDetailPage> createState() => _DynamicDetailPageState();` - builds UI or state
+- L60 - **class `_DynamicDetailPageState`** - data structure or state carrier
+- L69 - `void _stopRefresh() {` - switches, recovers, or refreshes runtime state
+- L74 - `void _onRefresh(Future<void> future) {` - switches, recovers, or refreshes runtime state
+- L83 - `void initState() {` - starts or initializes state and resources
+- L109 - `void dispose() {` - stops, releases, or resets state and resources
+- L115 - `Widget build(BuildContext context) {` - builds UI or state
+- L133 - `void _onEdit() {` - performs one operation in its enclosing type or module
+- L259 - `setState(() {});` - updates, stores, or records state
+- L268 - `PreferredSizeWidget _buildAppBar() => AppBar(` - performs one operation in its enclosing type or module
+- L296 - `Widget _buildTabBar() {` - performs one operation in its enclosing type or module
+- L348 - `Widget _buildTabBody([bool isPortrait = true]) {` - performs one operation in its enclosing type or module
+- L357 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
+- L407 - `Widget _buildDynPanel() {` - performs one operation in its enclosing type or module
+- L427 - `Widget _buildPortrait(double padding) {` - performs one operation in its enclosing type or module
+- L445 - `Widget _buildHorizontal(double padding) {` - performs one operation in its enclosing type or module
+- L491 - `Widget _buildBody() {` - performs one operation in its enclosing type or module
+- L502 - `Widget _buildBottom() {` - performs one operation in its enclosing type or module
+- L515 - `Widget textIconButton({` - performs one operation in its enclosing type or module
+- L644 - `Widget buildReplyHeader([bool isPortrait = true]) {` - performs one operation in its enclosing type or module
+- L675 - `void _jumpToComment([_]) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/dynamics_mention/controller.dart`
 
@@ -9865,24 +9897,25 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/dynamics_repost/view.dart`
 
-- L20 - **class `RepostPanel`** - page or visual structure
-- L21 - `const RepostPanel({` - performs one operation in its enclosing type or module
-- L47 - `State<RepostPanel> createState() => _RepostPanelState();` - builds UI or state
-- L50 - **class `_RepostPanelState`** - data structure or state carrier
-- L61 - `void initState() {` - starts or initializes state and resources
-- L85 - `void dispose() {` - stops, releases, or resets state and resources
-- L93 - `Widget build(BuildContext context) {` - builds UI or state
-- L94 - `Widget page([ScrollController? scrollController]) => Column(` - performs one operation in its enclosing type or module
-- L137 - `List<Widget> _buildEditPanel() => [` - performs one operation in its enclosing type or module
-- L158 - `Widget _buildRefWidget() => Card(` - performs one operation in its enclosing type or module
-- L204 - `Widget _buildEditPlaceHolder() => GestureDetector(` - performs one operation in its enclosing type or module
-- L207 - `setState(() => _expanded = true);` - updates, stores, or records state
-- L227 - `Widget _buildEditWidget() => Obx(` - performs one operation in its enclosing type or module
-- L250 - `Widget _buildAppBar() => !_expanded` - performs one operation in its enclosing type or module
-- L340 - `List<Widget> _buildDismiss() => [` - performs one operation in its enclosing type or module
-- L362 - `List<Map<String, dynamic>>? getRepostContent(DynamicItemModel item) {` - reads, requests, or synchronizes data
-- L402 - `Future<void> onCustomPublish({List? pictures}) async {` - handles interaction, lifecycle, or playback events
-- L438 - `void onSave() {}` - handles interaction, lifecycle, or playback events
+- L22 - **class `RepostPanel`** - page or visual structure
+- L23 - `const RepostPanel({` - performs one operation in its enclosing type or module
+- L49 - `State<RepostPanel> createState() => _RepostPanelState();` - builds UI or state
+- L52 - **class `_RepostPanelState`** - data structure or state carrier
+- L63 - `void initState() {` - starts or initializes state and resources
+- L87 - `void dispose() {` - stops, releases, or resets state and resources
+- L95 - `Widget build(BuildContext context) {` - builds UI or state
+- L96 - `Widget page([ScrollController? scrollController]) => Column(` - performs one operation in its enclosing type or module
+- L139 - `List<Widget> _buildEditPanel() => [` - performs one operation in its enclosing type or module
+- L160 - `Widget _buildRefWidget() => Card(` - performs one operation in its enclosing type or module
+- L206 - `Widget _buildEditPlaceHolder() => GestureDetector(` - performs one operation in its enclosing type or module
+- L209 - `setState(() => _expanded = true);` - updates, stores, or records state
+- L210 - `Timer(_durtion, () {` - performs one operation in its enclosing type or module
+- L229 - `Widget _buildEditWidget() => Obx(` - performs one operation in its enclosing type or module
+- L252 - `Widget _buildAppBar() => !_expanded` - performs one operation in its enclosing type or module
+- L342 - `List<Widget> _buildDismiss() => [` - performs one operation in its enclosing type or module
+- L364 - `List<Map<String, dynamic>>? getRepostContent(DynamicItemModel item) {` - reads, requests, or synchronizes data
+- L404 - `Future<void> onCustomPublish({List? pictures}) async {` - handles interaction, lifecycle, or playback events
+- L440 - `void onSave() {}` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/dynamics_select_topic/controller.dart`
 
@@ -10098,8 +10131,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/dynamics/widgets/rich_node_panel.dart`
 
-- L23 - `TextSpan? richNode(` - performs one operation in its enclosing type or module
-- L289 - `void onView(List<OpusPicModel> list) {` - handles interaction, lifecycle, or playback events
+- L24 - `TextSpan? richNode(` - performs one operation in its enclosing type or module
+- L304 - `void onView(List<OpusPicModel> list) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/dynamics/widgets/up_panel.dart`
 
@@ -10173,33 +10206,33 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L26 - **class `_EmotePanelState`** - data structure or state carrier
 - L36 - `Widget build(BuildContext context) {` - builds UI or state
 - L44 - `Widget _buildBody(` - performs one operation in its enclosing type or module
-- L54 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
-- L55 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L220 - `Error(:final errMsg) => _errorWidget(errMsg),` - performs one operation in its enclosing type or module
-- L224 - `Widget _errorWidget([String? errMsg]) => Center(` - performs one operation in its enclosing type or module
+- L49 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
+- L50 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L186 - `Error(:final errMsg) => _errorWidget(errMsg),` - performs one operation in its enclosing type or module
+- L190 - `Widget _errorWidget([String? errMsg]) => Center(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/episode_panel/view.dart`
 
-- L40 - **class `EpisodePanel`** - page or visual structure
-- L41 - `const EpisodePanel({` - performs one operation in its enclosing type or module
-- L84 - `State<EpisodePanel> createState() => _EpisodePanelState();` - builds UI or state
-- L87 - **class `_EpisodePanelState`** - data structure or state carrier
-- L113 - `void listener() {` - performs one operation in its enclosing type or module
-- L118 - `void didUpdateWidget(EpisodePanel oldWidget) {` - handles interaction, lifecycle, or playback events
-- L125 - `void jumpToCurrent() {` - performs one operation in its enclosing type or module
-- L152 - `void initState() {` - starts or initializes state and resources
-- L197 - `void dispose() {` - stops, releases, or resets state and resources
-- L212 - `Widget buildPage(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L235 - `Widget buildList(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L254 - `double _calcItemOffset(int index) {` - performs one operation in its enclosing type or module
-- L267 - `double _calcItemHeight(ugc.BaseEpisodeItem episode) {` - performs one operation in its enclosing type or module
-- L274 - `Widget _buildBody(` - performs one operation in its enclosing type or module
-- L362 - `Widget _buildEpisodeItem({` - performs one operation in its enclosing type or module
-- L420 - `void onLongPress() {` - handles interaction, lifecycle, or playback events
-- L600 - `Widget _buildFavBtn(LoadingState<bool> loadingState) {` - performs one operation in its enclosing type or module
-- L602 - `Success(:final response) => iconButton(` - performs one operation in its enclosing type or module
-- L636 - `void _animToTopOrBottom({bool top = true}) {` - performs one operation in its enclosing type or module
-- L646 - `Widget _buildToolbar(ThemeData theme) => Container(` - performs one operation in its enclosing type or module
+- L41 - **class `EpisodePanel`** - page or visual structure
+- L42 - `const EpisodePanel({` - performs one operation in its enclosing type or module
+- L85 - `State<EpisodePanel> createState() => _EpisodePanelState();` - builds UI or state
+- L88 - **class `_EpisodePanelState`** - data structure or state carrier
+- L114 - `void listener() {` - performs one operation in its enclosing type or module
+- L119 - `void didUpdateWidget(EpisodePanel oldWidget) {` - handles interaction, lifecycle, or playback events
+- L126 - `void jumpToCurrent() {` - performs one operation in its enclosing type or module
+- L153 - `void initState() {` - starts or initializes state and resources
+- L198 - `void dispose() {` - stops, releases, or resets state and resources
+- L213 - `Widget buildPage(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L236 - `Widget buildList(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L255 - `double _calcItemOffset(int index) {` - performs one operation in its enclosing type or module
+- L268 - `double _calcItemHeight(ugc.BaseEpisodeItem episode) {` - performs one operation in its enclosing type or module
+- L275 - `Widget _buildBody(` - performs one operation in its enclosing type or module
+- L363 - `Widget _buildEpisodeItem({` - performs one operation in its enclosing type or module
+- L421 - `void onLongPress() {` - handles interaction, lifecycle, or playback events
+- L601 - `Widget _buildFavBtn(LoadingState<bool> loadingState) {` - performs one operation in its enclosing type or module
+- L603 - `Success(:final response) => iconButton(` - performs one operation in its enclosing type or module
+- L637 - `void _animToTopOrBottom({bool top = true}) {` - performs one operation in its enclosing type or module
+- L647 - `Widget _buildToolbar(ThemeData theme) => Container(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/exp_log/controller.dart`
 
@@ -10243,23 +10276,23 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/fav_detail/controller.dart`
 
-- L24 - **mixin `BaseFavController`** - page or business state controller
-- L33 - `void onViewFav(FavDetailItemModel item, int? index);` - handles interaction, lifecycle, or playback events
-- L35 - `Future<void> onCancelFav(int index, int id, int type) async {` - handles interaction, lifecycle, or playback events
-- L52 - `void onRemove() {` - handles interaction, lifecycle, or playback events
-- L77 - **class `FavDetailController`** - page or business state controller
-- L95 - `void setIsPlayAll(bool isPlayAll) {` - updates, stores, or records state
-- L110 - `void onInit() {` - starts or initializes state and resources
-- L123 - `List<FavDetailItemModel>? getDataList(FavDetailData response) {` - reads, requests, or synchronizes data
-- L135 - `void checkIsEnd(int length) {` - reads, requests, or synchronizes data
-- L142 - `bool customHandleResponse(bool isRefresh, Success<FavDetailData> response) {` - performs one operation in its enclosing type or module
-- L158 - `Future<LoadingState<FavDetailData>> customGetData() =>` - performs one operation in its enclosing type or module
-- L166 - `void toViewPlayAll() {` - performs one operation in its enclosing type or module
-- L182 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
-- L187 - `Future<void> onFav(bool isFav) async {` - handles interaction, lifecycle, or playback events
-- L206 - `Future<void> cleanFav() async {` - performs one operation in its enclosing type or module
-- L216 - `void onSort() {` - handles interaction, lifecycle, or playback events
-- L229 - `void onViewFav(FavDetailItemModel item, int? index) {` - handles interaction, lifecycle, or playback events
+- L26 - **mixin `BaseFavController`** - page or business state controller
+- L35 - `void onViewFav(FavDetailItemModel item, int? index);` - handles interaction, lifecycle, or playback events
+- L37 - `Future<void> onCancelFav(int index, int id, int type) async {` - handles interaction, lifecycle, or playback events
+- L54 - `void onRemove() {` - handles interaction, lifecycle, or playback events
+- L79 - **class `FavDetailController`** - page or business state controller
+- L97 - `void setIsPlayAll(bool isPlayAll) {` - updates, stores, or records state
+- L112 - `void onInit() {` - starts or initializes state and resources
+- L125 - `List<FavDetailItemModel>? getDataList(FavDetailData response) {` - reads, requests, or synchronizes data
+- L140 - `void checkIsEnd(int length) {` - reads, requests, or synchronizes data
+- L147 - `bool customHandleResponse(bool isRefresh, Success<FavDetailData> response) {` - performs one operation in its enclosing type or module
+- L163 - `Future<LoadingState<FavDetailData>> customGetData() =>` - performs one operation in its enclosing type or module
+- L171 - `void toViewPlayAll() {` - performs one operation in its enclosing type or module
+- L187 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L192 - `Future<void> onFav(bool isFav) async {` - handles interaction, lifecycle, or playback events
+- L211 - `Future<void> cleanFav() async {` - performs one operation in its enclosing type or module
+- L221 - `void onSort() {` - handles interaction, lifecycle, or playback events
+- L234 - `void onViewFav(FavDetailItemModel item, int? index) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/fav_detail/view.dart`
 
@@ -10726,20 +10759,20 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/history/controller.dart`
 
-- L18 - **class `HistoryController`** - page or business state controller
-- L21 - `HistoryController(this.type);` - performs one operation in its enclosing type or module
-- L41 - `void onInit() {` - starts or initializes state and resources
-- L48 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
-- L55 - `List<HistoryItemModel>? getDataList(HistoryData response) {` - reads, requests, or synchronizes data
-- L60 - `bool customHandleResponse(bool isRefresh, Success<HistoryData> response) {` - performs one operation in its enclosing type or module
-- L80 - `Future<void> historyStatus() async {` - performs one operation in its enclosing type or module
-- L91 - `void delHistory(HistoryItemModel item) {` - performs one operation in its enclosing type or module
-- L96 - `void onDelViewedHistory() {` - handles interaction, lifecycle, or playback events
-- L107 - `Future<void> _onDelete(Set<HistoryItemModel> removeList) async {` - performs one operation in its enclosing type or module
-- L126 - `void onRemove() {` - handles interaction, lifecycle, or playback events
-- L136 - `Future<LoadingState<HistoryData>> customGetData() => UserHttp.historyList(` - performs one operation in its enclosing type or module
-- L144 - `void onClose() {` - stops, releases, or resets state and resources
-- L150 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L17 - **class `HistoryController`** - page or business state controller
+- L20 - `HistoryController(this.type);` - performs one operation in its enclosing type or module
+- L40 - `void onInit() {` - starts or initializes state and resources
+- L47 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
+- L54 - `List<HistoryItemModel>? getDataList(HistoryData response) {` - reads, requests, or synchronizes data
+- L59 - `bool customHandleResponse(bool isRefresh, Success<HistoryData> response) {` - performs one operation in its enclosing type or module
+- L83 - `Future<void> historyStatus() async {` - performs one operation in its enclosing type or module
+- L94 - `void delHistory(HistoryItemModel item) {` - performs one operation in its enclosing type or module
+- L99 - `void onDelViewedHistory() {` - handles interaction, lifecycle, or playback events
+- L110 - `Future<void> _onDelete(Set<HistoryItemModel> removeList) async {` - performs one operation in its enclosing type or module
+- L129 - `void onRemove() {` - handles interaction, lifecycle, or playback events
+- L139 - `Future<LoadingState<HistoryData>> customGetData() => UserHttp.historyList(` - performs one operation in its enclosing type or module
+- L147 - `void onClose() {` - stops, releases, or resets state and resources
+- L153 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/history/view.dart`
 
@@ -10986,10 +11019,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L36 - `void initState() {` - starts or initializes state and resources
 - L48 - `Widget build(BuildContext context) {` - builds UI or state
 - L53 - `Widget _buildBody(LoadingState<List<LiveEmoteDatum>?> loadingState) {` - performs one operation in its enclosing type or module
-- L61 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
-- L62 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L198 - `Error(:final errMsg) => _errorWidget(errMsg),` - performs one operation in its enclosing type or module
-- L202 - `Widget _errorWidget([String? errMsg]) => Center(` - performs one operation in its enclosing type or module
+- L56 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
+- L57 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L160 - `Error(:final errMsg) => _errorWidget(errMsg),` - performs one operation in its enclosing type or module
+- L164 - `Widget _errorWidget([String? errMsg]) => Center(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/live_follow/controller.dart`
 
@@ -11053,48 +11086,49 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/live_room/controller.dart`
 
-- L54 - **class `LiveRoomController`** - page or business state controller
-- L55 - `LiveRoomController(this.heroTag);` - performs one operation in its enclosing type or module
-- L71 - `void startLiveTimer() {` - starts or initializes state and resources
-- L80 - `void cancelLiveTimer() {` - stops, releases, or resets state and resources
-- L164 - `void _trimDm() {` - performs one operation in its enclosing type or module
-- L178 - `void _onSizeChanged((int, int) value) {` - performs one operation in its enclosing type or module
-- L184 - `void _startSizeSub() {` - performs one operation in its enclosing type or module
-- L192 - `void _stopSizeSub() {` - performs one operation in its enclosing type or module
-- L198 - `void onInit() {` - starts or initializes state and resources
-- L214 - `Future<void>? playerInit({` - handles interaction, lifecycle, or playback events
-- L230 - `Future<void> queryLiveUrl({bool autoFullScreenFlag = false}) async {` - reads, requests, or synchronizes data
-- L279 - `void _initStreamIndex() {` - performs one operation in its enclosing type or module
-- L306 - `Future<void>? initLiveUrl({` - starts or initializes state and resources
-- L337 - `Future<void> queryLiveInfoH5() async {` - reads, requests, or synchronizes data
-- L349 - `void _showDialog(String title) {` - performs one operation in its enclosing type or module
-- L378 - `void scrollToBottom() {` - performs one operation in its enclosing type or module
-- L386 - `void _scrollToBottom([_]) {` - performs one operation in its enclosing type or module
-- L396 - `void handleJumpToBottom() {` - handles interaction, lifecycle, or playback events
-- L406 - `void _jumpToBottom([_]) {` - performs one operation in its enclosing type or module
-- L412 - `void closeLiveMsg() {` - stops, releases, or resets state and resources
-- L418 - `Future<void> prefetch() async {` - performs one operation in its enclosing type or module
-- L434 - `Future<void> getSuperChatMsg() async {` - reads, requests, or synchronizes data
-- L441 - `void clearSC() {` - stops, releases, or resets state and resources
-- L445 - `Future<void> _fetchBlockRules() async {` - performs one operation in its enclosing type or module
-- L457 - `void updateBlockRules(List<String> keywords, Set<int> uids) {` - updates, stores, or records state
-- L462 - `bool isBlocked(String text, Object uid) {` - predicate, validation, or lookup
-- L466 - `void startLiveMsg() {` - starts or initializes state and resources
-- L487 - `void listener() {` - performs one operation in its enclosing type or module
-- L500 - `void refreshMsgIfNeeded() {` - switches, recovers, or refreshes runtime state
-- L509 - `void onClose() {` - stops, releases, or resets state and resources
-- L530 - `Future<void>? changeQn(int qn) {` - performs one operation in its enclosing type or module
-- L540 - `void initDm(LiveDmInfoData info) {` - starts or initializes state and resources
-- L557 - `void addDm(dynamic msg, [DanmakuContentItem<DanmakuExtra>? item]) {` - updates, stores, or records state
-- L575 - `void _danmakuListener(dynamic obj) {` - performs one operation in its enclosing type or module
-- L693 - `void cancelLikeTimer() {` - stops, releases, or resets state and resources
-- L698 - `void onLikeTapDown(_) {` - handles interaction, lifecycle, or playback events
-- L703 - `void onLikeTapUp([_]) {` - handles interaction, lifecycle, or playback events
-- L707 - `Future<void> onLike() async {` - handles interaction, lifecycle, or playback events
-- L726 - `void toastNotLogin() {` - performs one operation in its enclosing type or module
-- L730 - `void onSendDanmaku([bool fromEmote = false]) {` - handles interaction, lifecycle, or playback events
-- L766 - `void onAtUser(DanmakuMsg item) {` - handles interaction, lifecycle, or playback events
-- L778 - `void reportSC(SuperChatItem item) {` - performs one operation in its enclosing type or module
+- L57 - **class `LiveRoomController`** - page or business state controller
+- L58 - `LiveRoomController(this.heroTag);` - performs one operation in its enclosing type or module
+- L74 - `void startLiveTimer() {` - starts or initializes state and resources
+- L83 - `void cancelLiveTimer() {` - stops, releases, or resets state and resources
+- L167 - `void _trimDm() {` - performs one operation in its enclosing type or module
+- L181 - `void _onSizeChanged((int, int) value) {` - performs one operation in its enclosing type or module
+- L187 - `void _startSizeSub() {` - performs one operation in its enclosing type or module
+- L195 - `void _stopSizeSub() {` - performs one operation in its enclosing type or module
+- L201 - `void onInit() {` - starts or initializes state and resources
+- L217 - `Future<void>? playerInit({` - handles interaction, lifecycle, or playback events
+- L233 - `Future<void> queryLiveUrl({bool autoFullScreenFlag = false}) async {` - reads, requests, or synchronizes data
+- L283 - `void _initStreamIndex() {` - performs one operation in its enclosing type or module
+- L310 - `Future<void>? initLiveUrl({` - starts or initializes state and resources
+- L341 - `Future<void> queryLiveInfoH5() async {` - reads, requests, or synchronizes data
+- L353 - `void _showDialog(String title) {` - performs one operation in its enclosing type or module
+- L382 - `void scrollToBottom() {` - performs one operation in its enclosing type or module
+- L390 - `void _scrollToBottom([_]) {` - performs one operation in its enclosing type or module
+- L400 - `void handleJumpToBottom() {` - handles interaction, lifecycle, or playback events
+- L410 - `void _jumpToBottom([_]) {` - performs one operation in its enclosing type or module
+- L416 - `void closeLiveMsg() {` - stops, releases, or resets state and resources
+- L422 - `Future<void> prefetch() async {` - performs one operation in its enclosing type or module
+- L438 - `Future<void> getSuperChatMsg() async {` - reads, requests, or synchronizes data
+- L445 - `void clearSC() {` - stops, releases, or resets state and resources
+- L453 - `Future<void> debugLoadStreamAndRules(` - performs one operation in its enclosing type or module
+- L469 - `Future<void> _fetchBlockRules() async {` - performs one operation in its enclosing type or module
+- L488 - `void updateBlockRules(List<String> keywords, Set<int> uids) {` - updates, stores, or records state
+- L493 - `bool isBlocked(String text, Object uid) {` - predicate, validation, or lookup
+- L500 - `void startLiveMsg() {` - starts or initializes state and resources
+- L521 - `void listener() {` - performs one operation in its enclosing type or module
+- L534 - `void refreshMsgIfNeeded() {` - switches, recovers, or refreshes runtime state
+- L543 - `void onClose() {` - stops, releases, or resets state and resources
+- L564 - `Future<void>? changeQn(int qn) {` - performs one operation in its enclosing type or module
+- L574 - `void initDm(LiveDmInfoData info) {` - starts or initializes state and resources
+- L591 - `void addDm(dynamic msg, [DanmakuContentItem<DanmakuExtra>? item]) {` - updates, stores, or records state
+- L609 - `void _danmakuListener(dynamic obj) {` - performs one operation in its enclosing type or module
+- L728 - `void cancelLikeTimer() {` - stops, releases, or resets state and resources
+- L733 - `void onLikeTapDown(_) {` - handles interaction, lifecycle, or playback events
+- L738 - `void onLikeTapUp([_]) {` - handles interaction, lifecycle, or playback events
+- L742 - `Future<void> onLike() async {` - handles interaction, lifecycle, or playback events
+- L761 - `void toastNotLogin() {` - performs one operation in its enclosing type or module
+- L765 - `void onSendDanmaku([bool fromEmote = false]) {` - handles interaction, lifecycle, or playback events
+- L801 - `void onAtUser(DanmakuMsg item) {` - handles interaction, lifecycle, or playback events
+- L813 - `void reportSC(SuperChatItem item) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/live_room/send_danmaku/view.dart`
 
@@ -11111,21 +11145,23 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/live_room/superchat/superchat_card.dart`
 
-- L23 - **class `SuperChatCard`** - reusable UI or rendering component
-- L24 - `const SuperChatCard({` - performs one operation in its enclosing type or module
-- L38 - `State<SuperChatCard> createState() => _SuperChatCardState();` - builds UI or state
-- L41 - **class `_SuperChatCardState`** - reusable UI or rendering component
-- L46 - `void initState() {` - starts or initializes state and resources
-- L64 - `void _remove() {` - performs one operation in its enclosing type or module
-- L70 - `void _onRemove() {` - performs one operation in its enclosing type or module
-- L76 - `void _callback(_) {` - performs one operation in its enclosing type or module
-- L86 - `void _startTimer() {` - performs one operation in its enclosing type or module
-- L90 - `void _cancelTimer() {` - performs one operation in its enclosing type or module
-- L96 - `void dispose() {` - stops, releases, or resets state and resources
-- L101 - `void _showMenu(Offset offset, SuperChatItem item) {` - performs one operation in its enclosing type or module
-- L143 - `Widget build(BuildContext context) {` - builds UI or state
-- L147 - `void showMenu(TapUpDetails e) => _showMenu(e.globalPosition, item);` - handles interaction, lifecycle, or playback events
-- L270 - `static Widget _avatar(String face, String? faceFrame) {` - performs one operation in its enclosing type or module
+- L24 - **class `SuperChatCard`** - reusable UI or rendering component
+- L25 - `const SuperChatCard({` - performs one operation in its enclosing type or module
+- L39 - `State<SuperChatCard> createState() => _SuperChatCardState();` - builds UI or state
+- L42 - **class `_SuperChatCardState`** - reusable UI or rendering component
+- L47 - `void initState() {` - starts or initializes state and resources
+- L65 - `void _remove() {` - performs one operation in its enclosing type or module
+- L71 - `void _onRemove() {` - performs one operation in its enclosing type or module
+- L77 - `void _callback(_) {` - performs one operation in its enclosing type or module
+- L87 - `void _startTimer() {` - performs one operation in its enclosing type or module
+- L91 - `void _cancelTimer() {` - performs one operation in its enclosing type or module
+- L97 - `void dispose() {` - stops, releases, or resets state and resources
+- L102 - `void _showMenu(Offset offset, SuperChatItem item) {` - performs one operation in its enclosing type or module
+- L155 - `Widget build(BuildContext context) {` - builds UI or state
+- L160 - `Widget _build({` - performs one operation in its enclosing type or module
+- L265 - `void showMenu_(TapUpDetails e) => showMenu(e.globalPosition, item);` - handles interaction, lifecycle, or playback events
+- L307 - `Widget _avatar(String face, String? faceFrame) {` - performs one operation in its enclosing type or module
+- L340 - `Future<void> _screenShot(BuildContext context, SuperChatItem item) async {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/live_room/superchat/superchat_panel.dart`
 
@@ -11199,11 +11235,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L52 - `State<LiveHeaderControl> createState() => _LiveHeaderControlState();` - builds UI or state
 - L55 - **class `_LiveHeaderControlState`** - data structure or state carrier
 - L70 - `Widget build(BuildContext context) {` - builds UI or state
-- L140 - `Obx(() {` - performs one operation in its enclosing type or module
-- L211 - `Obx(() {` - performs one operation in its enclosing type or module
-- L305 - `void _showLiveStreamDialog() {` - performs one operation in its enclosing type or module
-- L457 - **class `_ExpansionTile`** - reusable UI or rendering component
-- L458 - `const _ExpansionTile({` - performs one operation in its enclosing type or module
+- L136 - `Obx(() {` - performs one operation in its enclosing type or module
+- L207 - `Obx(() {` - performs one operation in its enclosing type or module
+- L301 - `void _showLiveStreamDialog() {` - performs one operation in its enclosing type or module
+- L453 - **class `_ExpansionTile`** - reusable UI or rendering component
+- L454 - `const _ExpansionTile({` - performs one operation in its enclosing type or module
 
 ## `lib/pages/live_search/child/controller.dart`
 
@@ -11314,9 +11350,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L40 - `Widget _buildBody(LoadingState<List<T>?> loadingState) {` - performs one operation in its enclosing type or module
 - L42 - `Loading() => linearLoading,` - reads, requests, or synchronizes data
 - L43 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L89 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
-- L96 - `Widget _item(T item, Widget divider, {bool isHeader = false}) {` - performs one operation in its enclosing type or module
-- L97 - `Widget text(int flex, String text) => Expanded(` - performs one operation in its enclosing type or module
+- L78 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L85 - `Widget _item(T item, Widget divider, {bool isHeader = false}) {` - performs one operation in its enclosing type or module
+- L86 - `Widget text(int flex, String text) => Expanded(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/login_devices/controller.dart`
 
@@ -11360,19 +11396,13 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/login/geetest/geetest_webview_dialog.dart`
 
-- L15 - **class `GeetestWebviewDialog`** - page or visual structure
-- L16 - `const GeetestWebviewDialog(this.gt, this.challenge, {super.key});` - performs one operation in its enclosing type or module
-- L22 - `State<GeetestWebviewDialog> createState() => _GeetestWebviewDialogState();` - builds UI or state
-- L24 - `static Future<Map<String, dynamic>?> geetest(String gt, String challenge) {` - performs one operation in its enclosing type or module
-- L32 - **class `_GeetestWebviewDialogState`** - data structure or state carrier
-- L40 - `static String _showJs(String response) =>` - performs one operation in its enclosing type or module
-- L44 - `void initState() {` - starts or initializes state and resources
-- L52 - `static Future<LoadingState<String>> _getConfig(` - performs one operation in its enclosing type or module
-- L95 - `Future<void> _initLinuxWebview() async {` - performs one operation in its enclosing type or module
-- L162 - `setState(() {` - updates, stores, or records state
-- L168 - `void _closeLinuxWebview() {` - performs one operation in its enclosing type or module
-- L174 - `void dispose() {` - stops, releases, or resets state and resources
-- L180 - `Widget build(BuildContext context) {` - builds UI or state
+- L11 - **class `GeetestWebviewDialog`** - page or visual structure
+- L12 - `const GeetestWebviewDialog(this.gt, this.challenge, {super.key});` - performs one operation in its enclosing type or module
+- L18 - `State<GeetestWebviewDialog> createState() => _GeetestWebviewDialogState();` - builds UI or state
+- L20 - `static Future<Map<String, dynamic>?> geetest(String gt, String challenge) {` - performs one operation in its enclosing type or module
+- L28 - **class `_GeetestWebviewDialogState`** - data structure or state carrier
+- L33 - `static String _buildHtml(String gt, String challenge) {` - performs one operation in its enclosing type or module
+- L57 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/login/view.dart`
 
@@ -11417,61 +11447,61 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/pages/main/controller.dart`
 
 - L28 - **class `MainController`** - page or business state controller
-- L75 - `void onInit() {` - starts or initializes state and resources
-- L123 - `Future<int> _msgUnread() async {` - performs one operation in its enclosing type or module
-- L138 - `Future<int> _msgFeedUnread() async {` - performs one operation in its enclosing type or module
-- L168 - `void clearUnreadMsg() {` - stops, releases, or resets state and resources
-- L172 - `Future<void> queryUnreadMsg([bool isChangeType = false]) async {` - reads, requests, or synchronizes data
-- L199 - `void getUnreadDynamic() {` - reads, requests, or synchronizes data
-- L210 - `void setDynCount([int count = 0]) {` - updates, stores, or records state
-- L215 - `void checkUnreadDynamic() {` - reads, requests, or synchronizes data
-- L229 - `void setNavBarConfig() {` - updates, stores, or records state
-- L245 - `void checkDefaultSearch([bool shouldCheck = false]) {` - reads, requests, or synchronizes data
-- L260 - `void checkUnread([bool shouldCheck = false]) {` - reads, requests, or synchronizes data
-- L277 - `void toMinePage() {` - performs one operation in its enclosing type or module
-- L293 - `void setIndex(int value) {` - updates, stores, or records state
-- L335 - `void setSearchBar() {` - updates, stores, or records state
-- L341 - `bool refreshRecommendations() {` - switches, recovers, or refreshes runtime state
-- L352 - `void onClose() {` - stops, releases, or resets state and resources
-- L359 - `void onChangeAccount(bool isLogin) {` - handles interaction, lifecycle, or playback events
+- L76 - `void onInit() {` - starts or initializes state and resources
+- L124 - `Future<int> _msgUnread() async {` - performs one operation in its enclosing type or module
+- L139 - `Future<int> _msgFeedUnread() async {` - performs one operation in its enclosing type or module
+- L169 - `void clearUnreadMsg() {` - stops, releases, or resets state and resources
+- L173 - `Future<void> queryUnreadMsg([bool isChangeType = false]) async {` - reads, requests, or synchronizes data
+- L200 - `void getUnreadDynamic() {` - reads, requests, or synchronizes data
+- L211 - `void setDynCount([int count = 0]) {` - updates, stores, or records state
+- L216 - `void checkUnreadDynamic() {` - reads, requests, or synchronizes data
+- L230 - `void setNavBarConfig() {` - updates, stores, or records state
+- L246 - `void checkDefaultSearch([bool shouldCheck = false]) {` - reads, requests, or synchronizes data
+- L261 - `void checkUnread([bool shouldCheck = false]) {` - reads, requests, or synchronizes data
+- L278 - `void toMinePage() {` - performs one operation in its enclosing type or module
+- L294 - `void setIndex(int value) {` - updates, stores, or records state
+- L336 - `void setSearchBar() {` - updates, stores, or records state
+- L342 - `bool refreshRecommendations() {` - switches, recovers, or refreshes runtime state
+- L353 - `void onClose() {` - stops, releases, or resets state and resources
+- L360 - `void onChangeAccount(bool isLogin) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/main/view.dart`
 
-- L32 - **class `MainApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L33 - `const MainApp({super.key});` - starts or initializes state and resources
-- L36 - `State<MainApp> createState() => _MainAppState();` - builds UI or state
-- L39 - **class `_MainAppState`** - data structure or state carrier
-- L56 - `void initState() {` - starts or initializes state and resources
-- L77 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L96 - `void didPopNext() {` - handles interaction, lifecycle, or playback events
-- L106 - `void didPushNext() {` - handles interaction, lifecycle, or playback events
-- L112 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
-- L122 - `void dispose() {` - stops, releases, or resets state and resources
-- L136 - `bool _handleKeyEvent(KeyEvent event) {` - performs one operation in its enclosing type or module
-- L144 - `void onWindowMaximize() {` - handles interaction, lifecycle, or playback events
-- L149 - `void onWindowUnmaximize() {` - handles interaction, lifecycle, or playback events
-- L154 - `Future<void> onWindowMoved() async {` - handles interaction, lifecycle, or playback events
-- L163 - `Future<void> onWindowResized() async {` - handles interaction, lifecycle, or playback events
-- L175 - `void onWindowClose() {` - handles interaction, lifecycle, or playback events
-- L184 - `Future<void> _onClose() async {` - performs one operation in its enclosing type or module
-- L200 - `void onWindowMinimize() {` - handles interaction, lifecycle, or playback events
-- L205 - `void onWindowRestore() {` - handles interaction, lifecycle, or playback events
-- L209 - `void _onHideWindow() {` - performs one operation in its enclosing type or module
-- L221 - `void _onShowWindow() {` - performs one operation in its enclosing type or module
-- L229 - `Future<void>? _setOpacity(double opacity) {` - performs one operation in its enclosing type or module
-- L238 - `Future<void>? onWindowFocus() {` - handles interaction, lifecycle, or playback events
-- L243 - `Future<void> _hide() async {` - performs one operation in its enclosing type or module
-- L248 - `Future<void> _show() {` - performs one operation in its enclosing type or module
-- L253 - `Future<void> onTrayIconMouseDown() async {` - handles interaction, lifecycle, or playback events
-- L264 - `Future<void> onTrayIconRightMouseDown() async {` - handles interaction, lifecycle, or playback events
-- L270 - `void onTrayMenuItemClick(MenuItem menuItem) {` - handles interaction, lifecycle, or playback events
-- L279 - `Future<void> _handleTray() async {` - performs one operation in its enclosing type or module
-- L300 - `static void _onBack() {` - performs one operation in its enclosing type or module
-- L307 - `void onPopInvokedWithResult(bool didPop, Object? result) {` - handles interaction, lifecycle, or playback events
-- L409 - `Widget _sideBar() {` - performs one operation in its enclosing type or module
-- L477 - `Widget build(BuildContext context) {` - builds UI or state
-- L550 - `Widget _buildIcon({required NavigationBarType type, bool selected = false}) {` - performs one operation in its enclosing type or module
-- L569 - `Widget userAndSearchVertical() {` - performs one operation in its enclosing type or module
+- L31 - **class `MainApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32 - `const MainApp({super.key});` - starts or initializes state and resources
+- L35 - `State<MainApp> createState() => _MainAppState();` - builds UI or state
+- L38 - **class `_MainAppState`** - data structure or state carrier
+- L55 - `void initState() {` - starts or initializes state and resources
+- L76 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L95 - `void didPopNext() {` - handles interaction, lifecycle, or playback events
+- L105 - `void didPushNext() {` - handles interaction, lifecycle, or playback events
+- L111 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
+- L121 - `void dispose() {` - stops, releases, or resets state and resources
+- L135 - `bool _handleKeyEvent(KeyEvent event) {` - performs one operation in its enclosing type or module
+- L143 - `void onWindowMaximize() {` - handles interaction, lifecycle, or playback events
+- L148 - `void onWindowUnmaximize() {` - handles interaction, lifecycle, or playback events
+- L153 - `Future<void> onWindowMoved() async {` - handles interaction, lifecycle, or playback events
+- L162 - `Future<void> onWindowResized() async {` - handles interaction, lifecycle, or playback events
+- L174 - `void onWindowClose() {` - handles interaction, lifecycle, or playback events
+- L183 - `Future<void> _onClose() async {` - performs one operation in its enclosing type or module
+- L199 - `void onWindowMinimize() {` - handles interaction, lifecycle, or playback events
+- L204 - `void onWindowRestore() {` - handles interaction, lifecycle, or playback events
+- L208 - `void _onHideWindow() {` - performs one operation in its enclosing type or module
+- L220 - `void _onShowWindow() {` - performs one operation in its enclosing type or module
+- L228 - `Future<void>? _setOpacity(double opacity) {` - performs one operation in its enclosing type or module
+- L237 - `Future<void>? onWindowFocus() {` - handles interaction, lifecycle, or playback events
+- L242 - `Future<void> _hide() async {` - performs one operation in its enclosing type or module
+- L247 - `Future<void> _show() {` - performs one operation in its enclosing type or module
+- L252 - `Future<void> onTrayIconMouseDown() async {` - handles interaction, lifecycle, or playback events
+- L263 - `Future<void> onTrayIconRightMouseDown() async {` - handles interaction, lifecycle, or playback events
+- L269 - `void onTrayMenuItemClick(MenuItem menuItem) {` - handles interaction, lifecycle, or playback events
+- L278 - `Future<void> _handleTray() async {` - performs one operation in its enclosing type or module
+- L299 - `static void _onBack() {` - performs one operation in its enclosing type or module
+- L306 - `void onPopInvokedWithResult(bool didPop, Object? result) {` - handles interaction, lifecycle, or playback events
+- L408 - `Widget _sideBar() {` - performs one operation in its enclosing type or module
+- L476 - `Widget build(BuildContext context) {` - builds UI or state
+- L545 - `Widget _buildIcon({required NavigationBarType type, bool selected = false}) {` - performs one operation in its enclosing type or module
+- L564 - `Widget userAndSearchVertical() {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/match_info/controller.dart`
 
@@ -11490,7 +11520,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L53 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
 - L66 - `Widget _buildInfo(LoadingState<MatchContest?> infoState) {` - performs one operation in its enclosing type or module
 - L69 - `Widget teamInfo(MatchTeam team) {` - performs one operation in its enclosing type or module
-- L188 - `void replyReply(BuildContext context, ReplyInfo replyItem, int? id) {` - performs one operation in its enclosing type or module
+- L189 - `void replyReply(BuildContext context, ReplyInfo replyItem, int? id) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_article/controller.dart`
 
@@ -11509,10 +11539,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L26 - **class `_MemberArticleState`** - data structure or state carrier
 - L34 - `void initState() {` - starts or initializes state and resources
 - L43 - `Widget build(BuildContext context) {` - builds UI or state
-- L63 - `Widget _buildBody(LoadingState<List<SpaceArticleItem>?> loadingState) {` - performs one operation in its enclosing type or module
-- L65 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
-- L66 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L81 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L64 - `Widget _buildBody(LoadingState<List<SpaceArticleItem>?> loadingState) {` - performs one operation in its enclosing type or module
+- L66 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
+- L67 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L82 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_article/widget/item.dart`
 
@@ -11537,12 +11567,12 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L15 - `const MemberAudio({` - performs one operation in its enclosing type or module
 - L25 - `State<MemberAudio> createState() => _MemberAudioState();` - builds UI or state
 - L28 - **class `_MemberAudioState`** - data structure or state carrier
-- L32 - `void initState() {` - starts or initializes state and resources
-- L41 - `Widget build(BuildContext context) {` - builds UI or state
-- L66 - `Widget _buildBody(` - performs one operation in its enclosing type or module
-- L71 - `Loading() => linearLoading,` - reads, requests, or synchronizes data
-- L72 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L124 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L33 - `void initState() {` - starts or initializes state and resources
+- L42 - `Widget build(BuildContext context) {` - builds UI or state
+- L68 - `Widget _buildBody(` - performs one operation in its enclosing type or module
+- L73 - `Loading() => linearLoading,` - reads, requests, or synchronizes data
+- L74 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L126 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_audio/widgets/item.dart`
 
@@ -11567,10 +11597,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L26 - **class `_MemberCheeseState`** - data structure or state carrier
 - L31 - `void initState() {` - starts or initializes state and resources
 - L40 - `Widget build(BuildContext context) {` - builds UI or state
-- L63 - `Widget _buildBody(LoadingState<List<SpaceCheeseItem>?> loadingState) {` - performs one operation in its enclosing type or module
-- L65 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
-- L66 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L79 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L64 - `Widget _buildBody(LoadingState<List<SpaceCheeseItem>?> loadingState) {` - performs one operation in its enclosing type or module
+- L66 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
+- L67 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L80 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_cheese/widgets/item.dart`
 
@@ -11624,10 +11654,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L26 - **class `_MemberComicState`** - data structure or state carrier
 - L31 - `void initState() {` - starts or initializes state and resources
 - L40 - `Widget build(BuildContext context) {` - builds UI or state
-- L59 - `Widget _buildBody(LoadingState<List<SpaceArchiveItem>?> loadingState) {` - performs one operation in its enclosing type or module
-- L61 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
-- L62 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L75 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L60 - `Widget _buildBody(LoadingState<List<SpaceArchiveItem>?> loadingState) {` - performs one operation in its enclosing type or module
+- L62 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
+- L63 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L76 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_comic/widgets/item.dart`
 
@@ -11638,10 +11668,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_contribute/controller.dart`
 
-- L9 - **class `MemberContributeCtr`** - page or business state controller
-- L11 - `MemberContributeCtr({` - performs one operation in its enclosing type or module
-- L24 - `void onInit() {` - starts or initializes state and resources
-- L52 - `void onClose() {` - stops, releases, or resets state and resources
+- L8 - **class `MemberContributeCtr`** - page or business state controller
+- L10 - `MemberContributeCtr({` - performs one operation in its enclosing type or module
+- L23 - `void onInit() {` - starts or initializes state and resources
+- L47 - `void onClose() {` - stops, releases, or resets state and resources
 
 ## `lib/pages/member_contribute/view.dart`
 
@@ -11674,11 +11704,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L34 - `void initState() {` - starts or initializes state and resources
 - L45 - `Widget build(BuildContext context) {` - builds UI or state
 - L62 - `Widget _buildBody(EdgeInsets padding) => refreshIndicator(` - performs one operation in its enclosing type or module
-- L79 - `Widget _buildContent(LoadingState<List<DynamicItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
-- L81 - `Loading() => dynSkeleton,` - reads, requests, or synchronizes data
-- L82 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L98 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
-- L105 - `Widget _itemBuilder(List<DynamicItemModel> list, int index) {` - performs one operation in its enclosing type or module
+- L80 - `Widget _buildContent(LoadingState<List<DynamicItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
+- L82 - `Loading() => dynSkeleton,` - reads, requests, or synchronizes data
+- L83 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L99 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L106 - `Widget _itemBuilder(List<DynamicItemModel> list, int index) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_favorite/controller.dart`
 
@@ -11701,17 +11731,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L29 - **class `_MemberFavoriteState`** - data structure or state carrier
 - L37 - `void initState() {` - starts or initializes state and resources
 - L46 - `Widget build(BuildContext context) {` - builds UI or state
-- L68 - `Widget _buildBody(` - performs one operation in its enclosing type or module
-- L73 - `Loading() => SliverPadding(` - reads, requests, or synchronizes data
-- L83 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L102 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
-- L109 - `Widget _buildItem(` - performs one operation in its enclosing type or module
-- L165 - `Obx(() {` - performs one operation in its enclosing type or module
-- L203 - `Widget _buildLoadMoreItem(ThemeData theme, bool isFav) {` - performs one operation in its enclosing type or module
-- L228 - **class `_FavScrollPhysics`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L229 - `const _FavScrollPhysics({super.parent, required this.controller});` - performs one operation in its enclosing type or module
-- L234 - `_FavScrollPhysics applyTo(ScrollPhysics? ancestor) {` - performs one operation in its enclosing type or module
-- L242 - `double adjustPositionForNewDimensions({` - performs one operation in its enclosing type or module
+- L69 - `Widget _buildBody(` - performs one operation in its enclosing type or module
+- L74 - `Loading() => SliverPadding(` - reads, requests, or synchronizes data
+- L84 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L103 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L110 - `Widget _buildItem(` - performs one operation in its enclosing type or module
+- L166 - `Obx(() {` - performs one operation in its enclosing type or module
+- L204 - `Widget _buildLoadMoreItem(ThemeData theme, bool isFav) {` - performs one operation in its enclosing type or module
+- L229 - **class `_FavScrollPhysics`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L230 - `const _FavScrollPhysics({super.parent, required this.controller});` - performs one operation in its enclosing type or module
+- L235 - `_FavScrollPhysics applyTo(ScrollPhysics? ancestor) {` - performs one operation in its enclosing type or module
+- L243 - `double adjustPositionForNewDimensions({` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_favorite/widget/item.dart`
 
@@ -11744,16 +11774,16 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_home/view.dart`
 
-- L25 - **class `MemberHome`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L26 - `const MemberHome({super.key, this.heroTag});` - performs one operation in its enclosing type or module
-- L31 - `State<MemberHome> createState() => _MemberHomeState();` - builds UI or state
-- L34 - **class `_MemberHomeState`** - data structure or state carrier
-- L42 - `Widget build(BuildContext context) {` - builds UI or state
-- L65 - `Widget _buildBody(LoadingState<SpaceData?> loadingState) {` - performs one operation in its enclosing type or module
-- L71 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
-- L72 - `Success(response: final res) =>` - performs one operation in its enclosing type or module
-- L257 - `Error(:final errMsg) => scrollErrorWidget(errMsg: errMsg),` - performs one operation in its enclosing type or module
-- L261 - `Widget _header(` - performs one operation in its enclosing type or module
+- L27 - **class `MemberHome`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L28 - `const MemberHome({super.key, this.heroTag});` - performs one operation in its enclosing type or module
+- L33 - `State<MemberHome> createState() => _MemberHomeState();` - builds UI or state
+- L36 - **class `_MemberHomeState`** - data structure or state carrier
+- L44 - `Widget build(BuildContext context) {` - builds UI or state
+- L67 - `Widget _buildBody(LoadingState<SpaceData?> loadingState) {` - performs one operation in its enclosing type or module
+- L73 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
+- L74 - `Success(response: final res) =>` - performs one operation in its enclosing type or module
+- L260 - `Error(:final errMsg) => scrollErrorWidget(errMsg: errMsg),` - performs one operation in its enclosing type or module
+- L264 - `Widget _header(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_home/widgets/fav_item.dart`
 
@@ -11809,10 +11839,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L35 - **class `_MemberOpusState`** - data structure or state carrier
 - L44 - `void initState() {` - starts or initializes state and resources
 - L56 - `Widget build(BuildContext context) {` - builds UI or state
-- L140 - `Widget _buildBody(LoadingState<List<SpaceOpusItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
-- L142 - `Loading() => SliverWaterfallFlow(` - reads, requests, or synchronizes data
-- L149 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L164 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L141 - `Widget _buildBody(LoadingState<List<SpaceOpusItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
+- L143 - `Loading() => SliverWaterfallFlow(` - reads, requests, or synchronizes data
+- L150 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L165 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_opus/widgets/space_opus_item.dart`
 
@@ -11837,10 +11867,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L26 - **class `_MemberBangumiState`** - data structure or state carrier
 - L34 - `void initState() {` - starts or initializes state and resources
 - L46 - `Widget build(BuildContext context) {` - builds UI or state
-- L78 - `Widget _buildBody(LoadingState<List<SpaceArchiveItem>?> loadingState) {` - performs one operation in its enclosing type or module
-- L80 - `Loading() => const SliverToBoxAdapter(),` - reads, requests, or synchronizes data
-- L81 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L96 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L79 - `Widget _buildBody(LoadingState<List<SpaceArchiveItem>?> loadingState) {` - performs one operation in its enclosing type or module
+- L81 - `Loading() => const SliverToBoxAdapter(),` - reads, requests, or synchronizes data
+- L82 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L97 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_pgc/widgets/pgc_card_v_member_pgc.dart`
 
@@ -11851,29 +11881,30 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_profile/view.dart`
 
-- L35 - **class `EditProfilePage`** - page or visual structure
-- L36 - `const EditProfilePage({super.key});` - performs one operation in its enclosing type or module
-- L39 - `State<EditProfilePage> createState() => _EditProfilePageState();` - builds UI or state
-- L42 - **class `_EditProfilePageState`** - data structure or state carrier
-- L50 - `void initState() {` - starts or initializes state and resources
-- L57 - `void dispose() {` - stops, releases, or resets state and resources
-- L63 - `Widget build(BuildContext context) {` - builds UI or state
-- L71 - `Future<void> _getInfo() async {` - performs one operation in its enclosing type or module
-- L88 - `setState(() {` - updates, stores, or records state
-- L115 - `Widget _buildBody(` - performs one operation in its enclosing type or module
-- L130 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
-- L131 - `Success(:final response) => ListView(` - performs one operation in its enclosing type or module
-- L242 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
-- L249 - `Widget _sexDialog(int current) {` - performs one operation in its enclosing type or module
-- L261 - `Widget _sexDialogItem(` - performs one operation in its enclosing type or module
-- L284 - `void _editDialog({` - performs one operation in its enclosing type or module
-- L343 - `Future<void> _update({` - performs one operation in its enclosing type or module
-- L405 - `setState(() {});` - updates, stores, or records state
-- L416 - `String _sex(int sex) {` - performs one operation in its enclosing type or module
-- L425 - `Widget _item({` - performs one operation in its enclosing type or module
-- L473 - `Future<void> _pickImg(ThemeData theme) async {` - performs one operation in its enclosing type or module
-- L553 - **class `CropAspectRatioPresetCustom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L554 - `const CropAspectRatioPresetCustom();` - performs one operation in its enclosing type or module
+- L36 - **class `EditProfilePage`** - page or visual structure
+- L37 - `const EditProfilePage({super.key});` - performs one operation in its enclosing type or module
+- L40 - `State<EditProfilePage> createState() => _EditProfilePageState();` - builds UI or state
+- L43 - **class `_EditProfilePageState`** - data structure or state carrier
+- L51 - `void initState() {` - starts or initializes state and resources
+- L58 - `void dispose() {` - stops, releases, or resets state and resources
+- L64 - `Widget build(BuildContext context) {` - builds UI or state
+- L72 - `Future<void> _getInfo() async {` - performs one operation in its enclosing type or module
+- L89 - `setState(() {` - updates, stores, or records state
+- L116 - `Widget _buildBody(` - performs one operation in its enclosing type or module
+- L131 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
+- L132 - `Success(:final response) => ListView(` - performs one operation in its enclosing type or module
+- L243 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
+- L250 - `Widget _sexDialog(int current) {` - performs one operation in its enclosing type or module
+- L262 - `Widget _sexDialogItem(` - performs one operation in its enclosing type or module
+- L285 - `void _editDialog({` - performs one operation in its enclosing type or module
+- L344 - `Future<void> _update({` - performs one operation in its enclosing type or module
+- L406 - `setState(() {});` - updates, stores, or records state
+- L417 - `String _sex(int sex) {` - performs one operation in its enclosing type or module
+- L426 - `Widget _item({` - performs one operation in its enclosing type or module
+- L474 - `Future<void> _pickImg(ThemeData theme) async {` - performs one operation in its enclosing type or module
+- L534 - `Timer(const Duration(milliseconds: 500), () {` - performs one operation in its enclosing type or module
+- L554 - **class `CropAspectRatioPresetCustom`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L555 - `const CropAspectRatioPresetCustom();` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_search/child/controller.dart`
 
@@ -11934,16 +11965,16 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_season_series/view.dart`
 
-- L16 - **class `SeasonSeriesPage`** - page or visual structure
-- L17 - `const SeasonSeriesPage({` - performs one operation in its enclosing type or module
-- L27 - `State<SeasonSeriesPage> createState() => _SeasonSeriesPageState();` - builds UI or state
-- L30 - **class `_SeasonSeriesPageState`** - data structure or state carrier
-- L35 - `void initState() {` - starts or initializes state and resources
-- L47 - `Widget build(BuildContext context) {` - builds UI or state
-- L64 - `Widget _buildBody(LoadingState<List<SpaceSsModel>?> loadingState) {` - performs one operation in its enclosing type or module
-- L66 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
-- L67 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L106 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L17 - **class `SeasonSeriesPage`** - page or visual structure
+- L18 - `const SeasonSeriesPage({` - performs one operation in its enclosing type or module
+- L28 - `State<SeasonSeriesPage> createState() => _SeasonSeriesPageState();` - builds UI or state
+- L31 - **class `_SeasonSeriesPageState`** - data structure or state carrier
+- L36 - `void initState() {` - starts or initializes state and resources
+- L48 - `Widget build(BuildContext context) {` - builds UI or state
+- L66 - `Widget _buildBody(LoadingState<List<SpaceSsModel>?> loadingState) {` - performs one operation in its enclosing type or module
+- L68 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
+- L69 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L108 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_season_series/widget/season_series_card.dart`
 
@@ -11969,7 +12000,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L31 - **class `_MemberShopState`** - data structure or state carrier
 - L36 - `void initState() {` - starts or initializes state and resources
 - L45 - `Widget build(BuildContext context) {` - builds UI or state
-- L76 - `Widget _buildBody(LoadingState<List<SpaceShopItem>?> loadingState) {` - performs one operation in its enclosing type or module
+- L77 - `Widget _buildBody(LoadingState<List<SpaceShopItem>?> loadingState) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_shop/widgets/item.dart`
 
@@ -12059,33 +12090,39 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_video/controller.dart`
 
-- L19 - **class `MemberVideoCtr`** - page or business state controller
-- L22 - `MemberVideoCtr({` - performs one operation in its enclosing type or module
-- L52 - `Future<void> onRefresh() async {` - switches, recovers, or refreshes runtime state
-- L70 - `void onInit() {` - starts or initializes state and resources
-- L80 - `bool customHandleResponse(` - performs one operation in its enclosing type or module
-- L115 - `Future<LoadingState<SpaceArchiveData>> customGetData() =>` - performs one operation in its enclosing type or module
-- L137 - `void queryBySort() {` - reads, requests, or synchronizes data
-- L148 - `Future<void> toViewPlayAll() async {` - performs one operation in its enclosing type or module
-- L229 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L23 - **class `MemberVideoCtr`** - page or business state controller
+- L26 - `MemberVideoCtr({` - performs one operation in its enclosing type or module
+- L55 - `void setIsLocating(bool value, {bool isOnlyInnerScroll = true}) {` - updates, stores, or records state
+- L62 - `set onlyInnerScroll(bool value) {` - handles interaction, lifecycle, or playback events
+- L77 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
+- L88 - `void onInit() {` - starts or initializes state and resources
+- L101 - `bool customHandleResponse(` - performs one operation in its enclosing type or module
+- L139 - `Future<LoadingState<SpaceArchiveData>> customGetData() =>` - performs one operation in its enclosing type or module
+- L161 - `void queryBySort() {` - reads, requests, or synchronizes data
+- L172 - `Future<void> toViewPlayAll() async {` - performs one operation in its enclosing type or module
+- L253 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/member_video/view.dart`
 
-- L21 - **class `MemberVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L22 - `const MemberVideo({` - performs one operation in its enclosing type or module
-- L42 - `State<MemberVideo> createState() => _MemberVideoState();` - builds UI or state
-- L45 - **class `_MemberVideoState`** - data structure or state carrier
-- L57 - `void _jumpToIndex(int index) {` - performs one operation in its enclosing type or module
-- L74 - `void initState() {` - starts or initializes state and resources
-- L91 - `Widget build(BuildContext context) {` - builds UI or state
-- L171 - `Widget _buildBody(` - performs one operation in its enclosing type or module
-- L176 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
-- L177 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L199 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
-- L206 - `Widget _buildHeader(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L223 - `Widget? _buildCount() {` - performs one operation in its enclosing type or module
-- L234 - `Widget? _buildEpisodeBtn(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L262 - `Widget _buildSortBtn(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L20 - **class `MemberVideo`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21 - `const MemberVideo({` - performs one operation in its enclosing type or module
+- L41 - `State<MemberVideo> createState() => _MemberVideoState();` - builds UI or state
+- L44 - **class `_MemberVideoState`** - data structure or state carrier
+- L56 - `void _jumpToIndex(int index) {` - performs one operation in its enclosing type or module
+- L73 - `void initState() {` - starts or initializes state and resources
+- L90 - `Future<void> _loadPrevAndKeepPos() async {` - performs one operation in its enclosing type or module
+- L102 - `Future<void> _onRefresh() {` - switches, recovers, or refreshes runtime state
+- L110 - `Widget fabAnimWrapper({required Widget child}) {` - performs one operation in its enclosing type or module
+- L118 - `bool onNotification(ScrollNotification notification) {` - handles interaction, lifecycle, or playback events
+- L137 - `Widget build(BuildContext context) {` - builds UI or state
+- L212 - `Widget _buildBody(` - performs one operation in its enclosing type or module
+- L217 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
+- L218 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L240 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L247 - `Widget _buildHeader(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L264 - `Widget? _buildCount() {` - performs one operation in its enclosing type or module
+- L275 - `Widget? _buildEpisodeBtn(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L303 - `Widget _buildSortBtn(ThemeData theme) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_video/widgets/video_card_h_member_video.dart`
 
@@ -12101,16 +12138,16 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L29 - `MemberController({required this.mid});` - performs one operation in its enclosing type or module
 - L69 - `void onInit() {` - starts or initializes state and resources
 - L75 - `bool customHandleResponse(bool isRefresh, Success<SpaceData> response) {` - performs one operation in its enclosing type or module
-- L154 - `bool handleError(String? errMsg) {` - handles interaction, lifecycle, or playback events
-- L177 - `Future<LoadingState<SpaceData>> customGetData() => MemberHttp.space(` - performs one operation in its enclosing type or module
-- L182 - `void blockUser(BuildContext context) {` - performs one operation in its enclosing type or module
-- L212 - `void shareUser() {` - performs one operation in its enclosing type or module
-- L216 - `Future<void> _onBlock() async {` - performs one operation in its enclosing type or module
-- L228 - `void onFollow(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L248 - `void onClose() {` - stops, releases, or resets state and resources
-- L253 - `Future<void> onRemoveFan() async {` - handles interaction, lifecycle, or playback events
-- L266 - `void onTapTab(int value) {` - handles interaction, lifecycle, or playback events
-- L272 - `Future<void> vipExpAdd() async {` - performs one operation in its enclosing type or module
+- L164 - `bool handleError(String? errMsg) {` - handles interaction, lifecycle, or playback events
+- L187 - `Future<LoadingState<SpaceData>> customGetData() => MemberHttp.space(` - performs one operation in its enclosing type or module
+- L192 - `void blockUser(BuildContext context) {` - performs one operation in its enclosing type or module
+- L222 - `void shareUser() {` - performs one operation in its enclosing type or module
+- L226 - `Future<void> _onBlock() async {` - performs one operation in its enclosing type or module
+- L238 - `void onFollow(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L258 - `void onClose() {` - stops, releases, or resets state and resources
+- L263 - `Future<void> onRemoveFan() async {` - handles interaction, lifecycle, or playback events
+- L276 - `void onTapTab(int value) {` - handles interaction, lifecycle, or playback events
+- L282 - `Future<void> vipExpAdd() async {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member/view.dart`
 
@@ -12124,17 +12161,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L88 - `Widget build(BuildContext context) {` - builds UI or state
 - L95 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
 - L96 - `Success(:final response) => ExtendedNestedScrollView(` - performs one operation in its enclosing type or module
-- L164 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
-- L173 - `Widget _reserveBtn(List<ReservationCardItem> list, ColorScheme theme) {` - performs one operation in its enclosing type or module
-- L185 - `void _showReserveList(List<ReservationCardItem> list) {` - performs one operation in its enclosing type or module
-- L335 - `List<Widget> _actions(ColorScheme theme) => [` - performs one operation in its enclosing type or module
-- L609 - `Future<void> _showFollowTime() async {` - performs one operation in its enclosing type or module
-- L610 - `void onShow() {` - handles interaction, lifecycle, or playback events
-- L648 - `Future<void> _showLiveMedalWall() async {` - performs one operation in its enclosing type or module
-- L649 - `void onShow() {` - handles interaction, lifecycle, or playback events
-- L672 - `void _toWebArchive() {` - performs one operation in its enclosing type or module
-- L697 - `void _createShortcut() {` - performs one operation in its enclosing type or module
-- L707 - `Future<void> _createShortcutAndroid() async {` - performs one operation in its enclosing type or module
+- L165 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
+- L174 - `Widget _reserveBtn(List<ReservationCardItem> list, ColorScheme theme) {` - performs one operation in its enclosing type or module
+- L186 - `void _showReserveList(List<ReservationCardItem> list) {` - performs one operation in its enclosing type or module
+- L336 - `List<Widget> _actions(ColorScheme theme) => [` - performs one operation in its enclosing type or module
+- L610 - `Future<void> _showFollowTime() async {` - performs one operation in its enclosing type or module
+- L611 - `void onShow() {` - handles interaction, lifecycle, or playback events
+- L649 - `Future<void> _showLiveMedalWall() async {` - performs one operation in its enclosing type or module
+- L650 - `void onShow() {` - handles interaction, lifecycle, or playback events
+- L673 - `void _toWebArchive() {` - performs one operation in its enclosing type or module
+- L698 - `void _createShortcut() {` - performs one operation in its enclosing type or module
+- L708 - `Future<void> _createShortcutAndroid() async {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member/widget/header_layout_widget.dart`
 
@@ -12241,22 +12278,22 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/mine/view.dart`
 
-- L29 - **class `MinePage`** - page or visual structure
-- L30 - `const MinePage({super.key, this.showBackBtn = false});` - performs one operation in its enclosing type or module
-- L35 - `State<MinePage> createState() => _MediaPageState();` - builds UI or state
-- L38 - **class `_MediaPageState`** - data structure or state carrier
-- L51 - `bool onNotificationType1(UserScrollNotification notification) {` - handles interaction, lifecycle, or playback events
-- L59 - `bool onNotificationType2(ScrollNotification notification) {` - handles interaction, lifecycle, or playback events
-- L67 - `Widget build(BuildContext context) {` - builds UI or state
-- L104 - `Widget _buildActions(Color primary) {` - performs one operation in its enclosing type or module
-- L224 - `Widget _buildUserInfo(ThemeData theme, Color secondary) {` - performs one operation in its enclosing type or module
-- L406 - `Widget _btn({` - performs one operation in its enclosing type or module
-- L442 - `void _autoRefresh() => Future.delayed(` - switches, recovers, or refreshes runtime state
-- L447 - `Widget _buildFav(ThemeData theme, Color secondary) {` - performs one operation in its enclosing type or module
-- L499 - `Widget _buildFavBody(` - performs one operation in its enclosing type or module
-- L505 - `Loading() => const SizedBox.shrink(),` - reads, requests, or synchronizes data
-- L506 - `Success(:final response) => Builder(` - performs one operation in its enclosing type or module
-- L558 - `Error(:final errMsg) => SizedBox(` - performs one operation in its enclosing type or module
+- L30 - **class `MinePage`** - page or visual structure
+- L31 - `const MinePage({super.key, this.showBackBtn = false});` - performs one operation in its enclosing type or module
+- L36 - `State<MinePage> createState() => _MediaPageState();` - builds UI or state
+- L39 - **class `_MediaPageState`** - data structure or state carrier
+- L52 - `bool onNotificationType1(UserScrollNotification notification) {` - handles interaction, lifecycle, or playback events
+- L60 - `bool onNotificationType2(ScrollNotification notification) {` - handles interaction, lifecycle, or playback events
+- L68 - `Widget build(BuildContext context) {` - builds UI or state
+- L105 - `Widget _buildActions(Color primary) {` - performs one operation in its enclosing type or module
+- L225 - `Widget _buildUserInfo(ThemeData theme, Color secondary) {` - performs one operation in its enclosing type or module
+- L407 - `Widget _btn({` - performs one operation in its enclosing type or module
+- L443 - `void _autoRefresh() => Timer(` - switches, recovers, or refreshes runtime state
+- L448 - `Widget _buildFav(ThemeData theme, Color secondary) {` - performs one operation in its enclosing type or module
+- L500 - `Widget _buildFavBody(` - performs one operation in its enclosing type or module
+- L506 - `Loading() => const SizedBox.shrink(),` - reads, requests, or synchronizes data
+- L507 - `Success(:final response) => Builder(` - performs one operation in its enclosing type or module
+- L559 - `Error(:final errMsg) => SizedBox(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/mine/widgets/item.dart`
 
@@ -12324,7 +12361,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L75 - `Widget _buildBody(ThemeData theme, LoadingState loadingState) {` - performs one operation in its enclosing type or module
 - L144 - `Widget _buildHeader(ThemeData theme, String title) {` - performs one operation in its enclosing type or module
 - L162 - `Widget _buildItem(` - performs one operation in its enclosing type or module
-- L199 - `void onLongPress() => showDialog(` - handles interaction, lifecycle, or playback events
+- L202 - `void onLongPress() => showDialog(` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/msg_feed_top/reply_me/controller.dart`
 
@@ -12541,15 +12578,15 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/pgc/view.dart`
 
-- L28 - **class `PgcPage`** - page or visual structure
-- L29 - `const PgcPage({` - performs one operation in its enclosing type or module
-- L37 - `State<PgcPage> createState() => _PgcPageState();` - builds UI or state
-- L40 - **class `_PgcPageState`** - data structure or state carrier
-- L44 - `void initState() {` - starts or initializes state and resources
-- L56 - `Widget build(BuildContext context) {` - builds UI or state
-- L84 - `Widget _buildTimeline(` - performs one operation in its enclosing type or module
-- L88 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
-- L89 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L27 - **class `PgcPage`** - page or visual structure
+- L28 - `const PgcPage({` - performs one operation in its enclosing type or module
+- L36 - `State<PgcPage> createState() => _PgcPageState();` - builds UI or state
+- L39 - **class `_PgcPageState`** - data structure or state carrier
+- L43 - `void initState() {` - starts or initializes state and resources
+- L55 - `Widget build(BuildContext context) {` - builds UI or state
+- L83 - `Widget _buildTimeline(` - performs one operation in its enclosing type or module
+- L87 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
+- L88 - `Success(:final response) =>` - performs one operation in its enclosing type or module
 - L195 - `Error(:final errMsg) => GestureDetector(` - performs one operation in its enclosing type or module
 - L209 - `List<Widget> _buildRcmd(ThemeData theme) => [` - performs one operation in its enclosing type or module
 - L223 - `Widget _buildRcmdTitle(ThemeData theme) => SliverToBoxAdapter(` - performs one operation in its enclosing type or module
@@ -12695,30 +12732,44 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/search_panel/all/controller.dart`
 
-- L9 - **class `SearchAllController`** - page or business state controller
-- L11 - `SearchAllController({` - performs one operation in its enclosing type or module
-- L20 - `void onInit() {` - starts or initializes state and resources
-- L26 - `List? getDataList(response) {` - reads, requests, or synchronizes data
-- L31 - `bool customHandleResponse(bool isRefresh, Success response) {` - performs one operation in its enclosing type or module
-- L42 - `Future<LoadingState<SearchAllData>> customGetData() => SearchHttp.searchAll(` - performs one operation in its enclosing type or module
-- L55 - `void onPushDetail(dynamic resultList) {` - handles interaction, lifecycle, or playback events
-- L64 - `void jump2Video() {` - performs one operation in its enclosing type or module
+- L6 - **class `SearchAllController`** - page or business state controller
+- L7 - `SearchAllController({` - performs one operation in its enclosing type or module
+- L19 - `bool customHandleResponse(bool isRefresh, Success<SearchVideoData> response) {` - performs one operation in its enclosing type or module
+- L34 - `void _computeActualSearchType() {` - performs one operation in its enclosing type or module
+- L47 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
 
 ## `lib/pages/search_panel/all/view.dart`
 
-- L18 - **class `SearchAllPanel`** - page or visual structure
-- L19 - `const SearchAllPanel({` - performs one operation in its enclosing type or module
-- L27 - `State<SearchAllPanel> createState() => _SearchAllPanelState();` - builds UI or state
-- L30 - **class `_SearchAllPanelState`** - data structure or state carrier
-- L36 - `void initState() {` - starts or initializes state and resources
-- L49 - `Widget buildList(ThemeData theme, List<dynamic> list) {` - performs one operation in its enclosing type or module
+- L15 - **class `SearchAllPanel`** - page or visual structure
+- L16 - `const SearchAllPanel({` - performs one operation in its enclosing type or module
+- L24 - `State<SearchAllPanel> createState() => _SearchAllPanelState();` - builds UI or state
+- L27 - **class `_SearchAllPanelState`** - data structure or state carrier
+- L39 - `void initState() {` - starts or initializes state and resources
+- L52 - `Widget buildList(List<SearchVideoItemModel> list) {` - performs one operation in its enclosing type or module
+- L88 - `static Widget _buildEsports(SearchEsports item) {` - performs one operation in its enclosing type or module
+- L92 - `static Widget _buildPgc(List<SearchPgcItemModel> list) {` - performs one operation in its enclosing type or module
 
-## `lib/pages/search_panel/all/widgets/pgc_card_v_search.dart`
+## `lib/pages/search_panel/all/widgets/activity.dart`
 
-- L11 - **class `PgcCardVSearch`** - reusable UI or rendering component
-- L12 - `const PgcCardVSearch({` - performs one operation in its enclosing type or module
-- L20 - `Widget build(BuildContext context) {` - builds UI or state
-- L21 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
+- L9 - **class `SearchActivityItem`** - reusable UI or rendering component
+- L10 - `const SearchActivityItem({` - performs one operation in its enclosing type or module
+- L18 - `Widget build(BuildContext context) {` - builds UI or state
+- L20 - `void onLongPress() => imageSaveDialog(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+
+## `lib/pages/search_panel/all/widgets/esports.dart`
+
+- L10 - **class `SearchEsportsItem`** - reusable UI or rendering component
+- L11 - `const SearchEsportsItem({` - performs one operation in its enclosing type or module
+- L19 - `Widget build(BuildContext context) {` - builds UI or state
+- L23 - `Widget buildTeamWidget(EsportsTeam team) {` - performs one operation in its enclosing type or module
+
+## `lib/pages/search_panel/all/widgets/user.dart`
+
+- L26 - **class `SearchAllUserItem`** - reusable UI or rendering component
+- L27 - `const SearchAllUserItem({` - performs one operation in its enclosing type or module
+- L35 - `Widget build(BuildContext context) {` - builds UI or state
+- L141 - `Widget _buildVideoItem(` - performs one operation in its enclosing type or module
+- L146 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/search_panel/article/controller.dart`
 
@@ -12735,8 +12786,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L19 - `State<SearchArticlePanel> createState() => _SearchArticlePanelState();` - builds UI or state
 - L22 - **class `_SearchArticlePanelState`** - data structure or state carrier
 - L34 - `void initState() {` - starts or initializes state and resources
-- L47 - `Widget buildHeader(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L93 - `Widget buildList(ThemeData theme, List<SearchArticleItemModel> list) {` - performs one operation in its enclosing type or module
+- L47 - `Widget buildHeader() {` - performs one operation in its enclosing type or module
+- L93 - `Widget buildList(List<SearchArticleItemModel> list) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/search_panel/article/widgets/item.dart`
 
@@ -12749,13 +12800,13 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L16 - **class `SearchPanelController`** - page or business state controller
 - L18 - `SearchPanelController({` - performs one operation in its enclosing type or module
-- L46 - `void onSortSearch({` - handles interaction, lifecycle, or playback events
-- L61 - `void cancelListener() {` - stops, releases, or resets state and resources
-- L66 - `void onInit() {` - starts or initializes state and resources
-- L80 - `List<T>? getDataList(R response) {` - reads, requests, or synchronizes data
-- L85 - `bool customHandleResponse(bool isRefresh, Success<R> response) {` - performs one operation in its enclosing type or module
-- L96 - `Future<LoadingState<R>> customGetData() => SearchHttp.searchByType<R>(` - performs one operation in its enclosing type or module
-- L116 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L47 - `void onSortSearch({` - handles interaction, lifecycle, or playback events
+- L62 - `void cancelListener() {` - stops, releases, or resets state and resources
+- L67 - `void onInit() {` - starts or initializes state and resources
+- L81 - `List<T>? getDataList(R response) {` - reads, requests, or synchronizes data
+- L86 - `bool customHandleResponse(bool isRefresh, Success<R> response) {` - performs one operation in its enclosing type or module
+- L97 - `Future<LoadingState<R>> customGetData() => SearchHttp.searchByType<R>(` - performs one operation in its enclosing type or module
+- L117 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/search_panel/live/view.dart`
 
@@ -12764,7 +12815,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L21 - `State<SearchLivePanel> createState() => _SearchLivePanelState();` - builds UI or state
 - L24 - **class `_SearchLivePanelState`** - data structure or state carrier
 - L36 - `void initState() {` - starts or initializes state and resources
-- L57 - `Widget buildList(ThemeData theme, List<SearchLiveItemModel> list) {` - performs one operation in its enclosing type or module
+- L57 - `Widget buildList(List<SearchLiveItemModel> list) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/search_panel/live/widgets/item.dart`
 
@@ -12777,12 +12828,12 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/search_panel/pgc/view.dart`
 
-- L13 - **class `SearchPgcPanel`** - page or visual structure
-- L14 - `const SearchPgcPanel({` - performs one operation in its enclosing type or module
-- L22 - `State<SearchPgcPanel> createState() => _SearchPgcPanelState();` - builds UI or state
-- L25 - **class `_SearchPgcPanelState`** - data structure or state carrier
-- L37 - `void initState() {` - starts or initializes state and resources
-- L55 - `Widget buildList(ThemeData theme, List<SearchPgcItemModel> list) {` - performs one operation in its enclosing type or module
+- L12 - **class `SearchPgcPanel`** - page or visual structure
+- L13 - `const SearchPgcPanel({` - performs one operation in its enclosing type or module
+- L21 - `State<SearchPgcPanel> createState() => _SearchPgcPanelState();` - builds UI or state
+- L24 - **class `_SearchPgcPanelState`** - data structure or state carrier
+- L36 - `void initState() {` - starts or initializes state and resources
+- L54 - `Widget buildList(List<SearchPgcItemModel> list) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/search_panel/pgc/widgets/item.dart`
 
@@ -12805,8 +12856,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L22 - `State<SearchUserPanel> createState() => _SearchUserPanelState();` - builds UI or state
 - L25 - **class `_SearchUserPanelState`** - data structure or state carrier
 - L36 - `void initState() {` - starts or initializes state and resources
-- L49 - `Widget buildHeader(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L100 - `Widget buildList(ThemeData theme, List<SearchUserItemModel> list) {` - performs one operation in its enclosing type or module
+- L49 - `Widget buildHeader() {` - performs one operation in its enclosing type or module
+- L100 - `Widget buildList(List<SearchUserItemModel> list) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/search_panel/user/widgets/item.dart`
 
@@ -12816,16 +12867,18 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/search_panel/video/controller.dart`
 
-- L17 - **class `SearchVideoController`** - page or business state controller
-- L19 - `SearchVideoController({` - performs one operation in its enclosing type or module
-- L28 - `void onInit() {` - starts or initializes state and resources
-- L40 - `List<SearchVideoItemModel>? getDataList(SearchVideoData response) {` - reads, requests, or synchronizes data
-- L45 - `bool customHandleResponse(bool isRefresh, Success<SearchVideoData> response) {` - performs one operation in its enclosing type or module
-- L55 - `void onPushDetail(List<SearchVideoItemModel>? resultList) {` - handles interaction, lifecycle, or playback events
-- L64 - `void jump2Video() {` - performs one operation in its enclosing type or module
-- L85 - `void onShowFilterDialog(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L96 - `Widget dateWidget([bool isFirst = true]) {` - performs one operation in its enclosing type or module
-- L142 - `setState(() {});` - updates, stores, or records state
+- L16 - **mixin `SearchVideoMixin`** - behavior shared by multiple classes
+- L20 - `void onInit() {` - starts or initializes state and resources
+- L26 - `bool customHandleResponse(bool isRefresh, Success<SearchVideoData> response) {` - performs one operation in its enclosing type or module
+- L34 - `void _onPushDetail(List<SearchVideoItemModel>? resultList) {` - performs one operation in its enclosing type or module
+- L43 - `void _jump2Video() {` - performs one operation in its enclosing type or module
+- L58 - **class `SearchVideoController`** - page or business state controller
+- L60 - `SearchVideoController({` - performs one operation in its enclosing type or module
+- L67 - `void onInit() {` - starts or initializes state and resources
+- L77 - `List<SearchVideoItemModel>? getDataList(SearchVideoData response) {` - reads, requests, or synchronizes data
+- L88 - `void onShowFilterDialog(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L99 - `Widget dateWidget([bool isFirst = true]) {` - performs one operation in its enclosing type or module
+- L145 - `setState(() {});` - updates, stores, or records state
 
 ## `lib/pages/search_panel/video/view.dart`
 
@@ -12834,22 +12887,24 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L21 - `State<SearchVideoPanel> createState() => _SearchVideoPanelState();` - builds UI or state
 - L24 - **class `_SearchVideoPanelState`** - data structure or state carrier
 - L36 - `void initState() {` - starts or initializes state and resources
-- L49 - `Widget buildHeader(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L105 - `Widget buildList(ThemeData theme, List<SearchVideoItemModel> list) {` - performs one operation in its enclosing type or module
+- L49 - **mixin `SearchVideoPanelMixin`** - behavior shared by multiple classes
+- L57 - `Widget buildHeader() {` - performs one operation in its enclosing type or module
+- L113 - `Widget buildList(List<SearchVideoItemModel> list) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/search_panel/view.dart`
 
 - L11 - **class `CommonSearchPanel`** - page or visual structure
 - L12 - `const CommonSearchPanel({` - performs one operation in its enclosing type or module
 - L24 - **class `CommonSearchPanelState`** - data structure or state carrier
-- L37 - `void dispose() {` - stops, releases, or resets state and resources
-- L43 - `Widget build(BuildContext context) {` - builds UI or state
-- L67 - `Widget _buildBody(ThemeData theme, LoadingState<List<T>?> loadingState) {` - performs one operation in its enclosing type or module
-- L69 - `Loading() => buildLoading,` - reads, requests, or synchronizes data
-- L70 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L74 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
-- L81 - `Widget? buildHeader(ThemeData theme) => null;` - performs one operation in its enclosing type or module
-- L83 - `Widget buildList(ThemeData theme, List<T> list);` - performs one operation in its enclosing type or module
+- L36 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L45 - `void dispose() {` - stops, releases, or resets state and resources
+- L51 - `Widget build(BuildContext context) {` - builds UI or state
+- L74 - `Widget _buildBody(LoadingState<List<T>?> loadingState) {` - performs one operation in its enclosing type or module
+- L76 - `Loading() => buildLoading,` - reads, requests, or synchronizes data
+- L77 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L81 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L88 - `Widget? buildHeader() => null;` - performs one operation in its enclosing type or module
+- L90 - `Widget buildList(List<T> list);` - performs one operation in its enclosing type or module
 
 ## `lib/pages/search_result/controller.dart`
 
@@ -12858,14 +12913,14 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/search_result/view.dart`
 
-- L15 - **class `SearchResultPage`** - page or visual structure
-- L16 - `const SearchResultPage({super.key});` - performs one operation in its enclosing type or module
-- L19 - `State<SearchResultPage> createState() => _SearchResultPageState();` - builds UI or state
-- L22 - **class `_SearchResultPageState`** - data structure or state carrier
-- L31 - `void initState() {` - starts or initializes state and resources
-- L54 - `void listener() {` - performs one operation in its enclosing type or module
-- L59 - `void dispose() {` - stops, releases, or resets state and resources
-- L67 - `Widget build(BuildContext context) {` - builds UI or state
+- L16 - **class `SearchResultPage`** - page or visual structure
+- L17 - `const SearchResultPage({super.key});` - performs one operation in its enclosing type or module
+- L20 - `State<SearchResultPage> createState() => _SearchResultPageState();` - builds UI or state
+- L23 - **class `_SearchResultPageState`** - data structure or state carrier
+- L32 - `void initState() {` - starts or initializes state and resources
+- L55 - `void listener() {` - performs one operation in its enclosing type or module
+- L60 - `void dispose() {` - stops, releases, or resets state and resources
+- L68 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/search_trending/controller.dart`
 
@@ -12885,29 +12940,29 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/search/controller.dart`
 
-- L18 - **mixin `DebounceStreamMixin`** - behavior shared by multiple classes
-- L22 - `void onValueChanged(T value);` - handles interaction, lifecycle, or playback events
-- L24 - `void subInit() {` - performs one operation in its enclosing type or module
-- L30 - `void subDispose() {` - performs one operation in its enclosing type or module
-- L38 - **class `DebounceStreamState`** - data structure or state carrier
-- L41 - `void dispose() {` - stops, releases, or resets state and resources
-- L47 - `void initState() {` - starts or initializes state and resources
-- L53 - **class `BaseSearchController`** - page or business state controller
-- L66 - `void onInit() {` - starts or initializes state and resources
-- L76 - `Future<void> queryTrendingList() async {` - reads, requests, or synchronizes data
-- L81 - **class `SSearchController`** - page or business state controller
-- L83 - `SSearchController(this.tag);` - performs one operation in its enclosing type or module
-- L117 - `void onInit() {` - starts or initializes state and resources
-- L137 - `void validateUid() {` - predicate, validation, or lookup
-- L141 - `void onChange(String value) {` - handles interaction, lifecycle, or playback events
-- L152 - `void onClear() {` - handles interaction, lifecycle, or playback events
-- L164 - `void submit() {` - performs one operation in its enclosing type or module
-- L194 - `Future<void> queryRecommendList() async {` - reads, requests, or synchronizes data
-- L198 - `void onClickKeyword(String keyword) {` - handles interaction, lifecycle, or playback events
-- L207 - `Future<void> onValueChanged(String value) async {` - handles interaction, lifecycle, or playback events
-- L216 - `void onLongSelect(String word) {` - handles interaction, lifecycle, or playback events
-- L221 - `void onClearHistory() {` - handles interaction, lifecycle, or playback events
-- L233 - `void onClose() {` - stops, releases, or resets state and resources
+- L19 - **mixin `DebounceStreamMixin`** - behavior shared by multiple classes
+- L23 - `void onValueChanged(T value);` - handles interaction, lifecycle, or playback events
+- L25 - `void subInit() {` - performs one operation in its enclosing type or module
+- L31 - `void subDispose() {` - performs one operation in its enclosing type or module
+- L39 - **class `DebounceStreamState`** - data structure or state carrier
+- L42 - `void dispose() {` - stops, releases, or resets state and resources
+- L48 - `void initState() {` - starts or initializes state and resources
+- L54 - **class `BaseSearchController`** - page or business state controller
+- L67 - `void onInit() {` - starts or initializes state and resources
+- L77 - `Future<void> queryTrendingList() async {` - reads, requests, or synchronizes data
+- L82 - **class `SSearchController`** - page or business state controller
+- L84 - `SSearchController(this.tag);` - performs one operation in its enclosing type or module
+- L118 - `void onInit() {` - starts or initializes state and resources
+- L139 - `void validateUid() {` - predicate, validation, or lookup
+- L143 - `void onChange(String value) {` - handles interaction, lifecycle, or playback events
+- L154 - `void onClear() {` - handles interaction, lifecycle, or playback events
+- L166 - `Future<void> submit() async {` - performs one operation in its enclosing type or module
+- L201 - `Future<void> queryRecommendList() async {` - reads, requests, or synchronizes data
+- L205 - `void onClickKeyword(String keyword, {bool clearSuggest = true}) {` - handles interaction, lifecycle, or playback events
+- L214 - `Future<void> onValueChanged(String value) async {` - handles interaction, lifecycle, or playback events
+- L223 - `void onLongSelect(String word) {` - handles interaction, lifecycle, or playback events
+- L228 - `void onClearHistory() {` - handles interaction, lifecycle, or playback events
+- L240 - `void onClose() {` - stops, releases, or resets state and resources
 
 ## `lib/pages/search/view.dart`
 
@@ -12919,10 +12974,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L43 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
 - L51 - `Widget build(BuildContext context) {` - builds UI or state
 - L134 - `Widget _buildSearchSuggest() {` - performs one operation in its enclosing type or module
-- L174 - `Widget _buildHotSearch({` - performs one operation in its enclosing type or module
-- L426 - `Widget _buildHotKey(` - performs one operation in its enclosing type or module
-- L431 - `Success(:final response) when (response.list?.isNotEmpty ?? false) =>` - performs one operation in its enclosing type or module
-- L436 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L177 - `Widget _buildHotSearch({` - performs one operation in its enclosing type or module
+- L431 - `Widget _buildHotKey(` - performs one operation in its enclosing type or module
+- L436 - `Success(:final response) when (response.list?.isNotEmpty ?? false) =>` - performs one operation in its enclosing type or module
+- L441 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/search/widgets/hot_keyword.dart`
 
@@ -12946,8 +13001,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/pages/search/widgets/search_text.dart`
 
 - L4 - **class `SearchText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16 - `const SearchText({` - performs one operation in its enclosing type or module
-- L31 - `Widget build(BuildContext context) {` - builds UI or state
+- L18 - `const SearchText({` - performs one operation in its enclosing type or module
+- L35 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/setting/common_setting.dart`
 
@@ -12963,21 +13018,21 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/setting/models/extra_settings.dart`
 
-- L653 - `Future<void> audioNormalization(` - performs one operation in its enclosing type or module
-- L746 - `void _showDownPathDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L789 - `void _showDynDialog(BuildContext context) {` - performs one operation in its enclosing type or module
-- L829 - `void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L870 - `void _showDmHeightDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L912 - `void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L952 - `Future<void> _showRefreshDialog(` - switches, recovers, or refreshes runtime state
-- L976 - `void _visitor(Element context) {` - performs one operation in its enclosing type or module
-- L985 - `Future<void> _showSuperResolutionDialog(` - performs one operation in its enclosing type or module
-- L1006 - `Future<void> _showFavDialog(BuildContext context) async {` - performs one operation in its enclosing type or module
-- L1052 - `Future<void> _showReplyCountDialog(` - performs one operation in its enclosing type or module
-- L1074 - `Future<void> _showReplyDelayDialog(` - performs one operation in its enclosing type or module
-- L1097 - `Future<void> _showMemberTabDialog(` - performs one operation in its enclosing type or module
-- L1115 - `void _showProxyDialog(BuildContext context) {` - performs one operation in its enclosing type or module
-- L1179 - `void _showCacheDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L661 - `Future<void> audioNormalization(` - performs one operation in its enclosing type or module
+- L754 - `void _showDownPathDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L808 - `void _showDynDialog(BuildContext context) {` - performs one operation in its enclosing type or module
+- L848 - `void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L889 - `void _showDmHeightDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L931 - `void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L971 - `Future<void> _showRefreshDialog(` - switches, recovers, or refreshes runtime state
+- L995 - `void _visitor(Element context) {` - performs one operation in its enclosing type or module
+- L1004 - `Future<void> _showSuperResolutionDialog(` - performs one operation in its enclosing type or module
+- L1025 - `Future<void> _showFavDialog(BuildContext context) async {` - performs one operation in its enclosing type or module
+- L1071 - `Future<void> _showReplyCountDialog(` - performs one operation in its enclosing type or module
+- L1093 - `Future<void> _showReplyDelayDialog(` - performs one operation in its enclosing type or module
+- L1116 - `Future<void> _showMemberTabDialog(` - performs one operation in its enclosing type or module
+- L1134 - `void _showProxyDialog(BuildContext context) {` - performs one operation in its enclosing type or module
+- L1198 - `void _showCacheDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/setting/models/model.dart`
 
@@ -13011,56 +13066,59 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/setting/models/style_settings.dart`
 
-- L392 - `void _showQualityDialog({` - performs one operation in its enclosing type or module
-- L417 - `void _showUiScaleDialog(` - performs one operation in its enclosing type or module
-- L470 - `setDialogState(() {` - updates, stores, or records state
-- L516 - `void _showSpringDialog(BuildContext context, _) {` - performs one operation in its enclosing type or module
-- L522 - `void physical2Duration() {` - performs one operation in its enclosing type or module
-- L538 - `void duration2Physical() {` - performs one operation in its enclosing type or module
-- L649 - `Future<void> _showTransitionDialog(` - performs one operation in its enclosing type or module
-- L668 - `Future<void> _showCardWidthDialog(` - performs one operation in its enclosing type or module
-- L696 - `void _setDynBadge(DynamicBadgeMode value, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L704 - `Future<void> _setMsgBadge(DynamicBadgeMode value, VoidCallback setState) async {` - performs one operation in its enclosing type or module
-- L716 - `Future<void> _showMsgUnReadDialog(` - performs one operation in its enclosing type or module
-- L742 - `void _showReduceColorDialog(` - performs one operation in its enclosing type or module
-- L763 - `void onConfirm() {` - handles interaction, lifecycle, or playback events
-- L793 - `Future<void> _showToastDialog(` - performs one operation in its enclosing type or module
-- L815 - `void _setThemeType(ThemeType value, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L824 - `NormalModel _useSSDModel() {` - performs one operation in its enclosing type or module
-- L826 - `void onChanged(BuildContext context, VoidCallback setState) {` - handles interaction, lifecycle, or playback events
+- L401 - `void _showQualityDialog({` - performs one operation in its enclosing type or module
+- L426 - `void _showUiScaleDialog(` - performs one operation in its enclosing type or module
+- L479 - `setDialogState(() {` - updates, stores, or records state
+- L525 - `void _showSpringDialog(BuildContext context, _) {` - performs one operation in its enclosing type or module
+- L531 - `void physical2Duration() {` - performs one operation in its enclosing type or module
+- L547 - `void duration2Physical() {` - performs one operation in its enclosing type or module
+- L658 - `Future<void> _showTransitionDialog(` - performs one operation in its enclosing type or module
+- L677 - `Future<void> _showCardWidthDialog(` - performs one operation in its enclosing type or module
+- L705 - `void _setDynBadge(DynamicBadgeMode value, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L713 - `Future<void> _setMsgBadge(DynamicBadgeMode value, VoidCallback setState) async {` - performs one operation in its enclosing type or module
+- L725 - `Future<void> _showMsgUnReadDialog(` - performs one operation in its enclosing type or module
+- L751 - `void _showReduceColorDialog(` - performs one operation in its enclosing type or module
+- L772 - `void onConfirm() {` - handles interaction, lifecycle, or playback events
+- L802 - `Future<void> _showToastDialog(` - performs one operation in its enclosing type or module
+- L824 - `void _setThemeType(ThemeType value, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L833 - `NormalModel _useSSDModel() {` - performs one operation in its enclosing type or module
+- L835 - `void onChanged(BuildContext context, VoidCallback setState) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/setting/models/video_settings.dart`
 
-- L298 - `Future<void> _showCDNDialog(BuildContext context, VoidCallback setState) async {` - performs one operation in its enclosing type or module
-- L310 - `Future<void> _showLiveCDNDialog(` - performs one operation in its enclosing type or module
-- L354 - `Future<void> _showVideoQaDialog(` - performs one operation in its enclosing type or module
-- L372 - `Future<void> _showVideoCellularQaDialog(` - performs one operation in its enclosing type or module
-- L393 - `Future<void> _showAudioQaDialog(` - performs one operation in its enclosing type or module
-- L411 - `Future<void> _showAudioCellularQaDialog(` - performs one operation in its enclosing type or module
-- L432 - `Future<void> _showLiveQaDialog(` - performs one operation in its enclosing type or module
-- L450 - `Future<void> _showLiveCellularQaDialog(` - performs one operation in its enclosing type or module
-- L468 - `Future<void> _showCodecsDialog(` - performs one operation in its enclosing type or module
-- L489 - `Future<void> _showCellularCodecsDialog(` - performs one operation in its enclosing type or module
-- L510 - `Future<void> _showAudioOutputDialog(` - performs one operation in its enclosing type or module
-- L533 - `Future<void> _showVideoSyncDialog(` - performs one operation in its enclosing type or module
-- L561 - `Future<void> _showHwDecDialog(` - performs one operation in its enclosing type or module
-- L584 - `void _showAutoSyncDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L624 - `void _showDecimalDialog(` - performs one operation in its enclosing type or module
-- L681 - `void _openAdaptivePlaybackSettings(` - performs one operation in its enclosing type or module
-- L706 - `Future<void> _showAdaptivePreferredDecodeDialog(` - performs one operation in its enclosing type or module
-- L726 - `Future<void> _showAdaptiveRecoveryDecodeDialog(` - switches, recovers, or refreshes runtime state
-- L746 - `void _showAdaptiveTargetBufferDialog(` - performs one operation in its enclosing type or module
-- L760 - `void _showAdaptiveSegmentToleranceDialog(` - performs one operation in its enclosing type or module
-- L774 - `void _showAdaptiveLowBufferDialog(` - performs one operation in its enclosing type or module
-- L788 - `void _showAdaptiveLowBufferStutterMinGrowthDialog(` - performs one operation in its enclosing type or module
-- L802 - `void _showAdaptiveStallTimeoutDialog(` - performs one operation in its enclosing type or module
-- L816 - `void _showAdaptiveCdnCooldownDialog(` - performs one operation in its enclosing type or module
-- L830 - `void _showAdaptiveMaxSwitchesDialog(` - switches, recovers, or refreshes runtime state
-- L845 - `String _cdnScoreSummary() {` - performs one operation in its enclosing type or module
-- L853 - `List<MapEntry<String, CdnScoreEntry>> _cdnScoreEntriesForDisplay() {` - performs one operation in its enclosing type or module
-- L865 - `Future<void> _showCdnScoresDialog(` - performs one operation in its enclosing type or module
-- L922 - `void _showBufferSizeDialog(BuildContext context, VoidCallback setState) =>` - performs one operation in its enclosing type or module
-- L932 - `void _showBufferSecDialog(BuildContext context, VoidCallback setState) =>` - performs one operation in its enclosing type or module
+- L322 - `Future<void> _showCDNDialog(BuildContext context, VoidCallback setState) async {` - performs one operation in its enclosing type or module
+- L334 - `Future<void> _showLiveCDNDialog(` - performs one operation in its enclosing type or module
+- L378 - `Future<void> _showVideoQaDialog(` - performs one operation in its enclosing type or module
+- L396 - `Future<void> _showVideoCellularQaDialog(` - performs one operation in its enclosing type or module
+- L417 - `Future<void> _showAudioQaDialog(` - performs one operation in its enclosing type or module
+- L435 - `Future<void> _showAudioCellularQaDialog(` - performs one operation in its enclosing type or module
+- L456 - `Future<void> _showLiveQaDialog(` - performs one operation in its enclosing type or module
+- L474 - `Future<void> _showLiveCellularQaDialog(` - performs one operation in its enclosing type or module
+- L492 - `Future<void> _showCodecsDialog(` - performs one operation in its enclosing type or module
+- L513 - `Future<void> _showCellularCodecsDialog(` - performs one operation in its enclosing type or module
+- L534 - `Future<void> _showAudioOutputDialog(` - performs one operation in its enclosing type or module
+- L557 - `Future<void> _showVideoSyncDialog(` - performs one operation in its enclosing type or module
+- L585 - `Future<void> _showHwDecDialog(` - performs one operation in its enclosing type or module
+- L608 - `void _showAutoSyncDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L648 - `void _showDecimalDialog(` - performs one operation in its enclosing type or module
+- L705 - `void _openAdaptivePlaybackSettings(` - performs one operation in its enclosing type or module
+- L730 - `Future<void> _showAdaptivePreferredDecodeDialog(` - performs one operation in its enclosing type or module
+- L750 - `Future<void> _showAdaptiveRecoveryDecodeDialog(` - switches, recovers, or refreshes runtime state
+- L770 - `void _showAdaptiveTargetBufferDialog(` - performs one operation in its enclosing type or module
+- L784 - `void _showAdaptiveSegmentToleranceDialog(` - performs one operation in its enclosing type or module
+- L798 - `void _showAdaptiveLowBufferDialog(` - performs one operation in its enclosing type or module
+- L812 - `void _showAdaptiveLowBufferStutterMinGrowthDialog(` - performs one operation in its enclosing type or module
+- L826 - `void _showAdaptiveStallTimeoutDialog(` - performs one operation in its enclosing type or module
+- L840 - `void _showAdaptiveCdnCooldownDialog(` - performs one operation in its enclosing type or module
+- L854 - `void _showAdaptiveMaxSwitchesDialog(` - switches, recovers, or refreshes runtime state
+- L869 - `void _showAdaptiveFragmentStallWindowDialog(` - performs one operation in its enclosing type or module
+- L883 - `void _showAdaptiveFragmentStallCountDialog(` - performs one operation in its enclosing type or module
+- L898 - `void _showAdaptiveFragmentStallTotalDialog(` - performs one operation in its enclosing type or module
+- L913 - `String _cdnScoreSummary() {` - performs one operation in its enclosing type or module
+- L921 - `List<MapEntry<String, CdnScoreEntry>> _cdnScoreEntriesForDisplay() {` - performs one operation in its enclosing type or module
+- L933 - `Future<void> _showCdnScoresDialog(` - performs one operation in its enclosing type or module
+- L990 - `void _showBufferSizeDialog(BuildContext context, VoidCallback setState) =>` - performs one operation in its enclosing type or module
+- L1000 - `void _showBufferSecDialog(BuildContext context, VoidCallback setState) =>` - performs one operation in its enclosing type or module
 
 ## `lib/pages/setting/pages/bar_set.dart`
 
@@ -13079,27 +13137,29 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/setting/pages/color_select.dart`
 
-- L27 - **class `ColorSelectPage`** - page or visual structure
-- L28 - `const ColorSelectPage({super.key});` - performs one operation in its enclosing type or module
-- L31 - `State<ColorSelectPage> createState() => _ColorSelectPageState();` - builds UI or state
-- L34 - **class `Item`** - reusable UI or rendering component
-- L35 - `Item({` - performs one operation in its enclosing type or module
-- L46 - **class `_ColorSelectPageState`** - data structure or state carrier
-- L50 - `Future<void> _onChanged([bool? val]) async {` - performs one operation in its enclosing type or module
-- L64 - `Widget build(BuildContext context) {` - builds UI or state
-- L225 - **class `_ColorSelectController`** - page or business state controller
+- L28 - **class `ColorSelectPage`** - page or visual structure
+- L29 - `const ColorSelectPage({super.key});` - performs one operation in its enclosing type or module
+- L32 - `State<ColorSelectPage> createState() => _ColorSelectPageState();` - builds UI or state
+- L35 - **class `Item`** - reusable UI or rendering component
+- L36 - `Item({` - performs one operation in its enclosing type or module
+- L47 - **class `_ColorSelectPageState`** - data structure or state carrier
+- L51 - `Future<void> _onChanged([bool? val]) async {` - performs one operation in its enclosing type or module
+- L67 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L73 - `Widget build(BuildContext context) {` - builds UI or state
+- L188 - `Widget _buildColorPanel() {` - performs one operation in its enclosing type or module
+- L292 - **class `_ColorSelectController`** - page or business state controller
 
 ## `lib/pages/setting/pages/display_mode.dart`
 
-- L11 - **class `SetDisplayMode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L12 - `const SetDisplayMode({super.key});` - updates, stores, or records state
-- L15 - `State<SetDisplayMode> createState() => _SetDisplayModeState();` - builds UI or state
-- L18 - **class `_SetDisplayModeState`** - data structure or state carrier
-- L26 - `void initState() {` - starts or initializes state and resources
-- L32 - `Future<void> fetchAll() async {` - reads, requests, or synchronizes data
-- L37 - `setState(() {});` - updates, stores, or records state
-- L42 - `Future<void> init() async {` - starts or initializes state and resources
-- L62 - `Widget build(BuildContext context) {` - builds UI or state
+- L13 - **class `SetDisplayMode`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14 - `const SetDisplayMode({super.key});` - updates, stores, or records state
+- L17 - `State<SetDisplayMode> createState() => _SetDisplayModeState();` - builds UI or state
+- L20 - **class `_SetDisplayModeState`** - data structure or state carrier
+- L28 - `void initState() {` - starts or initializes state and resources
+- L34 - `Future<void> fetchAll() async {` - reads, requests, or synchronizes data
+- L39 - `setState(() {});` - updates, stores, or records state
+- L44 - `Future<void> init() async {` - starts or initializes state and resources
+- L64 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/setting/pages/dynamic_filter.dart`
 
@@ -13353,18 +13413,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/setting/widgets/switch_item.dart`
 
-- L10 - **class `SetSwitchItem`** - reusable UI or rendering component
-- L24 - `const SetSwitchItem({` - updates, stores, or records state
-- L41 - `State<SetSwitchItem> createState() => _SetSwitchItemState();` - builds UI or state
-- L44 - **class `_SetSwitchItemState`** - reusable UI or rendering component
-- L47 - `void _setVal() {` - performs one operation in its enclosing type or module
-- L52 - `void didUpdateWidget(SetSwitchItem oldWidget) {` - handles interaction, lifecycle, or playback events
-- L60 - `void initState() {` - starts or initializes state and resources
-- L65 - `Future<void> switchChange([bool? value]) async {` - switches, recovers, or refreshes runtime state
-- L83 - `setState(() {});` - updates, stores, or records state
-- L88 - `Widget build(BuildContext context) {` - builds UI or state
-- L99 - `Widget _build(BuildContext context, bool enabled) {` - performs one operation in its enclosing type or module
-- L121 - `Widget child(Widget? trailing) => ListTile(` - performs one operation in its enclosing type or module
+- L9 - **class `SetSwitchItem`** - reusable UI or rendering component
+- L23 - `const SetSwitchItem({` - updates, stores, or records state
+- L40 - `State<SetSwitchItem> createState() => _SetSwitchItemState();` - builds UI or state
+- L43 - **class `_SetSwitchItemState`** - reusable UI or rendering component
+- L46 - `void _setVal() {` - performs one operation in its enclosing type or module
+- L51 - `void didUpdateWidget(SetSwitchItem oldWidget) {` - handles interaction, lifecycle, or playback events
+- L59 - `void initState() {` - starts or initializes state and resources
+- L64 - `Future<void> switchChange([bool? value]) async {` - switches, recovers, or refreshes runtime state
+- L84 - `Widget build(BuildContext context) {` - builds UI or state
+- L95 - `Widget _build(BuildContext context, bool enabled) {` - performs one operation in its enclosing type or module
+- L117 - `Widget child(Widget? trailing) => ListTile(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/settings_search/view.dart`
 
@@ -13542,80 +13601,86 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L85 - **class `VideoDetailController`** - page or business state controller
 - L161 - `int _remainingCdnSwitches(CdnRelayTrack track) => track == .video` - switches, recovers, or refreshes runtime state
-- L254 - `void refreshPage() {` - switches, recovers, or refreshes runtime state
-- L258 - `void _animListener() {` - performs one operation in its enclosing type or module
-- L265 - `void _calcAnimHeight() {` - performs one operation in its enclosing type or module
-- L282 - `void animToTop() {` - performs one operation in its enclosing type or module
-- L286 - `bool _needAnimOnDimensionChanged(bool isVertical) {` - performs one operation in its enclosing type or module
-- L297 - `void _setVideoHeight() {` - performs one operation in its enclosing type or module
-- L385 - `void cacheLocalProgress() {` - performs one operation in its enclosing type or module
-- L393 - `void initFileSource(BiliDownloadEntryInfo entry, {bool isInit = true}) {` - starts or initializes state and resources
-- L415 - `void onInit() {` - starts or initializes state and resources
-- L464 - `Future<void> getMediaList({` - reads, requests, or synchronizes data
-- L524 - `void showMediaListPanel(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L526 - `Widget panel() => MediaListPanel(` - performs one operation in its enclosing type or module
-- L608 - `set autoPlay(bool value) => _autoPlay.value = value;` - performs one operation in its enclosing type or module
-- L615 - `Future<void> seekTo(Duration duration, {required bool isSeek}) =>` - handles interaction, lifecycle, or playback events
-- L619 - `Widget buildItem(Object item, Animation<double> animation) {` - performs one operation in its enclosing type or module
-- L678 - `Future<void> showShootDanmakuSheet() async {` - handles interaction, lifecycle, or playback events
-- L716 - `VideoItem findVideoByQa(int qa, {bool setCodecs = false}) {` - predicate, validation, or lookup
-- L750 - `bool _isCdnCandidateAvailable(String url) {` - performs one operation in its enclosing type or module
-- L757 - `int _initialCdnIndex(List<String> candidates) {` - performs one operation in its enclosing type or module
-- L765 - `int _nextCdnIndex(List<String> candidates, int current) {` - performs one operation in its enclosing type or module
-- L777 - `Duration? _readPts(String property) {` - performs one operation in its enclosing type or module
-- L791 - `void _logAdaptive(String message) {` - performs one operation in its enclosing type or module
-- L795 - `static String _briefPlayerError(String event) {` - performs one operation in its enclosing type or module
-- L802 - `AudioItem? _currentAudioItem() {` - performs one operation in its enclosing type or module
-- L809 - `bool _switchToRecoveryDecodeForFrozenVideo() {` - switches, recovers, or refreshes runtime state
-- L838 - `void _resetVideoFrameHealth(DateTime now) {` - performs one operation in its enclosing type or module
-- L845 - `void _configureAdaptiveSources({` - performs one operation in its enclosing type or module
-- L891 - `void _startCdnHealthMonitor() {` - performs one operation in its enclosing type or module
-- L912 - `bool _onPlayerError(String event) {` - performs one operation in its enclosing type or module
-- L979 - `bool _isRecoverableAdaptivePlayerError(String event) {` - switches, recovers, or refreshes runtime state
-- L1002 - `bool _isLocalRelayOpenFailure(String event) {` - performs one operation in its enclosing type or module
-- L1011 - `bool _isVideoBitstreamCorruption(String event) {` - performs one operation in its enclosing type or module
-- L1015 - `bool _isExpectedRelayRebuildNoise(String event) {` - switches, recovers, or refreshes runtime state
-- L1021 - `Future<void> _recoverFromPlayerError({` - switches, recovers, or refreshes runtime state
-- L1048 - `void _capturePlaybackPosition() {` - performs one operation in its enclosing type or module
-- L1059 - `Future<void> _rebuildRelayAndPlayer({` - switches, recovers, or refreshes runtime state
-- L1090 - `void _checkCdnHealth() {` - performs one operation in its enclosing type or module
-- L1246 - `void _resetLowBufferWatch(DateTime now, Duration forwardBuffer) {` - performs one operation in its enclosing type or module
-- L1258 - `void _resetLowBufferWatchAfterCdnSwitch(DateTime now) {` - switches, recovers, or refreshes runtime state
-- L1267 - `bool _shouldSwitchForPersistentLowBuffer(` - switches, recovers, or refreshes runtime state
-- L1307 - `void _resetAdaptiveCdnAfterSeek({` - performs one operation in its enclosing type or module
-- L1322 - `Future<void> _recoverFrozenPlayback({required String frozenTracks}) async {` - switches, recovers, or refreshes runtime state
-- L1352 - `_switchToRecoveryDecodeForFrozenVideo()) {` - switches, recovers, or refreshes runtime state
-- L1389 - `Future<bool> _switchToNextCdn({String reason = 'buffer-growth'}) async {` - switches, recovers, or refreshes runtime state
-- L1494 - `void _onRelaySwitch(` - switches, recovers, or refreshes runtime state
-- L1522 - `void _onRelayRecoveryRequired(` - switches, recovers, or refreshes runtime state
-- L1612 - `Future<void> _disposeCdnRelay({bool delayed = false}) async {` - performs one operation in its enclosing type or module
-- L1632 - `Future<void> _disposeAllCdnRelays() async {` - performs one operation in its enclosing type or module
-- L1648 - `void updatePlayer() {` - updates, stores, or records state
-- L1677 - `Future<void>? _initPlayerIfNeeded(` - performs one operation in its enclosing type or module
-- L1696 - `Future<void> playerInit({` - handles interaction, lifecycle, or playback events
-- L1769 - `void setLanguage(String language) {` - updates, stores, or records state
-- L1779 - `Future<LoadingState<PlayUrlModel>> _getVideoUrl(int quality) {` - performs one operation in its enclosing type or module
-- L1793 - `Future<void> _supplementVideoQualities() async {` - performs one operation in its enclosing type or module
-- L1806 - `Future<void> queryVideoUrl({` - reads, requests, or synchronizes data
-- L1840 - `Future<void> _queryVideoUrl(` - performs one operation in its enclosing type or module
-- L2030 - `void onBlock(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L2073 - `Future<void> setSubtitle(int index) async {` - updates, stores, or records state
-- L2080 - `Future<void> setSub(({bool isData, String id}) subtitle) async {` - updates, stores, or records state
-- L2113 - `Future<void> getSteinEdgeInfo([int? edgeId]) async {` - reads, requests, or synchronizes data
-- L2138 - `Future<void> _queryPlayInfo() async {` - performs one operation in its enclosing type or module
-- L2227 - `Future<void> _setSubtitle(List<Subtitle> sub) async {` - performs one operation in its enclosing type or module
-- L2243 - `void updateMediaListHistory(int aid) {` - updates, stores, or records state
-- L2253 - `void makeHeartBeat() {` - performs one operation in its enclosing type or module
-- L2279 - `void onClose() {` - stops, releases, or resets state and resources
-- L2312 - `void onReset({bool isStein = false}) {` - handles interaction, lifecycle, or playback events
-- L2373 - `Future<void> _getDmTrend() async {` - performs one operation in its enclosing type or module
-- L2411 - `void showNoteList(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L2446 - `bool onSkipSegment() {` - handles interaction, lifecycle, or playback events
-- L2461 - `void toAudioPage() {` - performs one operation in its enclosing type or module
-- L2492 - `Future<void> onDownload(BuildContext context) async {` - handles interaction, lifecycle, or playback events
-- L2576 - `void editPlayUrl() {` - performs one operation in its enclosing type or module
-- L2579 - `Widget textField({` - performs one operation in its enclosing type or module
-- L2631 - `Future<void> onCast() async {` - handles interaction, lifecycle, or playback events
+- L203 - `String playedTimePos(bool hasParams) {` - handles interaction, lifecycle, or playback events
+- L261 - `void refreshPage() {` - switches, recovers, or refreshes runtime state
+- L265 - `void _animListener() {` - performs one operation in its enclosing type or module
+- L272 - `void _calcAnimHeight() {` - performs one operation in its enclosing type or module
+- L289 - `void animToTop() {` - performs one operation in its enclosing type or module
+- L293 - `bool _needAnimOnDimensionChanged(bool isVertical) {` - performs one operation in its enclosing type or module
+- L304 - `void _setVideoHeight() {` - performs one operation in its enclosing type or module
+- L392 - `void cacheLocalProgress() {` - performs one operation in its enclosing type or module
+- L400 - `void initFileSource(BiliDownloadEntryInfo entry, {bool isInit = true}) {` - starts or initializes state and resources
+- L422 - `void onInit() {` - starts or initializes state and resources
+- L475 - `Future<void> getMediaList({` - reads, requests, or synchronizes data
+- L535 - `void showMediaListPanel(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L537 - `Widget panel() => MediaListPanel(` - performs one operation in its enclosing type or module
+- L619 - `set autoPlay(bool value) => _autoPlay.value = value;` - performs one operation in its enclosing type or module
+- L626 - `Future<void> seekTo(Duration duration, {required bool isSeek}) =>` - handles interaction, lifecycle, or playback events
+- L630 - `Widget buildItem(Object item, Animation<double> animation) {` - performs one operation in its enclosing type or module
+- L689 - `Future<void> showShootDanmakuSheet() async {` - handles interaction, lifecycle, or playback events
+- L727 - `VideoItem findVideoByQa(int qa, {bool setCodecs = false}) {` - predicate, validation, or lookup
+- L761 - `bool _isCdnCandidateAvailable(String url) {` - performs one operation in its enclosing type or module
+- L768 - `int _initialCdnIndex(List<String> candidates) {` - performs one operation in its enclosing type or module
+- L776 - `int _nextCdnIndex(List<String> candidates, int current) {` - performs one operation in its enclosing type or module
+- L788 - `Duration? _readPts(String property) {` - performs one operation in its enclosing type or module
+- L802 - `void _logAdaptive(String message) {` - performs one operation in its enclosing type or module
+- L806 - `static String _briefPlayerError(String event) {` - performs one operation in its enclosing type or module
+- L813 - `AudioItem? _currentAudioItem() {` - performs one operation in its enclosing type or module
+- L820 - `bool _switchToRecoveryDecodeForFrozenVideo() {` - switches, recovers, or refreshes runtime state
+- L849 - `void _resetVideoFrameHealth(DateTime now) {` - performs one operation in its enclosing type or module
+- L856 - `void _configureAdaptiveSources({` - performs one operation in its enclosing type or module
+- L902 - `void _startCdnHealthMonitor() {` - performs one operation in its enclosing type or module
+- L924 - `bool _onPlayerError(String event) {` - performs one operation in its enclosing type or module
+- L991 - `bool _isRecoverableAdaptivePlayerError(String event) {` - switches, recovers, or refreshes runtime state
+- L1014 - `bool _isLocalRelayOpenFailure(String event) {` - performs one operation in its enclosing type or module
+- L1023 - `bool _isVideoBitstreamCorruption(String event) {` - performs one operation in its enclosing type or module
+- L1027 - `bool _isExpectedRelayRebuildNoise(String event) {` - switches, recovers, or refreshes runtime state
+- L1033 - `Future<void> _recoverFromPlayerError({` - switches, recovers, or refreshes runtime state
+- L1060 - `void _capturePlaybackPosition() {` - performs one operation in its enclosing type or module
+- L1071 - `Future<void> _rebuildRelayAndPlayer({` - switches, recovers, or refreshes runtime state
+- L1103 - `void debugCheckCdnHealth() => _checkCdnHealth();` - performs one operation in its enclosing type or module
+- L1106 - `void debugOnIsBufferingChanged(bool buffering) =>` - performs one operation in its enclosing type or module
+- L1115 - `void _checkCdnHealth() {` - performs one operation in its enclosing type or module
+- L1304 - `void _onIsBufferingChanged(bool buffering) {` - performs one operation in its enclosing type or module
+- L1334 - `void _resetFragmentStallWindow() {` - performs one operation in its enclosing type or module
+- L1340 - `Duration _totalFragmentStallTime(DateTime now) {` - performs one operation in its enclosing type or module
+- L1352 - `void _resetLowBufferWatch(DateTime now, Duration forwardBuffer) {` - performs one operation in its enclosing type or module
+- L1364 - `void _resetLowBufferWatchAfterCdnSwitch(DateTime now) {` - switches, recovers, or refreshes runtime state
+- L1373 - `bool _shouldSwitchForPersistentLowBuffer(` - switches, recovers, or refreshes runtime state
+- L1413 - `void _resetAdaptiveCdnAfterSeek({` - performs one operation in its enclosing type or module
+- L1429 - `Future<void> _recoverFrozenPlayback({required String frozenTracks}) async {` - switches, recovers, or refreshes runtime state
+- L1459 - `_switchToRecoveryDecodeForFrozenVideo()) {` - switches, recovers, or refreshes runtime state
+- L1496 - `Future<bool> _switchToNextCdn({String reason = 'buffer-growth'}) async {` - switches, recovers, or refreshes runtime state
+- L1601 - `void _onRelaySwitch(` - switches, recovers, or refreshes runtime state
+- L1629 - `void _onRelayRecoveryRequired(` - switches, recovers, or refreshes runtime state
+- L1719 - `Future<void> _disposeCdnRelay({bool delayed = false}) async {` - performs one operation in its enclosing type or module
+- L1739 - `Future<void> _disposeAllCdnRelays() async {` - performs one operation in its enclosing type or module
+- L1755 - `void updatePlayer() {` - updates, stores, or records state
+- L1784 - `Future<void>? _initPlayerIfNeeded(` - performs one operation in its enclosing type or module
+- L1803 - `Future<void> playerInit({` - handles interaction, lifecycle, or playback events
+- L1876 - `void setLanguage(String language) {` - updates, stores, or records state
+- L1886 - `Future<LoadingState<PlayUrlModel>> _getVideoUrl(int quality) {` - performs one operation in its enclosing type or module
+- L1900 - `Future<void> _supplementVideoQualities() async {` - performs one operation in its enclosing type or module
+- L1913 - `Future<void> queryVideoUrl({` - reads, requests, or synchronizes data
+- L1947 - `Future<void> _queryVideoUrl(` - performs one operation in its enclosing type or module
+- L2137 - `void onBlock(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L2180 - `Future<void> setSubtitle(int index) async {` - updates, stores, or records state
+- L2187 - `Future<void> setSub(({bool isData, String id}) subtitle) async {` - updates, stores, or records state
+- L2220 - `Future<void> getSteinEdgeInfo([int? edgeId]) async {` - reads, requests, or synchronizes data
+- L2245 - `Future<void> _queryPlayInfo() async {` - performs one operation in its enclosing type or module
+- L2334 - `Future<void> _setSubtitle(List<Subtitle> sub) async {` - performs one operation in its enclosing type or module
+- L2350 - `void updateMediaListHistory(int aid) {` - updates, stores, or records state
+- L2360 - `void makeHeartBeat() {` - performs one operation in its enclosing type or module
+- L2386 - `void onClose() {` - stops, releases, or resets state and resources
+- L2420 - `void onReset({bool isStein = false}) {` - handles interaction, lifecycle, or playback events
+- L2481 - `Future<void> _getDmTrend() async {` - performs one operation in its enclosing type or module
+- L2519 - `void showNoteList(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L2554 - `bool onSkipSegment() {` - handles interaction, lifecycle, or playback events
+- L2569 - `void toAudioPage() {` - performs one operation in its enclosing type or module
+- L2600 - `Future<void> onDownload(BuildContext context) async {` - handles interaction, lifecycle, or playback events
+- L2684 - `void editPlayUrl() {` - performs one operation in its enclosing type or module
+- L2687 - `Widget textField({` - performs one operation in its enclosing type or module
+- L2739 - `Future<void> onCast() async {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/video/download_panel/view.dart`
 
@@ -13644,11 +13709,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L30 - `Future<void> actionFavVideo({bool isQuick = false}) async {}` - performs one operation in its enclosing type or module
 - L36 - `StatDetail? getStat() => null;` - reads, requests, or synchronizes data
 - L44 - `void onClose() {` - stops, releases, or resets state and resources
-- L51 - `void onInit() {` - starts or initializes state and resources
-- L95 - `bool nextPlay() {` - performs one operation in its enclosing type or module
-- L117 - `bool prevPlay() {` - performs one operation in its enclosing type or module
-- L126 - `void playIndex(` - handles interaction, lifecycle, or playback events
-- L149 - `void onVideoDetailChange(BiliDownloadEntryInfo entry) {` - handles interaction, lifecycle, or playback events
+- L50 - `void onInit() {` - starts or initializes state and resources
+- L94 - `bool nextPlay() {` - performs one operation in its enclosing type or module
+- L116 - `bool prevPlay() {` - performs one operation in its enclosing type or module
+- L125 - `void playIndex(` - handles interaction, lifecycle, or playback events
+- L148 - `void onVideoDetailChange(BiliDownloadEntryInfo entry) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/video/introduction/local/view.dart`
 
@@ -13661,22 +13726,22 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/introduction/pgc/controller.dart`
 
-- L36 - **class `PgcIntroController`** - page or business state controller
-- L51 - `StatDetail? getStat() => pgcItem.stat;` - reads, requests, or synchronizes data
-- L58 - `void onInit() {` - starts or initializes state and resources
-- L79 - `Future<void> queryPgcLikeCoinFav() async {` - reads, requests, or synchronizes data
-- L101 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
-- L122 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
-- L245 - `Future<bool> onChangeEpisode(BaseEpisodeItem episode) async {` - handles interaction, lifecycle, or playback events
-- L301 - `Future<void> pgcAdd() async {` - performs one operation in its enclosing type or module
-- L313 - `Future<void> pgcDel() async {` - performs one operation in its enclosing type or module
-- L323 - `Future<void> pgcUpdate(int status) async {` - performs one operation in its enclosing type or module
-- L337 - `bool prevPlay() {` - performs one operation in its enclosing type or module
-- L357 - `bool nextPlay() {` - performs one operation in its enclosing type or module
-- L386 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
-- L423 - `Future<void> queryIsFollowed() async {` - reads, requests, or synchronizes data
-- L457 - `void queryVideoIntro([EpisodeItem? episode]) {` - reads, requests, or synchronizes data
-- L470 - `Future<void> onFavPugv(bool isFav) async {` - handles interaction, lifecycle, or playback events
+- L37 - **class `PgcIntroController`** - page or business state controller
+- L52 - `StatDetail? getStat() => pgcItem.stat;` - reads, requests, or synchronizes data
+- L59 - `void onInit() {` - starts or initializes state and resources
+- L80 - `Future<void> queryPgcLikeCoinFav() async {` - reads, requests, or synchronizes data
+- L102 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
+- L123 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
+- L246 - `Future<bool> onChangeEpisode(BaseEpisodeItem episode) async {` - handles interaction, lifecycle, or playback events
+- L302 - `Future<void> pgcAdd() async {` - performs one operation in its enclosing type or module
+- L314 - `Future<void> pgcDel() async {` - performs one operation in its enclosing type or module
+- L324 - `Future<void> pgcUpdate(int status) async {` - performs one operation in its enclosing type or module
+- L338 - `bool prevPlay() {` - performs one operation in its enclosing type or module
+- L358 - `bool nextPlay() {` - performs one operation in its enclosing type or module
+- L385 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
+- L422 - `Future<void> queryIsFollowed() async {` - reads, requests, or synchronizes data
+- L456 - `void queryVideoIntro([EpisodeItem? episode]) {` - reads, requests, or synchronizes data
+- L469 - `Future<void> onFavPugv(bool isFav) async {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/video/introduction/pgc/view.dart`
 
@@ -13723,24 +13788,24 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/introduction/ugc/controller.dart`
 
-- L49 - **class `UgcIntroController`** - page or business state controller
-- L71 - `void onInit() {` - starts or initializes state and resources
-- L87 - `Future<void> queryVideoIntro() async {` - reads, requests, or synchronizes data
-- L145 - `Future<void> queryUserStat(List<Staff>? staff) async {` - reads, requests, or synchronizes data
-- L166 - `Future<void> queryAllStatus() async {` - reads, requests, or synchronizes data
-- L185 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
-- L225 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
-- L247 - `Future<void> actionDislikeVideo() async {` - performs one operation in its enclosing type or module
-- L280 - `StatDetail? getStat() => videoDetail.value.stat;` - reads, requests, or synchronizes data
-- L284 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
-- L398 - `Future<void> queryFollowStatus() async {` - reads, requests, or synchronizes data
-- L411 - `Future<void> actionRelationMod(BuildContext context) async {` - performs one operation in its enclosing type or module
-- L454 - `Future<bool> onChangeEpisode(` - handles interaction, lifecycle, or playback events
-- L559 - `bool prevPlay([bool skipPart = false]) {` - performs one operation in its enclosing type or module
-- L624 - `bool nextPlay([bool skipPart = false]) {` - performs one operation in its enclosing type or module
-- L716 - `bool playRelated() {` - handles interaction, lifecycle, or playback events
-- L747 - `static Future<AiConclusionResult?> getAiConclusion(` - reads, requests, or synchronizes data
-- L773 - `Future<void> aiConclusion() async {` - performs one operation in its enclosing type or module
+- L50 - **class `UgcIntroController`** - page or business state controller
+- L72 - `void onInit() {` - starts or initializes state and resources
+- L88 - `Future<void> queryVideoIntro() async {` - reads, requests, or synchronizes data
+- L146 - `Future<void> queryUserStat(List<Staff>? staff) async {` - reads, requests, or synchronizes data
+- L167 - `Future<void> queryAllStatus() async {` - reads, requests, or synchronizes data
+- L186 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
+- L226 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
+- L248 - `Future<void> actionDislikeVideo() async {` - performs one operation in its enclosing type or module
+- L281 - `StatDetail? getStat() => videoDetail.value.stat;` - reads, requests, or synchronizes data
+- L285 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
+- L403 - `Future<void> queryFollowStatus() async {` - reads, requests, or synchronizes data
+- L416 - `Future<void> actionRelationMod(BuildContext context) async {` - performs one operation in its enclosing type or module
+- L459 - `Future<bool> onChangeEpisode(` - handles interaction, lifecycle, or playback events
+- L564 - `bool prevPlay([bool skipPart = false]) {` - performs one operation in its enclosing type or module
+- L629 - `bool nextPlay([bool skipPart = false]) {` - performs one operation in its enclosing type or module
+- L721 - `bool playRelated() {` - handles interaction, lifecycle, or playback events
+- L752 - `static Future<AiConclusionResult?> getAiConclusion(` - reads, requests, or synchronizes data
+- L778 - `Future<void> aiConclusion() async {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/introduction/ugc/view.dart`
 
@@ -13787,12 +13852,13 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L16 - `const PagesPanel({` - performs one operation in its enclosing type or module
 - L40 - `State<PagesPanel> createState() => _PagesPanelState();` - builds UI or state
 - L43 - **class `_PagesPanelState`** - data structure or state carrier
-- L54 - `void initState() {` - starts or initializes state and resources
-- L68 - `setState(() {});` - updates, stores, or records state
-- L80 - `void jumpToCurr() {` - performs one operation in its enclosing type or module
-- L92 - `void dispose() {` - stops, releases, or resets state and resources
-- L99 - `Widget build(BuildContext context) {` - builds UI or state
-- L166 - `setState(() {});` - updates, stores, or records state
+- L53 - `void _updatePageIndex() {` - performs one operation in its enclosing type or module
+- L58 - `void initState() {` - starts or initializes state and resources
+- L72 - `setState(() {});` - updates, stores, or records state
+- L84 - `void jumpToCurr() {` - performs one operation in its enclosing type or module
+- L96 - `void dispose() {` - stops, releases, or resets state and resources
+- L103 - `Widget build(BuildContext context) {` - builds UI or state
+- L170 - `setState(() {});` - updates, stores, or records state
 
 ## `lib/pages/video/introduction/ugc/widgets/season.dart`
 
@@ -13843,33 +13909,35 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L56 - `bool customHandleResponse(bool isRefresh, Success response) {` - performs one operation in its enclosing type or module
 - L93 - `Future<LoadingState<SpaceArchiveData>> customGetData() =>` - performs one operation in its enclosing type or module
 - L112 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
-- L121 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
-- L132 - `void queryBySort() {` - reads, requests, or synchronizes data
+- L119 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L130 - `void queryBySort() {` - reads, requests, or synchronizes data
 
 ## `lib/pages/video/member/view.dart`
 
-- L33 - **class `HorizontalMemberPage`** - page or visual structure
-- L34 - `const HorizontalMemberPage({` - performs one operation in its enclosing type or module
-- L46 - `State<HorizontalMemberPage> createState() => _HorizontalMemberPageState();` - builds UI or state
-- L49 - **class `_HorizontalMemberPageState`** - data structure or state carrier
-- L56 - `void initState() {` - starts or initializes state and resources
-- L78 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L84 - `Widget build(BuildContext context) {` - builds UI or state
-- L92 - `Widget _buildUserPage(LoadingState userState) {` - performs one operation in its enclosing type or module
-- L94 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
-- L95 - `Success(:final response) => Column(` - performs one operation in its enclosing type or module
-- L119 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
-- L130 - `Widget _buildHeader() {` - performs one operation in its enclosing type or module
-- L146 - `Widget? _buildCount() {` - performs one operation in its enclosing type or module
-- L157 - `Widget _buildSortBtn() {` - performs one operation in its enclosing type or module
-- L178 - `Widget _buildVideoList(` - performs one operation in its enclosing type or module
-- L182 - `Loading() => const SliverFixedExtentList(` - reads, requests, or synchronizes data
-- L189 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L224 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
-- L231 - `Widget _buildUserInfo(MemberInfoModel memberInfoModel) {` - performs one operation in its enclosing type or module
-- L244 - `Column _buildInfo(MemberInfoModel memberInfoModel) => Column(` - performs one operation in its enclosing type or module
-- L367 - `Widget _buildChildInfo({` - performs one operation in its enclosing type or module
-- L406 - `Widget _buildAvatar(String face) => GestureDetector(` - performs one operation in its enclosing type or module
+- L37 - **class `HorizontalMemberPage`** - page or visual structure
+- L38 - `const HorizontalMemberPage({` - performs one operation in its enclosing type or module
+- L50 - `State<HorizontalMemberPage> createState() => _HorizontalMemberPageState();` - builds UI or state
+- L53 - **class `_HorizontalMemberPageState`** - data structure or state carrier
+- L61 - `void initState() {` - starts or initializes state and resources
+- L83 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L89 - `Widget build(BuildContext context) {` - builds UI or state
+- L97 - `Future<void> _loadPrevAndKeepPos() async {` - performs one operation in its enclosing type or module
+- L111 - `bool onNotification(ScrollEndNotification notification) {` - handles interaction, lifecycle, or playback events
+- L120 - `Widget _buildUserPage(LoadingState userState) {` - performs one operation in its enclosing type or module
+- L122 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
+- L123 - `Success(:final response) => Column(` - performs one operation in its enclosing type or module
+- L161 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
+- L172 - `Widget _buildHeader() {` - performs one operation in its enclosing type or module
+- L188 - `Widget? _buildCount() {` - performs one operation in its enclosing type or module
+- L199 - `Widget _buildSortBtn() {` - performs one operation in its enclosing type or module
+- L220 - `Widget _buildVideoList(` - performs one operation in its enclosing type or module
+- L224 - `Loading() => const SliverFixedExtentList(` - reads, requests, or synchronizes data
+- L231 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L266 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L273 - `Widget _buildUserInfo(MemberInfoModel memberInfoModel) {` - performs one operation in its enclosing type or module
+- L286 - `Column _buildInfo(MemberInfoModel memberInfoModel) => Column(` - performs one operation in its enclosing type or module
+- L409 - `Widget _buildChildInfo({` - performs one operation in its enclosing type or module
+- L448 - `Widget _buildAvatar(String face) => GestureDetector(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/note/controller.dart`
 
@@ -13882,20 +13950,18 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/note/view.dart`
 
-- L23 - **class `NoteListPage`** - page or visual structure
-- L24 - `const NoteListPage({` - performs one operation in its enclosing type or module
-- L39 - `State<NoteListPage> createState() => _NoteListPageState();` - builds UI or state
-- L42 - **class `_NoteListPageState`** - data structure or state carrier
-- L48 - `void _closeLinuxWebview({bool close = false}) {` - performs one operation in its enclosing type or module
-- L58 - `void initState() {` - starts or initializes state and resources
-- L67 - `void dispose() {` - stops, releases, or resets state and resources
-- L76 - `Widget buildPage(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L121 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L128 - `Widget buildList(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L185 - `Widget _buildBody(` - performs one operation in its enclosing type or module
-- L224 - `Widget _itemWidget(ThemeData theme, VideoNoteItemModel item) {` - performs one operation in its enclosing type or module
-- L318 - `Future<void> _onTakeNoteLinux(String url) async {` - performs one operation in its enclosing type or module
-- L346 - `void _onTakeNote() {` - performs one operation in its enclosing type or module
+- L19 - **class `NoteListPage`** - page or visual structure
+- L20 - `const NoteListPage({` - performs one operation in its enclosing type or module
+- L35 - `State<NoteListPage> createState() => _NoteListPageState();` - builds UI or state
+- L38 - **class `_NoteListPageState`** - data structure or state carrier
+- L43 - `void initState() {` - starts or initializes state and resources
+- L52 - `void dispose() {` - stops, releases, or resets state and resources
+- L58 - `Widget buildPage(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L103 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L110 - `Widget buildList(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L167 - `Widget _buildBody(` - performs one operation in its enclosing type or module
+- L206 - `Widget _itemWidget(ThemeData theme, VideoNoteItemModel item) {` - performs one operation in its enclosing type or module
+- L300 - `void _onTakeNote(BuildContext context) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/pay_coins/view.dart`
 
@@ -13932,26 +13998,26 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/post_panel/view.dart`
 
-- L24 - **class `PostPanel`** - page or visual structure
-- L25 - `const PostPanel({` - performs one operation in its enclosing type or module
-- L36 - `State<PostPanel> createState() => _PostPanelState();` - builds UI or state
-- L38 - `static void updateSegment({` - updates, stores, or records state
-- L54 - `static Widget segmentWidget(` - performs one operation in its enclosing type or module
-- L60 - `Widget segment(bool isFirst) => Builder(` - performs one operation in its enclosing type or module
-- L179 - **class `_PostPanelState`** - data structure or state carrier
-- L188 - `double currentPos() => plPlayerController.positionInMilliseconds / 1000;` - performs one operation in its enclosing type or module
-- L193 - `Widget buildPage(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L206 - `setState(() {` - updates, stores, or records state
-- L272 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L280 - `Widget buildList(ThemeData theme) {` - performs one operation in its enclosing type or module
-- L295 - `Future<void> _onPost() async {` - performs one operation in its enclosing type or module
-- L317 - `Widget _buildItem(ThemeData theme, int index, PostSegmentModel item) {` - performs one operation in its enclosing type or module
-- L339 - `PostPanel.segmentWidget(` - performs one operation in its enclosing type or module
-- L366 - `PostPanel.updateSegment(` - performs one operation in its enclosing type or module
-- L373 - `PostPanel.updateSegment(` - performs one operation in its enclosing type or module
-- L405 - `PostPanel.updateSegment(` - performs one operation in its enclosing type or module
-- L442 - `setState(() {` - updates, stores, or records state
-- L460 - `Future<void> seekTo() => player.seek(` - handles interaction, lifecycle, or playback events
+- L27 - **class `PostPanel`** - page or visual structure
+- L28 - `const PostPanel({` - performs one operation in its enclosing type or module
+- L39 - `State<PostPanel> createState() => _PostPanelState();` - builds UI or state
+- L41 - `static void updateSegment({` - updates, stores, or records state
+- L57 - `static Widget segmentWidget(` - performs one operation in its enclosing type or module
+- L63 - `Widget segment(bool isFirst) => Builder(` - performs one operation in its enclosing type or module
+- L241 - **class `_PostPanelState`** - data structure or state carrier
+- L250 - `double currentPos() => plPlayerController.positionInMilliseconds / 1000;` - performs one operation in its enclosing type or module
+- L255 - `Widget buildPage(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L268 - `setState(() {` - updates, stores, or records state
+- L334 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L342 - `Widget buildList(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L357 - `Future<void> _onPost() async {` - performs one operation in its enclosing type or module
+- L379 - `Widget _buildItem(ThemeData theme, int index, PostSegmentModel item) {` - performs one operation in its enclosing type or module
+- L401 - `PostPanel.segmentWidget(` - performs one operation in its enclosing type or module
+- L428 - `PostPanel.updateSegment(` - performs one operation in its enclosing type or module
+- L435 - `PostPanel.updateSegment(` - performs one operation in its enclosing type or module
+- L467 - `PostPanel.updateSegment(` - performs one operation in its enclosing type or module
+- L504 - `setState(() {` - updates, stores, or records state
+- L522 - `Future<void> seekTo() => plPlayerController.seek(` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/video/related/controller.dart`
 
@@ -14102,21 +14168,21 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/reply/widgets/reply_item_grpc.dart`
 
-- L63 - **class `ReplyItemGrpc`** - reusable UI or rendering component
-- L64 - `const ReplyItemGrpc({` - performs one operation in its enclosing type or module
-- L100 - `Widget build(BuildContext context) {` - builds UI or state
-- L103 - `void showMore() => showModalBottomSheet(` - handles interaction, lifecycle, or playback events
-- L149 - `Widget _buildHeader(BuildContext context, ColorScheme colorScheme) {` - performs one operation in its enclosing type or module
-- L295 - `Widget _buildVoteOption(` - performs one operation in its enclosing type or module
-- L327 - `Widget _buildContent(BuildContext context, ColorScheme colorScheme) {` - performs one operation in its enclosing type or module
-- L407 - `Widget _buildTranslateBtn(` - performs one operation in its enclosing type or module
-- L473 - `Widget buttonAction(` - performs one operation in its enclosing type or module
-- L563 - `Widget replyItemRow(` - performs one operation in its enclosing type or module
-- L597 - `void showMore() => showModalBottomSheet(` - handles interaction, lifecycle, or playback events
-- L715 - `InlineSpan _buildMessage(` - performs one operation in its enclosing type or module
-- L742 - `void addPlainTextSpan(str) {` - updates, stores, or records state
-- L746 - `void addUrl(String matchStr, Url url, {bool addPlainText = false}) {` - updates, stores, or records state
-- L988 - `Widget morePanel({` - performs one operation in its enclosing type or module
+- L64 - **class `ReplyItemGrpc`** - reusable UI or rendering component
+- L65 - `const ReplyItemGrpc({` - performs one operation in its enclosing type or module
+- L101 - `Widget build(BuildContext context) {` - builds UI or state
+- L104 - `void showMore() => showModalBottomSheet(` - handles interaction, lifecycle, or playback events
+- L150 - `Widget _buildHeader(BuildContext context, ColorScheme colorScheme) {` - performs one operation in its enclosing type or module
+- L296 - `Widget _buildVoteOption(` - performs one operation in its enclosing type or module
+- L328 - `Widget _buildContent(BuildContext context, ColorScheme colorScheme) {` - performs one operation in its enclosing type or module
+- L408 - `Widget _buildTranslateBtn(` - performs one operation in its enclosing type or module
+- L474 - `Widget buttonAction(` - performs one operation in its enclosing type or module
+- L564 - `Widget replyItemRow(` - performs one operation in its enclosing type or module
+- L598 - `void showMore() => showModalBottomSheet(` - handles interaction, lifecycle, or playback events
+- L716 - `InlineSpan _buildMessage(` - performs one operation in its enclosing type or module
+- L743 - `void addPlainTextSpan(str) {` - updates, stores, or records state
+- L747 - `void addUrl(String matchStr, Url url, {bool addPlainText = false}) {` - updates, stores, or records state
+- L997 - `Widget morePanel({` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/reply/widgets/zan_grpc.dart`
 
@@ -14248,7 +14314,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L1553 - `showBottomSheet((context, setState) {` - handles interaction, lifecycle, or playback events
 - L1609 - `Widget? _buildDanmakuList(List<DanmakuItem<DanmakuExtra>> list) {` - performs one operation in its enclosing type or module
 - L1689 - `Widget build(BuildContext context) {` - builds UI or state
-- L1799 - `Obx(() {` - performs one operation in its enclosing type or module
+- L1800 - `Obx(() {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/widgets/header_mixin.dart`
 
@@ -14341,23 +14407,19 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/webview/view.dart`
 
-- L26 - **enum `_DWWState`** - data structure or state carrier
-- L35 - `const _DWWState(this.label);` - performs one operation in its enclosing type or module
-- L38 - **class `WebviewPage`** - page or visual structure
-- L39 - `const WebviewPage({` - performs one operation in its enclosing type or module
-- L52 - `static Future<dww.Webview?> openLinux({` - handles interaction, lifecycle, or playback events
-- L97 - `function injectStyle() {` - performs one operation in its enclosing type or module
-- L182 - `State<WebviewPage> createState() => _WebviewPageState();` - builds UI or state
-- L185 - **class `_WebviewPageState`** - data structure or state carrier
-- L199 - `void initState() {` - starts or initializes state and resources
-- L222 - `void dispose() {` - stops, releases, or resets state and resources
-- L231 - `void didPop() {` - handles interaction, lifecycle, or playback events
-- L232 - `setState(() {` - updates, stores, or records state
-- L239 - `void _closeLinuxWebview({bool close = true}) {` - performs one operation in its enclosing type or module
-- L245 - `Future<void> _initLinuxWebview() async {` - performs one operation in its enclosing type or module
-- L301 - `Future<void> _handleMenuItem(WebviewMenuItem item) async {` - performs one operation in its enclosing type or module
-- L377 - `Widget _buildLinuxView(BuildContext context) {` - performs one operation in its enclosing type or module
-- L409 - `Widget build(BuildContext context) {` - builds UI or state
+- L25 - **class `WebviewPage`** - page or visual structure
+- L26 - `const WebviewPage({` - performs one operation in its enclosing type or module
+- L39 - `State<WebviewPage> createState() => _WebviewPageState();` - builds UI or state
+- L42 - **class `_WebviewPageState`** - data structure or state carrier
+- L54 - `void initState() {` - starts or initializes state and resources
+- L75 - `void dispose() {` - stops, releases, or resets state and resources
+- L85 - `void didPop() {` - handles interaction, lifecycle, or playback events
+- L86 - `setState(() {` - updates, stores, or records state
+- L165 - `Future<void> _handleMenuItem(WebviewMenuItem item) async {` - performs one operation in its enclosing type or module
+- L242 - `List<Map<String, dynamic>> _getLinuxUserScripts() {` - performs one operation in its enclosing type or module
+- L278 - `function injectStyle() {` - performs one operation in its enclosing type or module
+- L298 - `Widget _buildLinuxView(BuildContext context) {` - performs one operation in its enclosing type or module
+- L375 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/whisper_block/controller.dart`
 
@@ -14428,10 +14490,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L648 - `Widget msgTypeTipMessage_18(ThemeData theme, content) {` - performs one operation in its enclosing type or module
 - L652 - `jsonDecode(content['content']).map((e) => e['text']).join("\n"),` - performs one operation in its enclosing type or module
 - L663 - `Widget msgTypeText_1(` - performs one operation in its enclosing type or module
-- L724 - `Widget msgTypeNotifyMsg_10(ThemeData theme, content) {` - performs one operation in its enclosing type or module
-- L726 - `List<Widget>? jumpItem([String index = '']) {` - performs one operation in its enclosing type or module
-- L792 - `Widget msgTypePictureCard_13(dynamic content) {` - performs one operation in its enclosing type or module
-- L823 - `Widget def(Color textColor, {err}) {` - performs one operation in its enclosing type or module
+- L731 - `Widget msgTypeNotifyMsg_10(ThemeData theme, content) {` - performs one operation in its enclosing type or module
+- L733 - `List<Widget>? jumpItem([String index = '']) {` - performs one operation in its enclosing type or module
+- L799 - `Widget msgTypePictureCard_13(dynamic content) {` - performs one operation in its enclosing type or module
+- L830 - `Widget def(Color textColor, {err}) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/whisper_link_setting/controller.dart`
 
@@ -14526,13 +14588,14 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/whisper/controller.dart`
 
-- L13 - **class `WhisperController`** - page or business state controller
-- L27 - `void onInit() {` - starts or initializes state and resources
-- L60 - `Future<void> queryMsgFeedUnread() async {` - reads, requests, or synchronizes data
-- L74 - `List<Session>? getDataList(SessionMainReply response) {` - reads, requests, or synchronizes data
-- L81 - `bool customHandleResponse(` - performs one operation in its enclosing type or module
-- L93 - `Future<LoadingState<SessionMainReply>> customGetData() =>` - performs one operation in its enclosing type or module
-- L97 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
+- L13 - **typedef `MsgFeedTopItem`** - reusable UI or rendering component
+- L20 - **class `WhisperController`** - page or business state controller
+- L34 - `void onInit() {` - starts or initializes state and resources
+- L67 - `Future<void> queryMsgFeedUnread() async {` - reads, requests, or synchronizes data
+- L86 - `List<Session>? getDataList(SessionMainReply response) {` - reads, requests, or synchronizes data
+- L93 - `bool customHandleResponse(` - performs one operation in its enclosing type or module
+- L105 - `Future<LoadingState<SessionMainReply>> customGetData() =>` - performs one operation in its enclosing type or module
+- L109 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
 
 ## `lib/pages/whisper/view.dart`
 
@@ -14553,104 +14616,149 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L40 - `Future<void> _updateAck(BuildContext context) async {` - performs one operation in its enclosing type or module
 - L63 - `Widget build(BuildContext context) {` - builds UI or state
 
+## `lib/plugin/linux_webview.dart`
+
+- L7 - **class `LinuxWebviewPlugin`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L15 - `static void ensureInitialized() {` - starts or initializes state and resources
+- L59 - `static void registerController(` - starts or initializes state and resources
+- L67 - `static void unregisterController(int viewId) {` - performs one operation in its enclosing type or module
+- L71 - `static Future<void> clearAllCookies() async {` - stops, releases, or resets state and resources
+- L79 - `static Future<void> clearCache() async {` - stops, releases, or resets state and resources
+- L87 - `static Future<int> showContextMenu({` - handles interaction, lifecycle, or playback events
+- L109 - **class `LinuxWebviewController`** - page or business state controller
+- L123 - `LinuxWebviewController({` - performs one operation in its enclosing type or module
+- L133 - `LinuxWebviewPlugin.registerController(viewId, this);` - performs one operation in its enclosing type or module
+- L136 - `Future<String?> getUrl() async => currentUrl;` - reads, requests, or synchronizes data
+- L138 - `Future<void> loadUrl(String url) async {` - reads, requests, or synchronizes data
+- L151 - `Future<void> loadHtml(String html, {String? baseUri}) async {` - reads, requests, or synchronizes data
+- L164 - `Future<String?> evaluateJavaScript(String script) async {` - performs one operation in its enclosing type or module
+- L181 - `Future<void> goBack() async {` - performs one operation in its enclosing type or module
+- L192 - `Future<void> goForward() async {` - performs one operation in its enclosing type or module
+- L203 - `Future<void> reload() async {` - performs one operation in its enclosing type or module
+- L214 - `Future<void> stopLoading() async {` - stops, releases, or resets state and resources
+- L225 - `Future<void> updateBounds(Rect bounds, {bool visible = true}) async {` - updates, stores, or records state
+- L241 - `Future<void> setVisible(bool visible) async {` - updates, stores, or records state
+- L253 - `void dispose() {` - stops, releases, or resets state and resources
+- L256 - `LinuxWebviewPlugin.unregisterController(viewId);` - performs one operation in its enclosing type or module
+- L267 - **class `LinuxWebview`** - page or visual structure
+- L281 - `const LinuxWebview({` - performs one operation in its enclosing type or module
+- L298 - `RenderObject createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
+- L300 - `LinuxWebviewController(` - performs one operation in its enclosing type or module
+- L318 - `void updateRenderObject(` - updates, stores, or records state
+- L339 - **class `_LinuxWebviewRenderObject`** - reusable UI or rendering component
+- L351 - `_LinuxWebviewRenderObject(` - performs one operation in its enclosing type or module
+- L361 - `void dispose() {` - stops, releases, or resets state and resources
+- L367 - `void performLayout() {` - performs one operation in its enclosing type or module
+- L373 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
+- L378 - `void _scheduleBoundsCheck() {` - performs one operation in its enclosing type or module
+- L384 - `void _checkBounds(_) {` - performs one operation in its enclosing type or module
+- L414 - `Future<void> _createNativeWebview(Rect bounds) async {` - performs one operation in its enclosing type or module
+
 ## `lib/plugin/pl_player/controller.dart`
 
-- L71 - **typedef `PlayCallback`** - callback or type alias
-- L72 - **typedef `PlayerErrorCallback`** - callback or type alias
-- L74 - **class `PlPlayerController`** - page or business state controller
-- L120 - `void updateDuration(Duration value) {` - updates, stores, or records state
-- L222 - `set isVertical(bool value) {` - predicate, validation, or lookup
-- L241 - `Future<void> setAlwaysOnTop(bool value) {` - updates, stores, or records state
-- L246 - `Future<void> exitDesktopPip() {` - handles interaction, lifecycle, or playback events
-- L258 - `Future<void> enterDesktopPip() async {` - handles interaction, lifecycle, or playback events
-- L292 - `void toggleDesktopPip() {` - handles interaction, lifecycle, or playback events
-- L311 - `static bool _isVideoPage(String routeName) {` - performs one operation in its enclosing type or module
-- L315 - `void enterPip({bool autoEnter = false}) {` - handles interaction, lifecycle, or playback events
-- L327 - `void _disableAutoEnterPip() {` - performs one operation in its enclosing type or module
-- L457 - `void updateSubtitleStyle() {` - updates, stores, or records state
-- L461 - `void onUpdatePadding(EdgeInsets padding) {` - handles interaction, lifecycle, or playback events
-- L468 - `static bool instanceExists() {` - performs one operation in its enclosing type or module
-- L472 - `static void setPlayCallBack(PlayCallback? playCallBack) {` - updates, stores, or records state
-- L478 - `static Future<void>? playIfExists() {` - handles interaction, lifecycle, or playback events
-- L483 - `static PlayerStatus? getPlayerStatusIfExists() {` - reads, requests, or synchronizes data
-- L487 - `static Future<void> pauseIfExists({` - handles interaction, lifecycle, or playback events
-- L497 - `static Future<void> seekToIfExists(` - handles interaction, lifecycle, or playback events
-- L504 - `static double? getVolumeIfExists() {` - reads, requests, or synchronizes data
-- L508 - `static Future<void>? setVolumeIfExists(` - updates, stores, or records state
-- L523 - `void _stopOrientationListener() {` - performs one operation in its enclosing type or module
-- L528 - `void _onOrientationChanged(OrientationParams param) {` - performs one operation in its enclosing type or module
-- L571 - `PlPlayerController._() {` - performs one operation in its enclosing type or module
-- L596 - `void _onUserLeaveHint() {` - performs one operation in its enclosing type or module
-- L603 - `static PlPlayerController getInstance({bool isLive = false}) {` - reads, requests, or synchronizes data
-- L617 - `Future<void> setDataSource(` - updates, stores, or records state
-- L767 - `Future<void> setShader([SuperResolutionType? type, NativePlayer? pp]) async {` - updates, stores, or records state
-- L803 - `Future<Player> _initPlayer() async {` - performs one operation in its enclosing type or module
-- L848 - `Future<bool> _createVideoController(` - performs one operation in its enclosing type or module
-- L928 - `void _checkpointForRebuild() {` - switches, recovers, or refreshes runtime state
-- L949 - `void _clearRebuildCheckpoint() {` - switches, recovers, or refreshes runtime state
-- L955 - `void _setPendingResume(int? targetCid, Duration? position) {` - switches, recovers, or refreshes runtime state
-- L964 - `void _clearPendingResume() {` - switches, recovers, or refreshes runtime state
-- L969 - `Future<void>? refreshPlayer() {` - switches, recovers, or refreshes runtime state
-- L1014 - `Future<void> stopCurrentSource() async {` - stops, releases, or resets state and resources
-- L1023 - `Future<void> _initializePlayer(int autoplayGeneration) async {` - performs one operation in its enclosing type or module
-- L1062 - `void _startListeners(NativePlayer player) {` - performs one operation in its enclosing type or module
-- L1279 - `void _removeListeners() {` - performs one operation in its enclosing type or module
-- L1285 - `void onAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
-- L1308 - `void _cancelPlaybackRecoveryWatch() {` - switches, recovers, or refreshes runtime state
-- L1314 - `void _startPlaybackRecoveryWatch() {` - switches, recovers, or refreshes runtime state
-- L1327 - `Future<void> checkPlaybackRecovery() async {` - reads, requests, or synchronizes data
-- L1429 - `Future<void> resumeAfterLifecyclePause({` - switches, recovers, or refreshes runtime state
-- L1491 - `void _startBackgroundReconnectTimer() {` - performs one operation in its enclosing type or module
-- L1500 - `void _stopBackgroundReconnectTimer() {` - performs one operation in its enclosing type or module
-- L1506 - `void _checkBackgroundReconnect() {` - performs one operation in its enclosing type or module
-- L1521 - `void _backgroundReconnectNow(String reason) {` - performs one operation in its enclosing type or module
-- L1543 - `bool _isBackgroundNetworkError(String event) {` - performs one operation in its enclosing type or module
-- L1554 - `void _cancelSubForSeek() {` - performs one operation in its enclosing type or module
-- L1562 - `Future<void> seekTo(Duration position, {bool isSeek = true}) async {` - handles interaction, lifecycle, or playback events
-- L1575 - `Future<void> seek() async {` - handles interaction, lifecycle, or playback events
-- L1610 - `Future<void> setPlaybackSpeed(double speed) async {` - updates, stores, or records state
-- L1636 - `Future<void> setDefaultSpeed() async {` - updates, stores, or records state
-- L1642 - `Future<void> play({` - handles interaction, lifecycle, or playback events
-- L1675 - `Future<void> pause({bool notify = true, bool isInterrupt = false}) async {` - handles interaction, lifecycle, or playback events
-- L1696 - `void hideTaskControls() {` - handles interaction, lifecycle, or playback events
-- L1706 - `void onSeekStart(int seekFrom) {` - handles interaction, lifecycle, or playback events
-- L1711 - `void onSeekEnd() {` - handles interaction, lifecycle, or playback events
-- L1728 - `Future<void> setVolume(double volume, {bool showIndicator = true}) async {` - updates, stores, or records state
-- L1757 - `void toggleVideoFit(VideoFitType value) {` - handles interaction, lifecycle, or playback events
-- L1764 - `void _initVideoFit() {` - performs one operation in its enclosing type or module
-- L1773 - `void setBackgroundPlay(bool val) {` - updates, stores, or records state
-- L1780 - `set controls(bool visible) {` - performs one operation in its enclosing type or module
-- L1789 - `void cancelLongPressTimer() {` - stops, releases, or resets state and resources
-- L1795 - `Future<void> setLongPressStatus(bool val) async {` - updates, stores, or records state
-- L1825 - `Future<void> onDoubleTapCenter() async {` - handles interaction, lifecycle, or playback events
-- L1839 - `void onDoubleTapSeekBackward() {` - handles interaction, lifecycle, or playback events
-- L1843 - `void onDoubleTapSeekForward() {` - handles interaction, lifecycle, or playback events
-- L1847 - `void onForward(Duration duration) {` - handles interaction, lifecycle, or playback events
-- L1851 - `void onBackward(Duration duration) {` - handles interaction, lifecycle, or playback events
-- L1855 - `void onForwardBackward(Duration duration) {` - handles interaction, lifecycle, or playback events
-- L1862 - `void doubleTapFuc(DoubleTapType type) {` - performs one operation in its enclosing type or module
-- L1883 - `void onLockControl(bool val) {` - handles interaction, lifecycle, or playback events
-- L1892 - `void _setFullScreen(bool val) {` - performs one operation in its enclosing type or module
-- L1903 - `Future<void>? changeOrientation({` - performs one operation in its enclosing type or module
-- L1936 - `Future<void> triggerFullScreen({` - performs one operation in its enclosing type or module
-- L1978 - `void addPositionListener(ValueChanged<Duration> listener) {` - updates, stores, or records state
-- L1983 - `void removePositionListener(ValueChanged<Duration> listener) =>` - stops, releases, or resets state and resources
-- L1986 - `void addStatusLister(ValueChanged<PlayerStatus> listener) {` - updates, stores, or records state
-- L1991 - `void removeStatusLister(ValueChanged<PlayerStatus> listener) =>` - stops, releases, or resets state and resources
-- L1995 - `Future<void>? makeHeartBeat(` - performs one operation in its enclosing type or module
-- L2014 - `Future<void> send() {` - performs one operation in its enclosing type or module
-- L2050 - `void setPlayRepeat(PlayRepeat type) {` - updates, stores, or records state
-- L2055 - `void putSubtitleSettings() {` - updates, stores, or records state
-- L2070 - `Future<void>? resetScreenRotation() {` - stops, releases, or resets state and resources
-- L2078 - `void onCloseAll() {` - stops, releases, or resets state and resources
-- L2085 - `void dispose() {` - stops, releases, or resets state and resources
-- L2147 - `static void updatePlayCount() {` - updates, stores, or records state
-- L2155 - `void setContinuePlayInBackground() {` - updates, stores, or records state
-- L2171 - `void updatePreviewIndex(int seconds) {` - updates, stores, or records state
-- L2186 - `void _clearPreview() {` - performs one operation in its enclosing type or module
-- L2196 - `Future<void> getVideoShot() async {` - reads, requests, or synchronizes data
-- L2200 - `Future<void> takeScreenshot() async {` - performs one operation in its enclosing type or module
-- L2253 - `void onPopInvokedWithResult(bool didPop, Object? result) {` - handles interaction, lifecycle, or playback events
+- L71 - **class `WakelockPlusGateway`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L72 - `const WakelockPlusGateway();` - performs one operation in its enclosing type or module
+- L75 - `Future<void> enable() => WakelockPlus.enable();` - performs one operation in its enclosing type or module
+- L78 - `Future<void> disable() => WakelockPlus.disable();` - performs one operation in its enclosing type or module
+- L81 - **typedef `PlayCallback`** - callback or type alias
+- L82 - **typedef `PlayerErrorCallback`** - callback or type alias
+- L84 - **class `PlPlayerController`** - page or business state controller
+- L130 - `void updateDuration(Duration value) {` - updates, stores, or records state
+- L232 - `set isVertical(bool value) {` - predicate, validation, or lookup
+- L251 - `Future<void> setAlwaysOnTop(bool value) {` - updates, stores, or records state
+- L256 - `Future<void> exitDesktopPip() {` - handles interaction, lifecycle, or playback events
+- L268 - `Future<void> enterDesktopPip() async {` - handles interaction, lifecycle, or playback events
+- L307 - `void toggleDesktopPip() {` - handles interaction, lifecycle, or playback events
+- L326 - `static bool _isVideoPage(String routeName) {` - performs one operation in its enclosing type or module
+- L330 - `void enterPip({bool autoEnter = false}) {` - handles interaction, lifecycle, or playback events
+- L342 - `void _disableAutoEnterPip() {` - performs one operation in its enclosing type or module
+- L472 - `void updateSubtitleStyle() {` - updates, stores, or records state
+- L476 - `void onUpdatePadding(EdgeInsets padding) {` - handles interaction, lifecycle, or playback events
+- L483 - `static bool instanceExists() {` - performs one operation in its enclosing type or module
+- L487 - `static void setPlayCallBack(PlayCallback? playCallBack) {` - updates, stores, or records state
+- L493 - `static Future<void>? playIfExists() {` - handles interaction, lifecycle, or playback events
+- L498 - `static PlayerStatus? getPlayerStatusIfExists() {` - reads, requests, or synchronizes data
+- L502 - `static Future<void>? pauseIfExists({` - handles interaction, lifecycle, or playback events
+- L512 - `static Future<void>? seekToIfExists(` - handles interaction, lifecycle, or playback events
+- L519 - `static double? getVolumeIfExists() {` - reads, requests, or synchronizes data
+- L523 - `static Future<void>? setVolumeIfExists(` - updates, stores, or records state
+- L538 - `void _stopOrientationListener() {` - performs one operation in its enclosing type or module
+- L543 - `void _onOrientationChanged(OrientationParams param) {` - performs one operation in its enclosing type or module
+- L586 - `PlPlayerController._() {` - performs one operation in its enclosing type or module
+- L611 - `void _onUserLeaveHint() {` - performs one operation in its enclosing type or module
+- L618 - `static PlPlayerController getInstance({bool isLive = false}) {` - reads, requests, or synchronizes data
+- L632 - `Future<void> setDataSource(` - updates, stores, or records state
+- L782 - `Future<void> setShader([SuperResolutionType? type, NativePlayer? pp]) async {` - updates, stores, or records state
+- L818 - `Future<Player> _initPlayer() async {` - performs one operation in its enclosing type or module
+- L862 - `Future<bool> _createVideoController(` - performs one operation in its enclosing type or module
+- L942 - `void _checkpointForRebuild() {` - switches, recovers, or refreshes runtime state
+- L963 - `void _clearRebuildCheckpoint() {` - switches, recovers, or refreshes runtime state
+- L969 - `void _setPendingResume(int? targetCid, Duration? position) {` - switches, recovers, or refreshes runtime state
+- L978 - `void _clearPendingResume() {` - switches, recovers, or refreshes runtime state
+- L983 - `Future<void>? refreshPlayer() {` - switches, recovers, or refreshes runtime state
+- L1028 - `Future<void> stopCurrentSource() async {` - stops, releases, or resets state and resources
+- L1037 - `Future<void> _initializePlayer(int autoplayGeneration) async {` - performs one operation in its enclosing type or module
+- L1071 - `void _syncWakelock() {` - performs one operation in its enclosing type or module
+- L1086 - `void _updatePlaybackState({` - performs one operation in its enclosing type or module
+- L1104 - `void _startListeners(NativePlayer player) {` - performs one operation in its enclosing type or module
+- L1286 - `Timer(const Duration(milliseconds: 3000), () {` - performs one operation in its enclosing type or module
+- L1323 - `void _removeListeners() {` - performs one operation in its enclosing type or module
+- L1329 - `void onAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
+- L1353 - `void _cancelPlaybackRecoveryWatch() {` - switches, recovers, or refreshes runtime state
+- L1359 - `void _startPlaybackRecoveryWatch() {` - switches, recovers, or refreshes runtime state
+- L1372 - `Future<void> checkPlaybackRecovery() async {` - reads, requests, or synchronizes data
+- L1474 - `Future<void> resumeAfterLifecyclePause({` - switches, recovers, or refreshes runtime state
+- L1537 - `void _startBackgroundReconnectTimer() {` - performs one operation in its enclosing type or module
+- L1546 - `void _stopBackgroundReconnectTimer() {` - performs one operation in its enclosing type or module
+- L1552 - `void _checkBackgroundReconnect() {` - performs one operation in its enclosing type or module
+- L1567 - `void _backgroundReconnectNow(String reason) {` - performs one operation in its enclosing type or module
+- L1589 - `bool _isBackgroundNetworkError(String event) {` - performs one operation in its enclosing type or module
+- L1600 - `void _cancelSubForSeek() {` - performs one operation in its enclosing type or module
+- L1607 - `Future<void> seek(Duration position, {bool isSeek = false}) async {` - handles interaction, lifecycle, or playback events
+- L1630 - `Future<void> seekTo(Duration position, {bool isSeek = true}) async {` - handles interaction, lifecycle, or playback events
+- L1656 - `Future<void> setPlaybackSpeed(double speed) async {` - updates, stores, or records state
+- L1683 - `Future<void> setDefaultSpeed() async {` - updates, stores, or records state
+- L1689 - `Future<void> play({` - handles interaction, lifecycle, or playback events
+- L1722 - `Future<void> pause({bool notify = true, bool isInterrupt = false}) async {` - handles interaction, lifecycle, or playback events
+- L1744 - `void hideTaskControls() {` - handles interaction, lifecycle, or playback events
+- L1754 - `void onSeekStart(int seekFrom) {` - handles interaction, lifecycle, or playback events
+- L1759 - `void onSeekEnd() {` - handles interaction, lifecycle, or playback events
+- L1773 - `Future<void> setVolume(double volume, {bool showIndicator = true}) async {` - updates, stores, or records state
+- L1802 - `void toggleVideoFit(VideoFitType value) {` - handles interaction, lifecycle, or playback events
+- L1809 - `void _initVideoFit() {` - performs one operation in its enclosing type or module
+- L1818 - `void setBackgroundPlay(bool val) {` - updates, stores, or records state
+- L1825 - `set controls(bool visible) {` - performs one operation in its enclosing type or module
+- L1834 - `void cancelLongPressTimer() {` - stops, releases, or resets state and resources
+- L1840 - `Future<void> setLongPressStatus(bool val) async {` - updates, stores, or records state
+- L1870 - `Future<void> onDoubleTapCenter() async {` - handles interaction, lifecycle, or playback events
+- L1884 - `void onDoubleTapSeekBackward() {` - handles interaction, lifecycle, or playback events
+- L1888 - `void onDoubleTapSeekForward() {` - handles interaction, lifecycle, or playback events
+- L1892 - `void onForward(Duration duration) {` - handles interaction, lifecycle, or playback events
+- L1896 - `void onBackward(Duration duration) {` - handles interaction, lifecycle, or playback events
+- L1900 - `void onForwardBackward(Duration duration) {` - handles interaction, lifecycle, or playback events
+- L1907 - `void doubleTapFuc(DoubleTapType type) {` - performs one operation in its enclosing type or module
+- L1928 - `void onLockControl(bool val) {` - handles interaction, lifecycle, or playback events
+- L1937 - `void _setFullScreen(bool val) {` - performs one operation in its enclosing type or module
+- L1948 - `Future<void>? changeOrientation({` - performs one operation in its enclosing type or module
+- L1981 - `Future<void> triggerFullScreen({` - performs one operation in its enclosing type or module
+- L2023 - `void addPositionListener(ValueChanged<Duration> listener) {` - updates, stores, or records state
+- L2028 - `void removePositionListener(ValueChanged<Duration> listener) =>` - stops, releases, or resets state and resources
+- L2031 - `void addStatusLister(ValueChanged<PlayerStatus> listener) {` - updates, stores, or records state
+- L2036 - `void removeStatusLister(ValueChanged<PlayerStatus> listener) =>` - stops, releases, or resets state and resources
+- L2040 - `Future<void>? makeHeartBeat(` - performs one operation in its enclosing type or module
+- L2059 - `Future<void> send() {` - performs one operation in its enclosing type or module
+- L2095 - `void setPlayRepeat(PlayRepeat type) {` - updates, stores, or records state
+- L2100 - `void putSubtitleSettings() {` - updates, stores, or records state
+- L2115 - `Future<void>? resetScreenRotation() {` - stops, releases, or resets state and resources
+- L2123 - `void onCloseAll() {` - stops, releases, or resets state and resources
+- L2130 - `void dispose() {` - stops, releases, or resets state and resources
+- L2190 - `static void updatePlayCount() {` - updates, stores, or records state
+- L2198 - `void setContinuePlayInBackground() {` - updates, stores, or records state
+- L2214 - `void updatePreviewIndex(int seconds) {` - updates, stores, or records state
+- L2229 - `void _clearPreview() {` - performs one operation in its enclosing type or module
+- L2239 - `Future<void> getVideoShot() async {` - reads, requests, or synchronizes data
+- L2243 - `Future<void> takeScreenshot() async {` - performs one operation in its enclosing type or module
+- L2298 - `void onPopInvokedWithResult(bool didPop, Object? result) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/plugin/pl_player/models/audio_output_type.dart`
 
@@ -14705,8 +14813,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/plugin/pl_player/models/hwdec_type.dart`
 
-- L2 - **enum `HwDecType`** - finite state or option set
-- L39 - `const HwDecType(this.hwdec, this.desc);` - performs one operation in its enclosing type or module
+- L6 - **enum `HwDecType`** - finite state or option set
+- L43 - `const HwDecType(this.hwdec, this.desc);` - performs one operation in its enclosing type or module
 
 ## `lib/plugin/pl_player/models/play_repeat.dart`
 
@@ -14720,9 +14828,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/plugin/pl_player/models/play_status.dart`
 
-- L3 - **enum `PlayerStatus`** - finite state or option set
-- L14 - **typedef `PlPlayerStatus`** - callback or type alias
-- L16 - **extension `PlPlayerStatusExt`** - adds convenience behavior to an existing type
+- L1 - **enum `PlayerStatus`** - finite state or option set
 
 ## `lib/plugin/pl_player/models/video_fit_type.dart`
 
@@ -14761,42 +14867,44 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L200 - `void _getCurrVolume() {` - performs one operation in its enclosing type or module
 - L210 - `void _onControlChanged(bool val) {` - performs one operation in its enclosing type or module
 - L257 - `void initState() {` - starts or initializes state and resources
-- L335 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
-- L373 - `Future<void> setBrightness(double value) async {` - updates, stores, or records state
-- L397 - `void dispose() {` - stops, releases, or resets state and resources
-- L416 - `Widget buildBottomControl(` - performs one operation in its enclosing type or module
-- L429 - `Widget progressWidget(` - performs one operation in its enclosing type or module
-- L951 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L957 - `void didUpdateWidget(covariant PLVideoPlayer oldWidget) {` - handles interaction, lifecycle, or playback events
-- L964 - `void _onPanStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
-- L969 - `void _onScaleUpdate(double scale) {` - performs one operation in its enclosing type or module
-- L973 - `void _onHorizontalDragStart() {` - performs one operation in its enclosing type or module
-- L977 - `void _onHorizontalDragUpdate(double dx) {` - performs one operation in its enclosing type or module
-- L996 - `void _onHorizontalDragEnd() {` - performs one operation in its enclosing type or module
-- L1010 - `void _onPanUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
-- L1109 - `void fullScreenTrigger(bool status) {` - performs one operation in its enclosing type or module
-- L1146 - `void _onPanEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
-- L1154 - `void onDoubleTapDownMobile(TapDownDetails details) {` - handles interaction, lifecycle, or playback events
-- L1171 - `void _onTapUp(TapUpDetails details) {` - performs one operation in its enclosing type or module
-- L1186 - `void _onTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
-- L1209 - `void _onDoubleTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
-- L1237 - `bool _isPositionAllowed(Offset offset) {` - performs one operation in its enclosing type or module
-- L1247 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
-- L1290 - `void _onPointerPanZoomUpdate(PointerPanZoomUpdateEvent event) {` - performs one operation in its enclosing type or module
-- L1331 - `void _onPointerPanZoomEnd(PointerPanZoomEndEvent event) {` - performs one operation in its enclosing type or module
-- L1338 - `void _onPointerSignal(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
-- L1351 - `Widget build(BuildContext context) {` - builds UI or state
-- L1690 - `void listener() {` - performs one operation in its enclosing type or module
-- L1888 - `Obx(() {` - performs one operation in its enclosing type or module
-- L1924 - `Obx(() {` - performs one operation in its enclosing type or module
-- L1955 - `Obx(() {` - performs one operation in its enclosing type or module
-- L2082 - `Future<void> screenshotWebp() async {` - performs one operation in its enclosing type or module
-- L2229 - `void _removeDmAction() {` - performs one operation in its enclosing type or module
-- L2237 - `Widget _dmActionItem(` - performs one operation in its enclosing type or module
-- L2259 - `int? _getValidOffset(String data) {` - performs one operation in its enclosing type or module
-- L2270 - `Widget _buildDmAction(` - performs one operation in its enclosing type or module
-- L2314 - `VideoDanmaku() => [` - performs one operation in its enclosing type or module
-- L2396 - `LiveDanmaku() => [` - performs one operation in its enclosing type or module
+- L338 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
+- L376 - `Future<void> setBrightness(double value) async {` - updates, stores, or records state
+- L400 - `void dispose() {` - stops, releases, or resets state and resources
+- L419 - `Widget buildBottomControl(` - performs one operation in its enclosing type or module
+- L432 - `Widget progressWidget(` - performs one operation in its enclosing type or module
+- L954 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L960 - `void didUpdateWidget(covariant PLVideoPlayer oldWidget) {` - handles interaction, lifecycle, or playback events
+- L967 - `void _onPanStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
+- L972 - `void _onScaleUpdate(double scale) {` - performs one operation in its enclosing type or module
+- L976 - `void _onHorizontalDragStart() {` - performs one operation in its enclosing type or module
+- L980 - `void _onHorizontalDragUpdate(double dx) {` - performs one operation in its enclosing type or module
+- L999 - `void _onHorizontalDragEnd() {` - performs one operation in its enclosing type or module
+- L1014 - `void _onPanUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
+- L1113 - `void fullScreenTrigger(bool status) {` - performs one operation in its enclosing type or module
+- L1150 - `void _onPanEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
+- L1158 - `void onDoubleTapDownMobile(TapDownDetails details) {` - handles interaction, lifecycle, or playback events
+- L1175 - `void _onTapUp(TapUpDetails details) {` - performs one operation in its enclosing type or module
+- L1190 - `void _onTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
+- L1213 - `void _onDoubleTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
+- L1241 - `bool _isPositionAllowed(Offset offset) {` - performs one operation in its enclosing type or module
+- L1256 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
+- L1290 - `void _onPointerUp(PointerUpEvent event) {` - performs one operation in its enclosing type or module
+- L1307 - `void _onPointerCancel(PointerCancelEvent event) {` - performs one operation in its enclosing type or module
+- L1311 - `void _onPointerPanZoomUpdate(PointerPanZoomUpdateEvent event) {` - performs one operation in its enclosing type or module
+- L1352 - `void _onPointerPanZoomEnd(PointerPanZoomEndEvent event) {` - performs one operation in its enclosing type or module
+- L1359 - `void _onPointerSignal(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
+- L1372 - `Widget build(BuildContext context) {` - builds UI or state
+- L1711 - `void listener() {` - performs one operation in its enclosing type or module
+- L1909 - `Obx(() {` - performs one operation in its enclosing type or module
+- L1945 - `Obx(() {` - performs one operation in its enclosing type or module
+- L1976 - `Obx(() {` - performs one operation in its enclosing type or module
+- L2105 - `Future<void> _screenshotWebp() async {` - performs one operation in its enclosing type or module
+- L2252 - `void _removeDmAction() {` - performs one operation in its enclosing type or module
+- L2260 - `Widget _dmActionItem(` - performs one operation in its enclosing type or module
+- L2282 - `int? _getValidOffset(String data) {` - performs one operation in its enclosing type or module
+- L2293 - `Widget _buildDmAction(` - performs one operation in its enclosing type or module
+- L2337 - `VideoDanmaku() => [` - performs one operation in its enclosing type or module
+- L2419 - `LiveDanmaku() => [` - performs one operation in its enclosing type or module
 
 ## `lib/plugin/pl_player/view/widgets.dart`
 
@@ -14996,18 +15104,19 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/services/audio_handler.dart`
 
 - L21 - `Future<VideoPlayerServiceHandler> initAudioService() {` - starts or initializes state and resources
-- L37 - **class `VideoPlayerServiceHandler`** - cross-page service, resource manager, or system coordinator
-- L46 - `Future<void> play() {` - handles interaction, lifecycle, or playback events
-- L54 - `Future<void> pause() {` - handles interaction, lifecycle, or playback events
-- L60 - `Future<void> seek(Duration position) {` - handles interaction, lifecycle, or playback events
-- L71 - `void setMediaItem(MediaItem newMediaItem) {` - updates, stores, or records state
-- L82 - `void setPlaybackState(` - updates, stores, or records state
-- L151 - `void onStatusChange(PlayerStatus status, bool isBuffering, isLive) {` - handles interaction, lifecycle, or playback events
-- L158 - `void onVideoDetailChange(` - handles interaction, lifecycle, or playback events
-- L173 - `Uri getUri(String? cover) => Uri.parse(ImageUtils.safeThumbnailUrl(cover));` - reads, requests, or synchronizes data
-- L254 - `void onVideoDetailDispose(String herotag) {` - handles interaction, lifecycle, or playback events
-- L272 - `void clear() {` - stops, releases, or resets state and resources
-- L298 - `void onPositionChange(Duration position) {` - handles interaction, lifecycle, or playback events
+- L37 - **typedef `_StatusConfig`** - callback or type alias
+- L44 - **class `VideoPlayerServiceHandler`** - cross-page service, resource manager, or system coordinator
+- L53 - `Future<void> play() {` - handles interaction, lifecycle, or playback events
+- L60 - `Future<void> pause() {` - handles interaction, lifecycle, or playback events
+- L67 - `Future<void> seek(Duration position) {` - handles interaction, lifecycle, or playback events
+- L73 - `void setMediaItem(MediaItem newMediaItem) {` - updates, stores, or records state
+- L86 - `void onUpdateState(` - handles interaction, lifecycle, or playback events
+- L133 - `void _updateState(` - performs one operation in its enclosing type or module
+- L186 - `void onVideoDetailChange(` - handles interaction, lifecycle, or playback events
+- L200 - `Uri getUri(String? cover) => Uri.parse(ImageUtils.safeThumbnailUrl(cover));` - reads, requests, or synchronizes data
+- L279 - `void onVideoDetailDispose(String herotag) {` - handles interaction, lifecycle, or playback events
+- L293 - `void clearIfNeeded() {` - stops, releases, or resets state and resources
+- L298 - `void clear() {` - stops, releases, or resets state and resources
 
 ## `lib/services/audio_session.dart`
 
@@ -15181,37 +15290,37 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/services/shutdown_timer_service.dart`
 
-- L23 - **enum `_ShutdownType`** - finite state or option set
-- L30 - `const _ShutdownType(this.label);` - performs one operation in its enclosing type or module
-- L35 - **class `ShutdownTimerService`** - cross-page service, resource manager, or system coordinator
-- L36 - `ShutdownTimerService._internal();` - performs one operation in its enclosing type or module
-- L52 - `void _stopTimer() {` - performs one operation in its enclosing type or module
-- L60 - `void reset([int durationInMinutes = 0]) {` - stops, releases, or resets state and resources
-- L66 - `void _startShutdownTimer(int durationInMinutes) {` - performs one operation in its enclosing type or module
-- L80 - `void _handleShutdown() {` - performs one operation in its enclosing type or module
-- L110 - `void handleWaiting() {` - handles interaction, lifecycle, or playback events
-- L121 - `void _syncProgressAndExit() {` - performs one operation in its enclosing type or module
-- L136 - `static (int hour, int minute) _parseMinutes(int minutes) =>` - performs one operation in its enclosing type or module
-- L139 - `static String _format(int minutes) {` - performs one operation in its enclosing type or module
-- L151 - `Widget _pickerBuider(` - performs one operation in its enclosing type or module
-- L174 - `void _showTimePickerDialog(` - performs one operation in its enclosing type or module
-- L226 - `setState(() {});` - updates, stores, or records state
-- L238 - `void showScheduleExitDialog(` - handles interaction, lifecycle, or playback events
-- L304 - `void onChanged([_]) {` - handles interaction, lifecycle, or playback events
-- L364 - **typedef `ShutdownStatefulWidgetBuilder`** - reusable UI or rendering component
-- L371 - **class `ShutdownPanel`** - page or visual structure
-- L372 - `const ShutdownPanel({` - performs one operation in its enclosing type or module
-- L381 - `static Widget _kBuildCountdownText(String? text) {` - performs one operation in its enclosing type or module
-- L389 - `State<ShutdownPanel> createState() => _ShutdownPanelState();` - builds UI or state
-- L392 - **class `_ShutdownPanelState`** - data structure or state carrier
-- L394 - `Widget build(BuildContext context) {` - builds UI or state
-- L400 - **mixin `ShutdownMixin`** - behavior shared by multiple classes
-- L405 - `void initState() {` - starts or initializes state and resources
-- L410 - `void _updateCountdownTextEnd([String? value]) {` - performs one operation in its enclosing type or module
-- L415 - `bool _updateCountdownText([_]) {` - performs one operation in its enclosing type or module
-- L434 - `void _startTimer() {` - performs one operation in its enclosing type or module
-- L444 - `void _stopTimer() {` - performs one operation in its enclosing type or module
-- L452 - `void dispose() {` - stops, releases, or resets state and resources
+- L22 - **enum `_ShutdownType`** - finite state or option set
+- L29 - `const _ShutdownType(this.label);` - performs one operation in its enclosing type or module
+- L34 - **class `ShutdownTimerService`** - cross-page service, resource manager, or system coordinator
+- L35 - `ShutdownTimerService._internal();` - performs one operation in its enclosing type or module
+- L51 - `void _stopTimer() {` - performs one operation in its enclosing type or module
+- L59 - `void reset([int durationInMinutes = 0]) {` - stops, releases, or resets state and resources
+- L65 - `void _startShutdownTimer(int durationInMinutes) {` - performs one operation in its enclosing type or module
+- L79 - `void _handleShutdown() {` - performs one operation in its enclosing type or module
+- L109 - `void handleWaiting() {` - handles interaction, lifecycle, or playback events
+- L120 - `void _syncProgressAndExit() {` - performs one operation in its enclosing type or module
+- L135 - `static (int hour, int minute) _parseMinutes(int minutes) =>` - performs one operation in its enclosing type or module
+- L138 - `static String _format(int minutes) {` - performs one operation in its enclosing type or module
+- L150 - `Widget _pickerBuider(` - performs one operation in its enclosing type or module
+- L173 - `void _showTimePickerDialog(` - performs one operation in its enclosing type or module
+- L225 - `setState(() {});` - updates, stores, or records state
+- L237 - `void showScheduleExitDialog(` - handles interaction, lifecycle, or playback events
+- L303 - `void onChanged([_]) {` - handles interaction, lifecycle, or playback events
+- L363 - **typedef `ShutdownStatefulWidgetBuilder`** - reusable UI or rendering component
+- L370 - **class `ShutdownPanel`** - page or visual structure
+- L371 - `const ShutdownPanel({` - performs one operation in its enclosing type or module
+- L380 - `static Widget _kBuildCountdownText(String? text) {` - performs one operation in its enclosing type or module
+- L388 - `State<ShutdownPanel> createState() => _ShutdownPanelState();` - builds UI or state
+- L391 - **class `_ShutdownPanelState`** - data structure or state carrier
+- L393 - `Widget build(BuildContext context) {` - builds UI or state
+- L399 - **mixin `ShutdownMixin`** - behavior shared by multiple classes
+- L404 - `void initState() {` - starts or initializes state and resources
+- L409 - `void _updateCountdownTextEnd([String? value]) {` - performs one operation in its enclosing type or module
+- L414 - `bool _updateCountdownText([_]) {` - performs one operation in its enclosing type or module
+- L433 - `void _startTimer() {` - performs one operation in its enclosing type or module
+- L443 - `void _stopTimer() {` - performs one operation in its enclosing type or module
+- L451 - `void dispose() {` - stops, releases, or resets state and resources
 
 ## `lib/tcp/live.dart`
 
@@ -15335,38 +15444,48 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/utils/adaptive_playback.dart`
 
-- L4 - **class `AdaptivePlayback`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18 - `static void setEnabled(bool value) {` - updates, stores, or records state
-- L25 - `static bool shouldAccumulateCdnStall({` - predicate, validation, or lookup
-- L31 - `static bool shouldRecoverPlayerError({` - predicate, validation, or lookup
-- L37 - `static bool shouldAutoplayAfterAsyncOperation({` - predicate, validation, or lookup
-- L47 - `static bool shouldStartMediaDuringOpen({` - predicate, validation, or lookup
-- L59 - `static bool shouldAcceptNativePlayingEvent({` - predicate, validation, or lookup
-- L67 - `static bool shouldRecoverStalledPlayback({` - predicate, validation, or lookup
-- L94 - `static bool shouldShowLoading({` - predicate, validation, or lookup
-- L102 - `static Duration? rebuildResumePosition({` - switches, recovers, or refreshes runtime state
-- L118 - `static Duration protectPendingResumePosition({` - switches, recovers, or refreshes runtime state
-- L131 - `static bool hasConfirmedPendingResume({` - predicate, validation, or lookup
-- L144 - `static bool shouldSwitchForStalledBuffer({` - predicate, validation, or lookup
-- L162 - `static bool isExpectedRelayInterruptionError(String event) {` - predicate, validation, or lookup
-- L168 - `static bool isVideoBitstreamCorruption(String event) {` - predicate, validation, or lookup
-- L180 - `static bool isUnrecognizedFormat(String event) =>` - predicate, validation, or lookup
-- L183 - `static bool isLoopbackRelayConnectionFailure(String event) {` - predicate, validation, or lookup
-- L192 - `static bool isDetachedAudioPadNoise(String event) {` - predicate, validation, or lookup
-- L197 - `static bool shouldRecoverFrozenTrack({` - predicate, validation, or lookup
-- L230 - `static bool hasReachedContentEnd({` - predicate, validation, or lookup
+- L5 - **class `WakelockGateway`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6 - `Future<void> enable();` - performs one operation in its enclosing type or module
+- L7 - `Future<void> disable();` - performs one operation in its enclosing type or module
+- L13 - **class `WakelockHoldManager`** - cross-page service, resource manager, or system coordinator
+- L14 - `WakelockHoldManager(this.gateway);` - performs one operation in its enclosing type or module
+- L19 - `Future<void> sync({` - reads, requests, or synchronizes data
+- L41 - `Future<void> forceDisable() async {` - performs one operation in its enclosing type or module
+- L47 - **class `AdaptivePlayback`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L61 - `static void setEnabled(bool value) {` - updates, stores, or records state
+- L68 - `static bool shouldAccumulateCdnStall({` - predicate, validation, or lookup
+- L74 - `static bool shouldRecoverPlayerError({` - predicate, validation, or lookup
+- L80 - `static bool shouldAutoplayAfterAsyncOperation({` - predicate, validation, or lookup
+- L90 - `static bool shouldStartMediaDuringOpen({` - predicate, validation, or lookup
+- L102 - `static bool shouldAcceptNativePlayingEvent({` - predicate, validation, or lookup
+- L110 - `static bool shouldRecoverStalledPlayback({` - predicate, validation, or lookup
+- L137 - `static bool shouldShowLoading({` - predicate, validation, or lookup
+- L148 - `static bool shouldHoldWakelock({` - predicate, validation, or lookup
+- L167 - `static bool shouldSwitchForFragmentedStalls({` - predicate, validation, or lookup
+- L189 - `static Duration? rebuildResumePosition({` - switches, recovers, or refreshes runtime state
+- L205 - `static Duration protectPendingResumePosition({` - switches, recovers, or refreshes runtime state
+- L218 - `static bool hasConfirmedPendingResume({` - predicate, validation, or lookup
+- L231 - `static bool shouldSwitchForStalledBuffer({` - predicate, validation, or lookup
+- L249 - `static bool isExpectedRelayInterruptionError(String event) {` - predicate, validation, or lookup
+- L255 - `static bool isVideoBitstreamCorruption(String event) {` - predicate, validation, or lookup
+- L267 - `static bool isUnrecognizedFormat(String event) =>` - predicate, validation, or lookup
+- L270 - `static bool isLoopbackRelayConnectionFailure(String event) {` - predicate, validation, or lookup
+- L279 - `static bool isDetachedAudioPadNoise(String event) {` - predicate, validation, or lookup
+- L284 - `static bool shouldRecoverFrozenTrack({` - predicate, validation, or lookup
+- L317 - `static bool hasReachedContentEnd({` - predicate, validation, or lookup
 
 ## `lib/utils/android/android_helper.dart`
 
-- L8 - **class `PiliAndroidHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10 - `static void back() => AndroidHelper.back();` - performs one operation in its enclosing type or module
-- L12 - `static void biliSendCommAntifraud(` - performs one operation in its enclosing type or module
-- L59 - `static void openLinkVerifySettings() =>` - handles interaction, lifecycle, or playback events
-- L62 - `static bool openMusic(String title, String? artist, String? album) {` - handles interaction, lifecycle, or playback events
-- L76 - `static void enterPip(` - handles interaction, lifecycle, or playback events
-- L92 - `static void disableAutoEnterPip() =>` - performs one operation in its enclosing type or module
-- L95 - `static (int, int)? maxScreenSize() {` - performs one operation in its enclosing type or module
-- L107 - `static void createShortcut(String id, String uri, String label, String path) {` - performs one operation in its enclosing type or module
+- L12 - **class `PiliAndroidHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14 - `static void back() => AndroidHelper.back();` - performs one operation in its enclosing type or module
+- L16 - `static void biliSendCommAntifraud(` - performs one operation in its enclosing type or module
+- L63 - `static void openLinkVerifySettings() =>` - handles interaction, lifecycle, or playback events
+- L66 - `static bool openMusic(String title, String? artist, String? album) {` - handles interaction, lifecycle, or playback events
+- L80 - `static void enterPip(` - handles interaction, lifecycle, or playback events
+- L96 - `static void disableAutoEnterPip() =>` - performs one operation in its enclosing type or module
+- L99 - `static (int, int)? maxScreenSize() {` - performs one operation in its enclosing type or module
+- L111 - `static void createShortcut(String id, String uri, String label, String path) {` - performs one operation in its enclosing type or module
+- L126 - `static void openUrl(String url, {String domain = '*.bilibili.com'}) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/utils/android/bindings.g.dart`
 
@@ -15375,21 +15494,22 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L155 - **mixin `class`** - behavior shared by multiple classes
 - L165 - **class `_`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L189 - **extension `type`** - adds convenience behavior to an existing type
-- L747 - **extension `type`** - adds convenience behavior to an existing type
+- L820 - **extension `type`** - adds convenience behavior to an existing type
 
 ## `lib/utils/app_scheme.dart`
 
-- L33 - **class `PiliScheme`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L39 - `static void init() {` - starts or initializes state and resources
-- L48 - `static int? _videoProgress(Map<String, String> queryParameters) {` - performs one operation in its enclosing type or module
-- L60 - `static Future<bool> routePushFromUrl(` - performs one operation in its enclosing type or module
-- L88 - `static Future<bool> routePush(` - performs one operation in its enclosing type or module
-- L448 - `static Future<bool> _fullPathPush(` - performs one operation in its enclosing type or module
-- L459 - `void launchURL() {` - performs one operation in its enclosing type or module
-- L512 - `void toType({` - performs one operation in its enclosing type or module
-- L852 - `static bool _onPushDynDetail(Uri uri, bool off) {` - performs one operation in its enclosing type or module
-- L866 - `static void _toWebview(` - performs one operation in its enclosing type or module
-- L882 - `static Future<void> videoPush(` - performs one operation in its enclosing type or module
+- L35 - **class `PiliScheme`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L41 - `static void init() {` - starts or initializes state and resources
+- L52 - `static Future<bool> _desktopRoutePush(Uri uri) async {` - performs one operation in its enclosing type or module
+- L58 - `static int? _videoProgress(Map<String, String> queryParameters) {` - performs one operation in its enclosing type or module
+- L70 - `static Future<bool> routePushFromUrl(` - performs one operation in its enclosing type or module
+- L98 - `static Future<bool> routePush(` - performs one operation in its enclosing type or module
+- L458 - `static Future<bool> _fullPathPush(` - performs one operation in its enclosing type or module
+- L469 - `void launchURL() {` - performs one operation in its enclosing type or module
+- L523 - `void toType({` - performs one operation in its enclosing type or module
+- L863 - `static bool _onPushDynDetail(Uri uri, bool off) {` - performs one operation in its enclosing type or module
+- L877 - `static void _toWebview(` - performs one operation in its enclosing type or module
+- L893 - `static Future<void> videoPush(` - performs one operation in its enclosing type or module
 
 ## `lib/utils/app_sign.dart`
 
@@ -15453,10 +15573,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/utils/date_utils.dart`
 
 - L3 - **class `DateFormatUtils`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L10 - `static String dateFormat(` - performs one operation in its enclosing type or module
-- L45 - `static String _twoDigits(int n) => n.toString().padLeft(2, '0');` - performs one operation in its enclosing type or module
-- L47 - `static String chatFormat(int? time, {bool isHistory = false}) {` - performs one operation in its enclosing type or module
-- L73 - `static String format(int? time, {DateFormat? format}) {` - performs one operation in its enclosing type or module
+- L11 - `static String dateFormat(` - performs one operation in its enclosing type or module
+- L46 - `static String _twoDigits(int n) => n.toString().padLeft(2, '0');` - performs one operation in its enclosing type or module
+- L48 - `static String chatFormat(int? time, {bool isHistory = false}) {` - performs one operation in its enclosing type or module
+- L74 - `static String format(int? time, {DateFormat? format}) {` - performs one operation in its enclosing type or module
 
 ## `lib/utils/device_utils.dart`
 
@@ -15541,6 +15661,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L5 - `delete(recursive: recursive).catchError((_) => this);` - performs one operation in its enclosing type or module
 - L8 - **extension `DirectoryExt`** - adds convenience behavior to an existing type
 - L9 - `Future<bool> lengthGte(int length) async {` - performs one operation in its enclosing type or module
+- L18 - **extension `FileExt`** - adds convenience behavior to an existing type
+- L19 - `Future<void> moveOrCopy(String newPath) async {` - performs one operation in its enclosing type or module
 
 ## `lib/utils/extension/get_ext.dart`
 
@@ -15728,14 +15850,14 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L84 - `static FutureOr<bool> checkPermissionDependOnSdkInt() {` - reads, requests, or synchronizes data
 - L95 - `static Future<bool> downloadLivePhoto({` - reads, requests, or synchronizes data
 - L149 - `static Future<bool> downloadImg(List<String> imgList) async {` - reads, requests, or synchronizes data
-- L221 - `static String safeThumbnailUrl(String? src) {` - performs one operation in its enclosing type or module
-- L232 - `static String thumbnailUrl(String? src, [int maxQuality = 1]) {` - performs one operation in its enclosing type or module
-- L254 - `static void prefetchFeedCovers(Iterable<Object?> items, {int limit = 10}) {` - performs one operation in its enclosing type or module
-- L261 - `unawaited(() async {` - performs one operation in its enclosing type or module
-- L272 - `static void _collectFeedCovers(Object? item, Set<String> urls) {` - performs one operation in its enclosing type or module
-- L273 - `void add(String? url, [int quality = 1]) {` - updates, stores, or records state
-- L307 - `static Future<SaveResult?> saveByteImg({` - updates, stores, or records state
-- L346 - `static Future<void> saveFileImg({` - updates, stores, or records state
+- L207 - `static String safeThumbnailUrl(String? src) {` - performs one operation in its enclosing type or module
+- L218 - `static String thumbnailUrl(String? src, [int maxQuality = 1]) {` - performs one operation in its enclosing type or module
+- L240 - `static void prefetchFeedCovers(Iterable<Object?> items, {int limit = 10}) {` - performs one operation in its enclosing type or module
+- L247 - `unawaited(() async {` - performs one operation in its enclosing type or module
+- L258 - `static void _collectFeedCovers(Object? item, Set<String> urls) {` - performs one operation in its enclosing type or module
+- L259 - `void add(String? url, [int quality = 1]) {` - updates, stores, or records state
+- L293 - `static Future<SaveResult?> saveByteImg({` - updates, stores, or records state
+- L333 - `static Future<void> saveFileImg({` - updates, stores, or records state
 
 ## `lib/utils/json_file_handler.dart`
 
@@ -15910,8 +16032,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/utils/path_utils.dart`
 
-- L14 - **class `PathUtils`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L23 - `static String buildShadersAbsolutePath(` - performs one operation in its enclosing type or module
+- L15 - **class `PathUtils`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L24 - `static String buildShadersAbsolutePath(` - performs one operation in its enclosing type or module
+- L33 - `static Future<void> openDir(String dirPath) async {` - handles interaction, lifecycle, or playback events
 
 ## `lib/utils/permission_handler.dart`
 
@@ -15966,10 +16089,15 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L297 - `static Future<void> insertCreatedDyn(dynamic id) async {` - updates, stores, or records state
 - L317 - `static Future<void> checkCreatedDyn({` - reads, requests, or synchronizes data
 - L404 - `static Future<void> onLikeDynamic(` - handles interaction, lifecycle, or playback events
-- L532 - `static Future<void> validate(` - predicate, validation, or lookup
-- L555 - `bool isGeeArgumentValid() {` - predicate, validation, or lookup
-- L566 - `Future<void> gaiaVgateValidate() async {` - performs one operation in its enclosing type or module
-- L600 - `static Future<void> showUserRealName(String mid) async {` - handles interaction, lifecycle, or playback events
+- L540 - `static Future<void> validate(` - predicate, validation, or lookup
+- L563 - `bool isGeeArgumentValid() {` - predicate, validation, or lookup
+- L574 - `Future<void> gaiaVgateValidate() async {` - performs one operation in its enclosing type or module
+- L608 - `static Future<void> showUserRealName(String mid) async {` - handles interaction, lifecycle, or playback events
+
+## `lib/utils/screenshot.dart`
+
+- L8 - **class `Screenshot`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L9 - `static Future<ui.Image> screenshot(` - performs one operation in its enclosing type or module
 
 ## `lib/utils/set_int_adapter.dart`
 
@@ -15985,8 +16113,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/utils/storage_key.dart`
 
 - L3 - **class `SettingBoxKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L269 - **class `LocalCacheKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L278 - **class `VideoBoxKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L274 - **class `LocalCacheKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L283 - **class `VideoBoxKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/utils/storage_pref.dart`
 
@@ -15994,9 +16122,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L70 - `static set blackMids(Set<int> blackMidsSet) =>` - performs one operation in its enclosing type or module
 - L78 - `static void setBlackMid(int mid) => _localCache.put(` - updates, stores, or records state
 - L83 - `static void removeBlackMid(int mid) => _localCache.put(` - stops, releases, or resets state and resources
-- L917 - `static Map<String, String> lowLatencyBufferOptions({` - performs one operation in its enclosing type or module
-- L941 - `static Map<String, String> initBuffer([` - starts or initializes state and resources
-- L965 - `static Map<String, String> initLiveBuffer() {` - starts or initializes state and resources
+- L930 - `static Map<String, String> lowLatencyBufferOptions({` - performs one operation in its enclosing type or module
+- L954 - `static Map<String, String> initBuffer([` - starts or initializes state and resources
+- L978 - `static Map<String, String> initLiveBuffer() {` - starts or initializes state and resources
 
 ## `lib/utils/storage_utils.dart`
 
@@ -16097,19 +16225,52 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `linux/runner/my_application.cc`
 
-- L10 - **struct `_MyApplication`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18 - `static void first_frame_cb(MyApplication *self, FlView *view) {` - performs one operation in its enclosing type or module
-- L23 - `static void my_application_activate(GApplication *application) {` - performs one operation in its enclosing type or module
-- L103 - `static gboolean my_application_local_command_line(GApplication *application,` - performs one operation in its enclosing type or module
-- L124 - `static void my_application_startup(GApplication *application) {` - performs one operation in its enclosing type or module
-- L133 - `static void my_application_shutdown(GApplication *application) {` - performs one operation in its enclosing type or module
-- L142 - `static void my_application_dispose(GObject *object) {` - performs one operation in its enclosing type or module
-- L148 - `static void my_application_class_init(MyApplicationClass *klass) {` - performs one operation in its enclosing type or module
-- L157 - `static void my_application_init(MyApplication *self) {}` - performs one operation in its enclosing type or module
+- L11 - **struct `_MyApplication`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19 - `static void first_frame_cb(MyApplication *self, FlView *view) {` - performs one operation in its enclosing type or module
+- L24 - `static void my_application_activate(GApplication *application) {` - performs one operation in its enclosing type or module
+- L109 - `static gboolean my_application_local_command_line(GApplication *application,` - performs one operation in its enclosing type or module
+- L130 - `static void my_application_startup(GApplication *application) {` - performs one operation in its enclosing type or module
+- L139 - `static void my_application_shutdown(GApplication *application) {` - performs one operation in its enclosing type or module
+- L148 - `static void my_application_dispose(GObject *object) {` - performs one operation in its enclosing type or module
+- L154 - `static void my_application_class_init(MyApplicationClass *klass) {` - performs one operation in its enclosing type or module
+- L163 - `static void my_application_init(MyApplication *self) {}` - performs one operation in its enclosing type or module
 
 ## `linux/runner/my_application.h`
 
 - L16 - `MyApplication* my_application_new();` - performs one operation in its enclosing type or module
+
+## `linux/runner/plugins/linux_webview_plugin.cc`
+
+- L21 - **struct `WebviewSession`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L24 - `static double get_double_from_map(FlValue* map, const gchar* key,` - reads, requests, or synchronizes data
+- L39 - `static int64_t get_int_from_map(FlValue* map, const gchar* key,` - reads, requests, or synchronizes data
+- L54 - `static const gchar* get_string_from_map(FlValue* map, const gchar* key,` - reads, requests, or synchronizes data
+- L64 - `static bool get_bool_from_map(FlValue* map, const gchar* key,` - reads, requests, or synchronizes data
+- L74 - **struct `WebviewSession`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L87 - `void Cleanup() {` - performs one operation in its enclosing type or module
+- L128 - `void SendWebMessage(const std::string& message) {` - performs one operation in its enclosing type or module
+- L138 - `void SendNavigationRequest(const std::string& url) {` - performs one operation in its enclosing type or module
+- L147 - `void SendUrlChanged(const std::string& url) {` - performs one operation in its enclosing type or module
+- L156 - `void SendProgress(double progress) {` - performs one operation in its enclosing type or module
+- L165 - `void SendTitle(const std::string& title) {` - performs one operation in its enclosing type or module
+- L174 - `void SendLoadFailed(const std::string& url, const std::string& error) {` - performs one operation in its enclosing type or module
+- L185 - `static void on_script_message_received(WebKitUserContentManager* manager,` - handles interaction, lifecycle, or playback events
+- L201 - `static gboolean on_decide_policy(WebKitWebView* web_view,` - handles interaction, lifecycle, or playback events
+- L215 - `std::string url(uri);` - performs one operation in its enclosing type or module
+- L229 - `static gboolean on_load_failed(WebKitWebView* web_view,` - handles interaction, lifecycle, or playback events
+- L248 - `static void on_uri_changed(GObject* object, GParamSpec* pspec,` - handles interaction, lifecycle, or playback events
+- L258 - `static void on_progress_changed(GObject* object, GParamSpec* pspec,` - handles interaction, lifecycle, or playback events
+- L268 - `static void on_title_changed(GObject* object, GParamSpec* pspec,` - handles interaction, lifecycle, or playback events
+- L278 - `static GtkWidget* on_create_web_view(WebKitWebView* web_view,` - handles interaction, lifecycle, or playback events
+- L289 - `static void HandleMethodCall(FlMethodChannel* channel,` - handles interaction, lifecycle, or playback events
+- L629 - **struct `ContextMenuData`** - data structure or state carrier
+- L635 - **struct `ItemCallbackData`** - reusable UI or rendering component
+- L745 - `void LinuxWebviewPluginRegister(FlView* view, GtkOverlay* overlay) {` - performs one operation in its enclosing type or module
+- L784 - `kChannelName, FL_METHOD_CODEC(codec));` - performs one operation in its enclosing type or module
+
+## `linux/runner/plugins/linux_webview_plugin.h`
+
+- L7 - `void LinuxWebviewPluginRegister(FlView* view, GtkOverlay* overlay);` - performs one operation in its enclosing type or module
 
 ## `macos/Runner/AppDelegate.swift`
 
@@ -16123,6 +16284,31 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L4 - **class `MainFlutterWindow`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L5 - `private func applyOpaqueWindowAppearance() {` - performs one operation in its enclosing type or module
 - L17 - `override func awakeFromNib() {` - performs one operation in its enclosing type or module
+
+## `test/adaptive_buffer_policy_test.dart`
+
+- L10 - **class `RecordingGateway`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13 - `Future<void> enable() async => calls.add(true);` - performs one operation in its enclosing type or module
+- L15 - `Future<void> disable() async => calls.add(false);` - performs one operation in its enclosing type or module
+- L18 - `void main() {` - starts or initializes state and resources
+- L20 - `setUpAll(() async {` - starts or initializes state and resources
+- L25 - `setUp(() async {` - starts or initializes state and resources
+- L29 - `tearDownAll(() async {` - performs one operation in its enclosing type or module
+- L34 - `Duration seconds(double value) =>` - performs one operation in its enclosing type or module
+- L37 - `bool switchFor(double forward, double growth) =>` - switches, recovers, or refreshes runtime state
+- L47 - `test('real Pref queue saturation does not condemn a healthy CDN', () {` - performs one operation in its enclosing type or module
+- L59 - `test('byte-limited playback is healthy even below the refill line', () {` - performs one operation in its enclosing type or module
+- L77 - `test('PTS freeze is reachable with the actual low-latency queue', () {` - performs one operation in its enclosing type or module
+- L94 - `test('legacy large thresholds cannot exceed the real queue', () async {` - performs one operation in its enclosing type or module
+- L107 - `test('fragmented-stall detection does not conflict with the 4s queue', () {` - performs one operation in its enclosing type or module
+- L141 - `group('WakelockHoldManager', () {` - performs one operation in its enclosing type or module
+- L142 - `Future<WakelockHoldManager> sync(` - reads, requests, or synchronizes data
+- L159 - `test('play through media replacement ends enabled', () async {` - performs one operation in its enclosing type or module
+- L173 - `test('long buffering with playback intent keeps the wakelock', () async {` - performs one operation in its enclosing type or module
+- L180 - `test('explicit pause disables immediately', () async {` - performs one operation in its enclosing type or module
+- L189 - `test('background without continuePlayInBackground disables', () async {` - performs one operation in its enclosing type or module
+- L200 - `test('audio-only background playback disables', () async {` - performs one operation in its enclosing type or module
+- L212 - `test('no repeated toggles for identical states', () async {` - performs one operation in its enclosing type or module
 
 ## `test/cdn_relay_server_test.dart`
 
@@ -16158,6 +16344,25 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L11 - `test('new CDN candidates keep their original order at equal scores', () {` - performs one operation in its enclosing type or module
 - L18 - `test('a failed CDN is immediately demoted below an untested CDN', () {` - performs one operation in its enclosing type or module
 - L28 - `test('stable high-throughput transfers improve a CDN score gradually', () {` - performs one operation in its enclosing type or module
+
+## `test/live_fixes_test.dart`
+
+- L14 - `void main() {` - starts or initializes state and resources
+- L17 - `setUpAll(() async {` - starts or initializes state and resources
+- L32 - `tearDownAll(() async {` - performs one operation in its enclosing type or module
+- L37 - `LiveRoomController newLive() => LiveRoomController('hero');` - performs one operation in its enclosing type or module
+- L39 - `group('A: isLoaded 只依赖流地址初始化', () {` - performs one operation in its enclosing type or module
+- L40 - `test('规则拉取挂起时 isLoaded 仍会置位', () async {` - performs one operation in its enclosing type or module
+- L53 - `test('规则拉取抛错时错误不外泄且 isLoaded 置位', () async {` - performs one operation in its enclosing type or module
+- L65 - `test('流地址初始化抛错仍向外传播且不置 isLoaded', () async {` - performs one operation in its enclosing type or module
+- L78 - `group('B: isLive 时跳过 CDN 健康检查', () {` - performs one operation in its enclosing type or module
+- L79 - `test('live 时 _checkCdnHealth 不启动低缓冲观察', () {` - performs one operation in its enclosing type or module
+- L86 - `test('非 live 对照：_checkCdnHealth 仍启动低缓冲观察', () {` - performs one operation in its enclosing type or module
+- L93 - `test('live 时 isBuffering 变化不记录碎片化卡顿', () {` - performs one operation in its enclosing type or module
+- L100 - `test('非 live 对照：isBuffering 变化记录碎片化卡顿', () {` - performs one operation in its enclosing type or module
+- L108 - `group('C: isBlocked 空关键词', () {` - performs one operation in its enclosing type or module
+- L109 - `test('空串关键词不吞掉所有弹幕', () {` - performs one operation in its enclosing type or module
+- L115 - `test('屏蔽 uid 仍生效', () {` - performs one operation in its enclosing type or module
 
 ## `test/utils/accounts/deleted_account_test.dart`
 
@@ -16220,6 +16425,23 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L713 - `test('detects a stuck pts even when the playback clock also stops', () {` - performs one operation in its enclosing type or module
 - L729 - `test('does not recover while paused, audio-only, or low buffer', () {` - performs one operation in its enclosing type or module
 - L780 - `test('recovers a frozen track at low buffer when its peer advances', () {` - performs one operation in its enclosing type or module
+- L798 - `group('AdaptivePlayback.shouldSwitchForFragmentedStalls', () {` - performs one operation in its enclosing type or module
+- L800 - `DateTime at(int secondsAgo) => now.subtract(Duration(seconds: secondsAgo));` - performs one operation in its enclosing type or module
+- L802 - `List<Duration> durationsOf(List<(int, int)> stalls) =>` - performs one operation in its enclosing type or module
+- L804 - `List<DateTime> startsOf(List<(int, int)> stalls) =>` - starts or initializes state and resources
+- L807 - `bool decide(` - performs one operation in its enclosing type or module
+- L823 - `test('three stalls totalling 3s inside 30s trigger a switch', () {` - performs one operation in its enclosing type or module
+- L839 - `test('two stalls never trigger, regardless of total duration', () {` - performs one operation in its enclosing type or module
+- L846 - `test('three stalls with less than 3s total do not trigger', () {` - performs one operation in its enclosing type or module
+- L858 - `test('stalls older than the sliding window are ignored', () {` - performs one operation in its enclosing type or module
+- L872 - `test('clearing the window after a switch resets the decision', () {` - performs one operation in its enclosing type or module
+- L889 - `group('AdaptivePlayback.shouldHoldWakelock', () {` - performs one operation in its enclosing type or module
+- L890 - `bool hold({` - performs one operation in its enclosing type or module
+- L903 - `test('foreground requested playback holds the wakelock', () {` - performs one operation in its enclosing type or module
+- L907 - `test('explicit pause releases it immediately', () {` - performs one operation in its enclosing type or module
+- L911 - `test('background without continuePlayInBackground releases it', () {` - performs one operation in its enclosing type or module
+- L915 - `test('background with continuePlayInBackground keeps it', () {` - performs one operation in its enclosing type or module
+- L922 - `test('audio-only background playback does not need the screen', () {` - performs one operation in its enclosing type or module
 
 ## `tool/generate_codebase_index.ps1`
 
@@ -16240,11 +16462,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `windows/runner/main.cpp`
 
-- L8 - `int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,` - performs one operation in its enclosing type or module
-- L27 - `flutter::DartProject project(L"data");` - performs one operation in its enclosing type or module
-- L39 - `FlutterWindow window(project);` - performs one operation in its enclosing type or module
-- L40 - `Win32Window::Point origin(10, 10);` - performs one operation in its enclosing type or module
-- L41 - `Win32Window::Size size(1280, 720);` - performs one operation in its enclosing type or module
+- L9 - `int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,` - performs one operation in its enclosing type or module
+- L25 - `flutter::DartProject project(L"data");` - performs one operation in its enclosing type or module
+- L37 - `FlutterWindow window(project);` - performs one operation in its enclosing type or module
+- L38 - `Win32Window::Point origin(10, 10);` - performs one operation in its enclosing type or module
+- L39 - `Win32Window::Size size(1280, 720);` - performs one operation in its enclosing type or module
 
 ## `windows/runner/utils.cpp`
 

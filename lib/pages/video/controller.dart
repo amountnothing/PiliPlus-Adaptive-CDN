@@ -74,7 +74,7 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart' show Options;
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     show ExtendedNestedScrollViewState;
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show kDebugMode, visibleForTesting;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:get/get.dart';
@@ -1099,8 +1099,25 @@ class VideoDetailController extends GetxController
     }
   }
 
+  @visibleForTesting
+  void debugCheckCdnHealth() => _checkCdnHealth();
+
+  @visibleForTesting
+  void debugOnIsBufferingChanged(bool buffering) =>
+      _onIsBufferingChanged(buffering);
+
+  @visibleForTesting
+  bool get debugLowBufferWatchActive => _lowBufferStutterSince != null;
+
+  @visibleForTesting
+  int get debugFragmentStallCount => _fragmentStallStarts.length;
+
   void _checkCdnHealth() {
     if (isClosed) return;
+    // 直播没有有限时长/缓冲增长语义，且播放器此刻归直播间所有，
+    // 直播期间不跑自适应 CDN 健康检查（暂停同步仍由
+    // _relayPlaybackIntentWorker 在 playbackRequested 变化时维护）。
+    if (plPlayerController.isLive) return;
     // Keep the relay's pause state synchronized even while a DNS probe or
     // another CDN transition is in flight.
     _cdnRelaySession?.setPlaybackPaused(
@@ -1285,6 +1302,8 @@ class VideoDetailController extends GetxController
   /// Records rebuffer onsets/ends driven by isBuffering events, excluding
   /// seek-related rebuffers, manual pauses, content end and CDN switching.
   void _onIsBufferingChanged(bool buffering) {
+    // 直播缓冲事件不计入视频的碎片化卡顿窗口。
+    if (plPlayerController.isLive) return;
     final now = DateTime.now();
     if (!buffering) {
       final start = _openFragmentStallStart;

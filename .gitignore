@@ -154,6 +154,7 @@ test*
 !/test/
 /test/*
 !/test/adaptive_buffer_policy_test.dart
+!/test/live_fixes_test.dart
 
 # Java heap dumps from failed Gradle/R8 builds (never commit these).
 android/*.hprof

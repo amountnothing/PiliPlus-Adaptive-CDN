@@ -44,7 +44,8 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:PiliPlus/utils/video_utils.dart';
 import 'package:canvas_danmaku/canvas_danmaku.dart';
 import 'package:easy_debounce/easy_throttle.dart';
-import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
+import 'package:flutter/foundation.dart'
+    show kDebugMode, kReleaseMode, visibleForTesting;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
@@ -257,16 +258,17 @@ class LiveRoomController extends GetxController {
       isPortrait.value = response.isPortrait ?? false;
       stream = playurl.stream;
       _initStreamIndex();
-      await Future.wait([
-        ?initLiveUrl(
+      await debugLoadStreamAndRules(
+        () => initLiveUrl(
           streamIndex: streamIndex,
           formatIndex: formatIndex,
           codecIndex: codecIndex,
           liveUrlIndex: liveUrlIndex,
         ),
-        if (!isLoaded.value && Accounts.heartbeat.isLogin) _fetchBlockRules(),
-      ]);
-      isLoaded.value = true;
+        !isLoaded.value && Accounts.heartbeat.isLogin
+            ? _fetchBlockRules
+            : null,
+      );
     } else {
       _showDialog(res.toString());
     }
@@ -444,14 +446,41 @@ class LiveRoomController extends GetxController {
     superChatMsg.removeWhere((e) => e.expired);
   }
 
+  /// 抽出 queryLiveUrl 的加载序列，便于测试注入回调。
+  /// 屏蔽规则拉取 fire-and-forget：其成败不阻塞、不外泄，
+  /// [isLoaded] 只等流地址初始化完成。
+  @visibleForTesting
+  Future<void> debugLoadStreamAndRules(
+    Future<void>? Function() initLiveUrl,
+    Future<void> Function()? fetchBlockRules,
+  ) async {
+    final initFuture = initLiveUrl();
+    final rulesFuture = fetchBlockRules?.call();
+    if (rulesFuture != null) {
+      rulesFuture.ignore();
+    }
+    if (initFuture != null) {
+      await initFuture;
+    }
+    isLoaded.value = true;
+  }
+
+  @pragma('vm:notify-debugger-on-exception')
   Future<void> _fetchBlockRules() async {
-    final res = await LiveHttp.getLiveInfoByUser(roomId);
-    if (res case Success(:final response?)) {
-      if (response.keywordList case final keywordList?) {
-        _keywordList = keywordList;
+    try {
+      final res = await LiveHttp.getLiveInfoByUser(roomId);
+      if (res case Success(:final response?)) {
+        if (response.keywordList case final keywordList?) {
+          _keywordList = keywordList;
+        }
+        if (response.shieldUserList case final shieldUserList?) {
+          _shieldUids = shieldUserList.map((e) => e.uid).toSet();
+        }
       }
-      if (response.shieldUserList case final shieldUserList?) {
-        _shieldUids = shieldUserList.map((e) => e.uid).toSet();
+    } catch (e, s) {
+      // 屏蔽规则拉取失败只记录，不影响直播流地址初始化
+      if (kDebugMode) {
+        Utils.reportError(e, s);
       }
     }
   }
@@ -462,7 +491,10 @@ class LiveRoomController extends GetxController {
   }
 
   bool isBlocked(String text, Object uid) {
-    return _keywordList.any(text.contains) || _shieldUids.contains(uid);
+    // 空串关键词会被 text.contains 恒判为命中，吞掉全部弹幕，必须跳过；
+    // _shieldUids 是 Set<int>，非 int 的 uid（含空串）由类型检查天然排除。
+    return _keywordList.any((k) => k.isNotEmpty && text.contains(k)) ||
+        _shieldUids.contains(uid);
   }
 
   void startLiveMsg() {

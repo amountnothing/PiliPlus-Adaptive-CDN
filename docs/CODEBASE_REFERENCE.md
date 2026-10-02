@@ -462,6 +462,7 @@ Relay 输出:  [N...........K][K+1............M]
 
 - Dart 格式化/静态检查：只检查改动文件或相关模块。
 - Relay/评分：`test/cdn_relay_server_test.dart`、`test/cdn_score_service_test.dart`。
+- 直播三症状（isLoaded/isLive guard/空关键词）：`test/live_fixes_test.dart`（构造控制器走 Hive + `Get.testMode` 初始化，见 `test/utils` 与该文件 setUpAll）。
 - 视频工具/页面动画：对应 `video_utils`、Page Hero 测试。
 - 浏览器核心：`browser-extension/test/core.test.cjs`。
 - 浏览器真实切换仍需 Chrome/Edge 实机检查 MSE 缓冲、切屏和用户暂停。

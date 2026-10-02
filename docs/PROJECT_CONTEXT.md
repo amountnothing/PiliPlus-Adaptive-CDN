@@ -329,6 +329,14 @@
 - 验证：完整 `flutter test` 97 项通过（基线 80 + 新增 17），相关 5 文件 `flutter analyze` 无问题。真机息屏/切换行为未验证。
 - **方案1 PC 油猴 0.2.19**：确定失败（HTTP 4xx/5xx、TypeError）等 `failCooldownMs`（默认 2 s，options 可配 0–15000）即切下一候选，沉默/超时仍等满 15 s 窗口；pause 不再中止在途重试；XHR 耗尽路径终态分发修复（`recoverCandidate().then` 绕过假时钟直接调度重试）。产物 `dist/PiliPlus-Adaptive-CDN-Web.user.js` 55,856 字节、SHA-256 `c0b88caed37932b9cd9cf51766de04d2a8a8b785c1614fb13073367202a87c16`；node --test 63/63，Chromium 源码与打包产物各 34/34（打包产物连续三轮稳定，测试夹具确定性收尾见 `browser-extension/RETRY-0.2.18.md`）。非登录态线上 MSE 播放未验收。
 
+### 2026-10-02 直播三症状修复
+
+- **A 规则拉取不再阻塞 isLoaded**：`lib/pages/live_room/controller.dart:261-271` 抽出 `@visibleForTesting debugLoadStreamAndRules`（`:449-466`）——屏蔽规则拉取 fire-and-forget（`ignore()`），只 await `initLiveUrl`，成功才 `isLoaded.value = true`；`_fetchBlockRules`（`:468-486`）自带 try/catch（kDebugMode 下 `Utils.reportError`），成功响应才写 `_keywordList/_shieldUids`；“未登录不拉、已拉不重复”条件留在调用点。根因：旧 `Future.wait` 让 `isLoaded` 同时等规则接口，挂起则播放器永不渲染（`live_room/view.dart:259`），抛错则异常外泄到 `queryLiveUrl`。
+- **B 直播期间跳过视频自适应检查**：`lib/pages/video/controller.dart:1120`（`_checkCdnHealth` 开头）、`:1306`（`_onIsBufferingChanged` 开头）各加 `if (plPlayerController.isLive) return;`。isLive 仍由现有生命周期维护（`live_room/view.dart:120-123 didPopNext` 置 true、`video/view.dart:407` 置 false），未新增机制；测试钩子 `:1102-1114`。注意 `isLive` 期间 `_checkCdnHealth` 内那处 `_cdnRelaySession?.setPlaybackPaused` 同步被跳过，暂停同步仍由 `_relayPlaybackIntentWorker`（`:425`）在 playbackRequested 变化时执行——压栈时切后台的组合场景未真机验证。
+- **C 空关键词不吞弹幕**：`lib/pages/live_room/controller.dart:496` 改为 `_keywordList.any((k) => k.isNotEmpty && text.contains(k))`；`_shieldUids` 是 `Set<int>`，非 int uid 由类型检查天然排除。
+- **测试**：`test/live_fixes_test.dart` 9 项（A3/B4 含两项非 live 对照/C2），TDD 先 6 项 RED 再 9 项 GREEN；全量 `flutter test` 106 项通过（基线 97 + 新增 9，`cdn_relay_server_test` 时序 flake 单文件复跑通过）；定向 analyze 0 issue、全量 38 条与基线一致。该测试文件需 `.gitignore` 白名单 `!/test/live_fixes_test.dart`。
+- 症状/根因/未验证项详见 `docs/plans/2026-10-02-live-fixes.md`。
+
 ### 继续项目时先做什么
 
 1. 完整读取本文档和根目录 `AGENTS.md`。
