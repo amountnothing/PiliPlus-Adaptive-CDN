@@ -1,38 +1,38 @@
 # PiliPlus class and function index
 
-Generated: 2026-10-02 03:50:35 +02:00
+Generated: 2026-10-12 19:05:57 +00:00
 
 Handwritten sources include types and recognizable named functions/methods. Generated protobuf, JSON, and plugin registration files list top-level types only. Local closures, operators, and multiline anonymous functions remain discoverable in source.
 
 ## `android/app/src/main/java/com/example/piliplus/AndroidHelper.java`
 
-- L45 - **class `AndroidHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L58 - `private AndroidHelper() {` - performs one operation in its enclosing type or module
-- L61 - `private static Context getContext() {` - reads, requests, or synchronizes data
-- L65 - `public static int sdkInt() {` - performs one operation in its enclosing type or module
-- L69 - `public static void back() {` - performs one operation in its enclosing type or module
-- L76 - `public static void biliSendCommAntifraud(` - performs one operation in its enclosing type or module
-- L105 - `public static void openLinkVerifySettings() {` - handles interaction, lifecycle, or playback events
-- L128 - `public static boolean openMusic(@NonNull String title, String artist, String album) {` - handles interaction, lifecycle, or playback events
-- L164 - `public static void enterPip(long engineId, int width, int height, boolean autoEnter, boolean isLive, boolean isPlaying) {` - handles interaction, lifecycle, or playback events
-- L185 - `public static void updatePipActions(long engineId, boolean isLive, boolean isPlaying) {` - updates, stores, or records state
-- L194 - `private static void setPipActions(Context context, PictureInPictureParams.Builder builder, boolean isLive, boolean isPlaying) {` - updates, stores, or records state
-- L211 - `private static RemoteAction getRemoteAction(Context context, @DrawableRes int resId, String title, int action) {` - reads, requests, or synchronizes data
-- L220 - `public static void disableAutoEnterPip(long engineId) {` - performs one operation in its enclosing type or module
-- L232 - `public static int[] maxScreenSize() {` - performs one operation in its enclosing type or module
-- L250 - `public static void createShortcut(@NonNull String id, @NonNull String uri, @NonNull String label, @NonNull String icon) {` - performs one operation in its enclosing type or module
-- L272 - `public static String[] fontFamilies() {` - performs one operation in its enclosing type or module
-- L292 - `public static void updateDocProvider(boolean enabled) {` - updates, stores, or records state
-- L301 - `public static boolean isDomainVerified(@NonNull String domain) {` - predicate, validation, or lookup
-- L319 - `public static String openUrl(@NonNull String url) {` - handles interaction, lifecycle, or playback events
-- L352 - **class `ToDart`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L356 - `private ToDart() {` - performs one operation in its enclosing type or module
+- L44 - **class `AndroidHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L57 - `private AndroidHelper() {` - performs one operation in its enclosing type or module
+- L60 - `private static Context getContext() {` - reads, requests, or synchronizes data
+- L64 - `public static int sdkInt() {` - performs one operation in its enclosing type or module
+- L68 - `public static void back() {` - performs one operation in its enclosing type or module
+- L75 - `public static void biliSendCommAntifraud(` - performs one operation in its enclosing type or module
+- L104 - `public static void openLinkVerifySettings() {` - handles interaction, lifecycle, or playback events
+- L127 - `public static boolean openMusic(@NonNull String title, String artist, String album) {` - handles interaction, lifecycle, or playback events
+- L163 - `public static void enterPip(long engineId, int width, int height, boolean autoEnter, boolean isLive, boolean isPlaying) {` - handles interaction, lifecycle, or playback events
+- L184 - `public static void updatePipActions(long engineId, boolean isLive, boolean isPlaying) {` - updates, stores, or records state
+- L193 - `private static void setPipActions(Context context, PictureInPictureParams.Builder builder, boolean isLive, boolean isPlaying) {` - updates, stores, or records state
+- L209 - `public static void disableAutoEnterPip(long engineId) {` - performs one operation in its enclosing type or module
+- L218 - `public static int[] maxScreenSize() {` - performs one operation in its enclosing type or module
+- L236 - `public static void createShortcut(@NonNull String id, @NonNull String uri, @NonNull String label, @NonNull String icon) {` - performs one operation in its enclosing type or module
+- L257 - `public static String[] fontFamilies() {` - performs one operation in its enclosing type or module
+- L277 - `public static void updateDocProvider(boolean enabled) {` - updates, stores, or records state
+- L286 - `public static boolean isDomainVerified(@NonNull String domain) {` - predicate, validation, or lookup
+- L304 - `public static String openUrl(@NonNull String url) {` - handles interaction, lifecycle, or playback events
+- L336 - **class `ToDart`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L340 - `private ToDart() {` - performs one operation in its enclosing type or module
 
 ## `android/app/src/main/java/com/example/piliplus/MediaHelper.java`
 
-- L26 - **class `MediaHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L27 - `static PendingIntent buildMediaButtonPendingIntent(Context context, int action) {` - performs one operation in its enclosing type or module
-- L37 - `private static int PlaybackStateCompat_toKeyCode(int action) {` - handles interaction, lifecycle, or playback events
+- L30 - **class `MediaHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L32 - `static RemoteAction getRemoteAction(Context context, @DrawableRes int resId, String title, int action) {` - reads, requests, or synchronizes data
+- L41 - `private static PendingIntent buildMediaButtonPendingIntent(Context context, int keyCode) {` - performs one operation in its enclosing type or module
+- L50 - `private static int playbackStateToKeyCode(int action) {` - handles interaction, lifecycle, or playback events
 
 ## `android/app/src/main/kotlin/com/example/piliplus/BiliDocumentsProvider.kt`
 
@@ -229,6 +229,45 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L6 - `override func application(` - performs one operation in its enclosing type or module
 - L14 - `func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {` - handles interaction, lifecycle, or playback events
+
+## `ios/Runner/PipPlugin.swift`
+
+- L13 - **class `PipPlugin`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L16 - `static func register(with registrar: FlutterPluginRegistrar) {` - starts or initializes state and resources
+- L46 - `func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {` - handles interaction, lifecycle, or playback events
+- L108 - `private func tearDown() {` - performs one operation in its enclosing type or module
+- L117 - **class `PipSession`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L227 - `func configure(width: Double, height: Double) {` - performs one operation in its enclosing type or module
+- L251 - `func update(_ args: [String: Any]) {` - updates, stores, or records state
+- L272 - `func start() {` - starts or initializes state and resources
+- L288 - `private func startIfPending() {` - starts or initializes state and resources
+- L294 - `private func updateAutoEnter() {` - updates, stores, or records state
+- L299 - `func invalidate() {` - performs one operation in its enclosing type or module
+- L319 - `func frameAvailable(force: Bool = false) {` - performs one operation in its enclosing type or module
+- L349 - `private func copy(_ source: CVPixelBuffer) -> CVPixelBuffer? {` - performs one operation in its enclosing type or module
+- L397 - `private func makeSampleBuffer(_ pixelBuffer: CVPixelBuffer) -> CMSampleBuffer? {` - performs one operation in its enclosing type or module
+- L445 - `private func enqueue(_ sampleBuffer: CMSampleBuffer) -> Bool {` - performs one operation in its enclosing type or module
+- L464 - `private static func moveToBackground() {` - performs one operation in its enclosing type or module
+- L468 - `private static func hostWindow() -> UIWindow? {` - performs one operation in its enclosing type or module
+- L478 - **extension `PipSession`** - adds convenience behavior to an existing type
+- L479 - `func pictureInPictureControllerWillStartPictureInPicture(` - performs one operation in its enclosing type or module
+- L489 - `func pictureInPictureControllerDidStartPictureInPicture(` - performs one operation in its enclosing type or module
+- L498 - `func pictureInPictureController(` - performs one operation in its enclosing type or module
+- L508 - `func pictureInPictureController(` - performs one operation in its enclosing type or module
+- L517 - `func pictureInPictureControllerDidStopPictureInPicture(` - performs one operation in its enclosing type or module
+- L531 - **extension `PipSession`** - adds convenience behavior to an existing type
+- L532 - `func pictureInPictureController(` - performs one operation in its enclosing type or module
+- L542 - `func pictureInPictureControllerTimeRangeForPlayback(` - performs one operation in its enclosing type or module
+- L551 - `func pictureInPictureControllerIsPlaybackPaused(` - performs one operation in its enclosing type or module
+- L557 - `func pictureInPictureController(` - performs one operation in its enclosing type or module
+- L573 - `func pictureInPictureController(` - performs one operation in its enclosing type or module
+- L587 - `func pictureInPictureControllerShouldProhibitBackgroundAudioPlayback(` - performs one operation in its enclosing type or module
+- L594 - **class `SampleBufferView`** - page or visual structure
+- L602 - **enum `TextureTracker`** - finite state or option set
+- L603 - **class `WeakTexture`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L613 - `static func texture(for textureId: Int64) -> FlutterTexture? {` - performs one operation in its enclosing type or module
+- L617 - `static func install(on registry: FlutterTextureRegistry) {` - performs one operation in its enclosing type or module
+- L648 - `private static func hook(` - performs one operation in its enclosing type or module
 
 ## `ios/Runner/SceneDelegate.swift`
 
@@ -580,23 +619,23 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/dialog/report.dart`
 
-- L11 - **typedef `ReasonCheck`** - callback or type alias
-- L13 - `bool _kReportCheck(int? reasonType) => reasonType == 0;` - performs one operation in its enclosing type or module
-- L15 - **typedef `OnReport`** - callback or type alias
-- L21 - `Future<void> autoWrapReportDialog(` - performs one operation in its enclosing type or module
-- L38 - `void updateReasonType(int? value) {` - updates, stores, or records state
-- L183 - **class `CheckBoxText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L188 - `const CheckBoxText({` - reads, requests, or synchronizes data
-- L196 - `State<CheckBoxText> createState() => _CheckBoxTextState();` - builds UI or state
-- L199 - **class `_CheckBoxTextState`** - data structure or state carrier
-- L203 - `void initState() {` - starts or initializes state and resources
-- L209 - `Widget build(BuildContext context) {` - builds UI or state
-- L213 - `setState(() {` - updates, stores, or records state
-- L243 - **class `ReportOptions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L260 - `static bool withContentReply(int? reasonType) => reasonType != null;` - performs one operation in its enclosing type or module
-- L261 - `static bool contentRequiredReply(int? reasonType) =>` - performs one operation in its enclosing type or module
-- L296 - `static bool danmakuReportCheck(int? reasonType) => reasonType == 11;` - performs one operation in its enclosing type or module
-- L309 - `static bool liveDanmakuReportCheck(int? _) => false;` - performs one operation in its enclosing type or module
+- L12 - **typedef `ReasonCheck`** - callback or type alias
+- L14 - `bool _kReportCheck(int? reasonType) => reasonType == 0;` - performs one operation in its enclosing type or module
+- L16 - **typedef `OnReport`** - callback or type alias
+- L22 - `Future<void> autoWrapReportDialog(` - performs one operation in its enclosing type or module
+- L40 - `void updateReasonType(int? value) {` - updates, stores, or records state
+- L194 - **class `CheckBoxText`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L199 - `const CheckBoxText({` - reads, requests, or synchronizes data
+- L207 - `State<CheckBoxText> createState() => _CheckBoxTextState();` - builds UI or state
+- L210 - **class `_CheckBoxTextState`** - data structure or state carrier
+- L214 - `void initState() {` - starts or initializes state and resources
+- L220 - `Widget build(BuildContext context) {` - builds UI or state
+- L224 - `setState(() {` - updates, stores, or records state
+- L254 - **class `ReportOptions`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L271 - `static bool withContentReply(int? reasonType) => reasonType != null;` - performs one operation in its enclosing type or module
+- L272 - `static bool contentRequiredReply(int? reasonType) =>` - performs one operation in its enclosing type or module
+- L307 - `static bool danmakuReportCheck(int? reasonType) => reasonType == 11;` - performs one operation in its enclosing type or module
+- L320 - `static bool liveDanmakuReportCheck(int? _) => false;` - performs one operation in its enclosing type or module
 
 ## `lib/common/widgets/dialog/simple_dialog_option.dart`
 
@@ -1935,27 +1974,42 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/gesture/horizontal_drag_gesture_recognizer.dart`
 
-- L5 - **mixin `InitialPositionMixin`** - behavior shared by multiple classes
-- L10 - `void addAllowedPointer(PointerDownEvent event) {` - updates, stores, or records state
-- L16 - **class `CustomHorizontalDragGestureRecognizer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L19 - `CustomHorizontalDragGestureRecognizer({` - performs one operation in its enclosing type or module
-- L30 - `bool hasSufficientGlobalDistanceToAccept(` - predicate, validation, or lookup
-- L49 - `bool _computeHitSlop(` - performs one operation in its enclosing type or module
-- L70 - `bool _calcAngle(Offset initialPosition, Offset lastPosition) {` - performs one operation in its enclosing type or module
-- L77 - `double _calcDeviceTouchSlop() {` - performs one operation in its enclosing type or module
+- L15 - **mixin `InitialPositionMixin`** - behavior shared by multiple classes
+- L20 - `void addAllowedPointer(PointerDownEvent event) {` - updates, stores, or records state
+- L26 - `void addAllowedPointerPanZoom(PointerPanZoomStartEvent event) {` - updates, stores, or records state
+- L32 - **class `CustomHorizontalDragGestureRecognizer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L35 - `CustomHorizontalDragGestureRecognizer({` - performs one operation in its enclosing type or module
+- L46 - `bool hasSufficientGlobalDistanceToAccept(` - predicate, validation, or lookup
+- L65 - `bool _computeHitSlop(` - performs one operation in its enclosing type or module
+- L87 - `bool _calcAngle(Offset initialPosition, Offset lastPosition) {` - performs one operation in its enclosing type or module
+- L94 - `double _calcDeviceTouchSlop() {` - performs one operation in its enclosing type or module
+
+## `lib/common/widgets/gesture/image_double_tap_gesture_recognizer.dart`
+
+- L4 - **class `ImageDoubleTapGestureRecognizer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5 - `ImageDoubleTapGestureRecognizer({` - performs one operation in its enclosing type or module
+- L14 - `void checkUp(int buttons, PointerUpEvent event) {` - reads, requests, or synchronizes data
 
 ## `lib/common/widgets/gesture/image_horizontal_drag_gesture_recognizer.dart`
 
-- L4 - **class `ImageHorizontalDragGestureRecognizer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6 - `ImageHorizontalDragGestureRecognizer({` - performs one operation in its enclosing type or module
-- L21 - `void addPointer(PointerDownEvent event, {bool isPointerAllowed = true}) {` - updates, stores, or records state
-- L40 - `void addAllowedPointer(PointerDownEvent event) {` - updates, stores, or records state
-- L45 - `void setAtBothEdges() {` - updates, stores, or records state
-- L49 - `bool _isEdgeAllowed(double dx) {` - performs one operation in its enclosing type or module
-- L62 - `void acceptGesture(int pointer) {` - predicate, validation, or lookup
-- L68 - `void rejectGesture(int pointer) {` - performs one operation in its enclosing type or module
-- L74 - `void stopTrackingPointer(int pointer) {` - stops, releases, or resets state and resources
-- L84 - `bool hasSufficientGlobalDistanceToAccept(` - predicate, validation, or lookup
+- L9 - **class `ImageHorizontalDragGestureRecognizer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L11 - `ImageHorizontalDragGestureRecognizer({` - performs one operation in its enclosing type or module
+- L26 - `void addPointer(PointerDownEvent event, {bool isPointerAllowed = true}) {` - updates, stores, or records state
+- L35 - `void addPointerPanZoom(` - updates, stores, or records state
+- L46 - `bool _handleAddPointer(PointerEvent event, bool isPointerAllowed) {` - performs one operation in its enclosing type or module
+- L60 - `void addAllowedPointer(PointerDownEvent event) {` - updates, stores, or records state
+- L65 - `void setAtBothEdges() {` - updates, stores, or records state
+- L69 - `bool _isEdgeAllowed(double dx) {` - performs one operation in its enclosing type or module
+- L82 - `void acceptGesture(int pointer) {` - predicate, validation, or lookup
+- L88 - `void rejectGesture(int pointer) {` - performs one operation in its enclosing type or module
+- L94 - `void stopTrackingPointer(int pointer) {` - stops, releases, or resets state and resources
+- L104 - `bool hasSufficientGlobalDistanceToAccept(` - predicate, validation, or lookup
+
+## `lib/common/widgets/gesture/image_tap_gesture_recognizer.dart`
+
+- L4 - **class `ImageTapGestureRecognizer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5 - `ImageTapGestureRecognizer({` - performs one operation in its enclosing type or module
+- L16 - `void handleTapUp({` - handles interaction, lifecycle, or playback events
 
 ## `lib/common/widgets/gesture/immediate_tap_gesture_recognizer.dart`
 
@@ -2097,32 +2151,32 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/image_viewer/gallery_viewer.dart`
 
-- L54 - **class `GalleryViewer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L55 - `const GalleryViewer({` - performs one operation in its enclosing type or module
-- L75 - `State<GalleryViewer> createState() => _GalleryViewerState();` - builds UI or state
-- L78 - **class `_GalleryViewerState`** - data structure or state carrier
-- L96 - `ImageHorizontalDragGestureRecognizer horizontalDragGestureRecognizer() {` - performs one operation in its enclosing type or module
-- L109 - `String _getActualUrl(String url) {` - performs one operation in its enclosing type or module
-- L115 - `Future<void> _initPlayer() async {` - performs one operation in its enclosing type or module
-- L133 - `void initState() {` - starts or initializes state and resources
-- L162 - `Timer(const Duration(milliseconds: 300), () {` - performs one operation in its enclosing type or module
-- L185 - `void _initHideSystemBar() {` - performs one operation in its enclosing type or module
-- L204 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L221 - `Matrix4 _onTransform(double val) {` - performs one operation in its enclosing type or module
-- L238 - `void _updateMoveAnimation() {` - performs one operation in its enclosing type or module
-- L247 - `void _onDragStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
-- L259 - `void _onDragUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
-- L272 - `void _onDragEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
-- L289 - `void dispose() {` - stops, releases, or resets state and resources
-- L315 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
-- L322 - `Widget build(BuildContext context) {` - builds UI or state
-- L387 - `void _playIfNeeded(SourceModel item) {` - performs one operation in its enclosing type or module
-- L398 - `void _onPageChanged(int index) {` - performs one operation in its enclosing type or module
-- L422 - `Widget _itemBuilder(BuildContext context, int index) {` - performs one operation in its enclosing type or module
-- L529 - `void _onTap() {` - performs one operation in its enclosing type or module
-- L537 - `void _onLongPress() {` - performs one operation in its enclosing type or module
-- L608 - `void _showDesktopMenu(TapUpDetails details) {` - performs one operation in its enclosing type or module
-- L653 - `Widget loadingBuilder(` - reads, requests, or synchronizes data
+- L55 - **class `GalleryViewer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L56 - `const GalleryViewer({` - performs one operation in its enclosing type or module
+- L76 - `State<GalleryViewer> createState() => _GalleryViewerState();` - builds UI or state
+- L79 - **class `_GalleryViewerState`** - data structure or state carrier
+- L97 - `ImageHorizontalDragGestureRecognizer horizontalDragGestureRecognizer() {` - performs one operation in its enclosing type or module
+- L110 - `String _getActualUrl(String url) {` - performs one operation in its enclosing type or module
+- L116 - `Future<void> _initPlayer() async {` - performs one operation in its enclosing type or module
+- L134 - `void initState() {` - starts or initializes state and resources
+- L163 - `Timer(const Duration(milliseconds: 300), () {` - performs one operation in its enclosing type or module
+- L186 - `void _initHideSystemBar() {` - performs one operation in its enclosing type or module
+- L205 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L222 - `Matrix4 _onTransform(double val) {` - performs one operation in its enclosing type or module
+- L239 - `void _updateMoveAnimation() {` - performs one operation in its enclosing type or module
+- L248 - `void _onDragStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
+- L260 - `void _onDragUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
+- L273 - `void _onDragEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
+- L290 - `void dispose() {` - stops, releases, or resets state and resources
+- L316 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
+- L323 - `Widget build(BuildContext context) {` - builds UI or state
+- L388 - `void _playIfNeeded(SourceModel item) {` - performs one operation in its enclosing type or module
+- L399 - `void _onPageChanged(int index) {` - performs one operation in its enclosing type or module
+- L423 - `Widget _itemBuilder(BuildContext context, int index) {` - performs one operation in its enclosing type or module
+- L532 - `void _onTap() {` - performs one operation in its enclosing type or module
+- L541 - `void _onLongPress() {` - performs one operation in its enclosing type or module
+- L612 - `void _showDesktopMenu(TapUpDetails details) {` - performs one operation in its enclosing type or module
+- L657 - `Widget loadingBuilder(` - reads, requests, or synchronizes data
 
 ## `lib/common/widgets/image_viewer/hero_dialog_route.dart`
 
@@ -2184,44 +2238,42 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/image_viewer/viewer.dart`
 
-- L36 - **class `Viewer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L37 - `const Viewer({` - performs one operation in its enclosing type or module
-- L69 - `State<StatefulWidget> createState() => _ViewerState();` - builds UI or state
-- L72 - **class `_ViewerState`** - data structure or state carrier
-- L81 - `set _scale(double value) {` - performs one operation in its enclosing type or module
-- L88 - `set _position(Offset value) {` - performs one operation in its enclosing type or module
-- L112 - `void _listener() {` - performs one operation in its enclosing type or module
-- L116 - `setState(() {});` - updates, stores, or records state
-- L119 - `void _reset() {` - performs one operation in its enclosing type or module
-- L124 - `void _initSize() {` - performs one operation in its enclosing type or module
-- L143 - `void initState() {` - starts or initializes state and resources
-- L164 - `void didUpdateWidget(Viewer oldWidget) {` - handles interaction, lifecycle, or playback events
-- L173 - `void dispose() {` - stops, releases, or resets state and resources
-- L182 - `Offset _toScene(Offset localFocalPoint) {` - performs one operation in its enclosing type or module
-- L186 - `Offset _clampPosition(Offset offset, double scale) {` - performs one operation in its enclosing type or module
-- L214 - `Offset _matrixTranslate(Offset translation) {` - performs one operation in its enclosing type or module
-- L221 - `void _onDoubleTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
-- L225 - `void _onDoubleTap() {` - performs one operation in its enclosing type or module
-- L235 - `void _handleDoubleTap() {` - performs one operation in its enclosing type or module
-- L263 - `static bool _calc(Offset initialPosition, Offset lastPosition) {` - performs one operation in its enclosing type or module
-- L268 - `void _onScaleStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
-- L304 - `void _onScaleUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
-- L322 - `setState(() {});` - updates, stores, or records state
-- L329 - `setState(() {});` - updates, stores, or records state
-- L341 - `double _calculateDynamicFriction(double velocityMagnitude) {` - performs one operation in its enclosing type or module
-- L353 - `void _startFling(Velocity velocity) {` - performs one operation in its enclosing type or module
-- L376 - `void _scheduleFlingFrame() {` - performs one operation in its enclosing type or module
-- L382 - `void _handleFlingFrame(Duration timeStamp) {` - performs one operation in its enclosing type or module
-- L402 - `setState(() {});` - updates, stores, or records state
-- L411 - `void _stopFling() {` - performs one operation in its enclosing type or module
-- L424 - `void _onScaleEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
-- L467 - `Widget build(BuildContext context) {` - builds UI or state
-- L482 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
-- L495 - `void _onPointerPanZoomStart(PointerPanZoomStartEvent event) {` - performs one operation in its enclosing type or module
-- L499 - `bool _isAtEdge(Offset position) {` - performs one operation in its enclosing type or module
-- L523 - `void _onPointerSignal(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
-- L541 - `setState(() {});` - updates, stores, or records state
-- L546 - **enum `_GestureType`** - finite state or option set
+- L43 - **class `Viewer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L44 - `const Viewer({` - performs one operation in its enclosing type or module
+- L76 - `State<StatefulWidget> createState() => _ViewerState();` - builds UI or state
+- L79 - **class `_ViewerState`** - data structure or state carrier
+- L88 - `set _scale(double value) {` - performs one operation in its enclosing type or module
+- L95 - `set _position(Offset value) {` - performs one operation in its enclosing type or module
+- L118 - `void _listener() {` - performs one operation in its enclosing type or module
+- L122 - `setState(() {});` - updates, stores, or records state
+- L125 - `void _reset() {` - performs one operation in its enclosing type or module
+- L130 - `void _initSize() {` - performs one operation in its enclosing type or module
+- L149 - `void initState() {` - starts or initializes state and resources
+- L170 - `void didUpdateWidget(Viewer oldWidget) {` - handles interaction, lifecycle, or playback events
+- L179 - `void dispose() {` - stops, releases, or resets state and resources
+- L188 - `Offset _toScene(Offset localFocalPoint) {` - performs one operation in its enclosing type or module
+- L192 - `Offset _clampPosition(Offset offset, double scale) {` - performs one operation in its enclosing type or module
+- L220 - `Offset _matrixTranslate(Offset translation) {` - performs one operation in its enclosing type or module
+- L227 - `void _onDoubleTap() {` - performs one operation in its enclosing type or module
+- L255 - `static bool _calc(Offset initialPosition, Offset lastPosition) {` - performs one operation in its enclosing type or module
+- L260 - `void _onScaleStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
+- L296 - `void _onScaleUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
+- L314 - `setState(() {});` - updates, stores, or records state
+- L321 - `setState(() {});` - updates, stores, or records state
+- L333 - `double _calculateDynamicFriction(double velocityMagnitude) {` - performs one operation in its enclosing type or module
+- L345 - `void _startFling(Velocity velocity) {` - performs one operation in its enclosing type or module
+- L368 - `void _scheduleFlingFrame() {` - performs one operation in its enclosing type or module
+- L374 - `void _handleFlingFrame(Duration timeStamp) {` - performs one operation in its enclosing type or module
+- L394 - `setState(() {});` - updates, stores, or records state
+- L403 - `void _stopFling() {` - performs one operation in its enclosing type or module
+- L416 - `void _onScaleEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
+- L459 - `Widget build(BuildContext context) {` - builds UI or state
+- L474 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
+- L485 - `void _onPointerPanZoomStart(PointerPanZoomStartEvent event) {` - performs one operation in its enclosing type or module
+- L494 - `bool _isAtEdge(Offset position) {` - performs one operation in its enclosing type or module
+- L518 - `void _onPointerSignal(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
+- L536 - `setState(() {});` - updates, stores, or records state
+- L541 - **enum `_GestureType`** - finite state or option set
 
 ## `lib/common/widgets/image/cached_network_svg_image.dart`
 
@@ -2245,17 +2297,18 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/image/image_save.dart`
 
-- L16 - `void imageSaveDialog({` - performs one operation in its enclosing type or module
-- L128 - **class `_ImageDecoration`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L129 - `const _ImageDecoration({` - performs one operation in its enclosing type or module
-- L140 - `Path getClipPath(Rect rect, TextDirection textDirection) {` - reads, requests, or synchronizes data
-- L162 - `bool hitTest(Size size, Offset position, {TextDirection? textDirection}) {` - performs one operation in its enclosing type or module
-- L167 - `BoxPainter createBoxPainter([VoidCallback? onChanged]) {` - performs one operation in its enclosing type or module
-- L173 - **class `_ImageDecorationPainter`** - reusable UI or rendering component
-- L174 - `_ImageDecorationPainter(this._decoration, super.onChanged);` - performs one operation in its enclosing type or module
-- L179 - `Paint _getBackgroundPaint(Rect rect) {` - performs one operation in its enclosing type or module
-- L189 - `void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {` - performs one operation in its enclosing type or module
-- L199 - `String toString() {` - performs one operation in its enclosing type or module
+- L16 - `void showPgcCover({` - handles interaction, lifecycle, or playback events
+- L30 - `void imageSaveDialog({` - performs one operation in its enclosing type or module
+- L152 - **class `_ImageDecoration`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L153 - `const _ImageDecoration({` - performs one operation in its enclosing type or module
+- L164 - `Path getClipPath(Rect rect, TextDirection textDirection) {` - reads, requests, or synchronizes data
+- L186 - `bool hitTest(Size size, Offset position, {TextDirection? textDirection}) {` - performs one operation in its enclosing type or module
+- L191 - `BoxPainter createBoxPainter([VoidCallback? onChanged]) {` - performs one operation in its enclosing type or module
+- L197 - **class `_ImageDecorationPainter`** - reusable UI or rendering component
+- L198 - `_ImageDecorationPainter(this._decoration, super.onChanged);` - performs one operation in its enclosing type or module
+- L203 - `Paint _getBackgroundPaint(Rect rect) {` - performs one operation in its enclosing type or module
+- L213 - `void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {` - performs one operation in its enclosing type or module
+- L223 - `String toString() {` - performs one operation in its enclosing type or module
 
 ## `lib/common/widgets/image/network_img_layer.dart`
 
@@ -2263,7 +2316,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L11 - `const NetworkImgLayer({` - performs one operation in its enclosing type or module
 - L44 - `Widget build(BuildContext context) {` - builds UI or state
 - L62 - `Widget _buildImage(` - performs one operation in its enclosing type or module
-- L94 - `Widget _placeholder(` - performs one operation in its enclosing type or module
+- L95 - `Widget _placeholder(` - performs one operation in its enclosing type or module
 
 ## `lib/common/widgets/keep_alive_wrapper.dart`
 
@@ -2419,15 +2472,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/player_bar.dart`
 
-- L29 - **class `PlayerBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30 - `const PlayerBar({` - handles interaction, lifecycle, or playback events
-- L36 - `RenderObject createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
-- L41 - **class `RenderBottomBar`** - reusable UI or rendering component
-- L46 - `void setupParentData(RenderBox child) {` - starts or initializes state and resources
-- L55 - `void performLayout() {` - performs one operation in its enclosing type or module
-- L94 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
-- L110 - `bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {` - performs one operation in its enclosing type or module
-- L121 - `void applyPaintTransform(RenderBox child, Matrix4 transform) {` - performs one operation in its enclosing type or module
+- L25 - **enum `PlayerBarType`** - finite state or option set
+- L27 - **class `PlayerBar`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29 - `const PlayerBar({` - handles interaction, lifecycle, or playback events
+- L41 - `RenderPlayerBar createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
+- L46 - `Widget? childForSlot(slot) => switch (slot) {` - performs one operation in its enclosing type or module
+- L56 - **class `RenderPlayerBar`** - reusable UI or rendering component
+- L70 - `void performLayout() {` - performs one operation in its enclosing type or module
+- L140 - `void defaultPaint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
+- L147 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
+- L163 - `bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {` - performs one operation in its enclosing type or module
+- L174 - `void applyPaintTransform(RenderBox child, Matrix4 transform) {` - performs one operation in its enclosing type or module
 
 ## `lib/common/widgets/progress_bar/audio_video_progress_bar.dart`
 
@@ -2623,17 +2678,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/common/widgets/scaffold/bottom_sheet.dart`
 
-- L5 - **class `BottomSheet_`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L6 - `const BottomSheet_({` - performs one operation in its enclosing type or module
-- L18 - `BottomSheetState createState() => _MiniBottomSheetState();` - builds UI or state
-- L21 - **class `_MiniBottomSheetState`** - data structure or state carrier
-- L26 - `_VerticalDragGestureRecognizer(debugOwner: this)` - performs one operation in its enclosing type or module
-- L34 - `void dispose() {` - stops, releases, or resets state and resources
-- L40 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
-- L45 - `Widget build(BuildContext context) {` - builds UI or state
-- L80 - **class `_VerticalDragGestureRecognizer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L81 - `_VerticalDragGestureRecognizer({super.debugOwner});` - performs one operation in its enclosing type or module
-- L84 - `bool isPointerAllowed(PointerEvent event) {` - predicate, validation, or lookup
+- L7 - **class `BottomSheet_`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8 - `const BottomSheet_({` - performs one operation in its enclosing type or module
+- L23 - `BottomSheetState<BottomSheet_> createState() => _MiniBottomSheetState();` - builds UI or state
+- L26 - **class `_MiniBottomSheetState`** - data structure or state carrier
+- L31 - `_VerticalDragGestureRecognizer(` - performs one operation in its enclosing type or module
+- L42 - `void dispose() {` - stops, releases, or resets state and resources
+- L48 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
+- L53 - `Widget build(BuildContext context) {` - builds UI or state
+- L88 - **class `_VerticalDragGestureRecognizer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L89 - `_VerticalDragGestureRecognizer({` - performs one operation in its enclosing type or module
+- L97 - `bool isPointerAllowed(PointerEvent event) {` - predicate, validation, or lookup
 
 ## `lib/common/widgets/scaffold/mini_scaffold.dart`
 
@@ -2645,17 +2700,18 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L29 - **class `MiniScaffoldState`** - data structure or state carrier
 - L33 - `void _closeCurrentBottomSheet() {` - performs one operation in its enclosing type or module
 - L47 - `PersistentBottomSheetController _buildBottomSheet(` - performs one operation in its enclosing type or module
-- L61 - `void removeCurrentBottomSheet() {` - stops, releases, or resets state and resources
-- L84 - `void removeEntryIfNeeded() {` - stops, releases, or resets state and resources
-- L106 - `setState(() {});` - updates, stores, or records state
-- L135 - `PersistentBottomSheetController showBottomSheet(` - handles interaction, lifecycle, or playback events
-- L150 - `setState(() {` - updates, stores, or records state
-- L163 - `Widget build(BuildContext context) {` - builds UI or state
-- L171 - **class `_StandardBottomSheet`** - page or visual structure
-- L172 - `const _StandardBottomSheet({` - performs one operation in its enclosing type or module
-- L185 - `StandardBottomSheetState createState() => _StandardBottomSheetState();` - builds UI or state
-- L188 - **class `_StandardBottomSheetState`** - data structure or state carrier
-- L190 - `Widget build(BuildContext context) {` - builds UI or state
+- L62 - `void removeCurrentBottomSheet() {` - stops, releases, or resets state and resources
+- L85 - `void removeEntryIfNeeded() {` - stops, releases, or resets state and resources
+- L108 - `setState(() {});` - updates, stores, or records state
+- L137 - `PersistentBottomSheetController showBottomSheet(` - handles interaction, lifecycle, or playback events
+- L153 - `setState(() {` - updates, stores, or records state
+- L167 - `Widget build(BuildContext context) {` - builds UI or state
+- L175 - **class `_StandardBottomSheet`** - page or visual structure
+- L176 - `const _StandardBottomSheet({` - performs one operation in its enclosing type or module
+- L192 - `StandardBottomSheetState<_StandardBottomSheet> createState() =>` - builds UI or state
+- L193 - `_StandardBottomSheetState();` - performs one operation in its enclosing type or module
+- L196 - **class `_StandardBottomSheetState`** - data structure or state carrier
+- L199 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/common/widgets/scaffold/simple_scaffold.dart`
 
@@ -3074,7 +3130,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L99 - `_VideoCustomAction(` - performs one operation in its enclosing type or module
 - L122 - `Widget actionButton(Reason? r, Reason? f) {` - performs one operation in its enclosing type or module
 - L264 - `_VideoCustomAction(` - performs one operation in its enclosing type or module
-- L308 - `_VideoCustomAction(` - performs one operation in its enclosing type or module
+- L316 - `_VideoCustomAction(` - performs one operation in its enclosing type or module
 
 ## `lib/common/widgets/view_insets_safe_area.dart`
 
@@ -3092,7 +3148,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L3 - **class `ViewSliverSafeArea`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L4 - `const ViewSliverSafeArea({` - performs one operation in its enclosing type or module
-- L12 - `Widget build(BuildContext context) {` - builds UI or state
+- L14 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/grpc/audio.dart`
 
@@ -5326,14 +5382,14 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/grpc/reply.dart`
 
-- L10 - **class `ReplyGrpc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28 - `static bool needRemoveGoodGrpc(ReplyInfo reply) {` - performs one operation in its enclosing type or module
-- L39 - `static bool needRemoveGrpc(ReplyInfo reply) {` - performs one operation in its enclosing type or module
-- L44 - `static Future<LoadingState<MainListReply>> mainList({` - starts or initializes state and resources
-- L85 - `static Future<LoadingState<DetailListReply>> detailList({` - performs one operation in its enclosing type or module
-- L109 - `static Future<LoadingState<DialogListReply>> dialogList({` - performs one operation in its enclosing type or module
-- L130 - `static Future<LoadingState<SearchItemReply>> searchItem({` - performs one operation in its enclosing type or module
-- L152 - `static Future<LoadingState<TranslateReplyResp>> translateReply({` - performs one operation in its enclosing type or module
+- L11 - **class `ReplyGrpc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L29 - `static bool needRemoveGoodGrpc(ReplyInfo reply) {` - performs one operation in its enclosing type or module
+- L40 - `static bool needRemoveGrpc(ReplyInfo reply) {` - performs one operation in its enclosing type or module
+- L46 - `static Future<LoadingState<MainListReply>> mainList({` - starts or initializes state and resources
+- L87 - `static Future<LoadingState<DetailListReply>> detailList({` - performs one operation in its enclosing type or module
+- L111 - `static Future<LoadingState<DialogListReply>> dialogList({` - performs one operation in its enclosing type or module
+- L132 - `static Future<LoadingState<SearchItemReply>> searchItem({` - performs one operation in its enclosing type or module
+- L154 - `static Future<LoadingState<TranslateReplyResp>> translateReply({` - performs one operation in its enclosing type or module
 
 ## `lib/grpc/space.dart`
 
@@ -5486,9 +5542,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L136 - `static (IOHttpClientAdapter, ConnectionManager?) _createPool() {` - performs one operation in its enclosing type or module
 - L180 - `static void _resetAdaptersForNetworkChange() {` - performs one operation in its enclosing type or module
 - L201 - `Request._internal() {` - reads, requests, or synchronizes data
-- L315 - `Future<Response> downloadFile(` - reads, requests, or synchronizes data
-- L343 - `static List<int> responseBytesDecoder(` - performs one operation in its enclosing type or module
-- L352 - `static String _responseDecoder(` - performs one operation in its enclosing type or module
+- L341 - `Future<Response> downloadFile(` - reads, requests, or synchronizes data
+- L369 - `static List<int> responseBytesDecoder(` - performs one operation in its enclosing type or module
+- L378 - `static String _responseDecoder(` - performs one operation in its enclosing type or module
 
 ## `lib/http/live.dart`
 
@@ -5699,31 +5755,31 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L38 - `static Future<LoadingState<UserInfoData>> userInfo() async {` - performs one operation in its enclosing type or module
 - L49 - `static Future<LoadingState<UserStat>> userStatOwner() async {` - performs one operation in its enclosing type or module
 - L59 - `static Future<LoadingState<LaterData>> seeYouLater({` - performs one operation in its enclosing type or module
-- L85 - `static Future<LoadingState<HistoryData>> historyList({` - performs one operation in its enclosing type or module
-- L109 - `static Future<LoadingState<void>> pauseHistory(` - handles interaction, lifecycle, or playback events
-- L135 - `static Future<LoadingState<bool>> historyStatus({Account? account}) async {` - performs one operation in its enclosing type or module
-- L148 - `static Future<LoadingState<void>> clearHistory({Account? account}) async {` - stops, releases, or resets state and resources
-- L169 - `static Future<LoadingState<void>> toViewLater({` - performs one operation in its enclosing type or module
-- L193 - `static Future<LoadingState<void>> toViewDel({required String aids}) async {` - performs one operation in its enclosing type or module
-- L232 - `static Future<LoadingState<void>> toViewClear([int? cleanType]) async {` - performs one operation in its enclosing type or module
-- L249 - `static Future<LoadingState<void>> delHistory(` - performs one operation in its enclosing type or module
-- L273 - `static Future<LoadingState<RelationData>> userRelation(int mid) async {` - performs one operation in its enclosing type or module
-- L288 - `static Future<LoadingState<HistoryData>> searchHistory({` - performs one operation in its enclosing type or module
-- L310 - `static Future<LoadingState<SubData>> userSubFolder({` - performs one operation in its enclosing type or module
-- L331 - `static Future<LoadingState<List<VideoTagItem>?>> videoTags({` - performs one operation in its enclosing type or module
-- L351 - `static Future<LoadingState<MediaListData>> getMediaList({` - reads, requests, or synchronizes data
-- L385 - `static Future<LoadingState<num?>> getCoin() async {` - reads, requests, or synchronizes data
-- L394 - `static Future<LoadingState<void>> dynamicReport({` - performs one operation in its enclosing type or module
-- L420 - `static Future<LoadingState<SpaceSettingData>> spaceSetting() async {` - performs one operation in its enclosing type or module
-- L434 - `static Future<LoadingState<void>> spaceSettingMod(` - performs one operation in its enclosing type or module
-- L452 - `static Future<LoadingState<void>> vipExpAdd() async {` - performs one operation in its enclosing type or module
-- L467 - `static Future<LoadingState<CoinLogData>> coinLog() async {` - performs one operation in its enclosing type or module
-- L482 - `static Future<LoadingState<LoginLogData>> loginLog() async {` - performs one operation in its enclosing type or module
-- L497 - `static Future<LoadingState<CoinLogData>> expLog() async {` - performs one operation in its enclosing type or module
-- L512 - `static Future<LoadingState<UserRealNameData>> getUserRealName(` - reads, requests, or synchronizes data
-- L531 - `static Future<LoadingState<FollowData>> followedUp({` - performs one operation in its enclosing type or module
-- L553 - `static Future<LoadingState<FollowData>> sameFollowing({` - performs one operation in its enclosing type or module
-- L575 - `static Future<LoadingState<void>> spaceReserve({` - performs one operation in its enclosing type or module
+- L86 - `static Future<LoadingState<HistoryData>> historyList({` - performs one operation in its enclosing type or module
+- L111 - `static Future<LoadingState<void>> pauseHistory(` - handles interaction, lifecycle, or playback events
+- L137 - `static Future<LoadingState<bool>> historyStatus({Account? account}) async {` - performs one operation in its enclosing type or module
+- L150 - `static Future<LoadingState<void>> clearHistory({Account? account}) async {` - stops, releases, or resets state and resources
+- L171 - `static Future<LoadingState<void>> toViewLater({` - performs one operation in its enclosing type or module
+- L195 - `static Future<LoadingState<void>> toViewDel({required String aids}) async {` - performs one operation in its enclosing type or module
+- L234 - `static Future<LoadingState<void>> toViewClear([int? cleanType]) async {` - performs one operation in its enclosing type or module
+- L251 - `static Future<LoadingState<void>> delHistory(` - performs one operation in its enclosing type or module
+- L275 - `static Future<LoadingState<RelationData>> userRelation(int mid) async {` - performs one operation in its enclosing type or module
+- L290 - `static Future<LoadingState<HistoryData>> searchHistory({` - performs one operation in its enclosing type or module
+- L312 - `static Future<LoadingState<SubData>> userSubFolder({` - performs one operation in its enclosing type or module
+- L333 - `static Future<LoadingState<List<VideoTagItem>?>> videoTags({` - performs one operation in its enclosing type or module
+- L353 - `static Future<LoadingState<MediaListData>> getMediaList({` - reads, requests, or synchronizes data
+- L387 - `static Future<LoadingState<num?>> getCoin() async {` - reads, requests, or synchronizes data
+- L396 - `static Future<LoadingState<void>> dynamicReport({` - performs one operation in its enclosing type or module
+- L422 - `static Future<LoadingState<SpaceSettingData>> spaceSetting() async {` - performs one operation in its enclosing type or module
+- L436 - `static Future<LoadingState<void>> spaceSettingMod(` - performs one operation in its enclosing type or module
+- L454 - `static Future<LoadingState<void>> vipExpAdd() async {` - performs one operation in its enclosing type or module
+- L469 - `static Future<LoadingState<CoinLogData>> coinLog() async {` - performs one operation in its enclosing type or module
+- L484 - `static Future<LoadingState<LoginLogData>> loginLog() async {` - performs one operation in its enclosing type or module
+- L499 - `static Future<LoadingState<CoinLogData>> expLog() async {` - performs one operation in its enclosing type or module
+- L514 - `static Future<LoadingState<UserRealNameData>> getUserRealName(` - reads, requests, or synchronizes data
+- L533 - `static Future<LoadingState<FollowData>> followedUp({` - performs one operation in its enclosing type or module
+- L555 - `static Future<LoadingState<FollowData>> sameFollowing({` - performs one operation in its enclosing type or module
+- L577 - `static Future<LoadingState<void>> spaceReserve({` - performs one operation in its enclosing type or module
 
 ## `lib/http/validate.dart`
 
@@ -5735,75 +5791,79 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L48 - **class `VideoHttp`** - network API wrapper for its business domain
 - L53 - `static Future<LoadingState<List<RcmdVideoItemModel>>> rcmdVideoList({` - performs one operation in its enclosing type or module
-- L89 - `static Future<LoadingState<List<RcmdVideoItemAppModel>>> rcmdVideoListApp({` - performs one operation in its enclosing type or module
-- L168 - `static Future<LoadingState<List<HotVideoItemModel>>> hotVideoList({` - performs one operation in its enclosing type or module
-- L201 - `static Future<LoadingState<PlayUrlModel>> videoUrl({` - performs one operation in its enclosing type or module
-- L279 - `static String _parseVideoErr(int? code, String? msg) {` - performs one operation in its enclosing type or module
-- L288 - `static Future<LoadingState<VideoDetailData>> videoIntro({` - performs one operation in its enclosing type or module
-- L302 - `static Future<LoadingState<VideoRelation>> videoRelation({` - performs one operation in its enclosing type or module
-- L317 - `static Future<LoadingState<List<HotVideoItemModel>?>> relatedVideoList({` - performs one operation in its enclosing type or module
-- L338 - `static Future<LoadingState<PgcLCF>> pgcLikeCoinFav({` - performs one operation in its enclosing type or module
-- L353 - `static Future<LoadingState<void>> coinVideo({` - performs one operation in its enclosing type or module
-- L377 - `static Future<LoadingState<PgcTriple>> pgcTriple({` - performs one operation in its enclosing type or module
-- L402 - `static Future<LoadingState<UgcTriple>> ugcTriple({` - performs one operation in its enclosing type or module
-- L434 - `static Future<LoadingState<String>> likeVideo({` - performs one operation in its enclosing type or module
-- L451 - `static Future<LoadingState<void>> dislikeVideo({` - performs one operation in its enclosing type or module
-- L474 - `static Future<LoadingState<void>> feedDislike({` - performs one operation in its enclosing type or module
-- L503 - `static Future<LoadingState<void>> feedDislikeCancel({` - performs one operation in its enclosing type or module
-- L538 - `static Future<LoadingState<ReplyInfo?>> replyAdd({` - performs one operation in its enclosing type or module
-- L585 - `static Future<LoadingState<void>> replyDel({` - performs one operation in its enclosing type or module
-- L609 - `static Future<LoadingState<void>> relationMod({` - performs one operation in its enclosing type or module
-- L657 - `static Future<void> roomEntryAction({required Object roomId}) {` - performs one operation in its enclosing type or module
-- L665 - `static Future<void> historyReport({` - performs one operation in its enclosing type or module
-- L677 - `static Future<void> heartBeat({` - performs one operation in its enclosing type or module
-- L704 - `static Future<void> medialistHistory({` - performs one operation in its enclosing type or module
-- L722 - `static Future<LoadingState<String>> pgcAdd({int? seasonId}) async {` - performs one operation in its enclosing type or module
-- L736 - `static Future<LoadingState<String>> pgcDel({int? seasonId}) async {` - performs one operation in its enclosing type or module
-- L749 - `static Future<LoadingState<String>> pgcUpdate({` - performs one operation in its enclosing type or module
-- L770 - `static Future<LoadingState<String>> onlineTotal({` - handles interaction, lifecycle, or playback events
-- L787 - `static Future<LoadingState<AiConclusionData>> aiConclusion({` - performs one operation in its enclosing type or module
-- L811 - `static Future<LoadingState<PlayInfoData>> playInfo({` - handles interaction, lifecycle, or playback events
-- L836 - `static Future<String?> getSubtitles(` - reads, requests, or synchronizes data
-- L854 - `static bool _canAddRank(Map i) {` - performs one operation in its enclosing type or module
-- L872 - `static Future<LoadingState<List<HotVideoItemModel>>> getRankVideoList(` - reads, requests, or synchronizes data
-- L901 - `static Future<LoadingState<List<PgcRankItemModel>?>> pgcRankList({` - performs one operation in its enclosing type or module
-- L924 - `static Future<LoadingState<List<PgcRankItemModel>?>> pgcSeasonRankList({` - performs one operation in its enclosing type or module
-- L946 - `static Future<LoadingState<VideoNoteData>> getVideoNoteList({` - reads, requests, or synchronizes data
-- L970 - `popularSeriesList() async {` - performs one operation in its enclosing type or module
-- L995 - `static Future<LoadingState<PopularSeriesOneData>> popularSeriesOne({` - performs one operation in its enclosing type or module
-- L1019 - `static Future<LoadingState<PopularPreciousData>> popularPrecious({` - performs one operation in its enclosing type or module
-- L1044 - `static Future<LoadingState<PlayUrlModel>> tvPlayUrl({` - performs one operation in its enclosing type or module
-- L1074 - `static Future<LoadingState<VideoShotData>> videoshot({` - performs one operation in its enclosing type or module
+- L85 - `static bool _filterWebRcmd(dynamic i) {` - performs one operation in its enclosing type or module
+- L88 - `GlobalData().blackMids.contains(i['owner']['mid'])) {` - performs one operation in its enclosing type or module
+- L94 - `static bool _filterAppRcmd(dynamic i) {` - performs one operation in its enclosing type or module
+- L102 - `GlobalData().blackMids.contains(i['args']['up_id'])) {` - performs one operation in its enclosing type or module
+- L114 - `static Future<LoadingState<List<RcmdVideoItemAppModel>>> rcmdVideoListApp({` - performs one operation in its enclosing type or module
+- L181 - `static bool _filterHotAndRank(dynamic i) {` - performs one operation in its enclosing type or module
+- L194 - `static Future<LoadingState<List<HotVideoItemModel>>> hotVideoList({` - performs one operation in its enclosing type or module
+- L216 - `static Future<LoadingState<PlayUrlModel>> videoUrl({` - performs one operation in its enclosing type or module
+- L342 - `static String _parseVideoErr(int? code, String? msg) {` - performs one operation in its enclosing type or module
+- L351 - `static Future<LoadingState<VideoDetailData>> videoIntro({` - performs one operation in its enclosing type or module
+- L365 - `static Future<LoadingState<VideoRelation>> videoRelation({` - performs one operation in its enclosing type or module
+- L380 - `static Future<LoadingState<List<HotVideoItemModel>?>> relatedVideoList({` - performs one operation in its enclosing type or module
+- L401 - `static Future<LoadingState<PgcLCF>> pgcLikeCoinFav({` - performs one operation in its enclosing type or module
+- L416 - `static Future<LoadingState<void>> coinVideo({` - performs one operation in its enclosing type or module
+- L440 - `static Future<LoadingState<PgcTriple>> pgcTriple({` - performs one operation in its enclosing type or module
+- L465 - `static Future<LoadingState<UgcTriple>> ugcTriple({` - performs one operation in its enclosing type or module
+- L497 - `static Future<LoadingState<String>> likeVideo({` - performs one operation in its enclosing type or module
+- L514 - `static Future<LoadingState<void>> dislikeVideo({` - performs one operation in its enclosing type or module
+- L537 - `static Future<LoadingState<void>> feedDislike({` - performs one operation in its enclosing type or module
+- L566 - `static Future<LoadingState<void>> feedDislikeCancel({` - performs one operation in its enclosing type or module
+- L601 - `static Future<LoadingState<ReplyInfo?>> replyAdd({` - performs one operation in its enclosing type or module
+- L648 - `static Future<LoadingState<void>> replyDel({` - performs one operation in its enclosing type or module
+- L672 - `static Future<LoadingState<void>> relationMod({` - performs one operation in its enclosing type or module
+- L725 - `static Future<void> roomEntryAction({required Object roomId}) {` - performs one operation in its enclosing type or module
+- L733 - `static Future<void> historyReport({` - performs one operation in its enclosing type or module
+- L745 - `static Future<void> heartBeat({` - performs one operation in its enclosing type or module
+- L772 - `static Future<void> medialistHistory({` - performs one operation in its enclosing type or module
+- L790 - `static Future<LoadingState<String>> pgcAdd({int? seasonId}) async {` - performs one operation in its enclosing type or module
+- L804 - `static Future<LoadingState<String>> pgcDel({int? seasonId}) async {` - performs one operation in its enclosing type or module
+- L817 - `static Future<LoadingState<String>> pgcUpdate({` - performs one operation in its enclosing type or module
+- L838 - `static Future<LoadingState<String>> onlineTotal({` - handles interaction, lifecycle, or playback events
+- L855 - `static Future<LoadingState<AiConclusionData>> aiConclusion({` - performs one operation in its enclosing type or module
+- L879 - `static Future<LoadingState<PlayInfoData>> playInfo({` - handles interaction, lifecycle, or playback events
+- L904 - `static Future<String?> getSubtitles(` - reads, requests, or synchronizes data
+- L923 - `static Future<LoadingState<List<HotVideoItemModel>>> getRankVideoList(` - reads, requests, or synchronizes data
+- L943 - `static Future<LoadingState<List<PgcRankItemModel>?>> pgcRankList({` - performs one operation in its enclosing type or module
+- L966 - `static Future<LoadingState<List<PgcRankItemModel>?>> pgcSeasonRankList({` - performs one operation in its enclosing type or module
+- L988 - `static Future<LoadingState<VideoNoteData>> getVideoNoteList({` - reads, requests, or synchronizes data
+- L1012 - `popularSeriesList() async {` - performs one operation in its enclosing type or module
+- L1037 - `static Future<LoadingState<PopularSeriesOneData>> popularSeriesOne({` - performs one operation in its enclosing type or module
+- L1061 - `static Future<LoadingState<PopularPreciousData>> popularPrecious({` - performs one operation in its enclosing type or module
+- L1086 - `static Future<LoadingState<PlayUrlModel>> tvPlayUrl({` - performs one operation in its enclosing type or module
+- L1116 - `static Future<LoadingState<VideoShotData>> videoshot({` - performs one operation in its enclosing type or module
 
 ## `lib/main.dart`
 
-- L55 - `Future<void> _initDownPath() async {` - performs one operation in its enclosing type or module
-- L85 - `Future<void> _initTmpPath() async {` - performs one operation in its enclosing type or module
-- L89 - `Future<void> _initAppPath() async {` - performs one operation in its enclosing type or module
-- L93 - `void main() async {` - starts or initializes state and resources
-- L209 - `const MyApp(),` - performs one operation in its enclosing type or module
-- L218 - `KeyEventResult _onKeyEvent(KeyEvent event) {` - performs one operation in its enclosing type or module
-- L226 - `void _onBack() {` - performs one operation in its enclosing type or module
-- L246 - **class `MyApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L247 - `const MyApp({super.key});` - performs one operation in its enclosing type or module
-- L251 - `static (ThemeData, ThemeData) getAllTheme() {` - performs one operation in its enclosing type or module
-- L283 - `Widget build(BuildContext context) {` - builds UI or state
-- L315 - `static Widget _builder(BuildContext context, Widget? child) {` - performs one operation in its enclosing type or module
-- L353 - `static Future<bool> initPlatformState() async {` - starts or initializes state and resources
-- L401 - **class `_PredictiveBackGestureDispatcher`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L402 - `const _PredictiveBackGestureDispatcher({required this.child});` - performs one operation in its enclosing type or module
-- L407 - `State<_PredictiveBackGestureDispatcher> createState() =>` - builds UI or state
-- L408 - `_PredictiveBackGestureDispatcherState();` - performs one operation in its enclosing type or module
-- L411 - **class `_PredictiveBackGestureDispatcherState`** - data structure or state carrier
-- L417 - `bool handleStartBackGesture(PredictiveBackEvent backEvent) {` - handles interaction, lifecycle, or playback events
-- L435 - `void handleUpdateBackGestureProgress(PredictiveBackEvent backEvent) {` - handles interaction, lifecycle, or playback events
-- L445 - `void handleCancelBackGesture() {` - handles interaction, lifecycle, or playback events
-- L454 - `void handleCommitBackGesture() {` - handles interaction, lifecycle, or playback events
-- L485 - `void initState() {` - starts or initializes state and resources
-- L491 - `void dispose() {` - stops, releases, or resets state and resources
-- L497 - `Widget build(BuildContext context) =>` - builds UI or state
-- L507 - **class `_CustomHttpOverrides`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L509 - `HttpClient createHttpClient(SecurityContext? context) {` - performs one operation in its enclosing type or module
+- L57 - `Future<void> _initDownPath() async {` - performs one operation in its enclosing type or module
+- L87 - `Future<void> _initTmpPath() async {` - performs one operation in its enclosing type or module
+- L91 - `Future<void> _initAppPath() async {` - performs one operation in its enclosing type or module
+- L95 - `void main() async {` - starts or initializes state and resources
+- L210 - `const MyApp(),` - performs one operation in its enclosing type or module
+- L219 - `KeyEventResult _onKeyEvent(KeyEvent event) {` - performs one operation in its enclosing type or module
+- L227 - `void _onBack() {` - performs one operation in its enclosing type or module
+- L247 - **class `MyApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L248 - `const MyApp({super.key});` - performs one operation in its enclosing type or module
+- L252 - `static (ThemeData, ThemeData) getAllTheme() {` - performs one operation in its enclosing type or module
+- L284 - `Widget build(BuildContext context) {` - builds UI or state
+- L316 - `static Widget _builder(BuildContext context, Widget? child) {` - performs one operation in its enclosing type or module
+- L354 - `static Future<bool> initPlatformState() async {` - starts or initializes state and resources
+- L402 - **class `_PredictiveBackGestureDispatcher`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L403 - `const _PredictiveBackGestureDispatcher({required this.child});` - performs one operation in its enclosing type or module
+- L408 - `State<_PredictiveBackGestureDispatcher> createState() =>` - builds UI or state
+- L409 - `_PredictiveBackGestureDispatcherState();` - performs one operation in its enclosing type or module
+- L412 - **class `_PredictiveBackGestureDispatcherState`** - data structure or state carrier
+- L418 - `bool handleStartBackGesture(PredictiveBackEvent backEvent) {` - handles interaction, lifecycle, or playback events
+- L436 - `void handleUpdateBackGestureProgress(PredictiveBackEvent backEvent) {` - handles interaction, lifecycle, or playback events
+- L446 - `void handleCancelBackGesture() {` - handles interaction, lifecycle, or playback events
+- L455 - `void handleCommitBackGesture() {` - handles interaction, lifecycle, or playback events
+- L486 - `void initState() {` - starts or initializes state and resources
+- L492 - `void dispose() {` - stops, releases, or resets state and resources
+- L498 - `Widget build(BuildContext context) =>` - builds UI or state
+- L508 - **class `_CustomHttpOverrides`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L510 - `HttpClient createHttpClient(SecurityContext? context) {` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/account_myinfo/data.dart`
 
@@ -5977,26 +6037,32 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/download/bili_download_entry_info.dart`
 
-- L11 - **class `BiliDownloadEntryInfo`** - data structure or state carrier
-- L60 - `Widget moreBtn(ColorScheme colorScheme) => SizedBox(` - performs one operation in its enclosing type or module
-- L126 - `BiliDownloadEntryInfo({` - performs one operation in its enclosing type or module
-- L156 - `factory BiliDownloadEntryInfo.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
-- L157 - `BiliDownloadEntryInfo(` - performs one operation in its enclosing type or module
-- L194 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
-- L239 - **class `PageInfo`** - data structure or state carrier
-- L257 - `PageInfo({` - performs one operation in its enclosing type or module
-- L272 - `factory PageInfo.fromJson(Map<String, dynamic> json) => PageInfo(` - performs one operation in its enclosing type or module
-- L287 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
-- L303 - **class `SourceInfo`** - data structure or state carrier
-- L307 - `SourceInfo({` - performs one operation in its enclosing type or module
-- L312 - `factory SourceInfo.fromJson(Map<String, dynamic> json) => SourceInfo(` - performs one operation in its enclosing type or module
-- L317 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
-- L323 - **class `EpInfo`** - data structure or state carrier
-- L341 - `EpInfo({` - performs one operation in its enclosing type or module
-- L360 - `factory EpInfo.fromJson(Map<String, dynamic> json) => EpInfo(` - performs one operation in its enclosing type or module
-- L379 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
-- L399 - **enum `DownloadStatus`** - finite state or option set
-- L415 - `const DownloadStatus(this.message);` - reads, requests, or synchronizes data
+- L13 - `int downloadEntrySort(BiliDownloadEntryInfo a, BiliDownloadEntryInfo b) {` - reads, requests, or synchronizes data
+- L17 - **class `BiliDownloadEntryInfo`** - data structure or state carrier
+- L68 - `DownloadPageInfo toDownloadPageInfo(String pageId, {int? sortKey}) =>` - performs one operation in its enclosing type or module
+- L79 - `Widget moreBtn(ColorScheme colorScheme) => SizedBox(` - performs one operation in its enclosing type or module
+- L145 - `BiliDownloadEntryInfo({` - performs one operation in its enclosing type or module
+- L177 - `factory BiliDownloadEntryInfo.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L178 - `BiliDownloadEntryInfo(` - performs one operation in its enclosing type or module
+- L219 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L266 - **class `SeasonInfo`** - data structure or state carrier
+- L274 - `SeasonInfo({` - performs one operation in its enclosing type or module
+- L283 - `factory SeasonInfo.fromJson(Map<String, dynamic> json) => SeasonInfo(` - performs one operation in its enclosing type or module
+- L292 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L316 - **class `PageInfo`** - data structure or state carrier
+- L334 - `PageInfo({` - performs one operation in its enclosing type or module
+- L349 - `factory PageInfo.fromJson(Map<String, dynamic> json) => PageInfo(` - performs one operation in its enclosing type or module
+- L364 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L380 - **class `SourceInfo`** - data structure or state carrier
+- L384 - `SourceInfo({` - performs one operation in its enclosing type or module
+- L389 - `factory SourceInfo.fromJson(Map<String, dynamic> json) => SourceInfo(` - performs one operation in its enclosing type or module
+- L394 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L400 - **class `EpInfo`** - data structure or state carrier
+- L418 - `EpInfo({` - performs one operation in its enclosing type or module
+- L437 - `factory EpInfo.fromJson(Map<String, dynamic> json) => EpInfo(` - performs one operation in its enclosing type or module
+- L456 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L476 - **enum `DownloadStatus`** - finite state or option set
+- L492 - `const DownloadStatus(this.message);` - reads, requests, or synchronizes data
 
 ## `lib/models_new/download/bili_download_media_file_info.dart`
 
@@ -6032,6 +6098,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L5 - **class `DownloadPageInfo`** - data structure or state carrier
 - L14 - `DownloadPageInfo({` - reads, requests, or synchronizes data
+- L25 - **class `DownloadSeasonInfo`** - data structure or state carrier
+- L30 - `DownloadSeasonInfo({` - reads, requests, or synchronizes data
 
 ## `lib/models_new/dynamic/dyn_mention/data.dart`
 
@@ -6324,10 +6392,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/history/list.dart`
 
-- L5 - **class `HistoryItemModel`** - reusable UI or rendering component
-- L36 - `HistoryItemModel({` - performs one operation in its enclosing type or module
-- L56 - `factory HistoryItemModel.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
-- L57 - `HistoryItemModel(` - performs one operation in its enclosing type or module
+- L10 - **class `HistoryItemModel`** - reusable UI or rendering component
+- L48 - `Iterable<Widget> progressIndicator(ColorScheme colorScheme) sync* {` - performs one operation in its enclosing type or module
+- L83 - `HistoryItemModel({` - performs one operation in its enclosing type or module
+- L103 - `factory HistoryItemModel.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L104 - `HistoryItemModel(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/history/tab.dart`
 
@@ -6349,9 +6418,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/later/list.dart`
 
-- L8 - **class `LaterItemModel`** - reusable UI or rendering component
-- L29 - `LaterItemModel({` - performs one operation in its enclosing type or module
-- L51 - `factory LaterItemModel.fromJson(Map<String, dynamic> json) => LaterItemModel(` - performs one operation in its enclosing type or module
+- L13 - **class `LaterItemModel`** - reusable UI or rendering component
+- L61 - `Iterable<Widget> progressIndicator(ColorScheme colorScheme) sync* {` - performs one operation in its enclosing type or module
+- L91 - `LaterItemModel({` - performs one operation in its enclosing type or module
+- L113 - `factory LaterItemModel.fromJson(Map<String, dynamic> json) => LaterItemModel(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/later/rights.dart`
 
@@ -6402,7 +6472,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L7 - **class `DanmakuMsg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L16 - `const DanmakuMsg({` - performs one operation in its enclosing type or module
 - L26 - `factory DanmakuMsg.fromPrefetch(Map<String, dynamic> obj) {` - performs one operation in its enclosing type or module
-- L65 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
+- L64 - `Map<String, dynamic> toJson() => <String, dynamic>{` - serializes or exports data
 
 ## `lib/models_new/live/live_danmaku/live_emote.dart`
 
@@ -6462,27 +6532,27 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/models_new/live/live_feed_index/card_data_item.dart`
 
 - L3 - **class `CardDataItem`** - reusable UI or rendering component
-- L7 - `CardDataItem({` - performs one operation in its enclosing type or module
+- L7 - `const CardDataItem({` - performs one operation in its enclosing type or module
 - L12 - `factory CardDataItem.fromJson(Map<String, dynamic> json) => CardDataItem(` - performs one operation in its enclosing type or module
-- L22 - **class `ExtraInfo`** - data structure or state carrier
-- L25 - `ExtraInfo.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L97 - **class `ExtraInfo`** - data structure or state carrier
+- L100 - `ExtraInfo.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/live/live_feed_index/card_data_list_item.dart`
 
 - L5 - **class `CardLiveItem`** - reusable UI or rendering component
-- L20 - `CardLiveItem({` - performs one operation in its enclosing type or module
+- L20 - `const CardLiveItem({` - performs one operation in its enclosing type or module
 - L35 - `factory CardLiveItem.fromJson(Map<String, dynamic> json) => CardLiveItem(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/live/live_feed_index/card_data.dart`
 
 - L4 - **class `CardData`** - reusable UI or rendering component
-- L10 - `CardData({` - performs one operation in its enclosing type or module
+- L10 - `const CardData({` - performs one operation in its enclosing type or module
 - L17 - `factory CardData.fromJson(Map<String, dynamic> json) => CardData(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/live/live_feed_index/card_list.dart`
 
 - L3 - **class `LiveCardList`** - reusable UI or rendering component
-- L7 - `LiveCardList({this.cardType, this.cardData});` - performs one operation in its enclosing type or module
+- L7 - `const LiveCardList({this.cardType, this.cardData});` - performs one operation in its enclosing type or module
 - L9 - `factory LiveCardList.fromJson(Map<String, dynamic> json) => LiveCardList(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/live/live_feed_index/data.dart`
@@ -6541,7 +6611,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L1 - **class `UinfoMedal`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L9 - `UinfoMedal({` - performs one operation in its enclosing type or module
 - L18 - `factory UinfoMedal.fromJson(Map<String, dynamic> json) => UinfoMedal(` - performs one operation in its enclosing type or module
-- L27 - `Map<String, dynamic> toJson() => {` - serializes or exports data
+- L27 - `static UinfoMedal? lightMedal(Map<String, dynamic>? json) {` - performs one operation in its enclosing type or module
+- L32 - `Map<String, dynamic> toJson() => {` - serializes or exports data
 
 ## `lib/models_new/live/live_room_info_h5/anchor_info.dart`
 
@@ -6704,9 +6775,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/match/match_info/contest.dart`
 
-- L4 - **class `MatchContest`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L17 - `MatchContest({` - performs one operation in its enclosing type or module
-- L31 - `factory MatchContest.fromJson(Map<String, dynamic> json) => MatchContest(` - performs one operation in its enclosing type or module
+- L5 - **class `MatchContest`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L18 - `MatchContest({` - performs one operation in its enclosing type or module
+- L32 - `factory MatchContest.fromJson(Map<String, dynamic> json) => MatchContest(` - performs one operation in its enclosing type or module
+- L51 - `factory MatchContest.fromSearch(Map<String, dynamic> json) => MatchContest(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/match/match_info/data.dart`
 
@@ -6716,15 +6788,15 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/match/match_info/season.dart`
 
-- L1 - **class `Season`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5 - `Season({` - performs one operation in its enclosing type or module
-- L10 - `factory Season.fromJson(Map<String, dynamic> json) => Season(` - performs one operation in its enclosing type or module
+- L1 - **class `MatchSeason`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L5 - `MatchSeason({` - performs one operation in its enclosing type or module
+- L10 - `factory MatchSeason.fromJson(Map<String, dynamic> json) => MatchSeason(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/match/match_info/team.dart`
 
 - L1 - **class `MatchTeam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L5 - `MatchTeam({` - performs one operation in its enclosing type or module
-- L10 - `factory MatchTeam.fromJson(Map<String, dynamic> json) => MatchTeam(` - performs one operation in its enclosing type or module
+- L6 - `MatchTeam({` - performs one operation in its enclosing type or module
+- L12 - `factory MatchTeam.fromJson(Map<String, dynamic> json) => MatchTeam(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/media_list/data.dart`
 
@@ -7129,9 +7201,15 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/pgc/pgc_info_model/result.dart`
 
-- L13 - **class `PgcInfoModel`** - data structure or state carrier
-- L35 - `PgcInfoModel({` - performs one operation in its enclosing type or module
-- L58 - `factory PgcInfoModel.fromJson(Map<String, dynamic> json) => PgcInfoModel(` - performs one operation in its enclosing type or module
+- L14 - **class `PgcInfoModel`** - data structure or state carrier
+- L41 - `PgcInfoModel({` - performs one operation in its enclosing type or module
+- L65 - `factory PgcInfoModel.fromJson(Map<String, dynamic> json) => PgcInfoModel(` - performs one operation in its enclosing type or module
+
+## `lib/models_new/pgc/pgc_info_model/season.dart`
+
+- L1 - **class `Season`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L6 - `Season({` - performs one operation in its enclosing type or module
+- L12 - `factory Season.fromJson(Map<String, dynamic> json) => Season(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/pgc/pgc_info_model/section.dart`
 
@@ -7899,11 +7977,15 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/sponsor_block/segment_item.dart`
 
-- L3 - **class `SegmentItemModel`** - reusable UI or rendering component
-- L12 - `SegmentItemModel({` - performs one operation in its enclosing type or module
-- L22 - `factory SegmentItemModel.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
-- L23 - `SegmentItemModel(` - performs one operation in its enclosing type or module
-- L37 - `factory SegmentItemModel.fromPgcJson(` - performs one operation in its enclosing type or module
+- L5 - **class `SegmentItemModel`** - reusable UI or rendering component
+- L14 - `SegmentItemModel({` - performs one operation in its enclosing type or module
+- L24 - `factory SegmentItemModel.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L25 - `SegmentItemModel(` - performs one operation in its enclosing type or module
+- L39 - `factory SegmentItemModel.fromPgcJson(` - performs one operation in its enclosing type or module
+- L56 - `Map<String, dynamic> toJson() => {` - serializes or exports data
+- L66 - `factory SegmentItemModel.fromNormalizedJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L67 - `SegmentItemModel(` - performs one operation in its enclosing type or module
+- L77 - `static List<SegmentItemModel>? fromCache(dynamic segments) {` - parses or converts data
 
 ## `lib/models_new/sponsor_block/user_info.dart`
 
@@ -7928,14 +8010,14 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/models_new/sub/sub/data.dart`
 
 - L3 - **class `SubData`** - data structure or state carrier
-- L7 - `SubData({this.list, this.hasMore});` - performs one operation in its enclosing type or module
-- L9 - `factory SubData.fromJson(Map<String, dynamic> json) => SubData(` - performs one operation in its enclosing type or module
+- L8 - `SubData({this.count, this.list, this.hasMore});` - performs one operation in its enclosing type or module
+- L10 - `factory SubData.fromJson(Map<String, dynamic> json) => SubData(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/sub/sub/list.dart`
 
 - L4 - **class `SubItemModel`** - reusable UI or rendering component
-- L23 - `SubItemModel({` - performs one operation in its enclosing type or module
-- L43 - `factory SubItemModel.fromJson(Map<String, dynamic> json) => SubItemModel(` - performs one operation in its enclosing type or module
+- L29 - `SubItemModel({` - performs one operation in its enclosing type or module
+- L49 - `factory SubItemModel.fromJson(Map<String, dynamic> json) => SubItemModel(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/triple/pgc_triple.dart`
 
@@ -8027,10 +8109,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models_new/video/video_detail/data.dart`
 
-- L12 - **class `VideoDetailData`** - data structure or state carrier
-- L38 - `VideoDetailData({` - performs one operation in its enclosing type or module
-- L64 - `factory VideoDetailData.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
-- L65 - `VideoDetailData(` - performs one operation in its enclosing type or module
+- L14 - **class `VideoDetailData`** - data structure or state carrier
+- L46 - `SeasonInfo? seasonInfo(int index) {` - performs one operation in its enclosing type or module
+- L65 - `VideoDetailData({` - performs one operation in its enclosing type or module
+- L91 - `factory VideoDetailData.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L92 - `VideoDetailData(` - performs one operation in its enclosing type or module
 
 ## `lib/models_new/video/video_detail/desc_v2.dart`
 
@@ -8354,6 +8437,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L3 - **enum `WebSsType`** - finite state or option set
 - L9 - `const WebSsType(this.api);` - performs one operation in its enclosing type or module
 
+## `lib/models/common/mine_tab_type.dart`
+
+- L3 - **enum `MineTabType`** - finite state or option set
+- L14 - `const MineTabType(this.label);` - performs one operation in its enclosing type or module
+
 ## `lib/models/common/msg/msg_unread_type.dart`
 
 - L1 - **enum `MsgUnReadType`** - finite state or option set
@@ -8520,7 +8608,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/models/common/video/video_type.dart`
 
 - L3 - **enum `VideoType`** - finite state or option set
-- L22 - `const VideoType({` - performs one operation in its enclosing type or module
+- L25 - `const VideoType({` - performs one operation in its enclosing type or module
 
 ## `lib/models/common/webview_menu_type.dart`
 
@@ -8624,134 +8712,134 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L388 - **class `BgImg`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L392 - `BgImg.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
 - L398 - **class `Basic`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L403 - `Basic.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L411 - **class `ModuleAuthorModel`** - data structure or state carrier
-- L420 - `ModuleAuthorModel.fromJson(Map<String, dynamic> json) : super.fromJson(json) {` - performs one operation in its enclosing type or module
-- L443 - **class `Decorate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L447 - `Decorate({` - performs one operation in its enclosing type or module
-- L452 - `factory Decorate.fromJson(Map<String, dynamic> json) => Decorate(` - performs one operation in its enclosing type or module
-- L458 - **class `Fan`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L462 - `Fan({` - performs one operation in its enclosing type or module
-- L467 - `factory Fan.fromJson(Map<String, dynamic> json) => Fan(` - performs one operation in its enclosing type or module
-- L474 - **class `ModuleDynamicModel`** - data structure or state carrier
-- L475 - `ModuleDynamicModel({` - performs one operation in its enclosing type or module
-- L487 - `ModuleDynamicModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L503 - **class `DynamicAddModel`** - data structure or state carrier
-- L504 - `DynamicAddModel({` - performs one operation in its enclosing type or module
-- L521 - `DynamicAddModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L540 - **class `AddMatch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L545 - `AddMatch({` - updates, stores, or records state
-- L551 - `factory AddMatch.fromJson(Map<String, dynamic> json) => AddMatch(` - updates, stores, or records state
-- L560 - **class `MatchInfo`** - data structure or state carrier
-- L568 - `MatchInfo({` - performs one operation in its enclosing type or module
-- L577 - `factory MatchInfo.fromJson(Map<String, dynamic> json) => MatchInfo(` - performs one operation in its enclosing type or module
-- L591 - **class `TTeam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L595 - `TTeam({` - performs one operation in its enclosing type or module
-- L600 - `factory TTeam.fromJson(Map<String, dynamic> json) => TTeam(` - performs one operation in its enclosing type or module
-- L606 - **class `AddCommon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L614 - `AddCommon({` - updates, stores, or records state
-- L623 - `factory AddCommon.fromJson(Map<String, dynamic> json) => AddCommon(` - updates, stores, or records state
-- L633 - **class `UpowerLottery`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L640 - `UpowerLottery({` - performs one operation in its enclosing type or module
-- L648 - `factory UpowerLottery.fromJson(Map<String, dynamic> json) => UpowerLottery(` - performs one operation in its enclosing type or module
-- L657 - **class `Hint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L660 - `Hint({` - performs one operation in its enclosing type or module
-- L664 - `factory Hint.fromJson(Map<String, dynamic> json) => Hint(` - performs one operation in its enclosing type or module
-- L669 - **class `JumpStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L672 - `JumpStyle({` - performs one operation in its enclosing type or module
-- L676 - `factory JumpStyle.fromJson(Map<String, dynamic> json) => JumpStyle(` - performs one operation in its enclosing type or module
-- L681 - **class `Vote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L682 - `Vote({` - performs one operation in its enclosing type or module
-- L692 - `Vote.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L701 - **class `Ugc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L702 - `Ugc({` - performs one operation in its enclosing type or module
-- L714 - `Ugc.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L722 - **class `Reserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L723 - `Reserve({` - performs one operation in its enclosing type or module
-- L743 - `Reserve.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L758 - **class `ReserveBtn`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L759 - `ReserveBtn({` - performs one operation in its enclosing type or module
-- L774 - `ReserveBtn.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L785 - **class `Desc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L786 - `Desc({` - performs one operation in its enclosing type or module
-- L794 - `Desc.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L800 - **class `Good`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L801 - `Good({` - performs one operation in its enclosing type or module
-- L807 - `Good.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L814 - **class `GoodItem`** - reusable UI or rendering component
-- L815 - `GoodItem({` - performs one operation in its enclosing type or module
-- L829 - `GoodItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L838 - **class `DynamicDescModel`** - data structure or state carrier
-- L839 - `DynamicDescModel({` - performs one operation in its enclosing type or module
-- L847 - `DynamicDescModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L855 - **class `DynamicMajorModel`** - data structure or state carrier
-- L856 - `DynamicMajorModel({` - performs one operation in its enclosing type or module
-- L889 - `DynamicMajorModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L932 - **class `Music`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L938 - `Music.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L946 - **class `Medialist`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L954 - `Medialist.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L964 - **class `SubscriptionNew`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L967 - `SubscriptionNew({` - performs one operation in its enclosing type or module
-- L971 - `factory SubscriptionNew.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
-- L972 - `SubscriptionNew(` - performs one operation in its enclosing type or module
-- L979 - **class `LiveRcmd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L982 - `LiveRcmd({` - performs one operation in its enclosing type or module
-- L986 - `factory LiveRcmd.fromJson(Map<String, dynamic> json) => LiveRcmd(` - performs one operation in its enclosing type or module
-- L993 - **class `LiveRcmdContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L996 - `LiveRcmdContent({` - performs one operation in its enclosing type or module
-- L1000 - `factory LiveRcmdContent.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
-- L1001 - `LiveRcmdContent(` - performs one operation in its enclosing type or module
-- L1008 - **class `LivePlayInfo`** - data structure or state carrier
-- L1016 - `LivePlayInfo({` - performs one operation in its enclosing type or module
-- L1025 - `factory LivePlayInfo.fromJson(Map<String, dynamic> json) => LivePlayInfo(` - performs one operation in its enclosing type or module
-- L1037 - **class `DynamicTopicModel`** - data structure or state carrier
-- L1038 - `DynamicTopicModel({` - performs one operation in its enclosing type or module
-- L1046 - `DynamicTopicModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1052 - **class `DynamicArchiveModel`** - data structure or state carrier
-- L1053 - `DynamicArchiveModel({` - performs one operation in its enclosing type or module
-- L1081 - `DynamicArchiveModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1097 - **class `Badge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1098 - `Badge({` - performs one operation in its enclosing type or module
-- L1104 - `Badge.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1109 - **class `DynamicOpusModel`** - data structure or state carrier
-- L1110 - `DynamicOpusModel({` - performs one operation in its enclosing type or module
-- L1120 - `DynamicOpusModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1131 - **class `SummaryModel`** - data structure or state carrier
-- L1132 - `SummaryModel({` - performs one operation in its enclosing type or module
-- L1140 - `SummaryModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1148 - **class `RichTextNodeItem`** - reusable UI or rendering component
-- L1149 - `RichTextNodeItem({` - performs one operation in its enclosing type or module
-- L1166 - `RichTextNodeItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1179 - **class `Emoji`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1184 - `Emoji.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1194 - **class `DynamicNoneModel`** - data structure or state carrier
-- L1195 - `DynamicNoneModel({` - performs one operation in its enclosing type or module
-- L1201 - `DynamicNoneModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1206 - **class `PicModel`** - data structure or state carrier
-- L1208 - **class `FilePicModel`** - data structure or state carrier
-- L1211 - `FilePicModel({` - performs one operation in its enclosing type or module
-- L1216 - **class `OpusPicModel`** - data structure or state carrier
-- L1217 - `OpusPicModel({` - performs one operation in its enclosing type or module
-- L1232 - `OpusPicModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1241 - `Map<String, dynamic> toJson() => {` - serializes or exports data
-- L1249 - **class `DynamicLiveModel`** - data structure or state carrier
-- L1257 - `DynamicLiveModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1274 - **class `DynamicLive2Model`** - data structure or state carrier
-- L1275 - `DynamicLive2Model({` - performs one operation in its enclosing type or module
-- L1291 - `DynamicLive2Model.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1301 - **class `ModuleTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1302 - `ModuleTag({` - performs one operation in its enclosing type or module
-- L1308 - `ModuleTag.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1314 - **class `ModuleStatModel`** - data structure or state carrier
-- L1315 - `ModuleStatModel({` - performs one operation in its enclosing type or module
-- L1327 - `ModuleStatModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1342 - **class `DynamicStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1343 - `DynamicStat({` - performs one operation in its enclosing type or module
-- L1351 - `DynamicStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L1359 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1360 - `Stat({` - performs one operation in its enclosing type or module
-- L1368 - `Stat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L415 - `Basic.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L423 - **class `ModuleAuthorModel`** - data structure or state carrier
+- L432 - `ModuleAuthorModel.fromJson(Map<String, dynamic> json) : super.fromJson(json) {` - performs one operation in its enclosing type or module
+- L455 - **class `Decorate`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L459 - `Decorate({` - performs one operation in its enclosing type or module
+- L464 - `factory Decorate.fromJson(Map<String, dynamic> json) => Decorate(` - performs one operation in its enclosing type or module
+- L470 - **class `Fan`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L474 - `Fan({` - performs one operation in its enclosing type or module
+- L479 - `factory Fan.fromJson(Map<String, dynamic> json) => Fan(` - performs one operation in its enclosing type or module
+- L486 - **class `ModuleDynamicModel`** - data structure or state carrier
+- L487 - `ModuleDynamicModel({` - performs one operation in its enclosing type or module
+- L499 - `ModuleDynamicModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L515 - **class `DynamicAddModel`** - data structure or state carrier
+- L516 - `DynamicAddModel({` - performs one operation in its enclosing type or module
+- L533 - `DynamicAddModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L552 - **class `AddMatch`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L557 - `AddMatch({` - updates, stores, or records state
+- L563 - `factory AddMatch.fromJson(Map<String, dynamic> json) => AddMatch(` - updates, stores, or records state
+- L572 - **class `MatchInfo`** - data structure or state carrier
+- L580 - `MatchInfo({` - performs one operation in its enclosing type or module
+- L589 - `factory MatchInfo.fromJson(Map<String, dynamic> json) => MatchInfo(` - performs one operation in its enclosing type or module
+- L603 - **class `TTeam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L607 - `TTeam({` - performs one operation in its enclosing type or module
+- L612 - `factory TTeam.fromJson(Map<String, dynamic> json) => TTeam(` - performs one operation in its enclosing type or module
+- L618 - **class `AddCommon`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L626 - `AddCommon({` - updates, stores, or records state
+- L635 - `factory AddCommon.fromJson(Map<String, dynamic> json) => AddCommon(` - updates, stores, or records state
+- L645 - **class `UpowerLottery`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L652 - `UpowerLottery({` - performs one operation in its enclosing type or module
+- L660 - `factory UpowerLottery.fromJson(Map<String, dynamic> json) => UpowerLottery(` - performs one operation in its enclosing type or module
+- L669 - **class `Hint`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L672 - `Hint({` - performs one operation in its enclosing type or module
+- L676 - `factory Hint.fromJson(Map<String, dynamic> json) => Hint(` - performs one operation in its enclosing type or module
+- L681 - **class `JumpStyle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L684 - `JumpStyle({` - performs one operation in its enclosing type or module
+- L688 - `factory JumpStyle.fromJson(Map<String, dynamic> json) => JumpStyle(` - performs one operation in its enclosing type or module
+- L693 - **class `Vote`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L694 - `Vote({` - performs one operation in its enclosing type or module
+- L704 - `Vote.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L713 - **class `Ugc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L714 - `Ugc({` - performs one operation in its enclosing type or module
+- L726 - `Ugc.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L734 - **class `Reserve`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L735 - `Reserve({` - performs one operation in its enclosing type or module
+- L755 - `Reserve.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L770 - **class `ReserveBtn`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L771 - `ReserveBtn({` - performs one operation in its enclosing type or module
+- L786 - `ReserveBtn.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L797 - **class `Desc`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L798 - `Desc({` - performs one operation in its enclosing type or module
+- L806 - `Desc.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L812 - **class `Good`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L813 - `Good({` - performs one operation in its enclosing type or module
+- L819 - `Good.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L826 - **class `GoodItem`** - reusable UI or rendering component
+- L827 - `GoodItem({` - performs one operation in its enclosing type or module
+- L841 - `GoodItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L850 - **class `DynamicDescModel`** - data structure or state carrier
+- L851 - `DynamicDescModel({` - performs one operation in its enclosing type or module
+- L859 - `DynamicDescModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L867 - **class `DynamicMajorModel`** - data structure or state carrier
+- L868 - `DynamicMajorModel({` - performs one operation in its enclosing type or module
+- L901 - `DynamicMajorModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L944 - **class `Music`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L950 - `Music.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L958 - **class `Medialist`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L966 - `Medialist.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L976 - **class `SubscriptionNew`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L979 - `SubscriptionNew({` - performs one operation in its enclosing type or module
+- L983 - `factory SubscriptionNew.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L984 - `SubscriptionNew(` - performs one operation in its enclosing type or module
+- L991 - **class `LiveRcmd`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L994 - `LiveRcmd({` - performs one operation in its enclosing type or module
+- L998 - `factory LiveRcmd.fromJson(Map<String, dynamic> json) => LiveRcmd(` - performs one operation in its enclosing type or module
+- L1005 - **class `LiveRcmdContent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1008 - `LiveRcmdContent({` - performs one operation in its enclosing type or module
+- L1012 - `factory LiveRcmdContent.fromJson(Map<String, dynamic> json) =>` - performs one operation in its enclosing type or module
+- L1013 - `LiveRcmdContent(` - performs one operation in its enclosing type or module
+- L1020 - **class `LivePlayInfo`** - data structure or state carrier
+- L1028 - `LivePlayInfo({` - performs one operation in its enclosing type or module
+- L1037 - `factory LivePlayInfo.fromJson(Map<String, dynamic> json) => LivePlayInfo(` - performs one operation in its enclosing type or module
+- L1049 - **class `DynamicTopicModel`** - data structure or state carrier
+- L1050 - `DynamicTopicModel({` - performs one operation in its enclosing type or module
+- L1058 - `DynamicTopicModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1064 - **class `DynamicArchiveModel`** - data structure or state carrier
+- L1065 - `DynamicArchiveModel({` - performs one operation in its enclosing type or module
+- L1093 - `DynamicArchiveModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1109 - **class `Badge`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1110 - `Badge({` - performs one operation in its enclosing type or module
+- L1116 - `Badge.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1121 - **class `DynamicOpusModel`** - data structure or state carrier
+- L1122 - `DynamicOpusModel({` - performs one operation in its enclosing type or module
+- L1132 - `DynamicOpusModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1143 - **class `SummaryModel`** - data structure or state carrier
+- L1144 - `SummaryModel({` - performs one operation in its enclosing type or module
+- L1152 - `SummaryModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1160 - **class `RichTextNodeItem`** - reusable UI or rendering component
+- L1161 - `RichTextNodeItem({` - performs one operation in its enclosing type or module
+- L1178 - `RichTextNodeItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1191 - **class `Emoji`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1196 - `Emoji.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1206 - **class `DynamicNoneModel`** - data structure or state carrier
+- L1207 - `DynamicNoneModel({` - performs one operation in its enclosing type or module
+- L1213 - `DynamicNoneModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1218 - **class `PicModel`** - data structure or state carrier
+- L1220 - **class `FilePicModel`** - data structure or state carrier
+- L1223 - `FilePicModel({` - performs one operation in its enclosing type or module
+- L1228 - **class `OpusPicModel`** - data structure or state carrier
+- L1229 - `OpusPicModel({` - performs one operation in its enclosing type or module
+- L1244 - `OpusPicModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1253 - `Map<String, dynamic> toJson() => {` - serializes or exports data
+- L1261 - **class `DynamicLiveModel`** - data structure or state carrier
+- L1269 - `DynamicLiveModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1286 - **class `DynamicLive2Model`** - data structure or state carrier
+- L1287 - `DynamicLive2Model({` - performs one operation in its enclosing type or module
+- L1303 - `DynamicLive2Model.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1313 - **class `ModuleTag`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1314 - `ModuleTag({` - performs one operation in its enclosing type or module
+- L1320 - `ModuleTag.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1326 - **class `ModuleStatModel`** - data structure or state carrier
+- L1327 - `ModuleStatModel({` - performs one operation in its enclosing type or module
+- L1339 - `ModuleStatModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1354 - **class `DynamicStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1355 - `DynamicStat({` - performs one operation in its enclosing type or module
+- L1363 - `DynamicStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L1371 - **class `Stat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1372 - `Stat({` - performs one operation in its enclosing type or module
+- L1380 - `Stat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
 
 ## `lib/models/dynamics/up.dart`
 
@@ -8852,10 +8940,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models/model_owner.dart`
 
-- L8 - **class `Owner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L9 - `Owner({` - performs one operation in its enclosing type or module
-- L23 - `Owner.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L29 - `Map<String, dynamic> toJson() => {` - serializes or exports data
+- L9 - **class `Owner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10 - `Owner({` - performs one operation in its enclosing type or module
+- L24 - `Owner.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L30 - `Map<String, dynamic> toJson() => {` - serializes or exports data
 
 ## `lib/models/model_owner.g.dart`
 
@@ -8886,63 +8974,54 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/models/search/result.dart`
 
-- L15 - **class `SearchNumData`** - data structure or state carrier
-- L16 - `SearchNumData({` - performs one operation in its enclosing type or module
-- L25 - **class `SearchVideoData`** - data structure or state carrier
-- L26 - `SearchVideoData({` - performs one operation in its enclosing type or module
-- L31 - `SearchVideoData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L14 - **class `SearchNumData`** - data structure or state carrier
+- L15 - `SearchNumData({` - performs one operation in its enclosing type or module
+- L24 - **class `SearchVideoData`** - data structure or state carrier
+- L25 - `SearchVideoData({` - performs one operation in its enclosing type or module
+- L30 - `SearchVideoData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
 - L43 - `SearchVideoData.fromSearchAll(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L90 - **class `SearchActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L100 - `SearchActivity({` - performs one operation in its enclosing type or module
-- L111 - `factory SearchActivity.fromJson(Map<String, dynamic> json, String url) {` - performs one operation in its enclosing type or module
-- L125 - **class `SearchUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L142 - `SearchUser({` - performs one operation in its enclosing type or module
-- L160 - `factory SearchUser.fromJson(Map<String, dynamic> json) => SearchUser(` - performs one operation in its enclosing type or module
-- L185 - **class `SearchVideoItemModel`** - reusable UI or rendering component
-- L194 - `SearchVideoItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L224 - **class `SearchStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L230 - `SearchStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L239 - **class `SearchOwner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L240 - `SearchOwner.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L247 - **class `SearchUserData`** - data structure or state carrier
-- L248 - `SearchUserData({` - performs one operation in its enclosing type or module
-- L253 - `SearchUserData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L261 - **class `SearchUserItemModel`** - reusable UI or rendering component
-- L262 - `SearchUserItemModel({` - performs one operation in its enclosing type or module
-- L300 - `SearchUserItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L323 - **class `SearchLiveData`** - data structure or state carrier
-- L324 - `SearchLiveData({` - performs one operation in its enclosing type or module
-- L329 - `SearchLiveData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L337 - **class `SearchLiveItemModel`** - reusable UI or rendering component
-- L338 - `SearchLiveItemModel({` - performs one operation in its enclosing type or module
-- L379 - `SearchLiveItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L401 - **class `SearchPgcData`** - data structure or state carrier
-- L402 - `SearchPgcData({` - performs one operation in its enclosing type or module
-- L407 - `SearchPgcData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L415 - **class `SearchPgcItemModel`** - reusable UI or rendering component
-- L416 - `SearchPgcItemModel({` - performs one operation in its enclosing type or module
-- L470 - `SearchPgcItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L499 - **class `SearchArticleData`** - data structure or state carrier
-- L500 - `SearchArticleData({` - performs one operation in its enclosing type or module
-- L505 - `SearchArticleData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L513 - **class `SearchArticleItemModel`** - reusable UI or rendering component
-- L514 - `SearchArticleItemModel({` - performs one operation in its enclosing type or module
-- L550 - `SearchArticleItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L91 - **class `SearchActivity`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L101 - `SearchActivity({` - performs one operation in its enclosing type or module
+- L112 - `factory SearchActivity.fromJson(Map<String, dynamic> json, String url) {` - performs one operation in its enclosing type or module
+- L126 - **class `SearchUser`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L143 - `SearchUser({` - performs one operation in its enclosing type or module
+- L161 - `factory SearchUser.fromJson(Map<String, dynamic> json) => SearchUser(` - performs one operation in its enclosing type or module
+- L186 - **class `SearchVideoItemModel`** - reusable UI or rendering component
+- L195 - `SearchVideoItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L225 - **class `SearchStat`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L231 - `SearchStat.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L240 - **class `SearchOwner`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L241 - `SearchOwner.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L248 - **class `SearchUserData`** - data structure or state carrier
+- L249 - `SearchUserData({` - performs one operation in its enclosing type or module
+- L254 - `SearchUserData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L263 - **class `SearchUserItemModel`** - reusable UI or rendering component
+- L264 - `SearchUserItemModel({` - performs one operation in its enclosing type or module
+- L302 - `SearchUserItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L325 - **class `SearchLiveData`** - data structure or state carrier
+- L326 - `SearchLiveData({` - performs one operation in its enclosing type or module
+- L331 - `SearchLiveData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L340 - **class `SearchLiveItemModel`** - reusable UI or rendering component
+- L341 - `SearchLiveItemModel({` - performs one operation in its enclosing type or module
+- L382 - `SearchLiveItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L404 - **class `SearchPgcData`** - data structure or state carrier
+- L405 - `SearchPgcData({` - performs one operation in its enclosing type or module
+- L410 - `SearchPgcData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L418 - **class `SearchPgcItemModel`** - reusable UI or rendering component
+- L419 - `SearchPgcItemModel({` - performs one operation in its enclosing type or module
+- L473 - `SearchPgcItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L502 - **class `SearchArticleData`** - data structure or state carrier
+- L503 - `SearchArticleData({` - performs one operation in its enclosing type or module
+- L508 - `SearchArticleData.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L517 - **class `SearchArticleItemModel`** - reusable UI or rendering component
+- L518 - `SearchArticleItemModel({` - performs one operation in its enclosing type or module
+- L554 - `SearchArticleItemModel.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
 
 ## `lib/models/search/search_esports.dart`
 
 - L3 - **class `SearchEsports`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L6 - `SearchEsports({required this.contest});` - performs one operation in its enclosing type or module
 - L8 - `factory SearchEsports.fromJson(Map<String, dynamic> json) => SearchEsports(` - performs one operation in its enclosing type or module
-- L15 - **class `EsportsContest`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28 - `EsportsContest({` - performs one operation in its enclosing type or module
-- L42 - `factory EsportsContest.fromJson(Map<String, dynamic> json) => EsportsContest(` - performs one operation in its enclosing type or module
-- L57 - **class `EsportsTeam`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L61 - `EsportsTeam({required this.title, required this.logoFull});` - performs one operation in its enclosing type or module
-- L63 - `factory EsportsTeam.fromJson(Map<String, dynamic> json) => EsportsTeam(` - performs one operation in its enclosing type or module
-- L69 - **class `EsportsBtnList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L73 - `EsportsBtnList({required this.text, required this.link});` - performs one operation in its enclosing type or module
-- L75 - `factory EsportsBtnList.fromJson(Map<String, dynamic> json) => EsportsBtnList(` - performs one operation in its enclosing type or module
 
 ## `lib/models/search/suggest.dart`
 
@@ -9007,34 +9086,35 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L145 - **class `Language`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 - L146 - `Language({` - performs one operation in its enclosing type or module
 - L154 - `Language.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L168 - **class `LanguageItem`** - reusable UI or rendering component
-- L169 - `LanguageItem({` - performs one operation in its enclosing type or module
-- L180 - `LanguageItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L188 - **class `Dash`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L189 - `Dash({` - performs one operation in its enclosing type or module
-- L201 - `Dash.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L209 - `AudioItem.fromJson(flac),` - performs one operation in its enclosing type or module
-- L219 - **class `Durl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L228 - `Durl({` - performs one operation in its enclosing type or module
-- L238 - `factory Durl.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L256 - **class `BaseItem`** - reusable UI or rendering component
-- L271 - `BaseItem({` - performs one operation in its enclosing type or module
-- L287 - `BaseItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L310 - **class `VideoItem`** - reusable UI or rendering component
-- L313 - `VideoItem({` - performs one operation in its enclosing type or module
-- L330 - `VideoItem.fromJson(Map<String, dynamic> json) : super.fromJson(json) {` - performs one operation in its enclosing type or module
-- L335 - **class `AudioItem`** - reusable UI or rendering component
-- L338 - `AudioItem.fromJson(Map<String, dynamic> json) : super.fromJson(json) {` - performs one operation in its enclosing type or module
-- L343 - **extension `BaseItemExt`** - reusable UI or rendering component
-- L344 - `void merge(List<T>? other) {` - performs one operation in its enclosing type or module
-- L352 - `sort((a, b) => b.id.compareTo(a.id));` - performs one operation in its enclosing type or module
-- L358 - **class `FormatItem`** - reusable UI or rendering component
-- L359 - `FormatItem({` - performs one operation in its enclosing type or module
-- L373 - `FormatItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L382 - **class `Volume`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L383 - `Volume({` - performs one operation in its enclosing type or module
-- L408 - `factory Volume.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
-- L421 - `String format(Map<String, num> config) {` - performs one operation in its enclosing type or module
+- L162 - `int _sort(LanguageItem a, LanguageItem b) {` - performs one operation in its enclosing type or module
+- L170 - **class `LanguageItem`** - reusable UI or rendering component
+- L171 - `LanguageItem({` - performs one operation in its enclosing type or module
+- L182 - `LanguageItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L190 - **class `Dash`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L191 - `Dash({` - performs one operation in its enclosing type or module
+- L203 - `Dash.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L211 - `AudioItem.fromJson(flac),` - performs one operation in its enclosing type or module
+- L221 - **class `Durl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L230 - `Durl({` - performs one operation in its enclosing type or module
+- L240 - `factory Durl.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L258 - **class `BaseItem`** - reusable UI or rendering component
+- L273 - `BaseItem({` - performs one operation in its enclosing type or module
+- L289 - `BaseItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L312 - **class `VideoItem`** - reusable UI or rendering component
+- L315 - `VideoItem({` - performs one operation in its enclosing type or module
+- L332 - `VideoItem.fromJson(Map<String, dynamic> json) : super.fromJson(json) {` - performs one operation in its enclosing type or module
+- L337 - **class `AudioItem`** - reusable UI or rendering component
+- L340 - `AudioItem.fromJson(Map<String, dynamic> json) : super.fromJson(json) {` - performs one operation in its enclosing type or module
+- L345 - **extension `BaseItemExt`** - reusable UI or rendering component
+- L346 - `void merge(List<T>? other) {` - performs one operation in its enclosing type or module
+- L354 - `sort((a, b) => b.id.compareTo(a.id));` - performs one operation in its enclosing type or module
+- L360 - **class `FormatItem`** - reusable UI or rendering component
+- L361 - `FormatItem({` - performs one operation in its enclosing type or module
+- L375 - `FormatItem.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L384 - **class `Volume`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L385 - `Volume({` - performs one operation in its enclosing type or module
+- L410 - `factory Volume.fromJson(Map<String, dynamic> json) {` - performs one operation in its enclosing type or module
+- L423 - `String format(Map<String, num> config) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/about/view.dart`
 
@@ -9079,35 +9159,39 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/article/controller.dart`
 
-- L20 - **class `ArticleController`** - page or business state controller
-- L47 - `List<SourceModel> images() => _images ??= opus!` - performs one operation in its enclosing type or module
-- L53 - `void onInit() {` - starts or initializes state and resources
-- L79 - `void init() {` - starts or initializes state and resources
-- L88 - `Future<bool> queryOpus(String opusId) async {` - reads, requests, or synchronizes data
-- L118 - `Future<bool> queryRead(int cvid) async {` - reads, requests, or synchronizes data
-- L138 - `Future<bool> getArticleInfo([bool isGetCover = false]) async {` - reads, requests, or synchronizes data
-- L166 - `Future<void> _queryContent() async {` - performs one operation in its enclosing type or module
-- L182 - `Future<void> onFav() async {` - handles interaction, lifecycle, or playback events
-- L202 - `Future<void> onLike() async {` - handles interaction, lifecycle, or playback events
-- L222 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
-- L230 - **class `Summary`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L235 - `Summary({this.author, this.title, this.cover});` - performs one operation in its enclosing type or module
+- L21 - **class `ArticleController`** - page or business state controller
+- L50 - `List<SourceModel> images() => _images ??= opus!` - performs one operation in its enclosing type or module
+- L56 - `void onInit() {` - starts or initializes state and resources
+- L82 - `void init() {` - starts or initializes state and resources
+- L91 - `Future<bool> queryOpus(String opusId) async {` - reads, requests, or synchronizes data
+- L121 - `Future<bool> queryRead(int cvid) async {` - reads, requests, or synchronizes data
+- L141 - `Future<bool> getArticleInfo([bool isGetCover = false]) async {` - reads, requests, or synchronizes data
+- L169 - `Future<void> _queryContent() async {` - performs one operation in its enclosing type or module
+- L185 - `Future<void> onFav() async {` - handles interaction, lifecycle, or playback events
+- L205 - `Future<void> onLike() async {` - handles interaction, lifecycle, or playback events
+- L225 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L233 - **class `Summary`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L238 - `Summary({this.author, this.title, this.cover});` - performs one operation in its enclosing type or module
 
 ## `lib/pages/article/view.dart`
 
-- L38 - **class `ArticlePage`** - page or visual structure
-- L39 - `const ArticlePage({super.key});` - performs one operation in its enclosing type or module
-- L42 - `State<ArticlePage> createState() => _ArticlePageState();` - builds UI or state
-- L45 - **class `_ArticlePageState`** - data structure or state carrier
-- L58 - `Widget build(BuildContext context) {` - builds UI or state
-- L74 - `Widget _buildPage() {` - performs one operation in its enclosing type or module
-- L148 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
-- L159 - `Widget _buildContent(double maxWidth) => SliverPadding(` - performs one operation in its enclosing type or module
-- L249 - `PreferredSizeWidget _buildAppBar() => AppBar(` - performs one operation in its enclosing type or module
-- L334 - `Widget _buildBottom() {` - performs one operation in its enclosing type or module
-- L366 - `Widget textIconButton({` - performs one operation in its enclosing type or module
-- L487 - `Widget? _buildImageGallery(List<Pic> pics) {` - performs one operation in its enclosing type or module
-- L576 - `Widget? _buildAuthor() {` - performs one operation in its enclosing type or module
+- L40 - **class `ArticlePage`** - page or visual structure
+- L41 - `const ArticlePage({super.key});` - performs one operation in its enclosing type or module
+- L44 - `State<ArticlePage> createState() => _ArticlePageState();` - builds UI or state
+- L47 - **class `_ArticlePageState`** - data structure or state carrier
+- L59 - `void initState() {` - starts or initializes state and resources
+- L72 - `Widget build(BuildContext context) {` - builds UI or state
+- L88 - `Widget _buildPage() {` - performs one operation in its enclosing type or module
+- L169 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
+- L180 - `Widget _buildContent(double maxWidth) => SliverPadding(` - performs one operation in its enclosing type or module
+- L270 - `PreferredSizeWidget _buildAppBar() => AppBar(` - performs one operation in its enclosing type or module
+- L355 - `Widget _buildBottom() {` - performs one operation in its enclosing type or module
+- L387 - `Widget textIconButton({` - performs one operation in its enclosing type or module
+- L521 - `Widget? _buildImageGallery(List<Pic> pics) {` - performs one operation in its enclosing type or module
+- L611 - `Widget? _buildAuthor() {` - performs one operation in its enclosing type or module
+- L659 - `void _jumpToComment() {` - performs one operation in its enclosing type or module
+- L663 - `setState(() {});` - updates, stores, or records state
+- L670 - `Widget httpError({String? errMsg, VoidCallback? onReload}) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/article/widgets/article_ops.dart`
 
@@ -9128,11 +9212,31 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L164 - `static TextSpan _getSpan(` - performs one operation in its enclosing type or module
 - L196 - `Widget build(BuildContext context) {` - builds UI or state
 - L205 - `double getSurfaceLuminance() =>` - reads, requests, or synchronizes data
-- L772 - `Widget moduleBlockedItem(` - performs one operation in its enclosing type or module
-- L779 - `BoxDecoration? bgImg(double width) {` - performs one operation in its enclosing type or module
-- L799 - `Widget icon(double width) {` - performs one operation in its enclosing type or module
-- L811 - `Widget btn(` - performs one operation in its enclosing type or module
-- L934 - `Widget opusCollection(ThemeData theme, ModuleCollection item) {` - performs one operation in its enclosing type or module
+- L774 - `Widget moduleBlockedItem(` - performs one operation in its enclosing type or module
+- L781 - `BoxDecoration? bgImg(double width) {` - performs one operation in its enclosing type or module
+- L801 - `Widget icon(double width) {` - performs one operation in its enclosing type or module
+- L814 - `Widget btn(` - performs one operation in its enclosing type or module
+- L937 - `Widget opusCollection(ThemeData theme, ModuleCollection item) {` - performs one operation in its enclosing type or module
+
+## `lib/pages/article/widgets/sliver_list.dart`
+
+- L12 - **class `ArticleSliverList`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L13 - `const ArticleSliverList({` - performs one operation in its enclosing type or module
+- L21 - `ArticleSliverList.builder({` - performs one operation in its enclosing type or module
+- L34 - `RenderSliverList createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
+- L43 - **class `RenderArticleSliverList`** - reusable UI or rendering component
+- L45 - `RenderArticleSliverList({required super.childManager});` - performs one operation in its enclosing type or module
+
+## `lib/pages/article/widgets/sliver_to_box_adapter.dart`
+
+- L5 - **mixin `ArticleRenderSliverMixin`** - reusable UI or rendering component
+- L7 - `void performLayout() {` - performs one operation in its enclosing type or module
+- L18 - **class `ArticleSliverToBoxAdapter`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19 - `const ArticleSliverToBoxAdapter({super.key, super.child});` - performs one operation in its enclosing type or module
+- L22 - `RenderSliverToBoxAdapter createRenderObject(BuildContext context) =>` - performs one operation in its enclosing type or module
+- L23 - `RenderArticleSliverToBoxAdapter();` - performs one operation in its enclosing type or module
+- L26 - **class `RenderArticleSliverToBoxAdapter`** - reusable UI or rendering component
+- L28 - `RenderArticleSliverToBoxAdapter({super.child});` - performs one operation in its enclosing type or module
 
 ## `lib/pages/audio/controller.dart`
 
@@ -9144,38 +9248,38 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L141 - `void setVolume(double volume, {bool clearLastVolme = true}) {` - updates, stores, or records state
 - L149 - `void syncVolume([_]) {` - reads, requests, or synchronizes data
 - L158 - `void onInit() {` - starts or initializes state and resources
-- L214 - `bool isPlaying() {` - predicate, validation, or lookup
-- L218 - `Future<void>? onPlay() {` - handles interaction, lifecycle, or playback events
-- L222 - `Future<void>? onPause() {` - handles interaction, lifecycle, or playback events
-- L226 - `Future<void>? onSeek(Duration duration) {` - handles interaction, lifecycle, or playback events
-- L231 - `void _updateCurrItem(DetailItem item) {` - performs one operation in its enclosing type or module
-- L243 - `Future<void> _queryPlayList({` - performs one operation in its enclosing type or module
-- L291 - `void _querySponsorBlock() {` - performs one operation in its enclosing type or module
-- L301 - `Future<bool> _queryPlayUrl() async {` - performs one operation in its enclosing type or module
-- L317 - `void _onPlay(PlayURLResp data) {` - performs one operation in its enclosing type or module
-- L358 - `Future<void> _onOpenMedia(` - performs one operation in its enclosing type or module
-- L377 - `void _updatePlaybackState({Duration? position, String? debugLabel}) {` - performs one operation in its enclosing type or module
-- L388 - `Future<void> _initPlayerIfNeeded() async {` - performs one operation in its enclosing type or module
-- L478 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
-- L507 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
-- L544 - `Future<void> onPayCoin(int coin, bool coinWithLike) async {` - handles interaction, lifecycle, or playback events
-- L576 - `void showFavBottomSheet(BuildContext context, {bool isLongPress = false}) {` - handles interaction, lifecycle, or playback events
-- L592 - `void showReply() {` - handles interaction, lifecycle, or playback events
-- L599 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
-- L697 - `Future<void>? playOrPause() {` - handles interaction, lifecycle, or playback events
-- L701 - `bool playPrev() {` - handles interaction, lifecycle, or playback events
-- L712 - `bool playNext({bool nextPart = false}) {` - handles interaction, lifecycle, or playback events
-- L722 - `_queryPlayUrl().then((res) {` - performs one operation in its enclosing type or module
-- L745 - `void playIndex(int index, {List<Int64>? subId}) {` - handles interaction, lifecycle, or playback events
-- L755 - `_queryPlayUrl().then((res) {` - performs one operation in its enclosing type or module
-- L767 - `void updateFavCount(int count) {` - updates, stores, or records state
-- L776 - `Future<void> loadPrev(BuildContext context) async {` - reads, requests, or synchronizes data
-- L785 - `Future<void> loadNext(BuildContext context) async {` - reads, requests, or synchronizes data
-- L794 - `void onChangeOrder(ListOrder value) {` - handles interaction, lifecycle, or playback events
-- L811 - `Future<void>? seekTo(Duration duration, {required bool isSeek}) =>` - handles interaction, lifecycle, or playback events
-- L821 - `void onClose() {` - stops, releases, or resets state and resources
-- L843 - **extension `on`** - adds convenience behavior to an existing type
-- L850 - **extension `on`** - adds convenience behavior to an existing type
+- L216 - `bool isPlaying() {` - predicate, validation, or lookup
+- L220 - `Future<void>? onPlay() {` - handles interaction, lifecycle, or playback events
+- L224 - `Future<void>? onPause() {` - handles interaction, lifecycle, or playback events
+- L228 - `Future<void>? onSeek(Duration duration) {` - handles interaction, lifecycle, or playback events
+- L233 - `void _updateCurrItem(DetailItem item) {` - performs one operation in its enclosing type or module
+- L245 - `Future<void> _queryPlayList({` - performs one operation in its enclosing type or module
+- L293 - `void _querySponsorBlock() {` - performs one operation in its enclosing type or module
+- L303 - `Future<bool> _queryPlayUrl() async {` - performs one operation in its enclosing type or module
+- L319 - `void _onPlay(PlayURLResp data) {` - performs one operation in its enclosing type or module
+- L360 - `Future<void> _onOpenMedia(` - performs one operation in its enclosing type or module
+- L379 - `void _updatePlaybackState({Duration? position, String? debugLabel}) {` - performs one operation in its enclosing type or module
+- L390 - `Future<void> _initPlayerIfNeeded() async {` - performs one operation in its enclosing type or module
+- L480 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
+- L509 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
+- L546 - `Future<void> onPayCoin(int coin, bool coinWithLike) async {` - handles interaction, lifecycle, or playback events
+- L578 - `void showFavBottomSheet(BuildContext context, {bool isLongPress = false}) {` - handles interaction, lifecycle, or playback events
+- L594 - `void showReply() {` - handles interaction, lifecycle, or playback events
+- L601 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
+- L699 - `Future<void>? playOrPause() {` - handles interaction, lifecycle, or playback events
+- L703 - `bool playPrev() {` - handles interaction, lifecycle, or playback events
+- L714 - `bool playNext({bool nextPart = false}) {` - handles interaction, lifecycle, or playback events
+- L724 - `_queryPlayUrl().then((res) {` - performs one operation in its enclosing type or module
+- L747 - `void playIndex(int index, {List<Int64>? subId}) {` - handles interaction, lifecycle, or playback events
+- L757 - `_queryPlayUrl().then((res) {` - performs one operation in its enclosing type or module
+- L769 - `void updateFavCount(int count) {` - updates, stores, or records state
+- L778 - `Future<void> loadPrev(BuildContext context) async {` - reads, requests, or synchronizes data
+- L787 - `Future<void> loadNext(BuildContext context) async {` - reads, requests, or synchronizes data
+- L796 - `void onChangeOrder(ListOrder value) {` - handles interaction, lifecycle, or playback events
+- L813 - `Future<void>? seekTo(Duration duration, {required bool isSeek}) =>` - handles interaction, lifecycle, or playback events
+- L823 - `void onClose() {` - stops, releases, or resets state and resources
+- L847 - **extension `on`** - adds convenience behavior to an existing type
+- L854 - **extension `on`** - adds convenience behavior to an existing type
 
 ## `lib/pages/audio/view.dart`
 
@@ -9233,25 +9337,37 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/blacklist/controller.dart`
 
-- L12 - **class `BlackListController`** - page or business state controller
-- L17 - `void onInit() {` - starts or initializes state and resources
-- L23 - `List<BlackListItem>? getDataList(BlackListData response) {` - reads, requests, or synchronizes data
-- L29 - `void checkIsEnd(int length) {` - reads, requests, or synchronizes data
-- L35 - `void onRemove(BuildContext context, int index, name, mid) {` - handles interaction, lifecycle, or playback events
-- L53 - `Future<LoadingState<BlackListData>> customGetData() =>` - performs one operation in its enclosing type or module
+- L15 - **class `BlackListController`** - page or business state controller
+- L21 - `void onInit() {` - starts or initializes state and resources
+- L31 - `List<BlackListItem>? getDataList(BlackListData response) {` - reads, requests, or synchronizes data
+- L37 - `void checkIsEnd(int length) {` - reads, requests, or synchronizes data
+- L43 - `Future<bool> onRemove(BuildContext context, int index, name, mid) async {` - handles interaction, lifecycle, or playback events
+- L63 - `Future<LoadingState<BlackListData>> customGetData() =>` - performs one operation in its enclosing type or module
+- L67 - `void onClose() {` - stops, releases, or resets state and resources
 
 ## `lib/pages/blacklist/view.dart`
 
-- L17 - **class `BlackListPage`** - page or visual structure
-- L18 - `const BlackListPage({super.key});` - performs one operation in its enclosing type or module
-- L21 - `State<BlackListPage> createState() => _BlackListPageState();` - builds UI or state
-- L24 - **class `_BlackListPageState`** - data structure or state carrier
-- L28 - `void dispose() {` - stops, releases, or resets state and resources
-- L38 - `Widget build(BuildContext context) {` - builds UI or state
-- L67 - `Widget _buildBody(LoadingState<List<BlackListItem>?> loadingState) {` - performs one operation in its enclosing type or module
-- L70 - `Loading() => const SliverPrototypeExtentList(` - reads, requests, or synchronizes data
-- L77 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L121 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L25 - **enum `_BlockType`** - finite state or option set
+- L33 - `_BlockType(this.label);` - performs one operation in its enclosing type or module
+- L36 - **class `BlackListPage`** - page or visual structure
+- L37 - `const BlackListPage({super.key});` - performs one operation in its enclosing type or module
+- L40 - `State<BlackListPage> createState() => _BlackListPageState();` - builds UI or state
+- L43 - **class `_BlackListPageState`** - data structure or state carrier
+- L50 - `void initState() {` - starts or initializes state and resources
+- L59 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L65 - `void dispose() {` - stops, releases, or resets state and resources
+- L71 - `Widget build(BuildContext context) {` - builds UI or state
+- L115 - `void _onAddMid(String mid) {` - performs one operation in its enclosing type or module
+- L126 - `setState(() {});` - updates, stores, or records state
+- L129 - `void _showAddMidDialog() {` - performs one operation in its enclosing type or module
+- L153 - `void _showImportExportDialog() {` - performs one operation in its enclosing type or module
+- L163 - `setState(() {});` - updates, stores, or records state
+- L218 - `setState(() {});` - updates, stores, or records state
+- L237 - `Widget _buildBody(LoadingState<List<BlackListItem>?> loadingState) {` - performs one operation in its enclosing type or module
+- L240 - `Loading() => const SliverPrototypeExtentList(` - reads, requests, or synchronizes data
+- L247 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L288 - `setState(() {});` - updates, stores, or records state
+- L298 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/bubble/controller.dart`
 
@@ -9359,28 +9475,29 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/common/dyn/common_dyn_controller.dart`
 
-- L9 - **class `CommonDynController`** - page or business state controller
-- L11 - `CommonDynController({super.count});` - performs one operation in its enclosing type or module
-- L24 - `Future<LoadingState<MainListReply>> customGetData() => ReplyGrpc.mainList(` - performs one operation in its enclosing type or module
-- L33 - `List<ReplyInfo>? getDataList(MainListReply response) {` - reads, requests, or synchronizes data
+- L10 - **class `CommonDynController`** - page or business state controller
+- L12 - `CommonDynController({super.count});` - performs one operation in its enclosing type or module
+- L27 - `Future<LoadingState<MainListReply>> customGetData() => ReplyGrpc.mainList(` - performs one operation in its enclosing type or module
+- L36 - `List<ReplyInfo>? getDataList(MainListReply response) {` - reads, requests, or synchronizes data
 
 ## `lib/pages/common/dyn/common_dyn_page.dart`
 
-- L29 - **enum `DynType`** - finite state or option set
-- L36 - `const DynType(this.label);` - performs one operation in its enclosing type or module
-- L39 - **class `CommonDynPageState`** - data structure or state carrier
-- L46 - **class `CommonDynPageMultiState`** - data structure or state carrier
-- L56 - `void initState() {` - starts or initializes state and resources
-- L66 - `void dispose() {` - stops, releases, or resets state and resources
-- L72 - **mixin `CommonDynPageMixin`** - behavior shared by multiple classes
-- L87 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L98 - `bool onNotification(UserScrollNotification notification) {` - handles interaction, lifecycle, or playback events
-- L105 - `Widget buildReplyHeader() {` - performs one operation in its enclosing type or module
-- L139 - `Widget replyList(LoadingState<List<ReplyInfo>?> loadingState) {` - performs one operation in its enclosing type or module
-- L227 - `void replyReply(BuildContext context, ReplyInfo replyItem, int? id) {` - performs one operation in its enclosing type or module
-- L231 - `Widget replyReplyPage({bool showBackBtn = true}) {` - performs one operation in its enclosing type or module
-- L287 - `Widget ratioWidget(double maxWidth) => IconButton(` - performs one operation in its enclosing type or module
-- L310 - `setState(() {});` - updates, stores, or records state
+- L30 - **enum `DynType`** - finite state or option set
+- L37 - `const DynType(this.label);` - performs one operation in its enclosing type or module
+- L40 - **class `CommonDynPageState`** - data structure or state carrier
+- L47 - **class `CommonDynPageMultiState`** - data structure or state carrier
+- L57 - `void initState() {` - starts or initializes state and resources
+- L67 - `void dispose() {` - stops, releases, or resets state and resources
+- L73 - **mixin `CommonDynPageMixin`** - behavior shared by multiple classes
+- L89 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L100 - `bool onNotification(UserScrollNotification notification) {` - handles interaction, lifecycle, or playback events
+- L107 - `Widget buildReplyHeader() {` - performs one operation in its enclosing type or module
+- L141 - `Widget replyList(LoadingState<List<ReplyInfo>?> loadingState) {` - performs one operation in its enclosing type or module
+- L230 - `Widget httpError({String? errMsg, VoidCallback? onReload}) {` - performs one operation in its enclosing type or module
+- L237 - `void replyReply(BuildContext context, ReplyInfo replyItem, int? id) {` - performs one operation in its enclosing type or module
+- L241 - `Widget replyReplyPage({bool showBackBtn = true}) {` - performs one operation in its enclosing type or module
+- L297 - `Widget ratioWidget(double maxWidth) => IconButton(` - performs one operation in its enclosing type or module
+- L320 - `setState(() {});` - updates, stores, or records state
 
 ## `lib/pages/common/dyn/like_list/controller.dart`
 
@@ -9528,11 +9645,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L223 - `void onPickImage([VoidCallback? callback]) {` - handles interaction, lifecycle, or playback events
 - L252 - `void onChooseEmote(dynamic emote, double? width, double? height) {` - handles interaction, lifecycle, or playback events
 - L281 - `List<Map<String, dynamic>>? getRichContent() {` - reads, requests, or synchronizes data
-- L328 - `Future<void>? onMention([bool fromClick = false]) async {` - handles interaction, lifecycle, or playback events
-- L347 - `void _onInsertUser(MentionItem e, bool fromClick) {` - performs one operation in its enclosing type or module
-- L357 - `void onInsertText(` - handles interaction, lifecycle, or playback events
-- L461 - `void onSave() => widget.onSave?.call(editController.items);` - handles interaction, lifecycle, or playback events
-- L499 - `Future<void> onPublish() async {` - handles interaction, lifecycle, or playback events
+- L329 - `Future<void>? onMention([bool fromClick = false]) async {` - handles interaction, lifecycle, or playback events
+- L349 - `void _onInsertUser(MentionItem e, bool fromClick) {` - performs one operation in its enclosing type or module
+- L359 - `void onInsertText(` - handles interaction, lifecycle, or playback events
+- L463 - `void onSave() => widget.onSave?.call(editController.items);` - handles interaction, lifecycle, or playback events
+- L501 - `Future<void> onPublish() async {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/common/publish/common_text_pub_page.dart`
 
@@ -9552,18 +9669,18 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/common/reply_controller.dart`
 
-- L19 - **class `ReplyController`** - page or business state controller
-- L20 - `ReplyController({int count = -1}) : count = RxInt(count);` - performs one operation in its enclosing type or module
-- L46 - `void onInit() {` - starts or initializes state and resources
-- L54 - `void checkIsEnd(int length) {` - reads, requests, or synchronizes data
-- L62 - `bool customHandleResponse(bool isRefresh, Success<R> response) {` - performs one operation in its enclosing type or module
-- L82 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
-- L90 - `void queryBySort() {` - reads, requests, or synchronizes data
-- L128 - `void onReply(` - handles interaction, lifecycle, or playback events
-- L206 - `void onRemove(int index, ReplyInfo item, int? subIndex) {` - handles interaction, lifecycle, or playback events
-- L218 - `void onCheckReply(ReplyInfo replyInfo, {bool isManual = true}) {` - handles interaction, lifecycle, or playback events
-- L227 - `Future<void> onToggleTop(` - handles interaction, lifecycle, or playback events
-- L256 - `void onClose() {` - stops, releases, or resets state and resources
+- L20 - **class `ReplyController`** - page or business state controller
+- L21 - `ReplyController({int count = -1}) : count = RxInt(count);` - performs one operation in its enclosing type or module
+- L47 - `void onInit() {` - starts or initializes state and resources
+- L55 - `void checkIsEnd(int length) {` - reads, requests, or synchronizes data
+- L63 - `bool customHandleResponse(bool isRefresh, Success<R> response) {` - performs one operation in its enclosing type or module
+- L83 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
+- L91 - `void queryBySort() {` - reads, requests, or synchronizes data
+- L129 - `void onReply(` - handles interaction, lifecycle, or playback events
+- L209 - `void onRemove(int index, ReplyInfo item, int? subIndex) {` - handles interaction, lifecycle, or playback events
+- L221 - `void onCheckReply(ReplyInfo replyInfo, {bool isManual = true}) {` - handles interaction, lifecycle, or playback events
+- L230 - `Future<void> onToggleTop(` - handles interaction, lifecycle, or playback events
+- L259 - `void onClose() {` - stops, releases, or resets state and resources
 
 ## `lib/pages/common/search/common_search_controller.dart`
 
@@ -9671,10 +9788,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L39 - **class `_PlDanmakuState`** - data structure or state carrier
 - L47 - `void initState() {` - starts or initializes state and resources
 - L69 - `void didUpdateWidget(PlDanmaku oldWidget) {` - handles interaction, lifecycle, or playback events
-- L80 - `void playerListener(PlayerStatus status) {` - handles interaction, lifecycle, or playback events
-- L91 - `void videoPositionListen(Duration position) {` - performs one operation in its enclosing type or module
-- L159 - `void dispose() {` - stops, releases, or resets state and resources
-- L169 - `Widget build(BuildContext context) {` - builds UI or state
+- L83 - `void playerListener(PlayerStatus status) {` - handles interaction, lifecycle, or playback events
+- L94 - `void videoPositionListen(Duration position) {` - performs one operation in its enclosing type or module
+- L162 - `void dispose() {` - stops, releases, or resets state and resources
+- L172 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/dlna/view.dart`
 
@@ -9692,36 +9809,80 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L95 - `Widget _buildBody(ColorScheme colorScheme) {` - performs one operation in its enclosing type or module
 - L121 - `setState(() {});` - updates, stores, or records state
 
-## `lib/pages/download/controller.dart`
-
-- L14 - **class `DownloadPageController`** - page or business state controller
-- L26 - `void onInit() {` - starts or initializes state and resources
-- L33 - `void onClose() {` - stops, releases, or resets state and resources
-- L38 - `Future<void> _loadList() async {` - performs one operation in its enclosing type or module
-- L77 - `void onRemove() {` - handles interaction, lifecycle, or playback events
-
 ## `lib/pages/download/detail/view.dart`
 
 - L23 - **class `DownloadDetailPage`** - page or visual structure
 - L24 - `const DownloadDetailPage({` - reads, requests, or synchronizes data
 - L36 - `State<DownloadDetailPage> createState() => _DownloadDetailPageState();` - builds UI or state
 - L39 - **class `_DownloadDetailPageState`** - data structure or state carrier
-- L51 - `void initState() {` - starts or initializes state and resources
-- L59 - `Future<void> _closeSub() async {` - performs one operation in its enclosing type or module
-- L67 - `void dispose() {` - stops, releases, or resets state and resources
-- L72 - `void _loadList() {` - performs one operation in its enclosing type or module
-- L86 - `Widget build(BuildContext context) {` - builds UI or state
-- L194 - `void onRemove() {` - handles interaction, lifecycle, or playback events
+- L61 - `void initState() {` - starts or initializes state and resources
+- L69 - `Future<void> _closeSub() async {` - performs one operation in its enclosing type or module
+- L77 - `void dispose() {` - stops, releases, or resets state and resources
+- L82 - `void _loadList() {` - performs one operation in its enclosing type or module
+- L99 - `Widget build(BuildContext context) {` - builds UI or state
+- L179 - `void onRemove() {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/download/detail/widgets/item.dart`
 
 - L30 - **class `DetailItem`** - reusable UI or rendering component
 - L31 - `const DetailItem({` - performs one operation in its enclosing type or module
-- L57 - `Widget build(BuildContext context) {` - builds UI or state
-- L63 - `void onLongPress() => canDel && !enableMultiSelect` - handles interaction, lifecycle, or playback events
-- L127 - `Timer(const Duration(milliseconds: 400), () {` - performs one operation in its enclosing type or module
-- L393 - `Widget entryProgress(ThemeData theme) => progressWidget(` - performs one operation in its enclosing type or module
-- L405 - `Widget progressWidget({` - performs one operation in its enclosing type or module
+- L56 - `void showSegmentsDetail(BuildContext context) => showDialog(` - handles interaction, lifecycle, or playback events
+- L78 - `Widget build(BuildContext context) {` - builds UI or state
+- L84 - `void onLongPress() => canDel && !enableMultiSelect` - handles interaction, lifecycle, or playback events
+- L169 - `Timer(const Duration(milliseconds: 400), () {` - performs one operation in its enclosing type or module
+- L435 - `Widget entryProgress(ThemeData theme) => progressWidget(` - performs one operation in its enclosing type or module
+- L447 - `Widget progressWidget({` - performs one operation in its enclosing type or module
+
+## `lib/pages/download/download_action_mixin.dart`
+
+- L13 - `bool checkUpdateCount(int count) {` - reads, requests, or synchronizes data
+- L24 - `void toastUpdateResult(bool dismiss, bool isSuccess) {` - performs one operation in its enclosing type or module
+- L35 - **mixin `CommonDownloadActionMixin`** - behavior shared by multiple classes
+- L38 - `Future<void> onUpdate(` - handles interaction, lifecycle, or playback events
+- L65 - **mixin `BaseDownloadActionMixin`** - behavior shared by multiple classes
+- L75 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L80 - `Future<void> updatePageDm(DownloadPageInfo pageInfo) async {` - updates, stores, or records state
+- L99 - `void onUpdate(` - handles interaction, lifecycle, or playback events
+- L103 - `void _onUpdateDm() {` - performs one operation in its enclosing type or module
+- L104 - `onUpdate((e) => downloadService.downloadDanmaku(entry: e, isUpdate: true));` - handles interaction, lifecycle, or playback events
+- L107 - `void _onUpdateSeg() {` - performs one operation in its enclosing type or module
+- L111 - `void _showUpdateMenu(BuildContext context) {` - performs one operation in its enclosing type or module
+- L131 - `Widget updateBtn() {` - updates, stores, or records state
+
+## `lib/pages/download/download/controller.dart`
+
+- L14 - **class `DownloadController`** - page or business state controller
+- L26 - `void onInit() {` - starts or initializes state and resources
+- L33 - `void onClose() {` - stops, releases, or resets state and resources
+- L38 - `Future<void> _loadList() async {` - performs one operation in its enclosing type or module
+- L86 - `void onRemove() {` - handles interaction, lifecycle, or playback events
+
+## `lib/pages/download/download/view.dart`
+
+- L26 - **class `DownloadPage`** - page or visual structure
+- L27 - `const DownloadPage({super.key});` - reads, requests, or synchronizes data
+- L30 - `State<DownloadPage> createState() => _DownloadPageState();` - builds UI or state
+- L33 - **class `_DownloadPageState`** - data structure or state carrier
+- L45 - `void dispose() {` - stops, releases, or resets state and resources
+- L51 - `Future<void> onUpdate(` - handles interaction, lifecycle, or playback events
+- L99 - `Future<void> _updateSeasonDm(DownloadSeasonInfo seasonInfo) async {` - performs one operation in its enclosing type or module
+- L129 - `Widget build(BuildContext context) {` - builds UI or state
+- L175 - `Obx(() {` - performs one operation in its enclosing type or module
+- L210 - `Obx(() {` - performs one operation in its enclosing type or module
+
+## `lib/pages/download/download/widgets/page.dart`
+
+- L19 - **class `PageInfoItem`** - reusable UI or rendering component
+- L20 - `const PageInfoItem({` - performs one operation in its enclosing type or module
+- L40 - `Widget build(BuildContext context) {` - builds UI or state
+- L43 - `void onLongPress() => enableMultiSelect` - handles interaction, lifecycle, or playback events
+
+## `lib/pages/download/download/widgets/season.dart`
+
+- L18 - **class `SeasonInfoItem`** - reusable UI or rendering component
+- L19 - `const SeasonInfoItem({` - performs one operation in its enclosing type or module
+- L39 - `Widget build(BuildContext context) {` - builds UI or state
+- L42 - `void onLongPress() => enableMultiSelect` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/download/downloading/view.dart`
 
@@ -9732,6 +9893,21 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L35 - `Widget build(BuildContext context) {` - builds UI or state
 - L105 - `void onRemove() {` - handles interaction, lifecycle, or playback events
 
+## `lib/pages/download/page/view.dart`
+
+- L26 - **class `DownloadPagePage`** - page or visual structure
+- L27 - `const DownloadPagePage({` - reads, requests, or synchronizes data
+- L37 - `State<DownloadPagePage> createState() => _DownloadPagePageState();` - builds UI or state
+- L40 - **class `_DownloadPagePageState`** - data structure or state carrier
+- L61 - `void initState() {` - starts or initializes state and resources
+- L69 - `Future<void> _closeSub() async {` - performs one operation in its enclosing type or module
+- L77 - `void dispose() {` - stops, releases, or resets state and resources
+- L82 - `static int _sort(DownloadPageInfo a, DownloadPageInfo b) {` - performs one operation in its enclosing type or module
+- L89 - `void _loadList() {` - performs one operation in its enclosing type or module
+- L103 - `Future<void> onUpdate(` - handles interaction, lifecycle, or playback events
+- L141 - `Widget build(BuildContext context) {` - builds UI or state
+- L227 - `void onRemove() {` - handles interaction, lifecycle, or playback events
+
 ## `lib/pages/download/search/controller.dart`
 
 - L13 - **class `DownloadSearchController`** - page or business state controller
@@ -9741,24 +9917,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/download/search/view.dart`
 
-- L14 - **class `DownloadSearchPage`** - page or visual structure
-- L15 - `const DownloadSearchPage({` - reads, requests, or synchronizes data
-- L23 - `State<DownloadSearchPage> createState() => _DownloadSearchPageState();` - builds UI or state
-- L26 - **class `_DownloadSearchPageState`** - data structure or state carrier
-- L85 - `Widget buildList(List<BiliDownloadEntryInfo> list) {` - performs one operation in its enclosing type or module
-
-## `lib/pages/download/view.dart`
-
-- L30 - **class `DownloadPage`** - page or visual structure
-- L31 - `const DownloadPage({super.key});` - reads, requests, or synchronizes data
-- L34 - `State<DownloadPage> createState() => _DownloadPageState();` - builds UI or state
-- L37 - **class `_DownloadPageState`** - data structure or state carrier
-- L43 - `void dispose() {` - stops, releases, or resets state and resources
-- L49 - `Widget build(BuildContext context) {` - builds UI or state
-- L123 - `Obx(() {` - performs one operation in its enclosing type or module
-- L158 - `Obx(() {` - performs one operation in its enclosing type or module
-- L222 - `Widget _buildItem(` - performs one operation in its enclosing type or module
-- L227 - `void onLongPress() => enableMultiSelect` - handles interaction, lifecycle, or playback events
+- L15 - **class `DownloadSearchPage`** - page or visual structure
+- L16 - `const DownloadSearchPage({` - reads, requests, or synchronizes data
+- L24 - `State<DownloadSearchPage> createState() => _DownloadSearchPageState();` - builds UI or state
+- L27 - **class `_DownloadSearchPageState`** - data structure or state carrier
+- L69 - `Widget buildList(List<BiliDownloadEntryInfo> list) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/dynamics_create_reserve/controller.dart`
 
@@ -9831,40 +9994,40 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/dynamics_detail/controller.dart`
 
-- L13 - **class `DynamicDetailController`** - page or business state controller
-- L14 - `DynamicDetailController({super.count});` - performs one operation in its enclosing type or module
-- L26 - `void onInit() {` - starts or initializes state and resources
-- L47 - `void _init(String commentIdStr, int commentType) {` - performs one operation in its enclosing type or module
-- L53 - `Future<LoadingState> onSetPubSetting(bool isPrivate, Object dynId) async {` - handles interaction, lifecycle, or playback events
-- L67 - `Future<void> onSetReplySubject(int action) async {` - handles interaction, lifecycle, or playback events
-- L74 - `Timer(const Duration(milliseconds: 500), () {` - performs one operation in its enclosing type or module
-- L83 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L14 - **class `DynamicDetailController`** - page or business state controller
+- L15 - `DynamicDetailController({super.count});` - performs one operation in its enclosing type or module
+- L29 - `void onInit() {` - starts or initializes state and resources
+- L50 - `void _init(String commentIdStr, int commentType) {` - performs one operation in its enclosing type or module
+- L56 - `Future<LoadingState> onSetPubSetting(bool isPrivate, Object dynId) async {` - handles interaction, lifecycle, or playback events
+- L70 - `Future<void> onSetReplySubject(int action) async {` - handles interaction, lifecycle, or playback events
+- L77 - `Timer(const Duration(milliseconds: 500), () {` - performs one operation in its enclosing type or module
+- L86 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/dynamics_detail/view.dart`
 
-- L53 - **class `DynamicDetailPage`** - page or visual structure
-- L54 - `const DynamicDetailPage({super.key});` - performs one operation in its enclosing type or module
-- L57 - `State<DynamicDetailPage> createState() => _DynamicDetailPageState();` - builds UI or state
-- L60 - **class `_DynamicDetailPageState`** - data structure or state carrier
-- L69 - `void _stopRefresh() {` - switches, recovers, or refreshes runtime state
-- L74 - `void _onRefresh(Future<void> future) {` - switches, recovers, or refreshes runtime state
-- L83 - `void initState() {` - starts or initializes state and resources
-- L109 - `void dispose() {` - stops, releases, or resets state and resources
-- L115 - `Widget build(BuildContext context) {` - builds UI or state
-- L133 - `void _onEdit() {` - performs one operation in its enclosing type or module
-- L259 - `setState(() {});` - updates, stores, or records state
-- L268 - `PreferredSizeWidget _buildAppBar() => AppBar(` - performs one operation in its enclosing type or module
-- L296 - `Widget _buildTabBar() {` - performs one operation in its enclosing type or module
-- L348 - `Widget _buildTabBody([bool isPortrait = true]) {` - performs one operation in its enclosing type or module
-- L357 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
-- L407 - `Widget _buildDynPanel() {` - performs one operation in its enclosing type or module
-- L427 - `Widget _buildPortrait(double padding) {` - performs one operation in its enclosing type or module
-- L445 - `Widget _buildHorizontal(double padding) {` - performs one operation in its enclosing type or module
-- L491 - `Widget _buildBody() {` - performs one operation in its enclosing type or module
-- L502 - `Widget _buildBottom() {` - performs one operation in its enclosing type or module
-- L515 - `Widget textIconButton({` - performs one operation in its enclosing type or module
-- L644 - `Widget buildReplyHeader([bool isPortrait = true]) {` - performs one operation in its enclosing type or module
-- L675 - `void _jumpToComment([_]) {` - performs one operation in its enclosing type or module
+- L46 - **class `DynamicDetailPage`** - page or visual structure
+- L47 - `const DynamicDetailPage({super.key});` - performs one operation in its enclosing type or module
+- L50 - `State<DynamicDetailPage> createState() => _DynamicDetailPageState();` - builds UI or state
+- L53 - **class `_DynamicDetailPageState`** - data structure or state carrier
+- L62 - `void _stopRefresh() {` - switches, recovers, or refreshes runtime state
+- L67 - `void _onRefresh(Future<void> future) {` - switches, recovers, or refreshes runtime state
+- L76 - `void initState() {` - starts or initializes state and resources
+- L102 - `void dispose() {` - stops, releases, or resets state and resources
+- L108 - `Widget build(BuildContext context) {` - builds UI or state
+- L126 - `void _onEdit() {` - performs one operation in its enclosing type or module
+- L252 - `setState(() {});` - updates, stores, or records state
+- L261 - `PreferredSizeWidget _buildAppBar() => AppBar(` - performs one operation in its enclosing type or module
+- L289 - `Widget _buildTabBar() {` - performs one operation in its enclosing type or module
+- L341 - `Widget _buildTabBody([bool isPortrait = true]) {` - performs one operation in its enclosing type or module
+- L351 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
+- L401 - `Widget _buildDynPanel() {` - performs one operation in its enclosing type or module
+- L421 - `Widget _buildPortrait(double padding) {` - performs one operation in its enclosing type or module
+- L439 - `Widget _buildHorizontal(double padding) {` - performs one operation in its enclosing type or module
+- L479 - `Widget _buildBody() {` - performs one operation in its enclosing type or module
+- L490 - `Widget _buildBottom() {` - performs one operation in its enclosing type or module
+- L503 - `Widget textIconButton({` - performs one operation in its enclosing type or module
+- L639 - `Widget buildReplyHeader([bool isPortrait = true]) {` - performs one operation in its enclosing type or module
+- L670 - `void _jumpToComment([_]) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/dynamics_mention/controller.dart`
 
@@ -9878,44 +10041,45 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/dynamics_mention/view.dart`
 
-- L20 - **class `DynMentionPanel`** - page or visual structure
-- L21 - `const DynMentionPanel({` - performs one operation in its enclosing type or module
-- L59 - `State<DynMentionPanel> createState() => _DynMentionPanelState();` - builds UI or state
-- L62 - **class `_DynMentionPanelState`** - data structure or state carrier
-- L69 - `void initState() {` - starts or initializes state and resources
-- L77 - `void onValueChanged(String value) => _controller` - handles interaction, lifecycle, or playback events
-- L86 - `Widget build(BuildContext context) {` - builds UI or state
-- L224 - `Widget _buildBody(` - performs one operation in its enclosing type or module
-- L229 - `Loading() => const SliverPadding(` - reads, requests, or synchronizes data
-- L269 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L21 - **class `DynMentionPanel`** - page or visual structure
+- L22 - `const DynMentionPanel({` - performs one operation in its enclosing type or module
+- L64 - `State<DynMentionPanel> createState() => _DynMentionPanelState();` - builds UI or state
+- L67 - **class `_DynMentionPanelState`** - data structure or state carrier
+- L74 - `void initState() {` - starts or initializes state and resources
+- L82 - `void onValueChanged(String value) => _controller` - handles interaction, lifecycle, or playback events
+- L91 - `Widget build(BuildContext context) {` - builds UI or state
+- L229 - `Widget _buildBody(` - performs one operation in its enclosing type or module
+- L234 - `Loading() => const SliverPadding(` - reads, requests, or synchronizes data
+- L288 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/dynamics_mention/widgets/item.dart`
 
-- L7 - **class `DynMentionItem`** - reusable UI or rendering component
-- L8 - `const DynMentionItem({` - performs one operation in its enclosing type or module
-- L20 - `Widget build(BuildContext context) {` - builds UI or state
+- L6 - **class `DynMentionItem`** - reusable UI or rendering component
+- L7 - `const DynMentionItem({` - performs one operation in its enclosing type or module
+- L19 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/dynamics_repost/view.dart`
 
-- L22 - **class `RepostPanel`** - page or visual structure
-- L23 - `const RepostPanel({` - performs one operation in its enclosing type or module
-- L49 - `State<RepostPanel> createState() => _RepostPanelState();` - builds UI or state
-- L52 - **class `_RepostPanelState`** - data structure or state carrier
-- L63 - `void initState() {` - starts or initializes state and resources
-- L87 - `void dispose() {` - stops, releases, or resets state and resources
-- L95 - `Widget build(BuildContext context) {` - builds UI or state
-- L96 - `Widget page([ScrollController? scrollController]) => Column(` - performs one operation in its enclosing type or module
-- L139 - `List<Widget> _buildEditPanel() => [` - performs one operation in its enclosing type or module
-- L160 - `Widget _buildRefWidget() => Card(` - performs one operation in its enclosing type or module
-- L206 - `Widget _buildEditPlaceHolder() => GestureDetector(` - performs one operation in its enclosing type or module
-- L209 - `setState(() => _expanded = true);` - updates, stores, or records state
-- L210 - `Timer(_durtion, () {` - performs one operation in its enclosing type or module
-- L229 - `Widget _buildEditWidget() => Obx(` - performs one operation in its enclosing type or module
-- L252 - `Widget _buildAppBar() => !_expanded` - performs one operation in its enclosing type or module
-- L342 - `List<Widget> _buildDismiss() => [` - performs one operation in its enclosing type or module
-- L364 - `List<Map<String, dynamic>>? getRepostContent(DynamicItemModel item) {` - reads, requests, or synchronizes data
-- L404 - `Future<void> onCustomPublish({List? pictures}) async {` - handles interaction, lifecycle, or playback events
-- L440 - `void onSave() {}` - handles interaction, lifecycle, or playback events
+- L24 - **class `RepostPanel`** - page or visual structure
+- L25 - `const RepostPanel({` - performs one operation in its enclosing type or module
+- L61 - `State<RepostPanel> createState() => _RepostPanelState();` - builds UI or state
+- L64 - **class `_RepostPanelState`** - data structure or state carrier
+- L77 - `void initState() {` - starts or initializes state and resources
+- L101 - `void dispose() {` - stops, releases, or resets state and resources
+- L109 - `Widget build(BuildContext context) {` - builds UI or state
+- L110 - `Widget page([ScrollController? scrollController]) => Column(` - performs one operation in its enclosing type or module
+- L153 - `List<Widget> _buildEditPanel() => [` - performs one operation in its enclosing type or module
+- L174 - `Widget _buildRefWidget() => Card(` - performs one operation in its enclosing type or module
+- L220 - `Widget _buildEditPlaceHolder() => GestureDetector(` - performs one operation in its enclosing type or module
+- L223 - `setState(() => _expanded = true);` - updates, stores, or records state
+- L224 - `Timer(_durtion, () {` - performs one operation in its enclosing type or module
+- L243 - `Widget _buildEditWidget() => Obx(` - performs one operation in its enclosing type or module
+- L266 - `Widget _buildAppBar() => !_expanded` - performs one operation in its enclosing type or module
+- L392 - `List<Widget> _buildDismiss() => [` - performs one operation in its enclosing type or module
+- L414 - `List<Map<String, dynamic>>? getRepostContent(DynamicItemModel item) {` - reads, requests, or synchronizes data
+- L453 - `Future<void> _replyIfNeeded() async {` - performs one operation in its enclosing type or module
+- L477 - `Future<void> onCustomPublish({List? pictures}) async {` - handles interaction, lifecycle, or playback events
+- L514 - `void onSave() {}` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/dynamics_select_topic/controller.dart`
 
@@ -9962,17 +10126,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/dynamics_tab/view.dart`
 
-- L20 - **class `DynamicsTabPage`** - page or visual structure
-- L21 - `const DynamicsTabPage({super.key, required this.dynamicsType});` - performs one operation in its enclosing type or module
-- L26 - `State<DynamicsTabPage> createState() => _DynamicsTabPageState();` - builds UI or state
-- L29 - **class `_DynamicsTabPageState`** - data structure or state carrier
-- L38 - `void initState() {` - starts or initializes state and resources
-- L46 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
-- L52 - `Widget build(BuildContext context) {` - builds UI or state
-- L64 - `Obx(() => _buildBody(controller.loadingState.value)),` - performs one operation in its enclosing type or module
-- L72 - `Widget _buildBody(LoadingState<List<DynamicItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
-- L74 - `Loading() => dynSkeleton,` - reads, requests, or synchronizes data
-- L75 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L19 - **class `DynamicsTabPage`** - page or visual structure
+- L20 - `const DynamicsTabPage({super.key, required this.dynamicsType});` - performs one operation in its enclosing type or module
+- L25 - `State<DynamicsTabPage> createState() => _DynamicsTabPageState();` - builds UI or state
+- L28 - **class `_DynamicsTabPageState`** - data structure or state carrier
+- L37 - `void initState() {` - starts or initializes state and resources
+- L45 - `Future<void> onRefresh() {` - switches, recovers, or refreshes runtime state
+- L51 - `Widget build(BuildContext context) {` - builds UI or state
+- L63 - `Obx(() => _buildBody(controller.loadingState.value)),` - performs one operation in its enclosing type or module
+- L71 - `Widget _buildBody(LoadingState<List<DynamicItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
+- L73 - `Loading() => dynSkeleton,` - reads, requests, or synchronizes data
+- L74 - `Success(:final response) =>` - performs one operation in its enclosing type or module
 - L91 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 - L98 - `Widget _itemBuilder(List<DynamicItemModel> list, int index) {` - performs one operation in its enclosing type or module
 
@@ -10010,19 +10174,19 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/dynamics_topic/view.dart`
 
-- L38 - **class `DynTopicPage`** - page or visual structure
-- L39 - `const DynTopicPage({super.key});` - performs one operation in its enclosing type or module
-- L42 - `State<DynTopicPage> createState() => _DynTopicPageState();` - builds UI or state
-- L45 - **class `_DynTopicPageState`** - data structure or state carrier
-- L55 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L62 - `Widget build(BuildContext context) {` - builds UI or state
-- L78 - `Obx(() {` - performs one operation in its enclosing type or module
-- L137 - `Obx(() => _buildBody(_controller.loadingState.value)),` - performs one operation in its enclosing type or module
-- L173 - `Widget _buildAppBar(` - performs one operation in its enclosing type or module
-- L179 - `Loading() => const SliverAppBar(),` - reads, requests, or synchronizes data
-- L358 - `Widget _buildBody(LoadingState<List<TopicCardItem>?> loadingState) {` - performs one operation in its enclosing type or module
-- L360 - `Loading() => dynSkeleton,` - reads, requests, or synchronizes data
-- L361 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L37 - **class `DynTopicPage`** - page or visual structure
+- L38 - `const DynTopicPage({super.key});` - performs one operation in its enclosing type or module
+- L41 - `State<DynTopicPage> createState() => _DynTopicPageState();` - builds UI or state
+- L44 - **class `_DynTopicPageState`** - data structure or state carrier
+- L54 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L61 - `Widget build(BuildContext context) {` - builds UI or state
+- L77 - `Obx(() {` - performs one operation in its enclosing type or module
+- L136 - `Obx(() => _buildBody(_controller.loadingState.value)),` - performs one operation in its enclosing type or module
+- L172 - `Widget _buildAppBar(` - performs one operation in its enclosing type or module
+- L178 - `Loading() => const SliverAppBar(),` - reads, requests, or synchronizes data
+- L357 - `Widget _buildBody(LoadingState<List<TopicCardItem>?> loadingState) {` - performs one operation in its enclosing type or module
+- L359 - `Loading() => dynSkeleton,` - reads, requests, or synchronizes data
+- L360 - `Success(:final response) =>` - performs one operation in its enclosing type or module
 - L377 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 - L384 - `Widget _itemBuilder(List<TopicCardItem> list, int index) {` - performs one operation in its enclosing type or module
 - L402 - `Widget _buildFoldItem(FoldCardItem item) {` - performs one operation in its enclosing type or module
@@ -10072,12 +10236,12 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/dynamics/widgets/author_panel.dart`
 
-- L34 - **class `AuthorPanel`** - page or visual structure
-- L46 - `const AuthorPanel({` - performs one operation in its enclosing type or module
-- L60 - `Widget build(BuildContext context) {` - builds UI or state
-- L244 - `void morePanel(BuildContext context) {` - performs one operation in its enclosing type or module
-- L247 - `String? getBvid(String? type, DynamicMajorModel? major) => switch (type) {` - reads, requests, or synchronizes data
-- L491 - `Future<void> onTap() async {` - handles interaction, lifecycle, or playback events
+- L35 - **class `AuthorPanel`** - page or visual structure
+- L47 - `const AuthorPanel({` - performs one operation in its enclosing type or module
+- L61 - `Widget build(BuildContext context) {` - builds UI or state
+- L245 - `void morePanel(BuildContext context) {` - performs one operation in its enclosing type or module
+- L248 - `String? getBvid(String? type, DynamicMajorModel? major) => switch (type) {` - reads, requests, or synchronizes data
+- L492 - `Future<void> onTap() async {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/dynamics/widgets/blocked_item.dart`
 
@@ -10316,8 +10480,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L23 - **class `FavVideoCardH`** - reusable UI or rendering component
 - L28 - `const FavVideoCardH({` - performs one operation in its enclosing type or module
-- L38 - `Widget build(BuildContext context) {` - builds UI or state
-- L155 - `Widget content(BuildContext context, ColorScheme colorScheme, bool isOwner) {` - performs one operation in its enclosing type or module
+- L37 - `void _onTap() {` - performs one operation in its enclosing type or module
+- L65 - `Widget build(BuildContext context) {` - builds UI or state
+- L158 - `Widget content(BuildContext context, ColorScheme colorScheme, bool isOwner) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/fav_folder_sort/view.dart`
 
@@ -10331,16 +10496,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/fav_panel/view.dart`
 
-- L10 - **class `FavPanel`** - page or visual structure
-- L11 - `const FavPanel({` - performs one operation in its enclosing type or module
-- L21 - `State<FavPanel> createState() => _FavPanelState();` - builds UI or state
-- L24 - **class `_FavPanelState`** - data structure or state carrier
-- L28 - `void initState() {` - starts or initializes state and resources
-- L33 - `Future<void> _queryVideoInFolder() async {` - performs one operation in its enclosing type or module
-- L37 - `setState(() {});` - updates, stores, or records state
-- L58 - `void onTap() {` - handles interaction, lifecycle, or playback events
-- L99 - `Widget build(BuildContext context) {` - builds UI or state
-- L121 - `setState(() {});` - updates, stores, or records state
+- L11 - **class `FavPanel`** - page or visual structure
+- L12 - `const FavPanel({` - performs one operation in its enclosing type or module
+- L22 - `State<FavPanel> createState() => _FavPanelState();` - builds UI or state
+- L25 - **class `_FavPanelState`** - data structure or state carrier
+- L30 - `void initState() {` - starts or initializes state and resources
+- L36 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L41 - `Future<void> _queryVideoInFolder() async {` - performs one operation in its enclosing type or module
+- L45 - `setState(() {});` - updates, stores, or records state
+- L66 - `void onTap() {` - handles interaction, lifecycle, or playback events
+- L137 - `Widget build(BuildContext context) {` - builds UI or state
+- L158 - `setState(() {});` - updates, stores, or records state
 
 ## `lib/pages/fav_search/controller.dart`
 
@@ -10730,10 +10896,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L72 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
 - L73 - `Success(:final response) => ListView.builder(` - performs one operation in its enclosing type or module
 - L82 - `void onTap() {` - handles interaction, lifecycle, or playback events
-- L117 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
-- L126 - `Widget build(BuildContext context) {` - builds UI or state
-- L176 - `void _onCreateFavTag(({int tagid, String tagName}) res) {` - performs one operation in its enclosing type or module
-- L182 - `setState(() {});` - updates, stores, or records state
+- L118 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
+- L127 - `Widget build(BuildContext context) {` - builds UI or state
+- L177 - `void _onCreateFavTag(({int tagid, String tagName}) res) {` - performs one operation in its enclosing type or module
+- L183 - `setState(() {});` - updates, stores, or records state
 
 ## `lib/pages/history_search/controller.dart`
 
@@ -10791,10 +10957,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/history/widgets/item.dart`
 
-- L22 - **class `HistoryItem`** - reusable UI or rendering component
-- L27 - `const HistoryItem({` - performs one operation in its enclosing type or module
-- L35 - `Widget build(BuildContext context) {` - builds UI or state
-- L270 - `Widget content(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L18 - **class `HistoryItem`** - reusable UI or rendering component
+- L23 - `const HistoryItem({` - performs one operation in its enclosing type or module
+- L31 - `Widget build(BuildContext context) {` - builds UI or state
+- L168 - `Widget content(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L219 - `Future<void> onPushHistory(HistoryItemModel item) async {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/home/controller.dart`
 
@@ -10868,7 +11035,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L65 - `Widget _buildBody(LoadingState<List<LaterItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
 - L67 - `Loading() => gridSkeleton,` - reads, requests, or synchronizes data
 - L68 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L108 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L106 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/later/controller.dart`
 
@@ -10900,10 +11067,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/later/widgets/video_card_h_later.dart`
 
-- L20 - **class `VideoCardHLater`** - reusable UI or rendering component
-- L21 - `const VideoCardHLater({` - performs one operation in its enclosing type or module
-- L34 - `Widget build(BuildContext context) {` - builds UI or state
-- L178 - `Widget content(BuildContext context, ThemeData theme) {` - performs one operation in its enclosing type or module
+- L16 - **class `VideoCardHLater`** - reusable UI or rendering component
+- L17 - `const VideoCardHLater({` - performs one operation in its enclosing type or module
+- L30 - `Widget build(BuildContext context) {` - builds UI or state
+- L93 - `Widget content(BuildContext context, ThemeData theme) {` - performs one operation in its enclosing type or module
+- L183 - `Future<void> onPushLater(` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/live_area_detail/child/controller.dart`
 
@@ -11187,30 +11355,30 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L193 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
 - L216 - `Widget build(BuildContext context) {` - builds UI or state
 - L243 - `Widget videoPlayerPanel(` - performs one operation in its enclosing type or module
-- L436 - `Widget _buildPH(bool isFullScreen) {` - performs one operation in its enclosing type or module
-- L465 - `Widget _buildPP(bool isFullScreen) {` - performs one operation in its enclosing type or module
-- L520 - `void _showRank() {` - performs one operation in its enclosing type or module
-- L541 - `PreferredSizeWidget _buildAppBar(bool isFullScreen) {` - performs one operation in its enclosing type or module
-- L694 - `Widget _buildBodyH(bool isFullScreen) {` - performs one operation in its enclosing type or module
-- L742 - `Widget _buildChatWidget([bool isPP = false]) {` - performs one operation in its enclosing type or module
-- L743 - `Widget chat() => LiveRoomChatPanel(` - performs one operation in its enclosing type or module
-- L935 - `WidgetStateProperty<Color?>? _overlayColor(ColorScheme colorScheme) =>` - performs one operation in its enclosing type or module
-- L952 - **class `_BorderIndicator`** - reusable UI or rendering component
-- L953 - `const _BorderIndicator({` - performs one operation in its enclosing type or module
-- L962 - `RenderObject createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
-- L970 - `void updateRenderObject(` - updates, stores, or records state
-- L980 - **class `_RenderBorderIndicator`** - reusable UI or rendering component
-- L981 - `_RenderBorderIndicator({` - performs one operation in its enclosing type or module
-- L988 - `set radius(Radius value) {` - performs one operation in its enclosing type or module
-- L996 - `set isLeft(bool value) {` - predicate, validation, or lookup
-- L1003 - `void performLayout() {` - performs one operation in its enclosing type or module
-- L1008 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
-- L1032 - **class `LiveDanmaku`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1039 - `const LiveDanmaku({` - performs one operation in its enclosing type or module
-- L1049 - `State<LiveDanmaku> createState() => _LiveDanmakuState();` - builds UI or state
-- L1054 - **class `_LiveDanmakuState`** - data structure or state carrier
-- L1058 - `void didUpdateWidget(LiveDanmaku oldWidget) {` - handles interaction, lifecycle, or playback events
-- L1069 - `Widget build(BuildContext context) {` - builds UI or state
+- L438 - `Widget _buildPH(bool isFullScreen) {` - performs one operation in its enclosing type or module
+- L467 - `Widget _buildPP(bool isFullScreen) {` - performs one operation in its enclosing type or module
+- L522 - `void _showRank() {` - performs one operation in its enclosing type or module
+- L543 - `PreferredSizeWidget _buildAppBar(bool isFullScreen) {` - performs one operation in its enclosing type or module
+- L696 - `Widget _buildBodyH(bool isFullScreen) {` - performs one operation in its enclosing type or module
+- L744 - `Widget _buildChatWidget([bool isPP = false]) {` - performs one operation in its enclosing type or module
+- L745 - `Widget chat() => LiveRoomChatPanel(` - performs one operation in its enclosing type or module
+- L937 - `WidgetStateProperty<Color?>? _overlayColor(ColorScheme colorScheme) =>` - performs one operation in its enclosing type or module
+- L954 - **class `_BorderIndicator`** - reusable UI or rendering component
+- L955 - `const _BorderIndicator({` - performs one operation in its enclosing type or module
+- L964 - `RenderObject createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
+- L972 - `void updateRenderObject(` - updates, stores, or records state
+- L982 - **class `_RenderBorderIndicator`** - reusable UI or rendering component
+- L983 - `_RenderBorderIndicator({` - performs one operation in its enclosing type or module
+- L990 - `set radius(Radius value) {` - performs one operation in its enclosing type or module
+- L998 - `set isLeft(bool value) {` - predicate, validation, or lookup
+- L1005 - `void performLayout() {` - performs one operation in its enclosing type or module
+- L1010 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
+- L1034 - **class `LiveDanmaku`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1041 - `const LiveDanmaku({` - performs one operation in its enclosing type or module
+- L1051 - `State<LiveDanmaku> createState() => _LiveDanmakuState();` - builds UI or state
+- L1056 - **class `_LiveDanmakuState`** - data structure or state carrier
+- L1060 - `void didUpdateWidget(LiveDanmaku oldWidget) {` - handles interaction, lifecycle, or playback events
+- L1071 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/live_room/widgets/bottom_control.dart`
 
@@ -11222,24 +11390,24 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/live_room/widgets/chat_panel.dart`
 
-- L21 - **class `LiveRoomChatPanel`** - page or visual structure
-- L22 - `const LiveRoomChatPanel({` - performs one operation in its enclosing type or module
-- L34 - `Widget build(BuildContext context) {` - builds UI or state
-- L236 - `InlineSpan _buildMsg(double devicePixelRatio, DanmakuMsg obj) {` - performs one operation in its enclosing type or module
-- L302 - `void _showMsgMenu(` - performs one operation in its enclosing type or module
+- L22 - **class `LiveRoomChatPanel`** - page or visual structure
+- L23 - `const LiveRoomChatPanel({` - performs one operation in its enclosing type or module
+- L35 - `Widget build(BuildContext context) {` - builds UI or state
+- L248 - `InlineSpan _buildMsg(double devicePixelRatio, DanmakuMsg obj) {` - performs one operation in its enclosing type or module
+- L314 - `void _showMsgMenu(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/live_room/widgets/header_control.dart`
 
-- L29 - **class `LiveHeaderControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L30 - `const LiveHeaderControl({` - performs one operation in its enclosing type or module
-- L52 - `State<LiveHeaderControl> createState() => _LiveHeaderControlState();` - builds UI or state
-- L55 - **class `_LiveHeaderControlState`** - data structure or state carrier
-- L70 - `Widget build(BuildContext context) {` - builds UI or state
-- L136 - `Obx(() {` - performs one operation in its enclosing type or module
-- L207 - `Obx(() {` - performs one operation in its enclosing type or module
-- L301 - `void _showLiveStreamDialog() {` - performs one operation in its enclosing type or module
-- L453 - **class `_ExpansionTile`** - reusable UI or rendering component
-- L454 - `const _ExpansionTile({` - performs one operation in its enclosing type or module
+- L30 - **class `LiveHeaderControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L31 - `const LiveHeaderControl({` - performs one operation in its enclosing type or module
+- L53 - `State<LiveHeaderControl> createState() => _LiveHeaderControlState();` - builds UI or state
+- L56 - **class `_LiveHeaderControlState`** - data structure or state carrier
+- L71 - `Widget build(BuildContext context) {` - builds UI or state
+- L137 - `Obx(() {` - performs one operation in its enclosing type or module
+- L208 - `Obx(() {` - performs one operation in its enclosing type or module
+- L302 - `void _showLiveStreamDialog() {` - performs one operation in its enclosing type or module
+- L454 - **class `_ExpansionTile`** - reusable UI or rendering component
+- L455 - `const _ExpansionTile({` - performs one operation in its enclosing type or module
 
 ## `lib/pages/live_search/child/controller.dart`
 
@@ -11467,41 +11635,42 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/main/view.dart`
 
-- L31 - **class `MainApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L32 - `const MainApp({super.key});` - starts or initializes state and resources
-- L35 - `State<MainApp> createState() => _MainAppState();` - builds UI or state
-- L38 - **class `_MainAppState`** - data structure or state carrier
-- L55 - `void initState() {` - starts or initializes state and resources
-- L76 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L95 - `void didPopNext() {` - handles interaction, lifecycle, or playback events
-- L105 - `void didPushNext() {` - handles interaction, lifecycle, or playback events
-- L111 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
-- L121 - `void dispose() {` - stops, releases, or resets state and resources
-- L135 - `bool _handleKeyEvent(KeyEvent event) {` - performs one operation in its enclosing type or module
-- L143 - `void onWindowMaximize() {` - handles interaction, lifecycle, or playback events
-- L148 - `void onWindowUnmaximize() {` - handles interaction, lifecycle, or playback events
-- L153 - `Future<void> onWindowMoved() async {` - handles interaction, lifecycle, or playback events
-- L162 - `Future<void> onWindowResized() async {` - handles interaction, lifecycle, or playback events
-- L174 - `void onWindowClose() {` - handles interaction, lifecycle, or playback events
-- L183 - `Future<void> _onClose() async {` - performs one operation in its enclosing type or module
-- L199 - `void onWindowMinimize() {` - handles interaction, lifecycle, or playback events
-- L204 - `void onWindowRestore() {` - handles interaction, lifecycle, or playback events
-- L208 - `void _onHideWindow() {` - performs one operation in its enclosing type or module
-- L220 - `void _onShowWindow() {` - performs one operation in its enclosing type or module
-- L228 - `Future<void>? _setOpacity(double opacity) {` - performs one operation in its enclosing type or module
-- L237 - `Future<void>? onWindowFocus() {` - handles interaction, lifecycle, or playback events
-- L242 - `Future<void> _hide() async {` - performs one operation in its enclosing type or module
-- L247 - `Future<void> _show() {` - performs one operation in its enclosing type or module
-- L252 - `Future<void> onTrayIconMouseDown() async {` - handles interaction, lifecycle, or playback events
-- L263 - `Future<void> onTrayIconRightMouseDown() async {` - handles interaction, lifecycle, or playback events
-- L269 - `void onTrayMenuItemClick(MenuItem menuItem) {` - handles interaction, lifecycle, or playback events
-- L278 - `Future<void> _handleTray() async {` - performs one operation in its enclosing type or module
-- L299 - `static void _onBack() {` - performs one operation in its enclosing type or module
-- L306 - `void onPopInvokedWithResult(bool didPop, Object? result) {` - handles interaction, lifecycle, or playback events
-- L408 - `Widget _sideBar() {` - performs one operation in its enclosing type or module
-- L476 - `Widget build(BuildContext context) {` - builds UI or state
-- L545 - `Widget _buildIcon({required NavigationBarType type, bool selected = false}) {` - performs one operation in its enclosing type or module
-- L564 - `Widget userAndSearchVertical() {` - performs one operation in its enclosing type or module
+- L32 - **class `MainApp`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L33 - `const MainApp({super.key});` - starts or initializes state and resources
+- L36 - `State<MainApp> createState() => _MainAppState();` - builds UI or state
+- L39 - **class `_MainAppState`** - data structure or state carrier
+- L51 - `void initState() {` - starts or initializes state and resources
+- L71 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L90 - `void didPopNext() {` - handles interaction, lifecycle, or playback events
+- L100 - `void didPushNext() {` - handles interaction, lifecycle, or playback events
+- L106 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
+- L116 - `void dispose() {` - stops, releases, or resets state and resources
+- L130 - `bool _handleKeyEvent(KeyEvent event) {` - performs one operation in its enclosing type or module
+- L138 - `void onWindowMaximize() {` - handles interaction, lifecycle, or playback events
+- L143 - `void onWindowUnmaximize() {` - handles interaction, lifecycle, or playback events
+- L148 - `Future<void> onWindowMoved() async {` - handles interaction, lifecycle, or playback events
+- L157 - `Future<void> onWindowResized() async {` - handles interaction, lifecycle, or playback events
+- L169 - `void onWindowClose() {` - handles interaction, lifecycle, or playback events
+- L178 - `Future<void> _onClose() async {` - performs one operation in its enclosing type or module
+- L186 - `void onWindowMinimize() {` - handles interaction, lifecycle, or playback events
+- L191 - `void onWindowRestore() {` - handles interaction, lifecycle, or playback events
+- L195 - `void _onHideWindow() {` - performs one operation in its enclosing type or module
+- L207 - `void _onShowWindow() {` - performs one operation in its enclosing type or module
+- L215 - `Future<void>? _setOpacity(double opacity) {` - performs one operation in its enclosing type or module
+- L224 - `Future<void>? onWindowFocus() {` - handles interaction, lifecycle, or playback events
+- L229 - `Future<void> _hide() async {` - performs one operation in its enclosing type or module
+- L234 - `Future<void> _show() {` - performs one operation in its enclosing type or module
+- L247 - `void _destroyTrayIcon() {` - performs one operation in its enclosing type or module
+- L274 - `void _showMenuListener(MenuEvent event) {` - performs one operation in its enclosing type or module
+- L280 - `void _exitMenuListener(MenuEvent event) {` - performs one operation in its enclosing type or module
+- L286 - `Future<void> _trayListener(TrayIconEvent event) async {` - performs one operation in its enclosing type or module
+- L300 - `void _initTrayIcon() {` - performs one operation in its enclosing type or module
+- L330 - `static void _onBack() {` - performs one operation in its enclosing type or module
+- L337 - `void onPopInvokedWithResult(bool didPop, Object? result) {` - handles interaction, lifecycle, or playback events
+- L439 - `Widget _sideBar() {` - performs one operation in its enclosing type or module
+- L507 - `Widget build(BuildContext context) {` - builds UI or state
+- L576 - `Widget _buildIcon({required NavigationBarType type, bool selected = false}) {` - performs one operation in its enclosing type or module
+- L595 - `Widget userAndSearchVertical() {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/match_info/controller.dart`
 
@@ -11511,16 +11680,36 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/match_info/view.dart`
 
-- L23 - **class `MatchInfoPage`** - page or visual structure
-- L24 - `const MatchInfoPage({super.key});` - performs one operation in its enclosing type or module
-- L27 - `State<MatchInfoPage> createState() => _MatchInfoPageState();` - builds UI or state
-- L30 - **class `_MatchInfoPageState`** - data structure or state carrier
-- L41 - `Widget build(BuildContext context) {` - builds UI or state
-- L51 - `Obx(() => _buildInfo(controller.infoState.value)),` - performs one operation in its enclosing type or module
-- L53 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
-- L66 - `Widget _buildInfo(LoadingState<MatchContest?> infoState) {` - performs one operation in its enclosing type or module
-- L69 - `Widget teamInfo(MatchTeam team) {` - performs one operation in its enclosing type or module
-- L189 - `void replyReply(BuildContext context, ReplyInfo replyItem, int? id) {` - performs one operation in its enclosing type or module
+- L18 - **class `MatchInfoPage`** - page or visual structure
+- L19 - `const MatchInfoPage({super.key});` - performs one operation in its enclosing type or module
+- L22 - `State<MatchInfoPage> createState() => _MatchInfoPageState();` - builds UI or state
+- L25 - **class `_MatchInfoPageState`** - data structure or state carrier
+- L36 - `Widget build(BuildContext context) {` - builds UI or state
+- L46 - `Obx(() => _buildInfo(controller.infoState.value)),` - performs one operation in its enclosing type or module
+- L48 - `Obx(() => replyList(controller.loadingState.value)),` - performs one operation in its enclosing type or module
+- L61 - `Widget _buildInfo(LoadingState<MatchContest?> infoState) {` - performs one operation in its enclosing type or module
+- L78 - `void replyReply(BuildContext context, ReplyInfo replyItem, int? id) {` - performs one operation in its enclosing type or module
+
+## `lib/pages/match_info/widgets/match_info_item.dart`
+
+- L11 - **class `MatchInfoItem`** - reusable UI or rendering component
+- L12 - `const MatchInfoItem({super.key, required this.contest});` - performs one operation in its enclosing type or module
+- L16 - `static Widget teamInfo(MatchTeam team) {` - performs one operation in its enclosing type or module
+- L38 - `Widget build(BuildContext context) {` - builds UI or state
+- L44 - `Widget buildTeamInfo(MatchTeam team) {` - performs one operation in its enclosing type or module
+- L65 - `Widget? buildMatchBtn(ColorScheme colorScheme, MatchContest contest) {` - performs one operation in its enclosing type or module
+- L123 - `Widget buildContestItem(ColorScheme colorScheme, MatchContest contest) {` - performs one operation in its enclosing type or module
+
+## `lib/pages/match_info/widgets/team_info_layout.dart`
+
+- L6 - **enum `TeamInfoType`** - finite state or option set
+- L8 - **class `TeamInfoLayout`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L10 - `const TeamInfoLayout({` - performs one operation in its enclosing type or module
+- L22 - `Widget childForSlot(TeamInfoType slot) => switch (slot) {` - performs one operation in its enclosing type or module
+- L29 - `RenderTeamInfoLayout createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
+- L39 - **class `RenderTeamInfoLayout`** - reusable UI or rendering component
+- L51 - `void performLayout() {` - performs one operation in its enclosing type or module
+- L98 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_article/controller.dart`
 
@@ -11663,8 +11852,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L9 - **class `MemberComicItem`** - reusable UI or rendering component
 - L10 - `const MemberComicItem({super.key, required this.item});` - performs one operation in its enclosing type or module
-- L15 - `Widget build(BuildContext context) {` - builds UI or state
-- L21 - `void onLongPress() => imageSaveDialog(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+- L14 - `void onLongPress() => showPgcCover(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+- L17 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/member_contribute/controller.dart`
 
@@ -11697,16 +11886,16 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_dynamics/view.dart`
 
-- L16 - **class `MemberDynamicsPage`** - page or visual structure
-- L17 - `const MemberDynamicsPage({super.key, this.mid});` - performs one operation in its enclosing type or module
-- L22 - `State<MemberDynamicsPage> createState() => _MemberDynamicsPageState();` - builds UI or state
-- L25 - **class `_MemberDynamicsPageState`** - data structure or state carrier
-- L34 - `void initState() {` - starts or initializes state and resources
-- L45 - `Widget build(BuildContext context) {` - builds UI or state
-- L62 - `Widget _buildBody(EdgeInsets padding) => refreshIndicator(` - performs one operation in its enclosing type or module
-- L80 - `Widget _buildContent(LoadingState<List<DynamicItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
-- L82 - `Loading() => dynSkeleton,` - reads, requests, or synchronizes data
-- L83 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L15 - **class `MemberDynamicsPage`** - page or visual structure
+- L16 - `const MemberDynamicsPage({super.key, this.mid});` - performs one operation in its enclosing type or module
+- L21 - `State<MemberDynamicsPage> createState() => _MemberDynamicsPageState();` - builds UI or state
+- L24 - **class `_MemberDynamicsPageState`** - data structure or state carrier
+- L33 - `void initState() {` - starts or initializes state and resources
+- L44 - `Widget build(BuildContext context) {` - builds UI or state
+- L61 - `Widget _buildBody(EdgeInsets padding) => refreshIndicator(` - performs one operation in its enclosing type or module
+- L79 - `Widget _buildContent(LoadingState<List<DynamicItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
+- L81 - `Loading() => dynSkeleton,` - reads, requests, or synchronizes data
+- L82 - `Success(:final response) =>` - performs one operation in its enclosing type or module
 - L99 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 - L106 - `Widget _itemBuilder(List<DynamicItemModel> list, int index) {` - performs one operation in its enclosing type or module
 
@@ -11774,16 +11963,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_home/view.dart`
 
-- L27 - **class `MemberHome`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L28 - `const MemberHome({super.key, this.heroTag});` - performs one operation in its enclosing type or module
-- L33 - `State<MemberHome> createState() => _MemberHomeState();` - builds UI or state
-- L36 - **class `_MemberHomeState`** - data structure or state carrier
-- L44 - `Widget build(BuildContext context) {` - builds UI or state
-- L67 - `Widget _buildBody(LoadingState<SpaceData?> loadingState) {` - performs one operation in its enclosing type or module
-- L73 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
-- L74 - `Success(response: final res) =>` - performs one operation in its enclosing type or module
-- L260 - `Error(:final errMsg) => scrollErrorWidget(errMsg: errMsg),` - performs one operation in its enclosing type or module
-- L264 - `Widget _header(` - performs one operation in its enclosing type or module
+- L37 - **class `MemberHome`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L38 - `const MemberHome({super.key, this.heroTag});` - performs one operation in its enclosing type or module
+- L43 - `State<MemberHome> createState() => _MemberHomeState();` - builds UI or state
+- L46 - **class `_MemberHomeState`** - data structure or state carrier
+- L56 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L62 - `Widget build(BuildContext context) {` - builds UI or state
+- L85 - `Widget _buildBody(LoadingState<SpaceData?> loadingState) {` - performs one operation in its enclosing type or module
+- L91 - `Loading() => m3eLoading,` - reads, requests, or synchronizes data
+- L92 - `Success(response: final res) =>` - performs one operation in its enclosing type or module
+- L279 - `Error(:final errMsg) => scrollErrorWidget(errMsg: errMsg),` - performs one operation in its enclosing type or module
+- L322 - `Widget _header(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_home/widgets/fav_item.dart`
 
@@ -11791,6 +11981,20 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L11 - `const MemberFavItem({super.key, required this.item});` - performs one operation in its enclosing type or module
 - L16 - `Widget build(BuildContext context) {` - builds UI or state
 - L17 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
+
+## `lib/pages/member_home/widgets/live_item.dart`
+
+- L5 - **class `_LiveItem`** - reusable UI or rendering component
+- L6 - `const _LiveItem({` - performs one operation in its enclosing type or module
+- L14 - `RenderObject createRenderObject(BuildContext context) {` - performs one operation in its enclosing type or module
+- L19 - `void updateRenderObject(BuildContext context, _RenderLiveItem renderObject) {` - updates, stores, or records state
+- L24 - **class `_RenderLiveItem`** - reusable UI or rendering component
+- L27 - `_RenderLiveItem({` - performs one operation in its enclosing type or module
+- L33 - `set color(Color value) {` - performs one operation in its enclosing type or module
+- L42 - `void performLayout() {` - performs one operation in its enclosing type or module
+- L62 - `void paint(PaintingContext context, Offset offset) {` - performs one operation in its enclosing type or module
+- L80 - `bool hitTest(BoxHitTestResult result, {required Offset position}) {` - performs one operation in its enclosing type or module
+- L95 - `void applyPaintTransform(covariant RenderObject child, Matrix4 transform) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_home/widgets/video_card_v_member_home.dart`
 
@@ -11833,16 +12037,16 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_opus/view.dart`
 
-- L19 - **class `MemberOpus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L20 - `const MemberOpus({` - performs one operation in its enclosing type or module
-- L32 - `State<MemberOpus> createState() => _MemberOpusState();` - builds UI or state
-- L35 - **class `_MemberOpusState`** - data structure or state carrier
-- L44 - `void initState() {` - starts or initializes state and resources
-- L56 - `Widget build(BuildContext context) {` - builds UI or state
-- L141 - `Widget _buildBody(LoadingState<List<SpaceOpusItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
-- L143 - `Loading() => SliverWaterfallFlow(` - reads, requests, or synchronizes data
-- L150 - `Success(:final response) =>` - performs one operation in its enclosing type or module
-- L165 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
+- L18 - **class `MemberOpus`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L19 - `const MemberOpus({` - performs one operation in its enclosing type or module
+- L31 - `State<MemberOpus> createState() => _MemberOpusState();` - builds UI or state
+- L34 - **class `_MemberOpusState`** - data structure or state carrier
+- L43 - `void initState() {` - starts or initializes state and resources
+- L55 - `Widget build(BuildContext context) {` - builds UI or state
+- L138 - `Widget _buildBody(LoadingState<List<SpaceOpusItemModel>?> loadingState) {` - performs one operation in its enclosing type or module
+- L140 - `Loading() => SliverMasonryGrid(` - reads, requests, or synchronizes data
+- L149 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L166 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_opus/widgets/space_opus_item.dart`
 
@@ -11876,8 +12080,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L10 - **class `PgcCardVMemberPgc`** - reusable UI or rendering component
 - L11 - `const PgcCardVMemberPgc({` - performs one operation in its enclosing type or module
-- L19 - `Widget build(BuildContext context) {` - builds UI or state
-- L20 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
+- L18 - `void onLongPress() => showPgcCover(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+- L21 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/member_profile/view.dart`
 
@@ -11917,15 +12121,15 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_search/child/view.dart`
 
-- L17 - **class `MemberSearchChildPage`** - page or visual structure
-- L18 - `const MemberSearchChildPage({` - performs one operation in its enclosing type or module
-- L28 - `State<MemberSearchChildPage> createState() => _MemberSearchChildPageState();` - builds UI or state
-- L31 - **class `_MemberSearchChildPageState`** - data structure or state carrier
-- L36 - `Widget build(BuildContext context) {` - builds UI or state
-- L55 - `Obx(() => _buildBody(_controller.loadingState.value)),` - performs one operation in its enclosing type or module
-- L71 - `Widget _buildBody(LoadingState<List?> loadingState) {` - performs one operation in its enclosing type or module
-- L73 - `Loading() => _buildLoading,` - reads, requests, or synchronizes data
-- L74 - `Success(:final response) =>` - performs one operation in its enclosing type or module
+- L16 - **class `MemberSearchChildPage`** - page or visual structure
+- L17 - `const MemberSearchChildPage({` - performs one operation in its enclosing type or module
+- L27 - `State<MemberSearchChildPage> createState() => _MemberSearchChildPageState();` - builds UI or state
+- L30 - **class `_MemberSearchChildPageState`** - data structure or state carrier
+- L35 - `Widget build(BuildContext context) {` - builds UI or state
+- L54 - `Obx(() => _buildBody(_controller.loadingState.value)),` - performs one operation in its enclosing type or module
+- L70 - `Widget _buildBody(LoadingState<List?> loadingState) {` - performs one operation in its enclosing type or module
+- L72 - `Loading() => _buildLoading,` - reads, requests, or synchronizes data
+- L73 - `Success(:final response) =>` - performs one operation in its enclosing type or module
 - L103 - `Error(:final errMsg) => HttpError(` - performs one operation in its enclosing type or module
 - L110 - `Widget _itemBuilder(List list, int index) {` - performs one operation in its enclosing type or module
 
@@ -11994,13 +12198,13 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/member_shop/view.dart`
 
-- L17 - **class `MemberShop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L18 - `const MemberShop({` - performs one operation in its enclosing type or module
-- L28 - `State<MemberShop> createState() => _MemberShopState();` - builds UI or state
-- L31 - **class `_MemberShopState`** - data structure or state carrier
-- L36 - `void initState() {` - starts or initializes state and resources
-- L45 - `Widget build(BuildContext context) {` - builds UI or state
-- L77 - `Widget _buildBody(LoadingState<List<SpaceShopItem>?> loadingState) {` - performs one operation in its enclosing type or module
+- L16 - **class `MemberShop`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L17 - `const MemberShop({` - performs one operation in its enclosing type or module
+- L27 - `State<MemberShop> createState() => _MemberShopState();` - builds UI or state
+- L30 - **class `_MemberShopState`** - data structure or state carrier
+- L35 - `void initState() {` - starts or initializes state and resources
+- L44 - `Widget build(BuildContext context) {` - builds UI or state
+- L74 - `Widget _buildBody(LoadingState<List<SpaceShopItem>?> loadingState) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member_shop/widgets/item.dart`
 
@@ -12141,13 +12345,13 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L164 - `bool handleError(String? errMsg) {` - handles interaction, lifecycle, or playback events
 - L187 - `Future<LoadingState<SpaceData>> customGetData() => MemberHttp.space(` - performs one operation in its enclosing type or module
 - L192 - `void blockUser(BuildContext context) {` - performs one operation in its enclosing type or module
-- L222 - `void shareUser() {` - performs one operation in its enclosing type or module
-- L226 - `Future<void> _onBlock() async {` - performs one operation in its enclosing type or module
-- L238 - `void onFollow(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L258 - `void onClose() {` - stops, releases, or resets state and resources
-- L263 - `Future<void> onRemoveFan() async {` - handles interaction, lifecycle, or playback events
-- L276 - `void onTapTab(int value) {` - handles interaction, lifecycle, or playback events
-- L282 - `Future<void> vipExpAdd() async {` - performs one operation in its enclosing type or module
+- L230 - `void shareUser() {` - performs one operation in its enclosing type or module
+- L234 - `Future<void> _onBlock() async {` - performs one operation in its enclosing type or module
+- L246 - `void onFollow(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L266 - `void onClose() {` - stops, releases, or resets state and resources
+- L271 - `Future<void> onRemoveFan() async {` - handles interaction, lifecycle, or playback events
+- L284 - `void onTapTab(int value) {` - handles interaction, lifecycle, or playback events
+- L290 - `Future<void> vipExpAdd() async {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/member/view.dart`
 
@@ -12230,76 +12434,112 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L519 - `Widget _buildAvatar(ColorScheme scheme) {` - performs one operation in its enclosing type or module
 - L550 - `Column _buildV(` - performs one operation in its enclosing type or module
 - L587 - `Widget _buildCollectionHeader(` - performs one operation in its enclosing type or module
-- L664 - `HeaderTitle(` - performs one operation in its enclosing type or module
-- L684 - `Widget _buildHeader(` - performs one operation in its enclosing type or module
-- L725 - `Widget buildPrInfo(` - performs one operation in its enclosing type or module
-- L784 - `Column _buildH(BuildContext context, ColorScheme scheme, bool isLight) =>` - performs one operation in its enclosing type or module
-- L823 - `Widget _buildChargeItem(` - performs one operation in its enclosing type or module
-- L871 - `Widget? _buildChargeAndGuard(ColorScheme colorScheme, bool isPortrait) {` - performs one operation in its enclosing type or module
-- L915 - `Widget _buildFollowedUp(` - performs one operation in its enclosing type or module
-- L963 - **class `HeaderIndicator`** - reusable UI or rendering component
-- L964 - `const HeaderIndicator({` - performs one operation in its enclosing type or module
-- L974 - `State<HeaderIndicator> createState() => _HeaderIndicatorState();` - builds UI or state
-- L977 - **class `_HeaderIndicatorState`** - reusable UI or rendering component
-- L981 - `void initState() {` - starts or initializes state and resources
-- L987 - `void _listener() {` - performs one operation in its enclosing type or module
-- L989 - `setState(() {});` - updates, stores, or records state
-- L992 - `void _updateProgress() {` - performs one operation in its enclosing type or module
-- L997 - `void dispose() {` - stops, releases, or resets state and resources
-- L1003 - `Widget build(BuildContext context) {` - builds UI or state
-- L1014 - **class `HeaderTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L1015 - `const HeaderTitle({` - performs one operation in its enclosing type or module
-- L1025 - `State<HeaderTitle> createState() => _HeaderTitleState();` - builds UI or state
-- L1028 - **class `_HeaderTitleState`** - data structure or state carrier
-- L1032 - `void initState() {` - starts or initializes state and resources
-- L1038 - `void _listener() {` - performs one operation in its enclosing type or module
-- L1040 - `setState(() {});` - updates, stores, or records state
-- L1043 - `void _updateIndex() {` - performs one operation in its enclosing type or module
-- L1048 - `void dispose() {` - stops, releases, or resets state and resources
-- L1054 - `Widget build(BuildContext context) {` - builds UI or state
-- L1061 - `Widget _headerTitle(TopTitle title) {` - performs one operation in its enclosing type or module
-- L1095 - `Widget _headerWrapper(Widget child) {` - performs one operation in its enclosing type or module
+- L665 - `HeaderTitle(` - performs one operation in its enclosing type or module
+- L685 - `Widget _buildHeader(` - performs one operation in its enclosing type or module
+- L727 - `Widget buildPrInfo(` - performs one operation in its enclosing type or module
+- L786 - `Column _buildH(BuildContext context, ColorScheme scheme, bool isLight) =>` - performs one operation in its enclosing type or module
+- L825 - `Widget _buildChargeItem(` - performs one operation in its enclosing type or module
+- L873 - `Widget? _buildChargeAndGuard(ColorScheme colorScheme, bool isPortrait) {` - performs one operation in its enclosing type or module
+- L917 - `Widget _buildFollowedUp(` - performs one operation in its enclosing type or module
+- L965 - **class `HeaderIndicator`** - reusable UI or rendering component
+- L966 - `const HeaderIndicator({` - performs one operation in its enclosing type or module
+- L976 - `State<HeaderIndicator> createState() => _HeaderIndicatorState();` - builds UI or state
+- L979 - **class `_HeaderIndicatorState`** - reusable UI or rendering component
+- L983 - `void initState() {` - starts or initializes state and resources
+- L989 - `void _listener() {` - performs one operation in its enclosing type or module
+- L991 - `setState(() {});` - updates, stores, or records state
+- L994 - `void _updateProgress() {` - performs one operation in its enclosing type or module
+- L999 - `void dispose() {` - stops, releases, or resets state and resources
+- L1005 - `Widget build(BuildContext context) {` - builds UI or state
+- L1016 - **class `HeaderTitle`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L1017 - `const HeaderTitle({` - performs one operation in its enclosing type or module
+- L1027 - `State<HeaderTitle> createState() => _HeaderTitleState();` - builds UI or state
+- L1030 - **class `_HeaderTitleState`** - data structure or state carrier
+- L1034 - `void initState() {` - starts or initializes state and resources
+- L1040 - `void _listener() {` - performs one operation in its enclosing type or module
+- L1042 - `setState(() {});` - updates, stores, or records state
+- L1045 - `void _updateIndex() {` - performs one operation in its enclosing type or module
+- L1050 - `void dispose() {` - stops, releases, or resets state and resources
+- L1056 - `Widget build(BuildContext context) {` - builds UI or state
+- L1063 - `Widget _headerTitle(TopTitle title) {` - performs one operation in its enclosing type or module
+- L1097 - `Widget _headerWrapper(Widget child) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/mine/controller.dart`
 
-- L24 - **class `MineController`** - page or business state controller
-- L80 - `void onInit() {` - starts or initializes state and resources
-- L98 - `Future<void> queryUserInfo() async {` - reads, requests, or synchronizes data
-- L124 - `void _onLogoutMain() => Accounts.deleteAll({Accounts.main});` - performs one operation in its enclosing type or module
-- L126 - `Future<void> queryUserStatOwner() async {` - reads, requests, or synchronizes data
-- L134 - `bool customHandleResponse(bool isRefresh, Success<FavFolderData> response) {` - performs one operation in its enclosing type or module
-- L141 - `Future<LoadingState<FavFolderData>> customGetData() {` - performs one operation in its enclosing type or module
-- L149 - `static void onChangeAnonymity() {` - handles interaction, lifecycle, or playback events
-- L265 - `void onChangeTheme() {` - handles interaction, lifecycle, or playback events
-- L272 - `void push(String name) {` - handles interaction, lifecycle, or playback events
-- L279 - `void onLogin([bool longPress = false]) {` - handles interaction, lifecycle, or playback events
-- L288 - `Future<void> onRefresh({bool isManual = true}) {` - switches, recovers, or refreshes runtime state
-- L301 - `void onChangeAccount(bool isLogin) {` - handles interaction, lifecycle, or playback events
+- L33 - **class `MineController`** - page or business state controller
+- L91 - `Iterable<MineRefreshMixin> tabCtr() sync* {` - performs one operation in its enclosing type or module
+- L98 - `void _initTabs() {` - performs one operation in its enclosing type or module
+- L115 - `void onInit() {` - starts or initializes state and resources
+- L122 - `tabCtr().forEach((ctr) => ctr.queryData());` - performs one operation in its enclosing type or module
+- L128 - `Future<void> queryUserInfo() async {` - reads, requests, or synchronizes data
+- L154 - `void _onLogoutMain() => Accounts.deleteAll({Accounts.main});` - performs one operation in its enclosing type or module
+- L156 - `Future<void> queryUserStatOwner() async {` - reads, requests, or synchronizes data
+- L163 - `static void onChangeAnonymity() {` - handles interaction, lifecycle, or playback events
+- L279 - `void onChangeTheme() {` - handles interaction, lifecycle, or playback events
+- L286 - `void push(String name) {` - handles interaction, lifecycle, or playback events
+- L293 - `void onLogin([bool longPress = false]) {` - handles interaction, lifecycle, or playback events
+- L301 - `Future<void> onRefresh({bool isManual = true}) {` - switches, recovers, or refreshes runtime state
+- L309 - `tabCtr().map((ctr) => ctr.onRefresh(isManual: isManual)),` - performs one operation in its enclosing type or module
+- L314 - `void onChangeAccount(bool isLogin) {` - handles interaction, lifecycle, or playback events
+- L329 - **mixin `MineRefreshMixin`** - behavior shared by multiple classes
+- L333 - `void checkIsEnd(int length) {` - reads, requests, or synchronizes data
+- L340 - `Future<void> onRefresh({bool isManual = true}) {` - switches, recovers, or refreshes runtime state
+- L349 - **class `FavCtr`** - page or business state controller
+- L352 - `List<FavFolderInfo>? getDataList(FavFolderData response) {` - reads, requests, or synchronizes data
+- L359 - `Future<LoadingState<FavFolderData>> customGetData() => FavHttp.userfavFolder(` - performs one operation in its enclosing type or module
+- L366 - **class `HistoryCtr`** - page or business state controller
+- L372 - `List<HistoryItemModel>? getDataList(HistoryData response) {` - reads, requests, or synchronizes data
+- L386 - `Future<LoadingState<HistoryData>> customGetData() => UserHttp.historyList(` - performs one operation in its enclosing type or module
+- L395 - `Future<void> onRefresh({bool isManual = true}) {` - switches, recovers, or refreshes runtime state
+- L402 - **class `LaterCtr`** - page or business state controller
+- L405 - `List<LaterItemModel>? getDataList(LaterData response) {` - reads, requests, or synchronizes data
+- L411 - `Future<LoadingState<LaterData>> customGetData() => UserHttp.seeYouLater(` - performs one operation in its enclosing type or module
+- L418 - **class `SubCtr`** - page or business state controller
+- L421 - `List<SubItemModel>? getDataList(SubData response) {` - reads, requests, or synchronizes data
+- L428 - `Future<LoadingState<SubData>> customGetData() => UserHttp.userSubFolder(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/mine/view.dart`
 
-- L30 - **class `MinePage`** - page or visual structure
-- L31 - `const MinePage({super.key, this.showBackBtn = false});` - performs one operation in its enclosing type or module
-- L36 - `State<MinePage> createState() => _MediaPageState();` - builds UI or state
-- L39 - **class `_MediaPageState`** - data structure or state carrier
-- L52 - `bool onNotificationType1(UserScrollNotification notification) {` - handles interaction, lifecycle, or playback events
-- L60 - `bool onNotificationType2(ScrollNotification notification) {` - handles interaction, lifecycle, or playback events
-- L68 - `Widget build(BuildContext context) {` - builds UI or state
-- L105 - `Widget _buildActions(Color primary) {` - performs one operation in its enclosing type or module
-- L225 - `Widget _buildUserInfo(ThemeData theme, Color secondary) {` - performs one operation in its enclosing type or module
-- L407 - `Widget _btn({` - performs one operation in its enclosing type or module
-- L443 - `void _autoRefresh() => Timer(` - switches, recovers, or refreshes runtime state
-- L448 - `Widget _buildFav(ThemeData theme, Color secondary) {` - performs one operation in its enclosing type or module
-- L500 - `Widget _buildFavBody(` - performs one operation in its enclosing type or module
-- L506 - `Loading() => const SizedBox.shrink(),` - reads, requests, or synchronizes data
-- L507 - `Success(:final response) => Builder(` - performs one operation in its enclosing type or module
-- L559 - `Error(:final errMsg) => SizedBox(` - performs one operation in its enclosing type or module
+- L32 - **class `MinePage`** - page or visual structure
+- L33 - `const MinePage({super.key, this.showBackBtn = false});` - performs one operation in its enclosing type or module
+- L38 - `State<MinePage> createState() => _MediaPageState();` - builds UI or state
+- L41 - **class `_MediaPageState`** - data structure or state carrier
+- L55 - `bool onNotificationType1(UserScrollNotification notification) {` - handles interaction, lifecycle, or playback events
+- L63 - `bool onNotificationType2(ScrollNotification notification) {` - handles interaction, lifecycle, or playback events
+- L71 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L77 - `Widget build(BuildContext context) {` - builds UI or state
+- L115 - `Widget _buildActions(Color primary) {` - performs one operation in its enclosing type or module
+- L231 - `Widget _buildUserInfo(ThemeData theme, Color secondary) {` - performs one operation in its enclosing type or module
+- L413 - `Widget _btn({` - performs one operation in its enclosing type or module
+- L449 - `void _autoRefresh(MineRefreshMixin tabCtr) => Timer(` - switches, recovers, or refreshes runtime state
+- L454 - `Widget _buildFav() {` - performs one operation in its enclosing type or module
+- L468 - `Widget _buildHistory() {` - performs one operation in its enclosing type or module
+- L482 - `Widget _buildLater() {` - performs one operation in its enclosing type or module
+- L496 - `Widget _buildSub() {` - performs one operation in its enclosing type or module
 
-## `lib/pages/mine/widgets/item.dart`
+## `lib/pages/mine/widgets/fav_item.dart`
 
-- L7 - **class `FavFolderItem`** - reusable UI or rendering component
-- L8 - `const FavFolderItem({` - performs one operation in its enclosing type or module
-- L20 - `Widget build(BuildContext context) {` - builds UI or state
+- L8 - **class `FavFolderItem`** - reusable UI or rendering component
+- L9 - `const FavFolderItem({` - performs one operation in its enclosing type or module
+- L19 - `Widget build(BuildContext context) {` - builds UI or state
+
+## `lib/pages/mine/widgets/history_item.dart`
+
+- L6 - **class `MineHistoryItem`** - reusable UI or rendering component
+- L7 - `const MineHistoryItem({` - performs one operation in its enclosing type or module
+- L17 - `Widget build(BuildContext context) {` - builds UI or state
+
+## `lib/pages/mine/widgets/later_item.dart`
+
+- L7 - **class `MineLaterItem`** - reusable UI or rendering component
+- L8 - `const MineLaterItem({` - performs one operation in its enclosing type or module
+- L18 - `Widget build(BuildContext context) {` - builds UI or state
+
+## `lib/pages/mine/widgets/sub_item.dart`
+
+- L8 - **class `MineSubItem`** - reusable UI or rendering component
+- L9 - `const MineSubItem({` - performs one operation in its enclosing type or module
+- L19 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/msg_feed_top/at_me/controller.dart`
 
@@ -12467,15 +12707,15 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L38 - `void _initReply() {` - performs one operation in its enclosing type or module
 - L45 - `Widget build(BuildContext context) {` - builds UI or state
 - L59 - `setState(() {});` - updates, stores, or records state
-- L103 - `void _replyReply(ReplyInfo replyInfo, int? rpid) {` - performs one operation in its enclosing type or module
-- L126 - `void _onDelete(int index) {` - performs one operation in its enclosing type or module
-- L128 - `setState(() {});` - updates, stores, or records state
-- L131 - `void _onCheckReply(ReplyInfo replyInfo) {` - performs one operation in its enclosing type or module
-- L144 - `String _onExport() {` - performs one operation in its enclosing type or module
-- L150 - `void _showExportDialog() {` - performs one operation in its enclosing type or module
-- L182 - `Future<void> _onImport(List<dynamic> list) async {` - performs one operation in its enclosing type or module
-- L190 - `setState(() {});` - updates, stores, or records state
-- L194 - `void _showImportDialog() {` - performs one operation in its enclosing type or module
+- L104 - `void _replyReply(ReplyInfo replyInfo, int? rpid) {` - performs one operation in its enclosing type or module
+- L127 - `void _onDelete(int index) {` - performs one operation in its enclosing type or module
+- L129 - `setState(() {});` - updates, stores, or records state
+- L132 - `void _onCheckReply(ReplyInfo replyInfo) {` - performs one operation in its enclosing type or module
+- L145 - `String _onExport() {` - performs one operation in its enclosing type or module
+- L151 - `void _showExportDialog() {` - performs one operation in its enclosing type or module
+- L183 - `Future<void> _onImport(List<dynamic> list) async {` - performs one operation in its enclosing type or module
+- L191 - `setState(() {});` - updates, stores, or records state
+- L195 - `void _showImportDialog() {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/pgc_index/controller.dart`
 
@@ -12509,9 +12749,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L12 - **class `PgcCardVPgcIndex`** - reusable UI or rendering component
 - L13 - `const PgcCardVPgcIndex({` - performs one operation in its enclosing type or module
-- L21 - `Widget build(BuildContext context) {` - builds UI or state
-- L22 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
-- L77 - `Widget content(BuildContext context) {` - performs one operation in its enclosing type or module
+- L20 - `void onLongPress() => showPgcCover(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+- L23 - `Widget build(BuildContext context) {` - builds UI or state
+- L75 - `Widget content(BuildContext context) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/pgc_review/child/controller.dart`
 
@@ -12605,17 +12845,17 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L12 - **class `PgcCardVTimeline`** - reusable UI or rendering component
 - L13 - `const PgcCardVTimeline({` - performs one operation in its enclosing type or module
-- L21 - `Widget build(BuildContext context) {` - builds UI or state
-- L22 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
-- L75 - `Widget content(BuildContext context) {` - performs one operation in its enclosing type or module
+- L20 - `void onLongPress() => showPgcCover(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+- L23 - `Widget build(BuildContext context) {` - builds UI or state
+- L73 - `Widget content(BuildContext context) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/pgc/widgets/pgc_card_v.dart`
 
 - L12 - **class `PgcCardV`** - reusable UI or rendering component
 - L13 - `const PgcCardV({` - performs one operation in its enclosing type or module
-- L21 - `Widget build(BuildContext context) {` - builds UI or state
-- L22 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
-- L77 - `Widget content(BuildContext context) {` - performs one operation in its enclosing type or module
+- L20 - `void onLongPress() => showPgcCover(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+- L23 - `Widget build(BuildContext context) {` - builds UI or state
+- L75 - `Widget content(BuildContext context) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/popular_precious/controller.dart`
 
@@ -12692,8 +12932,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L11 - **class `PgcRankItem`** - reusable UI or rendering component
 - L12 - `const PgcRankItem({super.key, required this.item});` - performs one operation in its enclosing type or module
-- L17 - `Widget build(BuildContext context) {` - builds UI or state
-- L18 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
+- L16 - `void onLongPress() => showPgcCover(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+- L19 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/rcmd/controller.dart`
 
@@ -12758,10 +12998,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/search_panel/all/widgets/esports.dart`
 
-- L10 - **class `SearchEsportsItem`** - reusable UI or rendering component
-- L11 - `const SearchEsportsItem({` - performs one operation in its enclosing type or module
-- L19 - `Widget build(BuildContext context) {` - builds UI or state
-- L23 - `Widget buildTeamWidget(EsportsTeam team) {` - performs one operation in its enclosing type or module
+- L7 - **class `SearchEsportsItem`** - reusable UI or rendering component
+- L8 - `const SearchEsportsItem({` - performs one operation in its enclosing type or module
+- L16 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/search_panel/all/widgets/user.dart`
 
@@ -12806,7 +13045,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L81 - `List<T>? getDataList(R response) {` - reads, requests, or synchronizes data
 - L86 - `bool customHandleResponse(bool isRefresh, Success<R> response) {` - performs one operation in its enclosing type or module
 - L97 - `Future<LoadingState<R>> customGetData() => SearchHttp.searchByType<R>(` - performs one operation in its enclosing type or module
-- L117 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L116 - `void _onRequery() {` - performs one operation in its enclosing type or module
+- L121 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/search_panel/live/view.dart`
 
@@ -12839,8 +13079,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L11 - **class `SearchPgcItem`** - reusable UI or rendering component
 - L12 - `const SearchPgcItem({` - performs one operation in its enclosing type or module
-- L20 - `Widget build(BuildContext context) {` - builds UI or state
-- L23 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
+- L19 - `void onLongPress() => showPgcCover(` - handles interaction, lifecycle, or playback events
+- L25 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/search_panel/user/controller.dart`
 
@@ -12936,7 +13176,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L27 - `State<SearchTrendingPage> createState() => _SearchTrendingPageState();` - builds UI or state
 - L30 - **class `_SearchTrendingPageState`** - data structure or state carrier
 - L37 - `Widget build(BuildContext context) {` - builds UI or state
-- L128 - `Widget _buildBody(` - performs one operation in its enclosing type or module
+- L129 - `Widget _buildBody(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/search/controller.dart`
 
@@ -13018,21 +13258,21 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/setting/models/extra_settings.dart`
 
-- L661 - `Future<void> audioNormalization(` - performs one operation in its enclosing type or module
-- L754 - `void _showDownPathDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L808 - `void _showDynDialog(BuildContext context) {` - performs one operation in its enclosing type or module
-- L848 - `void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L889 - `void _showDmHeightDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L931 - `void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L971 - `Future<void> _showRefreshDialog(` - switches, recovers, or refreshes runtime state
-- L995 - `void _visitor(Element context) {` - performs one operation in its enclosing type or module
-- L1004 - `Future<void> _showSuperResolutionDialog(` - performs one operation in its enclosing type or module
-- L1025 - `Future<void> _showFavDialog(BuildContext context) async {` - performs one operation in its enclosing type or module
-- L1071 - `Future<void> _showReplyCountDialog(` - performs one operation in its enclosing type or module
-- L1093 - `Future<void> _showReplyDelayDialog(` - performs one operation in its enclosing type or module
-- L1116 - `Future<void> _showMemberTabDialog(` - performs one operation in its enclosing type or module
-- L1134 - `void _showProxyDialog(BuildContext context) {` - performs one operation in its enclosing type or module
-- L1198 - `void _showCacheDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L659 - `Future<void> audioNormalization(` - performs one operation in its enclosing type or module
+- L752 - `void _showDownPathDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L806 - `void _showDynDialog(BuildContext context) {` - performs one operation in its enclosing type or module
+- L846 - `void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L887 - `void _showDmHeightDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L929 - `void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L969 - `Future<void> _showRefreshDialog(` - switches, recovers, or refreshes runtime state
+- L993 - `void _visitor(Element context) {` - performs one operation in its enclosing type or module
+- L1002 - `Future<void> _showSuperResolutionDialog(` - performs one operation in its enclosing type or module
+- L1023 - `Future<void> _showFavDialog(BuildContext context) async {` - performs one operation in its enclosing type or module
+- L1069 - `Future<void> _showReplyCountDialog(` - performs one operation in its enclosing type or module
+- L1091 - `Future<void> _showReplyDelayDialog(` - performs one operation in its enclosing type or module
+- L1114 - `Future<void> _showMemberTabDialog(` - performs one operation in its enclosing type or module
+- L1132 - `void _showProxyDialog(BuildContext context) {` - performs one operation in its enclosing type or module
+- L1196 - `void _showCacheDialog(BuildContext context, VoidCallback setState) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/setting/models/model.dart`
 
@@ -13049,40 +13289,43 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L175 - `const SwitchModel({` - switches, recovers, or refreshes runtime state
 - L189 - `const SwitchModel.split({` - switches, recovers, or refreshes runtime state
 - L219 - `SettingsModel getBanWordModel({` - reads, requests, or synchronizes data
-- L277 - `SettingsModel getVideoFilterSelectModel({` - reads, requests, or synchronizes data
+- L284 - `SettingsModel getVideoFilterSelectModel({` - reads, requests, or synchronizes data
 
 ## `lib/pages/setting/models/play_settings.dart`
 
-- L301 - `Future<void> _showSubtitleDialog(` - performs one operation in its enclosing type or module
-- L322 - `Future<void> _showFullScreenModeDialog(` - performs one operation in its enclosing type or module
-- L340 - `Future<void> _showAngleDegreesDialog(` - performs one operation in its enclosing type or module
-- L362 - `Future<void> showPlayerVolumeDialog(` - handles interaction, lifecycle, or playback events
-- L380 - `Future<void> _showMaxVolumeDialog(` - performs one operation in its enclosing type or module
-- L403 - `Future<void> showVolumeDialog(` - handles interaction, lifecycle, or playback events
+- L307 - `Future<void> _showSubtitleDialog(` - performs one operation in its enclosing type or module
+- L328 - `Future<void> _showFullScreenModeDialog(` - performs one operation in its enclosing type or module
+- L346 - `Future<void> _showAngleDegreesDialog(` - performs one operation in its enclosing type or module
+- L368 - `Future<void> showPlayerVolumeDialog(` - handles interaction, lifecycle, or playback events
+- L386 - `Future<void> _showMaxVolumeDialog(` - performs one operation in its enclosing type or module
+- L409 - `Future<void> showVolumeDialog(` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/setting/models/privacy_settings.dart`
 
-- L48 - `Widget _getAccountDetail(BuildContext context) {` - performs one operation in its enclosing type or module
+- L40 - `Widget _getAccountDetail(BuildContext context) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/setting/models/style_settings.dart`
 
-- L401 - `void _showQualityDialog({` - performs one operation in its enclosing type or module
-- L426 - `void _showUiScaleDialog(` - performs one operation in its enclosing type or module
-- L479 - `setDialogState(() {` - updates, stores, or records state
-- L525 - `void _showSpringDialog(BuildContext context, _) {` - performs one operation in its enclosing type or module
-- L531 - `void physical2Duration() {` - performs one operation in its enclosing type or module
-- L547 - `void duration2Physical() {` - performs one operation in its enclosing type or module
-- L658 - `Future<void> _showTransitionDialog(` - performs one operation in its enclosing type or module
-- L677 - `Future<void> _showCardWidthDialog(` - performs one operation in its enclosing type or module
-- L705 - `void _setDynBadge(DynamicBadgeMode value, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L713 - `Future<void> _setMsgBadge(DynamicBadgeMode value, VoidCallback setState) async {` - performs one operation in its enclosing type or module
-- L725 - `Future<void> _showMsgUnReadDialog(` - performs one operation in its enclosing type or module
-- L751 - `void _showReduceColorDialog(` - performs one operation in its enclosing type or module
-- L772 - `void onConfirm() {` - handles interaction, lifecycle, or playback events
-- L802 - `Future<void> _showToastDialog(` - performs one operation in its enclosing type or module
-- L824 - `void _setThemeType(ThemeType value, VoidCallback setState) {` - performs one operation in its enclosing type or module
-- L833 - `NormalModel _useSSDModel() {` - performs one operation in its enclosing type or module
-- L835 - `void onChanged(BuildContext context, VoidCallback setState) {` - handles interaction, lifecycle, or playback events
+- L385 - `void _showQualityDialog({` - performs one operation in its enclosing type or module
+- L410 - `void _showUiScaleDialog(` - performs one operation in its enclosing type or module
+- L463 - `setDialogState(() {` - updates, stores, or records state
+- L509 - `void _showSpringDialog(BuildContext context, _) {` - performs one operation in its enclosing type or module
+- L515 - `void physical2Duration() {` - performs one operation in its enclosing type or module
+- L531 - `void duration2Physical() {` - performs one operation in its enclosing type or module
+- L642 - `Future<void> _showTransitionDialog(` - performs one operation in its enclosing type or module
+- L661 - `Future<void> _showCardWidthDialog(` - performs one operation in its enclosing type or module
+- L689 - `void _setDynBadge(DynamicBadgeMode value, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L697 - `Future<void> _setMsgBadge(DynamicBadgeMode value, VoidCallback setState) async {` - performs one operation in its enclosing type or module
+- L709 - `Future<void> _showMsgUnReadDialog(` - performs one operation in its enclosing type or module
+- L735 - `void _showReduceColorDialog(` - performs one operation in its enclosing type or module
+- L756 - `void onConfirm() {` - handles interaction, lifecycle, or playback events
+- L786 - `Future<void> _showToastDialog(` - performs one operation in its enclosing type or module
+- L808 - `void _setThemeType(ThemeType value, VoidCallback setState) {` - performs one operation in its enclosing type or module
+- L817 - `NormalModel _useSSDModel() {` - performs one operation in its enclosing type or module
+- L819 - `void onChanged(BuildContext context, VoidCallback setState) {` - handles interaction, lifecycle, or playback events
+- L841 - `Widget _themeTrailing(ThemeData theme) {` - performs one operation in its enclosing type or module
+- L861 - `void _onHorizontalScreenChanged(bool value) {` - performs one operation in its enclosing type or module
+- L869 - `Future<void> _showMineTabsDialog(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/setting/models/video_settings.dart`
 
@@ -13427,13 +13670,13 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/settings_search/view.dart`
 
-- L20 - **class `SettingsSearchPage`** - page or visual structure
-- L21 - `const SettingsSearchPage({super.key});` - updates, stores, or records state
-- L24 - `State<SettingsSearchPage> createState() => _SettingsSearchPageState();` - builds UI or state
-- L27 - **class `_SettingsSearchPageState`** - data structure or state carrier
-- L41 - `void onValueChanged(String value) {` - handles interaction, lifecycle, or playback events
-- L57 - `void dispose() {` - stops, releases, or resets state and resources
-- L63 - `Widget build(BuildContext context) {` - builds UI or state
+- L19 - **class `SettingsSearchPage`** - page or visual structure
+- L20 - `const SettingsSearchPage({super.key});` - updates, stores, or records state
+- L23 - `State<SettingsSearchPage> createState() => _SettingsSearchPageState();` - builds UI or state
+- L26 - **class `_SettingsSearchPageState`** - data structure or state carrier
+- L40 - `void onValueChanged(String value) {` - handles interaction, lifecycle, or playback events
+- L56 - `void dispose() {` - stops, releases, or resets state and resources
+- L62 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/share/view.dart`
 
@@ -13477,25 +13720,25 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L22 - **mixin `BlockConfigMixin`** - behavior shared by multiple classes
 - L35 - `Color _getColor(SegmentType segment) => blockColor[segment.index];` - performs one operation in its enclosing type or module
 - L38 - **mixin `BlockMixin`** - behavior shared by multiple classes
-- L61 - `Future<void> querySponsorBlock({` - reads, requests, or synchronizes data
-- L79 - `void initSkip() {` - starts or initializes state and resources
-- L118 - `Future<void> handleSBData(List<SegmentItemModel> list) async {` - handles interaction, lifecycle, or playback events
-- L203 - `void onAddItem(Object item) {` - handles interaction, lifecycle, or playback events
-- L214 - `void onRemoveItem(int index, Object item) {` - handles interaction, lifecycle, or playback events
-- L233 - `Widget buildItem(Object item, Animation<double> animation) =>` - performs one operation in its enclosing type or module
-- L236 - `void _stopSkipTimer() {` - performs one operation in its enclosing type or module
-- L243 - `Future<void>? seekTo(Duration duration, {required bool isSeek});` - handles interaction, lifecycle, or playback events
-- L245 - `void _skipToast(SegmentModel item) {` - performs one operation in its enclosing type or module
-- L254 - `Future<void> onSkip(` - handles interaction, lifecycle, or playback events
-- L279 - `void _showBlockToast(String msg) {` - performs one operation in its enclosing type or module
-- L286 - `void _showVoteDialog(SegmentModel segment) {` - performs one operation in its enclosing type or module
-- L319 - `void _doVote(String uuid, int type) => SponsorBlock.voteOnSponsorTime(` - performs one operation in its enclosing type or module
-- L324 - `void _showCategoryDialog(SegmentModel segment) {` - performs one operation in its enclosing type or module
-- L374 - `void showSBDetail() {` - handles interaction, lifecycle, or playback events
-- L466 - `void cancelBlockListener() {` - stops, releases, or resets state and resources
-- L473 - `void resetBlock() {` - stops, releases, or resets state and resources
-- L481 - `Duration? getFirstSegment([int pos = 0]) {` - reads, requests, or synchronizes data
-- L506 - `void onClose() {` - stops, releases, or resets state and resources
+- L62 - `Future<void> querySponsorBlock({` - reads, requests, or synchronizes data
+- L80 - `void initSkip() {` - starts or initializes state and resources
+- L119 - `Future<void> handleSBData(List<SegmentItemModel> list) async {` - handles interaction, lifecycle, or playback events
+- L204 - `void onAddItem(Object item) {` - handles interaction, lifecycle, or playback events
+- L215 - `void onRemoveItem(int index, Object item) {` - handles interaction, lifecycle, or playback events
+- L234 - `Widget buildItem(Object item, Animation<double> animation) =>` - performs one operation in its enclosing type or module
+- L237 - `void _stopSkipTimer() {` - performs one operation in its enclosing type or module
+- L244 - `Future<void>? seekTo(Duration duration, {required bool isSeek});` - handles interaction, lifecycle, or playback events
+- L246 - `void _skipToast(SegmentModel item) {` - performs one operation in its enclosing type or module
+- L255 - `Future<void> onSkip(` - handles interaction, lifecycle, or playback events
+- L280 - `void _showBlockToast(String msg) {` - performs one operation in its enclosing type or module
+- L287 - `void _showVoteDialog(SegmentModel segment) {` - performs one operation in its enclosing type or module
+- L320 - `void _doVote(String uuid, int type) => SponsorBlock.voteOnSponsorTime(` - performs one operation in its enclosing type or module
+- L325 - `void _showCategoryDialog(SegmentModel segment) {` - performs one operation in its enclosing type or module
+- L375 - `void showSBDetail() {` - handles interaction, lifecycle, or playback events
+- L467 - `void cancelBlockListener() {` - stops, releases, or resets state and resources
+- L474 - `void resetBlock() {` - stops, releases, or resets state and resources
+- L482 - `Duration? getFirstSegment([int pos = 0]) {` - reads, requests, or synchronizes data
+- L508 - `void onClose() {` - stops, releases, or resets state and resources
 
 ## `lib/pages/sponsor_block/view.dart`
 
@@ -13536,7 +13779,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L16 - **class `SubDetailPage`** - page or visual structure
 - L17 - `const SubDetailPage({super.key});` - performs one operation in its enclosing type or module
 - L20 - `State<SubDetailPage> createState() => _SubDetailPageState();` - builds UI or state
-- L22 - `static void toSubDetailPage(` - performs one operation in its enclosing type or module
+- L22 - `static Future<void>? toSubDetailPage(` - performs one operation in its enclosing type or module
 - L38 - **class `_SubDetailPageState`** - data structure or state carrier
 - L42 - `void initState() {` - starts or initializes state and resources
 - L51 - `Widget build(BuildContext context) {` - builds UI or state
@@ -13582,9 +13825,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 - L13 - **class `SubItem`** - reusable UI or rendering component
 - L16 - `const SubItem({` - performs one operation in its enclosing type or module
-- L23 - `Widget build(BuildContext context) {` - builds UI or state
-- L30 - `void onLongPress() => imageSaveDialog(` - handles interaction, lifecycle, or playback events
-- L101 - `Widget content(BuildContext context) {` - performs one operation in its enclosing type or module
+- L22 - `void onLongPress() => imageSaveDialog(title: item.title, cover: item.cover);` - handles interaction, lifecycle, or playback events
+- L25 - `Widget build(BuildContext context) {` - builds UI or state
+- L75 - `Widget content(BuildContext context) {` - performs one operation in its enclosing type or module
+- L134 - `Future<void>? onPushSub(String label, String heroTag, SubItemModel item) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/video/ai_conclusion/view.dart`
 
@@ -13599,85 +13843,86 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/controller.dart`
 
-- L85 - **class `VideoDetailController`** - page or business state controller
-- L161 - `int _remainingCdnSwitches(CdnRelayTrack track) => track == .video` - switches, recovers, or refreshes runtime state
-- L203 - `String playedTimePos(bool hasParams) {` - handles interaction, lifecycle, or playback events
-- L261 - `void refreshPage() {` - switches, recovers, or refreshes runtime state
-- L265 - `void _animListener() {` - performs one operation in its enclosing type or module
-- L272 - `void _calcAnimHeight() {` - performs one operation in its enclosing type or module
-- L289 - `void animToTop() {` - performs one operation in its enclosing type or module
-- L293 - `bool _needAnimOnDimensionChanged(bool isVertical) {` - performs one operation in its enclosing type or module
-- L304 - `void _setVideoHeight() {` - performs one operation in its enclosing type or module
-- L392 - `void cacheLocalProgress() {` - performs one operation in its enclosing type or module
-- L400 - `void initFileSource(BiliDownloadEntryInfo entry, {bool isInit = true}) {` - starts or initializes state and resources
-- L422 - `void onInit() {` - starts or initializes state and resources
-- L475 - `Future<void> getMediaList({` - reads, requests, or synchronizes data
-- L535 - `void showMediaListPanel(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L537 - `Widget panel() => MediaListPanel(` - performs one operation in its enclosing type or module
-- L619 - `set autoPlay(bool value) => _autoPlay.value = value;` - performs one operation in its enclosing type or module
-- L626 - `Future<void> seekTo(Duration duration, {required bool isSeek}) =>` - handles interaction, lifecycle, or playback events
-- L630 - `Widget buildItem(Object item, Animation<double> animation) {` - performs one operation in its enclosing type or module
-- L689 - `Future<void> showShootDanmakuSheet() async {` - handles interaction, lifecycle, or playback events
-- L727 - `VideoItem findVideoByQa(int qa, {bool setCodecs = false}) {` - predicate, validation, or lookup
-- L761 - `bool _isCdnCandidateAvailable(String url) {` - performs one operation in its enclosing type or module
-- L768 - `int _initialCdnIndex(List<String> candidates) {` - performs one operation in its enclosing type or module
-- L776 - `int _nextCdnIndex(List<String> candidates, int current) {` - performs one operation in its enclosing type or module
-- L788 - `Duration? _readPts(String property) {` - performs one operation in its enclosing type or module
-- L802 - `void _logAdaptive(String message) {` - performs one operation in its enclosing type or module
-- L806 - `static String _briefPlayerError(String event) {` - performs one operation in its enclosing type or module
-- L813 - `AudioItem? _currentAudioItem() {` - performs one operation in its enclosing type or module
-- L820 - `bool _switchToRecoveryDecodeForFrozenVideo() {` - switches, recovers, or refreshes runtime state
-- L849 - `void _resetVideoFrameHealth(DateTime now) {` - performs one operation in its enclosing type or module
-- L856 - `void _configureAdaptiveSources({` - performs one operation in its enclosing type or module
-- L902 - `void _startCdnHealthMonitor() {` - performs one operation in its enclosing type or module
-- L924 - `bool _onPlayerError(String event) {` - performs one operation in its enclosing type or module
-- L991 - `bool _isRecoverableAdaptivePlayerError(String event) {` - switches, recovers, or refreshes runtime state
-- L1014 - `bool _isLocalRelayOpenFailure(String event) {` - performs one operation in its enclosing type or module
-- L1023 - `bool _isVideoBitstreamCorruption(String event) {` - performs one operation in its enclosing type or module
-- L1027 - `bool _isExpectedRelayRebuildNoise(String event) {` - switches, recovers, or refreshes runtime state
-- L1033 - `Future<void> _recoverFromPlayerError({` - switches, recovers, or refreshes runtime state
-- L1060 - `void _capturePlaybackPosition() {` - performs one operation in its enclosing type or module
-- L1071 - `Future<void> _rebuildRelayAndPlayer({` - switches, recovers, or refreshes runtime state
-- L1103 - `void debugCheckCdnHealth() => _checkCdnHealth();` - performs one operation in its enclosing type or module
-- L1106 - `void debugOnIsBufferingChanged(bool buffering) =>` - performs one operation in its enclosing type or module
-- L1115 - `void _checkCdnHealth() {` - performs one operation in its enclosing type or module
-- L1304 - `void _onIsBufferingChanged(bool buffering) {` - performs one operation in its enclosing type or module
-- L1334 - `void _resetFragmentStallWindow() {` - performs one operation in its enclosing type or module
-- L1340 - `Duration _totalFragmentStallTime(DateTime now) {` - performs one operation in its enclosing type or module
-- L1352 - `void _resetLowBufferWatch(DateTime now, Duration forwardBuffer) {` - performs one operation in its enclosing type or module
-- L1364 - `void _resetLowBufferWatchAfterCdnSwitch(DateTime now) {` - switches, recovers, or refreshes runtime state
-- L1373 - `bool _shouldSwitchForPersistentLowBuffer(` - switches, recovers, or refreshes runtime state
-- L1413 - `void _resetAdaptiveCdnAfterSeek({` - performs one operation in its enclosing type or module
-- L1429 - `Future<void> _recoverFrozenPlayback({required String frozenTracks}) async {` - switches, recovers, or refreshes runtime state
-- L1459 - `_switchToRecoveryDecodeForFrozenVideo()) {` - switches, recovers, or refreshes runtime state
-- L1496 - `Future<bool> _switchToNextCdn({String reason = 'buffer-growth'}) async {` - switches, recovers, or refreshes runtime state
-- L1601 - `void _onRelaySwitch(` - switches, recovers, or refreshes runtime state
-- L1629 - `void _onRelayRecoveryRequired(` - switches, recovers, or refreshes runtime state
-- L1719 - `Future<void> _disposeCdnRelay({bool delayed = false}) async {` - performs one operation in its enclosing type or module
-- L1739 - `Future<void> _disposeAllCdnRelays() async {` - performs one operation in its enclosing type or module
-- L1755 - `void updatePlayer() {` - updates, stores, or records state
-- L1784 - `Future<void>? _initPlayerIfNeeded(` - performs one operation in its enclosing type or module
-- L1803 - `Future<void> playerInit({` - handles interaction, lifecycle, or playback events
-- L1876 - `void setLanguage(String language) {` - updates, stores, or records state
-- L1886 - `Future<LoadingState<PlayUrlModel>> _getVideoUrl(int quality) {` - performs one operation in its enclosing type or module
-- L1900 - `Future<void> _supplementVideoQualities() async {` - performs one operation in its enclosing type or module
-- L1913 - `Future<void> queryVideoUrl({` - reads, requests, or synchronizes data
-- L1947 - `Future<void> _queryVideoUrl(` - performs one operation in its enclosing type or module
-- L2137 - `void onBlock(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L2180 - `Future<void> setSubtitle(int index) async {` - updates, stores, or records state
-- L2187 - `Future<void> setSub(({bool isData, String id}) subtitle) async {` - updates, stores, or records state
-- L2220 - `Future<void> getSteinEdgeInfo([int? edgeId]) async {` - reads, requests, or synchronizes data
-- L2245 - `Future<void> _queryPlayInfo() async {` - performs one operation in its enclosing type or module
-- L2334 - `Future<void> _setSubtitle(List<Subtitle> sub) async {` - performs one operation in its enclosing type or module
-- L2350 - `void updateMediaListHistory(int aid) {` - updates, stores, or records state
-- L2360 - `void makeHeartBeat() {` - performs one operation in its enclosing type or module
-- L2386 - `void onClose() {` - stops, releases, or resets state and resources
-- L2420 - `void onReset({bool isStein = false}) {` - handles interaction, lifecycle, or playback events
-- L2481 - `Future<void> _getDmTrend() async {` - performs one operation in its enclosing type or module
-- L2519 - `void showNoteList(BuildContext context) {` - handles interaction, lifecycle, or playback events
-- L2554 - `bool onSkipSegment() {` - handles interaction, lifecycle, or playback events
-- L2569 - `void toAudioPage() {` - performs one operation in its enclosing type or module
-- L2600 - `Future<void> onDownload(BuildContext context) async {` - handles interaction, lifecycle, or playback events
+- L84 - **class `VideoDetailController`** - page or business state controller
+- L163 - `int _remainingCdnSwitches(CdnRelayTrack track) => track == .video` - switches, recovers, or refreshes runtime state
+- L205 - `String playedTimePos(bool hasParams) {` - handles interaction, lifecycle, or playback events
+- L263 - `void refreshPage() {` - switches, recovers, or refreshes runtime state
+- L267 - `void _animListener() {` - performs one operation in its enclosing type or module
+- L274 - `void _calcAnimHeight() {` - performs one operation in its enclosing type or module
+- L291 - `void animToTop() {` - performs one operation in its enclosing type or module
+- L295 - `bool _needAnimOnDimensionChanged(bool isVertical) {` - performs one operation in its enclosing type or module
+- L306 - `void _setVideoHeight() {` - performs one operation in its enclosing type or module
+- L393 - `void cacheLocalProgress() {` - performs one operation in its enclosing type or module
+- L401 - `void _initLocalSkipIfNeeded() {` - performs one operation in its enclosing type or module
+- L410 - `void initFileSource(BiliDownloadEntryInfo entry) {` - starts or initializes state and resources
+- L433 - `void onInit() {` - starts or initializes state and resources
+- L486 - `Future<void> getMediaList({` - reads, requests, or synchronizes data
+- L544 - `void showMediaListPanel(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L546 - `Widget panel() => MediaListPanel(` - performs one operation in its enclosing type or module
+- L628 - `set autoPlay(bool value) => _autoPlay.value = value;` - performs one operation in its enclosing type or module
+- L635 - `Future<void> seekTo(Duration duration, {required bool isSeek}) =>` - handles interaction, lifecycle, or playback events
+- L639 - `Widget buildItem(Object item, Animation<double> animation) {` - performs one operation in its enclosing type or module
+- L695 - `Future<void> showShootDanmakuSheet() async {` - handles interaction, lifecycle, or playback events
+- L733 - `VideoItem findVideoByQa(int qa, {bool setCodecs = false}) {` - predicate, validation, or lookup
+- L767 - `bool _isCdnCandidateAvailable(String url) {` - performs one operation in its enclosing type or module
+- L774 - `int _initialCdnIndex(List<String> candidates) {` - performs one operation in its enclosing type or module
+- L782 - `int _nextCdnIndex(List<String> candidates, int current) {` - performs one operation in its enclosing type or module
+- L794 - `Duration? _readPts(String property) {` - performs one operation in its enclosing type or module
+- L808 - `void _logAdaptive(String message) {` - performs one operation in its enclosing type or module
+- L812 - `static String _briefPlayerError(String event) {` - performs one operation in its enclosing type or module
+- L819 - `AudioItem? _currentAudioItem() {` - performs one operation in its enclosing type or module
+- L826 - `bool _switchToRecoveryDecodeForFrozenVideo() {` - switches, recovers, or refreshes runtime state
+- L855 - `void _resetVideoFrameHealth(DateTime now) {` - performs one operation in its enclosing type or module
+- L862 - `void _configureAdaptiveSources({` - performs one operation in its enclosing type or module
+- L908 - `void _startCdnHealthMonitor() {` - performs one operation in its enclosing type or module
+- L930 - `bool _onPlayerError(String event) {` - performs one operation in its enclosing type or module
+- L997 - `bool _isRecoverableAdaptivePlayerError(String event) {` - switches, recovers, or refreshes runtime state
+- L1020 - `bool _isLocalRelayOpenFailure(String event) {` - performs one operation in its enclosing type or module
+- L1029 - `bool _isVideoBitstreamCorruption(String event) {` - performs one operation in its enclosing type or module
+- L1033 - `bool _isExpectedRelayRebuildNoise(String event) {` - switches, recovers, or refreshes runtime state
+- L1039 - `Future<void> _recoverFromPlayerError({` - switches, recovers, or refreshes runtime state
+- L1066 - `void _capturePlaybackPosition() {` - performs one operation in its enclosing type or module
+- L1077 - `Future<void> _rebuildRelayAndPlayer({` - switches, recovers, or refreshes runtime state
+- L1109 - `void debugCheckCdnHealth() => _checkCdnHealth();` - performs one operation in its enclosing type or module
+- L1112 - `void debugOnIsBufferingChanged(bool buffering) =>` - performs one operation in its enclosing type or module
+- L1121 - `void _checkCdnHealth() {` - performs one operation in its enclosing type or module
+- L1310 - `void _onIsBufferingChanged(bool buffering) {` - performs one operation in its enclosing type or module
+- L1340 - `void _resetFragmentStallWindow() {` - performs one operation in its enclosing type or module
+- L1346 - `Duration _totalFragmentStallTime(DateTime now) {` - performs one operation in its enclosing type or module
+- L1358 - `void _resetLowBufferWatch(DateTime now, Duration forwardBuffer) {` - performs one operation in its enclosing type or module
+- L1370 - `void _resetLowBufferWatchAfterCdnSwitch(DateTime now) {` - switches, recovers, or refreshes runtime state
+- L1379 - `bool _shouldSwitchForPersistentLowBuffer(` - switches, recovers, or refreshes runtime state
+- L1419 - `void _resetAdaptiveCdnAfterSeek({` - performs one operation in its enclosing type or module
+- L1435 - `Future<void> _recoverFrozenPlayback({required String frozenTracks}) async {` - switches, recovers, or refreshes runtime state
+- L1465 - `_switchToRecoveryDecodeForFrozenVideo()) {` - switches, recovers, or refreshes runtime state
+- L1502 - `Future<bool> _switchToNextCdn({String reason = 'buffer-growth'}) async {` - switches, recovers, or refreshes runtime state
+- L1607 - `void _onRelaySwitch(` - switches, recovers, or refreshes runtime state
+- L1635 - `void _onRelayRecoveryRequired(` - switches, recovers, or refreshes runtime state
+- L1725 - `Future<void> _disposeCdnRelay({bool delayed = false}) async {` - performs one operation in its enclosing type or module
+- L1745 - `Future<void> _disposeAllCdnRelays() async {` - performs one operation in its enclosing type or module
+- L1761 - `void updatePlayer() {` - updates, stores, or records state
+- L1790 - `Future<void>? initPlayerIfNeeded(` - starts or initializes state and resources
+- L1809 - `Future<void> playerInit({` - handles interaction, lifecycle, or playback events
+- L1882 - `void setLanguage(String language) {` - updates, stores, or records state
+- L1892 - `Future<LoadingState<PlayUrlModel>> _getVideoUrl(int quality) {` - performs one operation in its enclosing type or module
+- L1906 - `Future<void> _supplementVideoQualities() async {` - performs one operation in its enclosing type or module
+- L1919 - `Future<void> queryVideoUrl({` - reads, requests, or synchronizes data
+- L1953 - `Future<void> _queryVideoUrl(` - performs one operation in its enclosing type or module
+- L2143 - `void onBlock(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L2186 - `Future<void> setSubtitle(int index) async {` - updates, stores, or records state
+- L2193 - `Future<void> setSub(({bool isData, String id}) subtitle) async {` - updates, stores, or records state
+- L2226 - `Future<void> getSteinEdgeInfo([int? edgeId]) async {` - reads, requests, or synchronizes data
+- L2251 - `Future<void> _queryPlayInfo() async {` - performs one operation in its enclosing type or module
+- L2339 - `Future<void> _setSubtitle(List<Subtitle> sub) async {` - performs one operation in its enclosing type or module
+- L2355 - `void updateMediaListHistory(int aid) {` - updates, stores, or records state
+- L2365 - `void makeHeartBeat() {` - performs one operation in its enclosing type or module
+- L2391 - `void onClose() {` - stops, releases, or resets state and resources
+- L2425 - `void onReset({bool isStein = false}) {` - handles interaction, lifecycle, or playback events
+- L2486 - `Future<void> _getDmTrend() async {` - performs one operation in its enclosing type or module
+- L2524 - `void showNoteList(BuildContext context) {` - handles interaction, lifecycle, or playback events
+- L2557 - `bool onSkipSegment() {` - handles interaction, lifecycle, or playback events
+- L2572 - `void toAudioPage() {` - performs one operation in its enclosing type or module
+- L2602 - `Future<void> onDownload(BuildContext context) async {` - handles interaction, lifecycle, or playback events
 - L2684 - `void editPlayUrl() {` - performs one operation in its enclosing type or module
 - L2687 - `Widget textField({` - performs one operation in its enclosing type or module
 - L2739 - `Future<void> onCast() async {` - handles interaction, lifecycle, or playback events
@@ -13694,10 +13939,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L106 - `Widget _buildHeader(ThemeData theme) {` - performs one operation in its enclosing type or module
 - L173 - `Widget _buildBody(ThemeData theme) {` - performs one operation in its enclosing type or module
 - L237 - `bool _onDownload({` - performs one operation in its enclosing type or module
-- L323 - `Widget _buildItem({` - performs one operation in its enclosing type or module
-- L535 - `Widget _buildFooter(ThemeData theme, Color dividerColor) {` - performs one operation in its enclosing type or module
-- L572 - `GetPageRoute(page: () => const DownloadPage()),` - reads, requests, or synchronizes data
-- L580 - `Widget _buildBottomBtn({` - performs one operation in its enclosing type or module
+- L327 - `Widget _buildItem({` - performs one operation in its enclosing type or module
+- L539 - `Widget _buildFooter(ThemeData theme, Color dividerColor) {` - performs one operation in its enclosing type or module
+- L576 - `GetPageRoute(page: () => const DownloadPage()),` - reads, requests, or synchronizes data
+- L584 - `Widget _buildBottomBtn({` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/introduction/local/controller.dart`
 
@@ -13710,10 +13955,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L36 - `StatDetail? getStat() => null;` - reads, requests, or synchronizes data
 - L44 - `void onClose() {` - stops, releases, or resets state and resources
 - L50 - `void onInit() {` - starts or initializes state and resources
-- L94 - `bool nextPlay() {` - performs one operation in its enclosing type or module
-- L116 - `bool prevPlay() {` - performs one operation in its enclosing type or module
-- L125 - `void playIndex(` - handles interaction, lifecycle, or playback events
-- L148 - `void onVideoDetailChange(BiliDownloadEntryInfo entry) {` - handles interaction, lifecycle, or playback events
+- L96 - `bool nextPlay() {` - performs one operation in its enclosing type or module
+- L118 - `bool prevPlay() {` - performs one operation in its enclosing type or module
+- L127 - `void playIndex(` - handles interaction, lifecycle, or playback events
+- L150 - `void onVideoDetailChange(BiliDownloadEntryInfo entry) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/video/introduction/local/view.dart`
 
@@ -13726,40 +13971,45 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/introduction/pgc/controller.dart`
 
-- L37 - **class `PgcIntroController`** - page or business state controller
-- L52 - `StatDetail? getStat() => pgcItem.stat;` - reads, requests, or synchronizes data
-- L59 - `void onInit() {` - starts or initializes state and resources
-- L80 - `Future<void> queryPgcLikeCoinFav() async {` - reads, requests, or synchronizes data
-- L102 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
-- L123 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
-- L246 - `Future<bool> onChangeEpisode(BaseEpisodeItem episode) async {` - handles interaction, lifecycle, or playback events
-- L302 - `Future<void> pgcAdd() async {` - performs one operation in its enclosing type or module
-- L314 - `Future<void> pgcDel() async {` - performs one operation in its enclosing type or module
-- L324 - `Future<void> pgcUpdate(int status) async {` - performs one operation in its enclosing type or module
-- L338 - `bool prevPlay() {` - performs one operation in its enclosing type or module
-- L358 - `bool nextPlay() {` - performs one operation in its enclosing type or module
-- L385 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
-- L422 - `Future<void> queryIsFollowed() async {` - reads, requests, or synchronizes data
-- L456 - `void queryVideoIntro([EpisodeItem? episode]) {` - reads, requests, or synchronizes data
-- L469 - `Future<void> onFavPugv(bool isFav) async {` - handles interaction, lifecycle, or playback events
+- L38 - **class `PgcIntroController`** - page or business state controller
+- L50 - `ScrollController seasonController(int index) {` - performs one operation in its enclosing type or module
+- L61 - `StatDetail? getStat() => pgcItem.stat;` - reads, requests, or synchronizes data
+- L68 - `void onInit() {` - starts or initializes state and resources
+- L80 - `void _onGetPgcInfo() {` - performs one operation in its enclosing type or module
+- L93 - `Future<void> queryPgcLikeCoinFav() async {` - reads, requests, or synchronizes data
+- L115 - `Future<void> actionLikeVideo() async {` - performs one operation in its enclosing type or module
+- L136 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
+- L254 - `Future<bool> onChangeEpisode(BaseEpisodeItem episode) async {` - handles interaction, lifecycle, or playback events
+- L310 - `Future<void> pgcAdd() async {` - performs one operation in its enclosing type or module
+- L322 - `Future<void> pgcDel() async {` - performs one operation in its enclosing type or module
+- L332 - `Future<void> pgcUpdate(int status) async {` - performs one operation in its enclosing type or module
+- L346 - `bool prevPlay() {` - performs one operation in its enclosing type or module
+- L366 - `bool nextPlay() {` - performs one operation in its enclosing type or module
+- L393 - `Future<void> actionTriple() async {` - performs one operation in its enclosing type or module
+- L430 - `Future<void> queryIsFollowed() async {` - reads, requests, or synchronizes data
+- L464 - `void queryVideoIntro([EpisodeItem? episode]) {` - reads, requests, or synchronizes data
+- L477 - `Future<void> onFavPugv(bool isFav) async {` - handles interaction, lifecycle, or playback events
+- L492 - `Future<bool> changeSeason(int seasonId) async {` - performs one operation in its enclosing type or module
+- L521 - `void onClose() {` - stops, releases, or resets state and resources
 
 ## `lib/pages/video/introduction/pgc/view.dart`
 
-- L25 - **class `PgcIntroPage`** - page or visual structure
+- L26 - **class `PgcIntroPage`** - page or visual structure
 - L33 - `const PgcIntroPage({` - performs one operation in its enclosing type or module
-- L44 - `State<PgcIntroPage> createState() => _PgcIntroPageState();` - builds UI or state
-- L47 - **class `_PgcIntroPageState`** - data structure or state carrier
+- L43 - `State<PgcIntroPage> createState() => _PgcIntroPageState();` - builds UI or state
+- L46 - **class `_PgcIntroPageState`** - data structure or state carrier
 - L52 - `void initState() {` - starts or initializes state and resources
-- L62 - `Widget build(BuildContext context) {` - builds UI or state
-- L111 - `Widget? _buildBrief(PgcInfoModel item) {` - performs one operation in its enclosing type or module
-- L137 - `Widget _buildCover(` - performs one operation in its enclosing type or module
-- L193 - `Widget _buildInfoPanel(` - performs one operation in its enclosing type or module
-- L199 - `Widget subBtn() => Obx(` - performs one operation in its enclosing type or module
-- L244 - `Widget title() => Row(` - performs one operation in its enclosing type or module
-- L259 - `List<Widget> desc() => [` - performs one operation in its enclosing type or module
-- L277 - `Widget stat() => Wrap(` - performs one operation in its enclosing type or module
-- L315 - `Widget upInfo(int mid, String avatar, String name, {String? role}) =>` - performs one operation in its enclosing type or module
-- L387 - `Widget actionGrid(PgcStat stat, PgcIntroController introController) {` - performs one operation in its enclosing type or module
+- L62 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L68 - `Widget build(BuildContext context) {` - builds UI or state
+- L131 - `Widget? _buildBrief(PgcInfoModel item) {` - performs one operation in its enclosing type or module
+- L157 - `Widget _buildCover(PgcInfoModel item) {` - performs one operation in its enclosing type or module
+- L209 - `Widget _buildInfoPanel(bool isPortrait, PgcInfoModel item) {` - performs one operation in its enclosing type or module
+- L211 - `Widget subBtn() => Obx(` - performs one operation in its enclosing type or module
+- L256 - `Widget title() => Row(` - performs one operation in its enclosing type or module
+- L271 - `List<Widget> desc() => [` - performs one operation in its enclosing type or module
+- L289 - `Widget stat() => Wrap(` - performs one operation in its enclosing type or module
+- L327 - `Widget upInfo(int mid, String avatar, String name, {String? role}) =>` - performs one operation in its enclosing type or module
+- L399 - `Widget actionGrid(PgcStat stat, PgcIntroController introController) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/introduction/pgc/widgets/intro_detail.dart`
 
@@ -13775,16 +14025,23 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/introduction/pgc/widgets/pgc_panel.dart`
 
-- L19 - **class `PgcPanel`** - page or visual structure
-- L20 - `const PgcPanel({` - performs one operation in its enclosing type or module
-- L38 - `State<PgcPanel> createState() => _PgcPanelState();` - builds UI or state
-- L41 - **class `_PgcPanelState`** - data structure or state carrier
-- L51 - `void initState() {` - starts or initializes state and resources
-- L67 - `setState(() {});` - updates, stores, or records state
-- L73 - `void dispose() {` - stops, releases, or resets state and resources
-- L79 - `void scrollToIndex() {` - performs one operation in its enclosing type or module
-- L90 - `Widget build(BuildContext context) {` - builds UI or state
-- L152 - `Widget _buildItem(ColorScheme theme, bool isPugv, int index) {` - performs one operation in its enclosing type or module
+- L20 - **class `PgcPanel`** - page or visual structure
+- L21 - `const PgcPanel({` - performs one operation in its enclosing type or module
+- L39 - `State<PgcPanel> createState() => _PgcPanelState();` - builds UI or state
+- L42 - **class `_PgcPanelState`** - data structure or state carrier
+- L51 - `void _updateIndex() {` - performs one operation in its enclosing type or module
+- L56 - `void initState() {` - starts or initializes state and resources
+- L72 - `setState(() {});` - updates, stores, or records state
+- L78 - `void dispose() {` - stops, releases, or resets state and resources
+- L84 - `void scrollToIndex() {` - performs one operation in its enclosing type or module
+- L95 - `Widget build(BuildContext context) {` - builds UI or state
+- L158 - `Widget _buildItem(ColorScheme theme, bool isPugv, int index) {` - performs one operation in its enclosing type or module
+
+## `lib/pages/video/introduction/pgc/widgets/season.dart`
+
+- L7 - **class `SeasonPanel`** - page or visual structure
+- L8 - `const SeasonPanel({` - performs one operation in its enclosing type or module
+- L20 - `Widget build(BuildContext context) {` - builds UI or state
 
 ## `lib/pages/video/introduction/ugc/controller.dart`
 
@@ -13798,14 +14055,14 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L248 - `Future<void> actionDislikeVideo() async {` - performs one operation in its enclosing type or module
 - L281 - `StatDetail? getStat() => videoDetail.value.stat;` - reads, requests, or synchronizes data
 - L285 - `void actionShareVideo(BuildContext context) {` - performs one operation in its enclosing type or module
-- L403 - `Future<void> queryFollowStatus() async {` - reads, requests, or synchronizes data
-- L416 - `Future<void> actionRelationMod(BuildContext context) async {` - performs one operation in its enclosing type or module
-- L459 - `Future<bool> onChangeEpisode(` - handles interaction, lifecycle, or playback events
-- L564 - `bool prevPlay([bool skipPart = false]) {` - performs one operation in its enclosing type or module
-- L629 - `bool nextPlay([bool skipPart = false]) {` - performs one operation in its enclosing type or module
-- L721 - `bool playRelated() {` - handles interaction, lifecycle, or playback events
-- L752 - `static Future<AiConclusionResult?> getAiConclusion(` - reads, requests, or synchronizes data
-- L778 - `Future<void> aiConclusion() async {` - performs one operation in its enclosing type or module
+- L408 - `Future<void> queryFollowStatus() async {` - reads, requests, or synchronizes data
+- L421 - `Future<void> actionRelationMod(BuildContext context) async {` - performs one operation in its enclosing type or module
+- L464 - `Future<bool> onChangeEpisode(` - handles interaction, lifecycle, or playback events
+- L569 - `bool prevPlay([bool skipPart = false]) {` - performs one operation in its enclosing type or module
+- L633 - `bool nextPlay([bool skipPart = false]) {` - performs one operation in its enclosing type or module
+- L725 - `bool playRelated() {` - handles interaction, lifecycle, or playback events
+- L756 - `static Future<AiConclusionResult?> getAiConclusion(` - reads, requests, or synchronizes data
+- L782 - `Future<void> aiConclusion() async {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/introduction/ugc/view.dart`
 
@@ -13816,22 +14073,22 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L78 - `void initState() {` - starts or initializes state and resources
 - L87 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
 - L93 - `Widget build(BuildContext context) {` - builds UI or state
-- L223 - `Widget _buildArgueInfo(String argueMsg) {` - performs one operation in its enclosing type or module
-- L245 - `Widget _buildTitle(` - performs one operation in its enclosing type or module
-- L264 - `Widget _gestureVideoTitle(` - performs one operation in its enclosing type or module
-- L277 - `List<Widget> _infos(VideoDetailData videoDetail) => [` - performs one operation in its enclosing type or module
-- L304 - `WidgetSpan _labelWidget(String text, Color bgColor, Color textColor) {` - performs one operation in its enclosing type or module
-- L332 - `Widget _buildVideoTitle(` - performs one operation in its enclosing type or module
-- L337 - `Widget child() {` - performs one operation in its enclosing type or module
-- L431 - `Widget followButton(BuildContext context) {` - performs one operation in its enclosing type or module
-- L463 - `Widget actionGrid(` - performs one operation in its enclosing type or module
-- L557 - `TextSpan buildDesc(List<DescV2> descV2) {` - performs one operation in its enclosing type or module
-- L702 - `Widget _buildOwnerInfo(` - performs one operation in its enclosing type or module
-- L762 - `Widget _buildStaff(` - performs one operation in its enclosing type or module
-- L767 - `void onTap() => Get.toNamed(` - handles interaction, lifecycle, or playback events
-- L884 - `Widget _buildAvatar(` - performs one operation in its enclosing type or module
-- L936 - `Widget _buildInfo(VideoStat? stat, int? pubdate) {` - performs one operation in its enclosing type or module
-- L1006 - `Widget _buildTags(List<VideoTagItem> tags) {` - performs one operation in its enclosing type or module
+- L218 - `Widget _buildArgueInfo(String argueMsg) {` - performs one operation in its enclosing type or module
+- L240 - `Widget _buildTitle(` - performs one operation in its enclosing type or module
+- L259 - `Widget _gestureVideoTitle(` - performs one operation in its enclosing type or module
+- L272 - `List<Widget> _infos(VideoDetailData videoDetail) => [` - performs one operation in its enclosing type or module
+- L299 - `WidgetSpan _labelWidget(String text, Color bgColor, Color textColor) {` - performs one operation in its enclosing type or module
+- L327 - `Widget _buildVideoTitle(` - performs one operation in its enclosing type or module
+- L332 - `Widget child() {` - performs one operation in its enclosing type or module
+- L426 - `Widget followButton(BuildContext context) {` - performs one operation in its enclosing type or module
+- L458 - `Widget actionGrid(` - performs one operation in its enclosing type or module
+- L552 - `TextSpan buildDesc(List<DescV2> descV2) {` - performs one operation in its enclosing type or module
+- L697 - `Widget _buildOwnerInfo(` - performs one operation in its enclosing type or module
+- L757 - `Widget _buildStaff(` - performs one operation in its enclosing type or module
+- L762 - `void onTap() => Get.toNamed(` - handles interaction, lifecycle, or playback events
+- L879 - `Widget _buildAvatar(` - performs one operation in its enclosing type or module
+- L931 - `Widget _buildInfo(VideoStat? stat, int? pubdate) {` - performs one operation in its enclosing type or module
+- L1001 - `Widget _buildTags(List<VideoTagItem> tags) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/introduction/ugc/widgets/action_item.dart`
 
@@ -13858,7 +14115,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L84 - `void jumpToCurr() {` - performs one operation in its enclosing type or module
 - L96 - `void dispose() {` - stops, releases, or resets state and resources
 - L103 - `Widget build(BuildContext context) {` - builds UI or state
-- L170 - `setState(() {});` - updates, stores, or records state
+- L171 - `setState(() {});` - updates, stores, or records state
 
 ## `lib/pages/video/introduction/ugc/widgets/season.dart`
 
@@ -13866,10 +14123,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L15 - `const SeasonPanel({` - performs one operation in its enclosing type or module
 - L28 - `State<SeasonPanel> createState() => _SeasonPanelState();` - builds UI or state
 - L31 - **class `_SeasonPanelState`** - data structure or state carrier
-- L42 - `void initState() {` - starts or initializes state and resources
-- L85 - `void dispose() {` - stops, releases, or resets state and resources
-- L91 - `Widget build(BuildContext context) {` - builds UI or state
-- L159 - `void _findEpisode() {` - performs one operation in its enclosing type or module
+- L41 - `void _updateIndex() {` - performs one operation in its enclosing type or module
+- L48 - `void initState() {` - starts or initializes state and resources
+- L87 - `void dispose() {` - stops, releases, or resets state and resources
+- L93 - `Widget build(BuildContext context) {` - builds UI or state
+- L162 - `void _findEpisode() {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/introduction/ugc/widgets/triple_mixin.dart`
 
@@ -14041,35 +14299,35 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/reply_new/view.dart`
 
-- L36 - **class `ReplyPage`** - page or visual structure
-- L45 - `const ReplyPage({` - performs one operation in its enclosing type or module
-- L60 - `State<ReplyPage> createState() => _ReplyPageState();` - builds UI or state
-- L63 - **class `_ReplyPageState`** - data structure or state carrier
-- L70 - `void dispose() {` - stops, releases, or resets state and resources
-- L78 - `void initTheme() {` - starts or initializes state and resources
-- L86 - `Widget build(BuildContext context) {` - builds UI or state
-- L114 - `Widget buildImagePreview() {` - performs one operation in its enclosing type or module
-- L135 - `List<Widget> buildInputView() {` - performs one operation in its enclosing type or module
-- L227 - `Widget buildMorePanel() {` - performs one operation in its enclosing type or module
-- L234 - `Widget item({` - performs one operation in its enclosing type or module
-- L379 - `Future<void> onCustomPublish({List? pictures}) async {` - handles interaction, lifecycle, or playback events
-- L418 - `Future<void> _latexify() async {` - performs one operation in its enclosing type or module
-- L444 - `void _unlatexify() {` - performs one operation in its enclosing type or module
-- L480 - `void _replaceBlocks(` - performs one operation in its enclosing type or module
+- L37 - **class `ReplyPage`** - page or visual structure
+- L38 - `const ReplyPage({` - performs one operation in its enclosing type or module
+- L64 - `State<ReplyPage> createState() => _ReplyPageState();` - builds UI or state
+- L67 - **class `_ReplyPageState`** - data structure or state carrier
+- L74 - `void dispose() {` - stops, releases, or resets state and resources
+- L82 - `void initTheme() {` - starts or initializes state and resources
+- L90 - `Widget build(BuildContext context) {` - builds UI or state
+- L118 - `Widget buildImagePreview() {` - performs one operation in its enclosing type or module
+- L139 - `List<Widget> buildInputView() {` - performs one operation in its enclosing type or module
+- L231 - `Widget buildMorePanel() {` - performs one operation in its enclosing type or module
+- L238 - `Widget item({` - performs one operation in its enclosing type or module
+- L383 - `Future<void> onCustomPublish({List? pictures}) async {` - handles interaction, lifecycle, or playback events
+- L422 - `Future<void> _latexify() async {` - performs one operation in its enclosing type or module
+- L448 - `void _unlatexify() {` - performs one operation in its enclosing type or module
+- L484 - `void _replaceBlocks(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/reply_reply/controller.dart`
 
-- L17 - **class `VideoReplyReplyController`** - page or business state controller
-- L19 - `VideoReplyReplyController({` - performs one operation in its enclosing type or module
-- L54 - `void onInit() {` - starts or initializes state and resources
-- L63 - `List<ReplyInfo>? getDataList(response) {` - reads, requests, or synchronizes data
-- L68 - `bool customHandleResponse(bool isRefresh, Success response) {` - performs one operation in its enclosing type or module
-- L91 - `bool setIndexById(Int64 id64, [List<ReplyInfo>? replies]) {` - updates, stores, or records state
-- L106 - `void jumpToItem(int index) {` - performs one operation in its enclosing type or module
-- L124 - `Future<LoadingState> customGetData() => dialog != null` - performs one operation in its enclosing type or module
-- L142 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
-- L150 - `void onReply(` - handles interaction, lifecycle, or playback events
-- L206 - `void onClose() {` - stops, releases, or resets state and resources
+- L18 - **class `VideoReplyReplyController`** - page or business state controller
+- L20 - `VideoReplyReplyController({` - performs one operation in its enclosing type or module
+- L55 - `void onInit() {` - starts or initializes state and resources
+- L64 - `List<ReplyInfo>? getDataList(response) {` - reads, requests, or synchronizes data
+- L69 - `bool customHandleResponse(bool isRefresh, Success response) {` - performs one operation in its enclosing type or module
+- L92 - `bool setIndexById(Int64 id64, [List<ReplyInfo>? replies]) {` - updates, stores, or records state
+- L107 - `void jumpToItem(int index) {` - performs one operation in its enclosing type or module
+- L125 - `Future<LoadingState> customGetData() => dialog != null` - performs one operation in its enclosing type or module
+- L143 - `Future<void> onReload() {` - handles interaction, lifecycle, or playback events
+- L151 - `void onReply(` - handles interaction, lifecycle, or playback events
+- L208 - `void onClose() {` - stops, releases, or resets state and resources
 
 ## `lib/pages/video/reply_reply/view.dart`
 
@@ -14139,10 +14397,10 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/reply/controller.dart`
 
-- L12 - **class `VideoReplyController`** - page or business state controller
-- L14 - `VideoReplyController({` - performs one operation in its enclosing type or module
-- L30 - `List<ReplyInfo>? getDataList(MainListReply response) {` - reads, requests, or synchronizes data
-- L35 - `Future<LoadingState<MainListReply>> customGetData() => ReplyGrpc.mainList(` - performs one operation in its enclosing type or module
+- L14 - **class `VideoReplyController`** - page or business state controller
+- L16 - `VideoReplyController({` - performs one operation in its enclosing type or module
+- L43 - `List<ReplyInfo>? getDataList(MainListReply response) {` - reads, requests, or synchronizes data
+- L48 - `Future<LoadingState<MainListReply>> customGetData() => ReplyGrpc.mainList(` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/reply/view.dart`
 
@@ -14154,8 +14412,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L62 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
 - L71 - `Widget build(BuildContext context) {` - builds UI or state
 - L119 - `Obx(() => _buildBody(_videoReplyController.loadingState.value)),` - performs one operation in its enclosing type or module
-- L149 - `Widget _buildBody(LoadingState<List<ReplyInfo>?> loadingState) {` - performs one operation in its enclosing type or module
-- L236 - `void replyReply(ReplyInfo replyItem, int? id) {` - performs one operation in its enclosing type or module
+- L150 - `Widget _buildBody(LoadingState<List<ReplyInfo>?> loadingState) {` - performs one operation in its enclosing type or module
+- L237 - `void replyReply(ReplyInfo replyItem, int? id) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/reply/vote/reply_vote_item.dart`
 
@@ -14221,100 +14479,102 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/pages/video/view.dart`
 
-- L79 - **class `VideoDetailPageV`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L80 - `const VideoDetailPageV({super.key});` - performs one operation in its enclosing type or module
-- L83 - `State<VideoDetailPageV> createState() => _VideoDetailPageVState();` - builds UI or state
-- L86 - **class `_VideoDetailPageVState`** - data structure or state carrier
-- L139 - `void initState() {` - starts or initializes state and resources
-- L174 - `void videoSourceInit() {` - performs one operation in its enclosing type or module
-- L184 - `void positionListener(Duration position) {` - performs one operation in its enclosing type or module
-- L189 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
-- L203 - `Future<void>? playCallBack() {` - handles interaction, lifecycle, or playback events
-- L213 - `Future<void> playerListener(PlayerStatus status) async {` - handles interaction, lifecycle, or playback events
-- L289 - `void continuePlay() {` - performs one operation in its enclosing type or module
-- L294 - `Future<void>? handlePlay() {` - handles interaction, lifecycle, or playback events
-- L329 - `void dispose() {` - stops, releases, or resets state and resources
-- L368 - `void didPushNext() {` - handles interaction, lifecycle, or playback events
-- L396 - `void didPopNext() {` - handles interaction, lifecycle, or playback events
-- L450 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L483 - `bool removeAppBar(bool isFullScreen) =>` - stops, releases, or resets state and resources
-- L609 - `Widget _buildOverlayToolBar(double scrollRatio) {` - performs one operation in its enclosing type or module
-- L710 - `Widget _buildHeaderOverlay() {` - performs one operation in its enclosing type or module
-- L772 - `Widget childSplit(double ratio) {` - performs one operation in its enclosing type or module
-- L821 - `Widget childWhenDisabledLandscapeInner(bool isFullScreen) {` - performs one operation in its enclosing type or module
-- L887 - `Widget _childWhenDisabledLandscapeInner(bool isFullScreen) {` - performs one operation in its enclosing type or module
-- L1002 - `Widget childWhenDisabledAlmostSquareInner(bool isFullScreen) {` - performs one operation in its enclosing type or module
-- L1018 - `Widget _childWhenDisabledAlmostSquareInner(bool isFullScreen) {` - performs one operation in its enclosing type or module
-- L1077 - `Widget manualPlayerWidget(double height) => Obx(() {` - performs one operation in its enclosing type or module
-- L1151 - `Widget _moreBtn(Color color, {List<Shadow>? shadows}) => PopupMenuButton(` - performs one operation in its enclosing type or module
-- L1197 - `Widget plPlayer({` - performs one operation in its enclosing type or module
-- L1256 - `Widget build(BuildContext context) {` - builds UI or state
-- L1290 - `Widget buildTabBar({` - performs one operation in its enclosing type or module
-- L1313 - `Widget tabBar() {` - performs one operation in its enclosing type or module
-- L1327 - `void animToTop() {` - performs one operation in its enclosing type or module
-- L1446 - `Widget videoPlayer({required double width, required double height}) {` - performs one operation in its enclosing type or module
-- L1460 - `Obx(() {` - performs one operation in its enclosing type or module
-- L1604 - `Widget localIntroPanel({` - performs one operation in its enclosing type or module
-- L1625 - `Widget videoIntro({` - performs one operation in its enclosing type or module
-- L1832 - `Widget videoReplyPanel({bool isNested = false}) => VideoReplyPanel(` - performs one operation in its enclosing type or module
-- L1839 - `void showAiBottomSheet() {` - handles interaction, lifecycle, or playback events
-- L1847 - `void showIntroDetail(` - handles interaction, lifecycle, or playback events
-- L1860 - `void showEpisodes([` - handles interaction, lifecycle, or playback events
-- L1874 - `Widget listSheetContent({bool enableSlide = true}) => EpisodePanel(` - performs one operation in its enclosing type or module
-- L1928 - `void onReversePlay({required bool isSeason}) {` - handles interaction, lifecycle, or playback events
-- L1987 - `void showViewPoints() {` - handles interaction, lifecycle, or playback events
-- L2011 - `void onShowMemberPage(int? mid) {` - handles interaction, lifecycle, or playback events
+- L82 - **class `VideoDetailPageV`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L83 - `const VideoDetailPageV({super.key});` - performs one operation in its enclosing type or module
+- L86 - `State<VideoDetailPageV> createState() => _VideoDetailPageVState();` - builds UI or state
+- L89 - **class `_VideoDetailPageVState`** - data structure or state carrier
+- L104 - `CommonIntroController _initIntroCtr() {` - performs one operation in its enclosing type or module
+- L149 - `void initState() {` - starts or initializes state and resources
+- L179 - `void videoSourceInit() {` - performs one operation in its enclosing type or module
+- L189 - `void positionListener(Duration position) {` - performs one operation in its enclosing type or module
+- L194 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
+- L208 - `void _setPlayCallBack() {` - performs one operation in its enclosing type or module
+- L215 - `Future<void>? playCallBack() {` - handles interaction, lifecycle, or playback events
+- L225 - `Future<void> playerListener(PlayerStatus status) async {` - handles interaction, lifecycle, or playback events
+- L301 - `void continuePlay() {` - performs one operation in its enclosing type or module
+- L306 - `Future<void>? handlePlay() {` - handles interaction, lifecycle, or playback events
+- L341 - `void dispose() {` - stops, releases, or resets state and resources
+- L380 - `void didPushNext() {` - handles interaction, lifecycle, or playback events
+- L408 - `void didPopNext() {` - handles interaction, lifecycle, or playback events
+- L462 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L495 - `bool removeAppBar(bool isFullScreen) =>` - stops, releases, or resets state and resources
+- L621 - `Widget _buildOverlayToolBar(double scrollRatio) {` - performs one operation in its enclosing type or module
+- L722 - `Widget _buildHeaderOverlay() {` - performs one operation in its enclosing type or module
+- L784 - `Widget childSplit(double ratio) {` - performs one operation in its enclosing type or module
+- L833 - `Widget childWhenDisabledLandscapeInner(bool isFullScreen) {` - performs one operation in its enclosing type or module
+- L899 - `Widget _childWhenDisabledLandscapeInner(bool isFullScreen) {` - performs one operation in its enclosing type or module
+- L1014 - `Widget childWhenDisabledAlmostSquareInner(bool isFullScreen) {` - performs one operation in its enclosing type or module
+- L1030 - `Widget _childWhenDisabledAlmostSquareInner(bool isFullScreen) {` - performs one operation in its enclosing type or module
+- L1089 - `Widget manualPlayerWidget(double height) => Obx(() {` - performs one operation in its enclosing type or module
+- L1163 - `Widget _moreBtn(Color color, {List<Shadow>? shadows}) => PopupMenuButton(` - performs one operation in its enclosing type or module
+- L1209 - `Widget plPlayer({` - performs one operation in its enclosing type or module
+- L1268 - `Widget build(BuildContext context) {` - builds UI or state
+- L1302 - `Widget buildTabBar({` - performs one operation in its enclosing type or module
+- L1325 - `Widget tabBar() {` - performs one operation in its enclosing type or module
+- L1339 - `void animToTop() {` - performs one operation in its enclosing type or module
+- L1458 - `Widget videoPlayer({required double width, required double height}) {` - performs one operation in its enclosing type or module
+- L1472 - `Obx(() {` - performs one operation in its enclosing type or module
+- L1616 - `Widget localIntroPanel({` - performs one operation in its enclosing type or module
+- L1637 - `Widget videoIntro({` - performs one operation in its enclosing type or module
+- L1881 - `Widget videoReplyPanel({bool isNested = false}) => VideoReplyPanel(` - performs one operation in its enclosing type or module
+- L1888 - `void showAiBottomSheet() {` - handles interaction, lifecycle, or playback events
+- L1896 - `void showIntroDetail(` - handles interaction, lifecycle, or playback events
+- L1909 - `void showEpisodes([` - handles interaction, lifecycle, or playback events
+- L1923 - `Widget listSheetContent({bool enableSlide = true}) => EpisodePanel(` - performs one operation in its enclosing type or module
+- L1977 - `void onReversePlay({required bool isSeason}) {` - handles interaction, lifecycle, or playback events
+- L2036 - `void showViewPoints() {` - handles interaction, lifecycle, or playback events
+- L2060 - `void onShowMemberPage(int? mid) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/video/widgets/header_control.dart`
 
-- L75 - **mixin `TimeBatteryMixin`** - behavior shared by multiple classes
-- L96 - `void dispose() {` - stops, releases, or resets state and resources
-- L101 - `void startClock() {` - starts or initializes state and resources
-- L115 - `void stopClock() {` - stops, releases, or resets state and resources
-- L121 - `void showCurrTimeIfNeeded(bool isFullScreen) {` - handles interaction, lifecycle, or playback events
-- L131 - `void getBatteryLevelIfNeeded() {` - reads, requests, or synchronizes data
-- L180 - **class `HeaderControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L181 - `const HeaderControl({` - performs one operation in its enclosing type or module
-- L195 - `State<HeaderControl> createState() => HeaderControlState();` - builds UI or state
-- L197 - `static Future<bool> likeDanmaku(VideoDanmaku extra, int cid) async {` - performs one operation in its enclosing type or module
-- L233 - `static Future<bool> deleteDanmaku(int id, int cid) async {` - performs one operation in its enclosing type or module
-- L247 - `static Future<void> reportDanmaku(` - performs one operation in its enclosing type or module
-- L280 - `static Future<void> reportLiveDanmaku(` - performs one operation in its enclosing type or module
-- L327 - **class `HeaderControlState`** - data structure or state carrier
-- L354 - `void initState() {` - starts or initializes state and resources
-- L366 - `void showSettingSheet() {` - handles interaction, lifecycle, or playback events
-- L835 - `static void showPlayerInfo(` - handles interaction, lifecycle, or playback events
-- L936 - `void showSetVideoQa() {` - handles interaction, lifecycle, or playback events
-- L1038 - `void showSetAudioQa() {` - handles interaction, lifecycle, or playback events
-- L1117 - `void showSetDecodeFormats() {` - handles interaction, lifecycle, or playback events
-- L1186 - `void onExportSubtitle() {` - handles interaction, lifecycle, or playback events
-- L1322 - `void showSetSubtitle() {` - handles interaction, lifecycle, or playback events
-- L1340 - `void updateStrokeWidth(double val) {` - updates, stores, or records state
-- L1344 - `setState(() {});` - updates, stores, or records state
-- L1347 - `void updateOpacity(double val) {` - updates, stores, or records state
-- L1351 - `setState(() {});` - updates, stores, or records state
-- L1354 - `void updateBottomPadding(double val) {` - updates, stores, or records state
-- L1358 - `setState(() {});` - updates, stores, or records state
-- L1361 - `void updateHorizontalPadding(double val) {` - updates, stores, or records state
-- L1365 - `setState(() {});` - updates, stores, or records state
-- L1368 - `void updateFontScaleFS(double val) {` - updates, stores, or records state
-- L1372 - `setState(() {});` - updates, stores, or records state
-- L1375 - `void updateFontScale(double val) {` - updates, stores, or records state
-- L1379 - `setState(() {});` - updates, stores, or records state
-- L1382 - `void updateFontWeight(double val) {` - updates, stores, or records state
-- L1386 - `setState(() {});` - updates, stores, or records state
-- L1413 - `resetBtn(theme, '100.0%', () => updateFontScale(1.0)),` - stops, releases, or resets state and resources
-- L1434 - `resetBtn(theme, '150.0%', () => updateFontScaleFS(1.5)),` - stops, releases, or resets state and resources
-- L1453 - `resetBtn(theme, 6, () => updateFontWeight(5)),` - stops, releases, or resets state and resources
-- L1471 - `resetBtn(theme, 2.0, () => updateStrokeWidth(2.0)),` - stops, releases, or resets state and resources
-- L1489 - `resetBtn(theme, 24, () => updateHorizontalPadding(24)),` - stops, releases, or resets state and resources
-- L1507 - `resetBtn(theme, 24, () => updateBottomPadding(24)),` - stops, releases, or resets state and resources
-- L1527 - `resetBtn(theme, '67%', () => updateOpacity(0.67)),` - stops, releases, or resets state and resources
-- L1550 - `void showDanmakuPool() {` - handles interaction, lifecycle, or playback events
-- L1553 - `showBottomSheet((context, setState) {` - handles interaction, lifecycle, or playback events
-- L1609 - `Widget? _buildDanmakuList(List<DanmakuItem<DanmakuExtra>> list) {` - performs one operation in its enclosing type or module
-- L1689 - `Widget build(BuildContext context) {` - builds UI or state
-- L1800 - `Obx(() {` - performs one operation in its enclosing type or module
+- L77 - **mixin `TimeBatteryMixin`** - behavior shared by multiple classes
+- L98 - `void dispose() {` - stops, releases, or resets state and resources
+- L103 - `void startClock() {` - starts or initializes state and resources
+- L117 - `void stopClock() {` - stops, releases, or resets state and resources
+- L123 - `void showCurrTimeIfNeeded(bool isFullScreen) {` - handles interaction, lifecycle, or playback events
+- L133 - `void getBatteryLevelIfNeeded() {` - reads, requests, or synchronizes data
+- L182 - **class `HeaderControl`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L183 - `const HeaderControl({` - performs one operation in its enclosing type or module
+- L197 - `State<HeaderControl> createState() => HeaderControlState();` - builds UI or state
+- L199 - `static Future<bool> likeDanmaku(VideoDanmaku extra, int cid) async {` - performs one operation in its enclosing type or module
+- L235 - `static Future<bool> deleteDanmaku(int id, int cid) async {` - performs one operation in its enclosing type or module
+- L249 - `static Future<void> reportDanmaku(` - performs one operation in its enclosing type or module
+- L283 - `static Future<void> reportLiveDanmaku(` - performs one operation in its enclosing type or module
+- L329 - **class `HeaderControlState`** - data structure or state carrier
+- L356 - `void initState() {` - starts or initializes state and resources
+- L368 - `void showSettingSheet() {` - handles interaction, lifecycle, or playback events
+- L837 - `static void showPlayerInfo(` - handles interaction, lifecycle, or playback events
+- L938 - `void showSetVideoQa() {` - handles interaction, lifecycle, or playback events
+- L1040 - `void showSetAudioQa() {` - handles interaction, lifecycle, or playback events
+- L1119 - `void showSetDecodeFormats() {` - handles interaction, lifecycle, or playback events
+- L1188 - `void onExportSubtitle() {` - handles interaction, lifecycle, or playback events
+- L1324 - `void showSetSubtitle() {` - handles interaction, lifecycle, or playback events
+- L1342 - `void updateStrokeWidth(double val) {` - updates, stores, or records state
+- L1346 - `setState(() {});` - updates, stores, or records state
+- L1349 - `void updateOpacity(double val) {` - updates, stores, or records state
+- L1353 - `setState(() {});` - updates, stores, or records state
+- L1356 - `void updateBottomPadding(double val) {` - updates, stores, or records state
+- L1360 - `setState(() {});` - updates, stores, or records state
+- L1363 - `void updateHorizontalPadding(double val) {` - updates, stores, or records state
+- L1367 - `setState(() {});` - updates, stores, or records state
+- L1370 - `void updateFontScaleFS(double val) {` - updates, stores, or records state
+- L1374 - `setState(() {});` - updates, stores, or records state
+- L1377 - `void updateFontScale(double val) {` - updates, stores, or records state
+- L1381 - `setState(() {});` - updates, stores, or records state
+- L1384 - `void updateFontWeight(double val) {` - updates, stores, or records state
+- L1388 - `setState(() {});` - updates, stores, or records state
+- L1415 - `resetBtn(theme, '100.0%', () => updateFontScale(1.0)),` - stops, releases, or resets state and resources
+- L1436 - `resetBtn(theme, '150.0%', () => updateFontScaleFS(1.5)),` - stops, releases, or resets state and resources
+- L1455 - `resetBtn(theme, 6, () => updateFontWeight(5)),` - stops, releases, or resets state and resources
+- L1473 - `resetBtn(theme, 2.0, () => updateStrokeWidth(2.0)),` - stops, releases, or resets state and resources
+- L1491 - `resetBtn(theme, 24, () => updateHorizontalPadding(24)),` - stops, releases, or resets state and resources
+- L1509 - `resetBtn(theme, 24, () => updateBottomPadding(24)),` - stops, releases, or resets state and resources
+- L1529 - `resetBtn(theme, '67%', () => updateOpacity(0.67)),` - stops, releases, or resets state and resources
+- L1552 - `void showDanmakuPool() {` - handles interaction, lifecycle, or playback events
+- L1555 - `showBottomSheet((context, setState) {` - handles interaction, lifecycle, or playback events
+- L1611 - `Widget? _buildDanmakuList(List<DanmakuItem<DanmakuExtra>> list) {` - performs one operation in its enclosing type or module
+- L1695 - `Widget build(BuildContext context) {` - builds UI or state
+- L1806 - `Obx(() {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/video/widgets/header_mixin.dart`
 
@@ -14468,11 +14728,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L188 - `Error(:final errMsg) => scrollErrorWidget(` - performs one operation in its enclosing type or module
 - L195 - `void _showMenu(Offset offset, int index, Msg item, bool isOwner) {` - performs one operation in its enclosing type or module
 - L221 - `void onReport(Msg item) {` - handles interaction, lifecycle, or playback events
-- L234 - `void onLongPress(int index, Msg item, bool isOwner) {` - handles interaction, lifecycle, or playback events
-- L267 - `Widget _buildInputView(Color containerColor) {` - performs one operation in its enclosing type or module
-- L391 - `Future<void> onCustomPublish({List? pictures}) {` - handles interaction, lifecycle, or playback events
-- L396 - `Future<void>? onMention([bool fromClick = false]) => null;` - handles interaction, lifecycle, or playback events
-- L399 - `void onSave() {}` - handles interaction, lifecycle, or playback events
+- L233 - `void onLongPress(int index, Msg item, bool isOwner) {` - handles interaction, lifecycle, or playback events
+- L266 - `Widget _buildInputView(Color containerColor) {` - performs one operation in its enclosing type or module
+- L390 - `Future<void> onCustomPublish({List? pictures}) {` - handles interaction, lifecycle, or playback events
+- L395 - `Future<void>? onMention([bool fromClick = false]) => null;` - handles interaction, lifecycle, or playback events
+- L398 - `void onSave() {}` - handles interaction, lifecycle, or playback events
 
 ## `lib/pages/whisper_detail/widget/chat_item.dart`
 
@@ -14493,7 +14753,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L731 - `Widget msgTypeNotifyMsg_10(ThemeData theme, content) {` - performs one operation in its enclosing type or module
 - L733 - `List<Widget>? jumpItem([String index = '']) {` - performs one operation in its enclosing type or module
 - L799 - `Widget msgTypePictureCard_13(dynamic content) {` - performs one operation in its enclosing type or module
-- L830 - `Widget def(Color textColor, {err}) {` - performs one operation in its enclosing type or module
+- L831 - `Widget def(Color textColor, {err}) {` - performs one operation in its enclosing type or module
 
 ## `lib/pages/whisper_link_setting/controller.dart`
 
@@ -14656,109 +14916,114 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/plugin/pl_player/controller.dart`
 
-- L71 - **class `WakelockPlusGateway`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L72 - `const WakelockPlusGateway();` - performs one operation in its enclosing type or module
-- L75 - `Future<void> enable() => WakelockPlus.enable();` - performs one operation in its enclosing type or module
-- L78 - `Future<void> disable() => WakelockPlus.disable();` - performs one operation in its enclosing type or module
-- L81 - **typedef `PlayCallback`** - callback or type alias
-- L82 - **typedef `PlayerErrorCallback`** - callback or type alias
-- L84 - **class `PlPlayerController`** - page or business state controller
-- L130 - `void updateDuration(Duration value) {` - updates, stores, or records state
-- L232 - `set isVertical(bool value) {` - predicate, validation, or lookup
-- L251 - `Future<void> setAlwaysOnTop(bool value) {` - updates, stores, or records state
-- L256 - `Future<void> exitDesktopPip() {` - handles interaction, lifecycle, or playback events
-- L268 - `Future<void> enterDesktopPip() async {` - handles interaction, lifecycle, or playback events
-- L307 - `void toggleDesktopPip() {` - handles interaction, lifecycle, or playback events
-- L326 - `static bool _isVideoPage(String routeName) {` - performs one operation in its enclosing type or module
-- L330 - `void enterPip({bool autoEnter = false}) {` - handles interaction, lifecycle, or playback events
-- L342 - `void _disableAutoEnterPip() {` - performs one operation in its enclosing type or module
-- L472 - `void updateSubtitleStyle() {` - updates, stores, or records state
-- L476 - `void onUpdatePadding(EdgeInsets padding) {` - handles interaction, lifecycle, or playback events
-- L483 - `static bool instanceExists() {` - performs one operation in its enclosing type or module
-- L487 - `static void setPlayCallBack(PlayCallback? playCallBack) {` - updates, stores, or records state
-- L493 - `static Future<void>? playIfExists() {` - handles interaction, lifecycle, or playback events
-- L498 - `static PlayerStatus? getPlayerStatusIfExists() {` - reads, requests, or synchronizes data
-- L502 - `static Future<void>? pauseIfExists({` - handles interaction, lifecycle, or playback events
-- L512 - `static Future<void>? seekToIfExists(` - handles interaction, lifecycle, or playback events
-- L519 - `static double? getVolumeIfExists() {` - reads, requests, or synchronizes data
-- L523 - `static Future<void>? setVolumeIfExists(` - updates, stores, or records state
-- L538 - `void _stopOrientationListener() {` - performs one operation in its enclosing type or module
-- L543 - `void _onOrientationChanged(OrientationParams param) {` - performs one operation in its enclosing type or module
-- L586 - `PlPlayerController._() {` - performs one operation in its enclosing type or module
-- L611 - `void _onUserLeaveHint() {` - performs one operation in its enclosing type or module
-- L618 - `static PlPlayerController getInstance({bool isLive = false}) {` - reads, requests, or synchronizes data
-- L632 - `Future<void> setDataSource(` - updates, stores, or records state
-- L782 - `Future<void> setShader([SuperResolutionType? type, NativePlayer? pp]) async {` - updates, stores, or records state
-- L818 - `Future<Player> _initPlayer() async {` - performs one operation in its enclosing type or module
-- L862 - `Future<bool> _createVideoController(` - performs one operation in its enclosing type or module
-- L942 - `void _checkpointForRebuild() {` - switches, recovers, or refreshes runtime state
-- L963 - `void _clearRebuildCheckpoint() {` - switches, recovers, or refreshes runtime state
-- L969 - `void _setPendingResume(int? targetCid, Duration? position) {` - switches, recovers, or refreshes runtime state
-- L978 - `void _clearPendingResume() {` - switches, recovers, or refreshes runtime state
-- L983 - `Future<void>? refreshPlayer() {` - switches, recovers, or refreshes runtime state
-- L1028 - `Future<void> stopCurrentSource() async {` - stops, releases, or resets state and resources
-- L1037 - `Future<void> _initializePlayer(int autoplayGeneration) async {` - performs one operation in its enclosing type or module
-- L1071 - `void _syncWakelock() {` - performs one operation in its enclosing type or module
-- L1086 - `void _updatePlaybackState({` - performs one operation in its enclosing type or module
-- L1104 - `void _startListeners(NativePlayer player) {` - performs one operation in its enclosing type or module
-- L1286 - `Timer(const Duration(milliseconds: 3000), () {` - performs one operation in its enclosing type or module
-- L1323 - `void _removeListeners() {` - performs one operation in its enclosing type or module
-- L1329 - `void onAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
-- L1353 - `void _cancelPlaybackRecoveryWatch() {` - switches, recovers, or refreshes runtime state
-- L1359 - `void _startPlaybackRecoveryWatch() {` - switches, recovers, or refreshes runtime state
-- L1372 - `Future<void> checkPlaybackRecovery() async {` - reads, requests, or synchronizes data
-- L1474 - `Future<void> resumeAfterLifecyclePause({` - switches, recovers, or refreshes runtime state
-- L1537 - `void _startBackgroundReconnectTimer() {` - performs one operation in its enclosing type or module
-- L1546 - `void _stopBackgroundReconnectTimer() {` - performs one operation in its enclosing type or module
-- L1552 - `void _checkBackgroundReconnect() {` - performs one operation in its enclosing type or module
-- L1567 - `void _backgroundReconnectNow(String reason) {` - performs one operation in its enclosing type or module
-- L1589 - `bool _isBackgroundNetworkError(String event) {` - performs one operation in its enclosing type or module
-- L1600 - `void _cancelSubForSeek() {` - performs one operation in its enclosing type or module
-- L1607 - `Future<void> seek(Duration position, {bool isSeek = false}) async {` - handles interaction, lifecycle, or playback events
-- L1630 - `Future<void> seekTo(Duration position, {bool isSeek = true}) async {` - handles interaction, lifecycle, or playback events
-- L1656 - `Future<void> setPlaybackSpeed(double speed) async {` - updates, stores, or records state
-- L1683 - `Future<void> setDefaultSpeed() async {` - updates, stores, or records state
-- L1689 - `Future<void> play({` - handles interaction, lifecycle, or playback events
-- L1722 - `Future<void> pause({bool notify = true, bool isInterrupt = false}) async {` - handles interaction, lifecycle, or playback events
-- L1744 - `void hideTaskControls() {` - handles interaction, lifecycle, or playback events
-- L1754 - `void onSeekStart(int seekFrom) {` - handles interaction, lifecycle, or playback events
-- L1759 - `void onSeekEnd() {` - handles interaction, lifecycle, or playback events
-- L1773 - `Future<void> setVolume(double volume, {bool showIndicator = true}) async {` - updates, stores, or records state
-- L1802 - `void toggleVideoFit(VideoFitType value) {` - handles interaction, lifecycle, or playback events
-- L1809 - `void _initVideoFit() {` - performs one operation in its enclosing type or module
-- L1818 - `void setBackgroundPlay(bool val) {` - updates, stores, or records state
-- L1825 - `set controls(bool visible) {` - performs one operation in its enclosing type or module
-- L1834 - `void cancelLongPressTimer() {` - stops, releases, or resets state and resources
-- L1840 - `Future<void> setLongPressStatus(bool val) async {` - updates, stores, or records state
-- L1870 - `Future<void> onDoubleTapCenter() async {` - handles interaction, lifecycle, or playback events
-- L1884 - `void onDoubleTapSeekBackward() {` - handles interaction, lifecycle, or playback events
-- L1888 - `void onDoubleTapSeekForward() {` - handles interaction, lifecycle, or playback events
-- L1892 - `void onForward(Duration duration) {` - handles interaction, lifecycle, or playback events
-- L1896 - `void onBackward(Duration duration) {` - handles interaction, lifecycle, or playback events
-- L1900 - `void onForwardBackward(Duration duration) {` - handles interaction, lifecycle, or playback events
-- L1907 - `void doubleTapFuc(DoubleTapType type) {` - performs one operation in its enclosing type or module
-- L1928 - `void onLockControl(bool val) {` - handles interaction, lifecycle, or playback events
-- L1937 - `void _setFullScreen(bool val) {` - performs one operation in its enclosing type or module
-- L1948 - `Future<void>? changeOrientation({` - performs one operation in its enclosing type or module
-- L1981 - `Future<void> triggerFullScreen({` - performs one operation in its enclosing type or module
-- L2023 - `void addPositionListener(ValueChanged<Duration> listener) {` - updates, stores, or records state
-- L2028 - `void removePositionListener(ValueChanged<Duration> listener) =>` - stops, releases, or resets state and resources
-- L2031 - `void addStatusLister(ValueChanged<PlayerStatus> listener) {` - updates, stores, or records state
-- L2036 - `void removeStatusLister(ValueChanged<PlayerStatus> listener) =>` - stops, releases, or resets state and resources
-- L2040 - `Future<void>? makeHeartBeat(` - performs one operation in its enclosing type or module
-- L2059 - `Future<void> send() {` - performs one operation in its enclosing type or module
-- L2095 - `void setPlayRepeat(PlayRepeat type) {` - updates, stores, or records state
-- L2100 - `void putSubtitleSettings() {` - updates, stores, or records state
-- L2115 - `Future<void>? resetScreenRotation() {` - stops, releases, or resets state and resources
-- L2123 - `void onCloseAll() {` - stops, releases, or resets state and resources
-- L2130 - `void dispose() {` - stops, releases, or resets state and resources
-- L2190 - `static void updatePlayCount() {` - updates, stores, or records state
-- L2198 - `void setContinuePlayInBackground() {` - updates, stores, or records state
-- L2214 - `void updatePreviewIndex(int seconds) {` - updates, stores, or records state
-- L2229 - `void _clearPreview() {` - performs one operation in its enclosing type or module
-- L2239 - `Future<void> getVideoShot() async {` - reads, requests, or synchronizes data
-- L2243 - `Future<void> takeScreenshot() async {` - performs one operation in its enclosing type or module
-- L2298 - `void onPopInvokedWithResult(bool didPop, Object? result) {` - handles interaction, lifecycle, or playback events
+- L75 - **class `WakelockPlusGateway`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L76 - `const WakelockPlusGateway();` - performs one operation in its enclosing type or module
+- L79 - `Future<void> enable() => WakelockPlus.enable();` - performs one operation in its enclosing type or module
+- L82 - `Future<void> disable() => WakelockPlus.disable();` - performs one operation in its enclosing type or module
+- L85 - **typedef `PlayCallback`** - callback or type alias
+- L86 - **typedef `PlayerErrorCallback`** - callback or type alias
+- L87 - **typedef `PlayOwner`** - callback or type alias
+- L89 - **class `PlPlayerController`** - page or business state controller
+- L135 - `void updateDuration(Duration value) {` - updates, stores, or records state
+- L237 - `set isVertical(bool value) {` - predicate, validation, or lookup
+- L255 - `Rect _adjustPipBounds(Rect lastRect, Size size, double aspectRatio) {` - performs one operation in its enclosing type or module
+- L296 - `bool updatePipBounds() {` - updates, stores, or records state
+- L308 - `Future<void> setAlwaysOnTop(bool value) {` - updates, stores, or records state
+- L313 - `Future<void> exitDesktopPip() {` - handles interaction, lifecycle, or playback events
+- L325 - `Future<void> enterDesktopPip() async {` - handles interaction, lifecycle, or playback events
+- L366 - `void toggleDesktopPip() {` - handles interaction, lifecycle, or playback events
+- L385 - `static bool _isVideoPage(String routeName) {` - performs one operation in its enclosing type or module
+- L389 - `void enterPip({bool autoEnter = false}) {` - handles interaction, lifecycle, or playback events
+- L413 - `void _disableAutoEnterPip() {` - performs one operation in its enclosing type or module
+- L423 - `Map<String, Object> _iosPipState(PlayerState state, [Duration? position]) {` - performs one operation in its enclosing type or module
+- L434 - `void _updateIOSPip([Duration? position]) {` - performs one operation in its enclosing type or module
+- L566 - `void updateSubtitleStyle() {` - updates, stores, or records state
+- L570 - `void onUpdatePadding(EdgeInsets padding) {` - handles interaction, lifecycle, or playback events
+- L577 - `static bool instanceExists() {` - performs one operation in its enclosing type or module
+- L581 - `static void setPlayCallBack(` - updates, stores, or records state
+- L593 - `static Future<void>? playIfExists() {` - handles interaction, lifecycle, or playback events
+- L598 - `static PlayerStatus? getPlayerStatusIfExists() {` - reads, requests, or synchronizes data
+- L602 - `static Future<void>? pauseIfExists({` - handles interaction, lifecycle, or playback events
+- L612 - `static Future<void>? seekToIfExists(` - handles interaction, lifecycle, or playback events
+- L619 - `static double? getVolumeIfExists() {` - reads, requests, or synchronizes data
+- L623 - `static Future<void>? setVolumeIfExists(` - updates, stores, or records state
+- L638 - `void _stopOrientationListener() {` - performs one operation in its enclosing type or module
+- L643 - `void _onOrientationChanged(OrientationParams param) {` - performs one operation in its enclosing type or module
+- L686 - `PlPlayerController._() {` - performs one operation in its enclosing type or module
+- L713 - `void _onUserLeaveHint() {` - performs one operation in its enclosing type or module
+- L720 - `static PlPlayerController getInstance({bool isLive = false}) {` - reads, requests, or synchronizes data
+- L734 - `Future<void> setDataSource(` - updates, stores, or records state
+- L884 - `Future<void> setShader([SuperResolutionType? type, NativePlayer? pp]) async {` - updates, stores, or records state
+- L920 - `Future<Player> _initPlayer() async {` - performs one operation in its enclosing type or module
+- L969 - `Future<bool> _createVideoController(` - performs one operation in its enclosing type or module
+- L1049 - `void _checkpointForRebuild() {` - switches, recovers, or refreshes runtime state
+- L1070 - `void _clearRebuildCheckpoint() {` - switches, recovers, or refreshes runtime state
+- L1076 - `void _setPendingResume(int? targetCid, Duration? position) {` - switches, recovers, or refreshes runtime state
+- L1085 - `void _clearPendingResume() {` - switches, recovers, or refreshes runtime state
+- L1090 - `Future<void>? refreshPlayer() {` - switches, recovers, or refreshes runtime state
+- L1135 - `Future<void> stopCurrentSource() async {` - stops, releases, or resets state and resources
+- L1144 - `Future<void> _initializePlayer(int autoplayGeneration) async {` - performs one operation in its enclosing type or module
+- L1178 - `void _syncWakelock() {` - performs one operation in its enclosing type or module
+- L1193 - `void _updatePlaybackState({` - performs one operation in its enclosing type or module
+- L1212 - `void _startListeners(NativePlayer player) {` - performs one operation in its enclosing type or module
+- L1396 - `Timer(const Duration(milliseconds: 3000), () {` - performs one operation in its enclosing type or module
+- L1433 - `void _removeListeners() {` - performs one operation in its enclosing type or module
+- L1439 - `void onAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
+- L1463 - `void _cancelPlaybackRecoveryWatch() {` - switches, recovers, or refreshes runtime state
+- L1469 - `void _startPlaybackRecoveryWatch() {` - switches, recovers, or refreshes runtime state
+- L1482 - `Future<void> checkPlaybackRecovery() async {` - reads, requests, or synchronizes data
+- L1584 - `Future<void> resumeAfterLifecyclePause({` - switches, recovers, or refreshes runtime state
+- L1647 - `void _startBackgroundReconnectTimer() {` - performs one operation in its enclosing type or module
+- L1656 - `void _stopBackgroundReconnectTimer() {` - performs one operation in its enclosing type or module
+- L1662 - `void _checkBackgroundReconnect() {` - performs one operation in its enclosing type or module
+- L1677 - `void _backgroundReconnectNow(String reason) {` - performs one operation in its enclosing type or module
+- L1699 - `bool _isBackgroundNetworkError(String event) {` - performs one operation in its enclosing type or module
+- L1710 - `void _cancelSubForSeek() {` - performs one operation in its enclosing type or module
+- L1717 - `Future<void> seek(Duration position, {bool isSeek = false}) async {` - handles interaction, lifecycle, or playback events
+- L1741 - `Future<void> seekTo(Duration position, {bool isSeek = true}) async {` - handles interaction, lifecycle, or playback events
+- L1767 - `Future<void> setPlaybackSpeed(double speed) async {` - updates, stores, or records state
+- L1788 - `Future<void> play({` - handles interaction, lifecycle, or playback events
+- L1821 - `Future<void> pause({bool notify = true, bool isInterrupt = false}) async {` - handles interaction, lifecycle, or playback events
+- L1843 - `void hideTaskControls() {` - handles interaction, lifecycle, or playback events
+- L1853 - `void onSeekStart(int seekFrom) {` - handles interaction, lifecycle, or playback events
+- L1858 - `void onSeekEnd() {` - handles interaction, lifecycle, or playback events
+- L1872 - `Future<void> setVolume(double volume, {bool showIndicator = true}) async {` - updates, stores, or records state
+- L1901 - `void toggleVideoFit(VideoFitType value) {` - handles interaction, lifecycle, or playback events
+- L1908 - `void _initVideoFit() {` - performs one operation in its enclosing type or module
+- L1917 - `void setBackgroundPlay(bool val) {` - updates, stores, or records state
+- L1924 - `set controls(bool visible) {` - performs one operation in its enclosing type or module
+- L1933 - `void cancelLongPressTimer() {` - stops, releases, or resets state and resources
+- L1939 - `Future<void> setLongPressStatus(bool val) async {` - updates, stores, or records state
+- L1969 - `Future<void> onDoubleTapCenter() async {` - handles interaction, lifecycle, or playback events
+- L1983 - `void onDoubleTapSeekBackward() {` - handles interaction, lifecycle, or playback events
+- L1987 - `void onDoubleTapSeekForward() {` - handles interaction, lifecycle, or playback events
+- L1991 - `void onForward(Duration duration) {` - handles interaction, lifecycle, or playback events
+- L1995 - `void onBackward(Duration duration) {` - handles interaction, lifecycle, or playback events
+- L1999 - `void onForwardBackward(Duration duration) {` - handles interaction, lifecycle, or playback events
+- L2006 - `void doubleTapFuc(DoubleTapType type) {` - performs one operation in its enclosing type or module
+- L2027 - `void onLockControl(bool val) {` - handles interaction, lifecycle, or playback events
+- L2036 - `void _setFullScreen(bool val) {` - performs one operation in its enclosing type or module
+- L2047 - `Future<void>? changeOrientation({` - performs one operation in its enclosing type or module
+- L2080 - `Future<void> triggerFullScreen({` - performs one operation in its enclosing type or module
+- L2122 - `void addPositionListener(ValueChanged<Duration> listener) {` - updates, stores, or records state
+- L2127 - `void removePositionListener(ValueChanged<Duration> listener) =>` - stops, releases, or resets state and resources
+- L2130 - `void addStatusLister(ValueChanged<PlayerStatus> listener) {` - updates, stores, or records state
+- L2135 - `void removeStatusLister(ValueChanged<PlayerStatus> listener) =>` - stops, releases, or resets state and resources
+- L2139 - `Future<void>? makeHeartBeat(` - performs one operation in its enclosing type or module
+- L2158 - `Future<void> send() {` - performs one operation in its enclosing type or module
+- L2194 - `void setPlayRepeat(PlayRepeat type) {` - updates, stores, or records state
+- L2199 - `void putSubtitleSettings() {` - updates, stores, or records state
+- L2214 - `Future<void>? resetScreenRotation() {` - stops, releases, or resets state and resources
+- L2222 - `void onCloseAll() {` - stops, releases, or resets state and resources
+- L2229 - `void dispose() {` - stops, releases, or resets state and resources
+- L2290 - `static void updatePlayCount() {` - updates, stores, or records state
+- L2298 - `void setContinuePlayInBackground() {` - updates, stores, or records state
+- L2314 - `void updatePreviewIndex(int seconds) {` - updates, stores, or records state
+- L2329 - `void _clearPreview() {` - performs one operation in its enclosing type or module
+- L2339 - `Future<void> getVideoShot() async {` - reads, requests, or synchronizes data
+- L2344 - `Future<void> takeScreenshot() async {` - performs one operation in its enclosing type or module
+- L2355 - `Future<void> save() async {` - updates, stores, or records state
+- L2421 - `void onPopInvokedWithResult(bool didPop, Object? result) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/plugin/pl_player/models/audio_output_type.dart`
 
@@ -14856,55 +15121,55 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/plugin/pl_player/view/view.dart`
 
-- L89 - **class `PLVideoPlayer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L90 - `const PLVideoPlayer({` - performs one operation in its enclosing type or module
-- L130 - `State<PLVideoPlayer> createState() => _PLVideoPlayerState();` - builds UI or state
-- L133 - **class `_PLVideoPlayerState`** - data structure or state carrier
-- L159 - `void _onBrightnessChanged(double value) {` - performs one operation in its enclosing type or module
-- L165 - `void _getSystemBrightness() {` - performs one operation in its enclosing type or module
-- L173 - `void _getAppBrightness() {` - performs one operation in its enclosing type or module
-- L181 - `void _onVolumeChanged(double value) {` - performs one operation in its enclosing type or module
-- L200 - `void _getCurrVolume() {` - performs one operation in its enclosing type or module
-- L210 - `void _onControlChanged(bool val) {` - performs one operation in its enclosing type or module
-- L257 - `void initState() {` - starts or initializes state and resources
-- L338 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
-- L376 - `Future<void> setBrightness(double value) async {` - updates, stores, or records state
-- L400 - `void dispose() {` - stops, releases, or resets state and resources
-- L419 - `Widget buildBottomControl(` - performs one operation in its enclosing type or module
-- L432 - `Widget progressWidget(` - performs one operation in its enclosing type or module
-- L954 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
-- L960 - `void didUpdateWidget(covariant PLVideoPlayer oldWidget) {` - handles interaction, lifecycle, or playback events
-- L967 - `void _onPanStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
-- L972 - `void _onScaleUpdate(double scale) {` - performs one operation in its enclosing type or module
-- L976 - `void _onHorizontalDragStart() {` - performs one operation in its enclosing type or module
-- L980 - `void _onHorizontalDragUpdate(double dx) {` - performs one operation in its enclosing type or module
-- L999 - `void _onHorizontalDragEnd() {` - performs one operation in its enclosing type or module
-- L1014 - `void _onPanUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
-- L1113 - `void fullScreenTrigger(bool status) {` - performs one operation in its enclosing type or module
-- L1150 - `void _onPanEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
-- L1158 - `void onDoubleTapDownMobile(TapDownDetails details) {` - handles interaction, lifecycle, or playback events
-- L1175 - `void _onTapUp(TapUpDetails details) {` - performs one operation in its enclosing type or module
-- L1190 - `void _onTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
-- L1213 - `void _onDoubleTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
-- L1241 - `bool _isPositionAllowed(Offset offset) {` - performs one operation in its enclosing type or module
-- L1256 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
-- L1290 - `void _onPointerUp(PointerUpEvent event) {` - performs one operation in its enclosing type or module
-- L1307 - `void _onPointerCancel(PointerCancelEvent event) {` - performs one operation in its enclosing type or module
-- L1311 - `void _onPointerPanZoomUpdate(PointerPanZoomUpdateEvent event) {` - performs one operation in its enclosing type or module
-- L1352 - `void _onPointerPanZoomEnd(PointerPanZoomEndEvent event) {` - performs one operation in its enclosing type or module
-- L1359 - `void _onPointerSignal(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
-- L1372 - `Widget build(BuildContext context) {` - builds UI or state
-- L1711 - `void listener() {` - performs one operation in its enclosing type or module
-- L1909 - `Obx(() {` - performs one operation in its enclosing type or module
-- L1945 - `Obx(() {` - performs one operation in its enclosing type or module
-- L1976 - `Obx(() {` - performs one operation in its enclosing type or module
-- L2105 - `Future<void> _screenshotWebp() async {` - performs one operation in its enclosing type or module
-- L2252 - `void _removeDmAction() {` - performs one operation in its enclosing type or module
-- L2260 - `Widget _dmActionItem(` - performs one operation in its enclosing type or module
-- L2282 - `int? _getValidOffset(String data) {` - performs one operation in its enclosing type or module
-- L2293 - `Widget _buildDmAction(` - performs one operation in its enclosing type or module
-- L2337 - `VideoDanmaku() => [` - performs one operation in its enclosing type or module
-- L2419 - `LiveDanmaku() => [` - performs one operation in its enclosing type or module
+- L90 - **class `PLVideoPlayer`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L91 - `const PLVideoPlayer({` - performs one operation in its enclosing type or module
+- L131 - `State<PLVideoPlayer> createState() => _PLVideoPlayerState();` - builds UI or state
+- L134 - **class `_PLVideoPlayerState`** - data structure or state carrier
+- L160 - `void _onBrightnessChanged(double value) {` - performs one operation in its enclosing type or module
+- L166 - `void _getSystemBrightness() {` - performs one operation in its enclosing type or module
+- L174 - `void _getAppBrightness() {` - performs one operation in its enclosing type or module
+- L182 - `void _onVolumeChanged(double value) {` - performs one operation in its enclosing type or module
+- L201 - `void _getCurrVolume() {` - performs one operation in its enclosing type or module
+- L211 - `void _onControlChanged(bool val) {` - performs one operation in its enclosing type or module
+- L258 - `void initState() {` - starts or initializes state and resources
+- L339 - `void didChangeAppLifecycleState(AppLifecycleState state) {` - handles interaction, lifecycle, or playback events
+- L379 - `Future<void> setBrightness(double value) async {` - updates, stores, or records state
+- L403 - `void dispose() {` - stops, releases, or resets state and resources
+- L422 - `Widget buildBottomControl(` - performs one operation in its enclosing type or module
+- L435 - `Widget progressWidget(` - performs one operation in its enclosing type or module
+- L955 - `void didChangeDependencies() {` - handles interaction, lifecycle, or playback events
+- L961 - `void didUpdateWidget(covariant PLVideoPlayer oldWidget) {` - handles interaction, lifecycle, or playback events
+- L968 - `void _onPanStart(ScaleStartDetails details) {` - performs one operation in its enclosing type or module
+- L973 - `void _onScaleUpdate(double scale) {` - performs one operation in its enclosing type or module
+- L977 - `void _onHorizontalDragStart() {` - performs one operation in its enclosing type or module
+- L981 - `void _onHorizontalDragUpdate(double dx) {` - performs one operation in its enclosing type or module
+- L1000 - `void _onHorizontalDragEnd() {` - performs one operation in its enclosing type or module
+- L1015 - `void _onPanUpdate(ScaleUpdateDetails details) {` - performs one operation in its enclosing type or module
+- L1114 - `void fullScreenTrigger(bool status) {` - performs one operation in its enclosing type or module
+- L1151 - `void _onPanEnd(ScaleEndDetails details) {` - performs one operation in its enclosing type or module
+- L1159 - `void onDoubleTapDownMobile(TapDownDetails details) {` - handles interaction, lifecycle, or playback events
+- L1176 - `void _onTapUp(TapUpDetails details) {` - performs one operation in its enclosing type or module
+- L1191 - `void _onTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
+- L1214 - `void _onDoubleTapDown(TapDownDetails details) {` - performs one operation in its enclosing type or module
+- L1242 - `bool _isPositionAllowed(Offset offset) {` - performs one operation in its enclosing type or module
+- L1257 - `void _onPointerDown(PointerDownEvent event) {` - performs one operation in its enclosing type or module
+- L1291 - `void _onPointerUp(PointerUpEvent event) {` - performs one operation in its enclosing type or module
+- L1308 - `void _onPointerCancel(PointerCancelEvent event) {` - performs one operation in its enclosing type or module
+- L1312 - `void _onPointerPanZoomUpdate(PointerPanZoomUpdateEvent event) {` - performs one operation in its enclosing type or module
+- L1353 - `void _onPointerPanZoomEnd(PointerPanZoomEndEvent event) {` - performs one operation in its enclosing type or module
+- L1360 - `void _onPointerSignal(PointerSignalEvent event) {` - performs one operation in its enclosing type or module
+- L1373 - `Widget build(BuildContext context) {` - builds UI or state
+- L1712 - `void listener() {` - performs one operation in its enclosing type or module
+- L1910 - `Obx(() {` - performs one operation in its enclosing type or module
+- L1946 - `Obx(() {` - performs one operation in its enclosing type or module
+- L1977 - `Obx(() {` - performs one operation in its enclosing type or module
+- L2106 - `Future<void> _screenshotWebp() async {` - performs one operation in its enclosing type or module
+- L2253 - `void _removeDmAction() {` - performs one operation in its enclosing type or module
+- L2261 - `Widget _dmActionItem(` - performs one operation in its enclosing type or module
+- L2283 - `int? _getValidOffset(String data) {` - performs one operation in its enclosing type or module
+- L2294 - `Widget _buildDmAction(` - performs one operation in its enclosing type or module
+- L2338 - `VideoDanmaku() => [` - performs one operation in its enclosing type or module
+- L2420 - `LiveDanmaku() => [` - performs one operation in its enclosing type or module
 
 ## `lib/plugin/pl_player/view/widgets.dart`
 
@@ -15103,20 +15368,23 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/services/audio_handler.dart`
 
-- L21 - `Future<VideoPlayerServiceHandler> initAudioService() {` - starts or initializes state and resources
-- L37 - **typedef `_StatusConfig`** - callback or type alias
-- L44 - **class `VideoPlayerServiceHandler`** - cross-page service, resource manager, or system coordinator
-- L53 - `Future<void> play() {` - handles interaction, lifecycle, or playback events
-- L60 - `Future<void> pause() {` - handles interaction, lifecycle, or playback events
-- L67 - `Future<void> seek(Duration position) {` - handles interaction, lifecycle, or playback events
-- L73 - `void setMediaItem(MediaItem newMediaItem) {` - updates, stores, or records state
-- L86 - `void onUpdateState(` - handles interaction, lifecycle, or playback events
-- L133 - `void _updateState(` - performs one operation in its enclosing type or module
-- L186 - `void onVideoDetailChange(` - handles interaction, lifecycle, or playback events
-- L200 - `Uri getUri(String? cover) => Uri.parse(ImageUtils.safeThumbnailUrl(cover));` - reads, requests, or synchronizes data
-- L279 - `void onVideoDetailDispose(String herotag) {` - handles interaction, lifecycle, or playback events
-- L293 - `void clearIfNeeded() {` - stops, releases, or resets state and resources
-- L298 - `void clear() {` - stops, releases, or resets state and resources
+- L28 - `Future<VideoPlayerServiceHandler> initAudioService() {` - starts or initializes state and resources
+- L44 - **typedef `_StatusConfig`** - callback or type alias
+- L51 - **class `VideoPlayerServiceHandler`** - cross-page service, resource manager, or system coordinator
+- L62 - `Future<void> play() {` - handles interaction, lifecycle, or playback events
+- L69 - `Future<void> pause() {` - handles interaction, lifecycle, or playback events
+- L75 - `CommonIntroController? _findIntroController() {` - performs one operation in its enclosing type or module
+- L94 - `Future<void> skipToNext() {` - performs one operation in its enclosing type or module
+- L100 - `Future<void> skipToPrevious() {` - performs one operation in its enclosing type or module
+- L106 - `Future<void> seek(Duration position) {` - handles interaction, lifecycle, or playback events
+- L112 - `void setMediaItem(MediaItem newMediaItem) {` - updates, stores, or records state
+- L125 - `void onUpdateState(` - handles interaction, lifecycle, or playback events
+- L172 - `void _updateState(` - performs one operation in its enclosing type or module
+- L225 - `void onVideoDetailChange(` - handles interaction, lifecycle, or playback events
+- L239 - `Uri getUri(String? cover) => Uri.parse(ImageUtils.safeThumbnailUrl(cover));` - reads, requests, or synchronizes data
+- L318 - `void onVideoDetailDispose(String herotag) {` - handles interaction, lifecycle, or playback events
+- L332 - `void clearIfNeeded() {` - stops, releases, or resets state and resources
+- L337 - `void clear() {` - stops, releases, or resets state and resources
 
 ## `lib/services/audio_session.dart`
 
@@ -15250,33 +15518,36 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/services/download/download_service.dart`
 
-- L31 - **class `DownloadService`** - cross-page service, resource manager, or system coordinator
-- L45 - `void _updateCurStatus(DownloadStatus status) {` - performs one operation in its enclosing type or module
-- L59 - `void onInit() {` - starts or initializes state and resources
-- L64 - `void initDownloadList() {` - starts or initializes state and resources
-- L68 - `Future<void> _readDownloadList() async {` - performs one operation in its enclosing type or module
-- L80 - `Future<List<BiliDownloadEntryInfo>> _readDownloadDirectory(` - performs one operation in its enclosing type or module
-- L111 - `void downloadVideo(` - reads, requests, or synchronizes data
-- L171 - `void downloadBangumi(` - reads, requests, or synchronizes data
-- L240 - `Future<void> _createDownload(BiliDownloadEntryInfo entry) async {` - performs one operation in its enclosing type or module
-- L254 - `Future<Directory> _getDownloadEntryDir(BiliDownloadEntryInfo entry) async {` - performs one operation in its enclosing type or module
-- L273 - `static Future<String> _getDownloadPath() async {` - performs one operation in its enclosing type or module
-- L281 - `Future<void> startDownload(BiliDownloadEntryInfo entry) {` - starts or initializes state and resources
-- L300 - `Future<bool> downloadDanmaku({` - reads, requests, or synchronizes data
-- L350 - `Future<bool> _downloadCover({` - performs one operation in its enclosing type or module
-- L372 - `Future<void> _startDownload(BiliDownloadEntryInfo entry) async {` - performs one operation in its enclosing type or module
-- L448 - `Future<void> _updateBiliDownloadEntryJson(BiliDownloadEntryInfo entry) {` - performs one operation in its enclosing type or module
-- L453 - `void _onReceive(int progress, int total) {` - performs one operation in its enclosing type or module
-- L465 - `void _onDone([Object? error]) {` - performs one operation in its enclosing type or module
-- L488 - `void _onAudioDone([Object? error]) {` - performs one operation in its enclosing type or module
-- L503 - `Future<void> _completeDownload() async {` - performs one operation in its enclosing type or module
-- L522 - `void nextDownload() {` - performs one operation in its enclosing type or module
-- L528 - `Future<void> deleteDownload({` - performs one operation in its enclosing type or module
-- L563 - `Future<void> deletePage({` - performs one operation in its enclosing type or module
-- L574 - `Future<void> cancelDownload({` - stops, releases, or resets state and resources
-- L600 - **typedef `SetNotifier`** - callback or type alias
-- L602 - **extension `SetNotifierExt`** - adds convenience behavior to an existing type
-- L603 - `void refresh() {` - switches, recovers, or refreshes runtime state
+- L36 - **class `DownloadService`** - cross-page service, resource manager, or system coordinator
+- L50 - `void _updateCurStatus(DownloadStatus status) {` - performs one operation in its enclosing type or module
+- L64 - `void onInit() {` - starts or initializes state and resources
+- L69 - `void initDownloadList() {` - starts or initializes state and resources
+- L73 - `Future<void> _readDownloadList() async {` - performs one operation in its enclosing type or module
+- L85 - `Future<List<BiliDownloadEntryInfo>> _readDownloadDirectory(` - performs one operation in its enclosing type or module
+- L116 - `void downloadVideo({` - reads, requests, or synchronizes data
+- L179 - `void downloadBangumi({` - reads, requests, or synchronizes data
+- L248 - `Future<void> _createDownload(BiliDownloadEntryInfo entry) async {` - performs one operation in its enclosing type or module
+- L262 - `Future<Directory> _getDownloadEntryDir(BiliDownloadEntryInfo entry) async {` - performs one operation in its enclosing type or module
+- L281 - `static Future<String> _getDownloadPath() async {` - performs one operation in its enclosing type or module
+- L289 - `Future<void> startDownload(BiliDownloadEntryInfo entry) {` - starts or initializes state and resources
+- L308 - `Future<bool> downloadDanmaku({` - reads, requests, or synchronizes data
+- L356 - `Future<bool> _downloadCover({` - performs one operation in its enclosing type or module
+- L378 - `Future<bool> updateSegments(BiliDownloadEntryInfo entry) {` - updates, stores, or records state
+- L386 - `Future<bool> _updateBlockSegments(BiliDownloadEntryInfo entry) async {` - performs one operation in its enclosing type or module
+- L401 - `Future<bool> _updatePgcSegments(BiliDownloadEntryInfo entry) async {` - performs one operation in its enclosing type or module
+- L428 - `Future<void> _startDownload(BiliDownloadEntryInfo entry) async {` - performs one operation in its enclosing type or module
+- L516 - `Future<void> _updateBiliDownloadEntryJson(BiliDownloadEntryInfo entry) {` - performs one operation in its enclosing type or module
+- L521 - `void _onReceive(int progress, int total) {` - performs one operation in its enclosing type or module
+- L533 - `void _onDone([Object? error]) {` - performs one operation in its enclosing type or module
+- L556 - `void _onAudioDone([Object? error]) {` - performs one operation in its enclosing type or module
+- L571 - `Future<void> _completeDownload() async {` - performs one operation in its enclosing type or module
+- L590 - `void nextDownload() {` - performs one operation in its enclosing type or module
+- L596 - `Future<void> deleteDownload({` - performs one operation in its enclosing type or module
+- L631 - `Future<void> deletePage({` - performs one operation in its enclosing type or module
+- L642 - `Future<void> cancelDownload({` - stops, releases, or resets state and resources
+- L668 - **typedef `SetNotifier`** - callback or type alias
+- L670 - **extension `SetNotifierExt`** - adds convenience behavior to an existing type
+- L671 - `void refresh() {` - switches, recovers, or refreshes runtime state
 
 ## `lib/services/logger.dart`
 
@@ -15476,16 +15747,14 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/utils/android/android_helper.dart`
 
-- L12 - **class `PiliAndroidHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L14 - `static void back() => AndroidHelper.back();` - performs one operation in its enclosing type or module
-- L16 - `static void biliSendCommAntifraud(` - performs one operation in its enclosing type or module
-- L63 - `static void openLinkVerifySettings() =>` - handles interaction, lifecycle, or playback events
-- L66 - `static bool openMusic(String title, String? artist, String? album) {` - handles interaction, lifecycle, or playback events
-- L80 - `static void enterPip(` - handles interaction, lifecycle, or playback events
-- L96 - `static void disableAutoEnterPip() =>` - performs one operation in its enclosing type or module
-- L99 - `static (int, int)? maxScreenSize() {` - performs one operation in its enclosing type or module
-- L111 - `static void createShortcut(String id, String uri, String label, String path) {` - performs one operation in its enclosing type or module
-- L126 - `static void openUrl(String url, {String domain = '*.bilibili.com'}) {` - handles interaction, lifecycle, or playback events
+- L11 - **class `PiliAndroidHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L14 - `static void biliSendCommAntifraud(` - performs one operation in its enclosing type or module
+- L58 - `static bool openMusic(String title, String? artist, String? album) {` - handles interaction, lifecycle, or playback events
+- L72 - `static void enterPip(` - handles interaction, lifecycle, or playback events
+- L88 - `static void disableAutoEnterPip() =>` - performs one operation in its enclosing type or module
+- L91 - `static (int, int)? maxScreenSize() {` - performs one operation in its enclosing type or module
+- L103 - `static void createShortcut(String id, String uri, String label, String path) {` - performs one operation in its enclosing type or module
+- L118 - `static void openUrl(String url, {String domain = '*.bilibili.com'}) {` - handles interaction, lifecycle, or playback events
 
 ## `lib/utils/android/bindings.g.dart`
 
@@ -15534,9 +15803,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L5 - `static bool isDefaultFav(int? attr) {` - predicate, validation, or lookup
 - L12 - `static String isPublicFavText(int? attr) {` - predicate, validation, or lookup
 - L19 - `static bool isPublicFav(int attr) {` - predicate, validation, or lookup
-- L23 - `static bool isCustomFollowTag(int? tagid) {` - predicate, validation, or lookup
-- L28 - `static Widget levelPicture(` - performs one operation in its enclosing type or module
-- L43 - `static String? liveGuardPendant(int guardLevel) => switch (guardLevel) {` - performs one operation in its enclosing type or module
+- L23 - `static bool isFavFolderFull(int attr, int count) {` - predicate, validation, or lookup
+- L30 - `static bool isCustomFollowTag(int? tagid) {` - predicate, validation, or lookup
+- L35 - `static Widget levelPicture(` - performs one operation in its enclosing type or module
+- L50 - `static String? liveGuardPendant(int guardLevel) => switch (guardLevel) {` - performs one operation in its enclosing type or module
+- L57 - `static String? pgcType2Label(int? pgcType) => switch (pgcType) {` - performs one operation in its enclosing type or module
 
 ## `lib/utils/cache_manager.dart`
 
@@ -15544,8 +15815,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L12 - `static Future<void> ensureInitialized() => DefaultCacheManager.init(` - starts or initializes state and resources
 - L22 - `static Future<int> loadApplicationCache() async {` - reads, requests, or synchronizes data
 - L38 - `static Future<int> getTotalSizeOfFilesInDir(Directory file) async {` - reads, requests, or synchronizes data
-- L59 - `static String formatSize(num value) {` - performs one operation in its enclosing type or module
-- L72 - `static Future<void> clearLibraryCache() async {` - stops, releases, or resets state and resources
+- L60 - `static Future<void> clearLibraryCache() async {` - stops, releases, or resets state and resources
 
 ## `lib/utils/calc_window_position.dart`
 
@@ -15580,7 +15850,8 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/utils/device_utils.dart`
 
-- L5 - **class `DeviceUtils`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L8 - **class `DeviceUtils`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L26 - `static void exitApp() {` - handles interaction, lifecycle, or playback events
 
 ## `lib/utils/duration_utils.dart`
 
@@ -15674,12 +15945,12 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L1 - **extension `NullableIterableExt`** - adds convenience behavior to an existing type
 - L5 - **extension `IterableExt`** - adds convenience behavior to an existing type
 - L6 - `T? reduceOrNull(T Function(T value, T element) combine) {` - performs one operation in its enclosing type or module
-- L19 - **extension `ListExt`** - adds convenience behavior to an existing type
-- L20 - `bool removeFirstWhere(bool Function(T) test) {` - stops, releases, or resets state and resources
-- L33 - `T findClosestTarget(` - predicate, validation, or lookup
-- L63 - `T? getOrNull(int index) {` - reads, requests, or synchronizes data
-- L68 - `T getOrFirst(int index) {` - reads, requests, or synchronizes data
-- L72 - `void insertOrAdd(int index, T element) {` - updates, stores, or records state
+- L32 - **extension `ListExt`** - adds convenience behavior to an existing type
+- L33 - `bool removeFirstWhere(bool Function(T) test) {` - stops, releases, or resets state and resources
+- L46 - `T findClosestTarget(` - predicate, validation, or lookup
+- L76 - `T? getOrNull(int index) {` - reads, requests, or synchronizes data
+- L81 - `T getOrFirst(int index) {` - reads, requests, or synchronizes data
+- L85 - `void insertOrAdd(int index, T element) {` - updates, stores, or records state
 
 ## `lib/utils/extension/map_ext.dart`
 
@@ -15693,13 +15964,13 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/utils/extension/num_ext.dart`
 
-- L5 - **extension `ImageExtension`** - adds convenience behavior to an existing type
-- L6 - `int? cacheSize(BuildContext context) {` - performs one operation in its enclosing type or module
-- L14 - **extension `IntExt`** - adds convenience behavior to an existing type
-- L19 - **extension `DoubleExt`** - adds convenience behavior to an existing type
-- L20 - `double toPrecision(int fractionDigits) {` - performs one operation in its enclosing type or module
-- L25 - `bool equals(double other, [double epsilon = 1e-10]) =>` - performs one operation in its enclosing type or module
-- L28 - `double lerp(double a, double b) {` - performs one operation in its enclosing type or module
+- L7 - **extension `ImageExtension`** - adds convenience behavior to an existing type
+- L8 - `int? cacheSize(BuildContext context) {` - performs one operation in its enclosing type or module
+- L27 - **extension `IntExt`** - adds convenience behavior to an existing type
+- L32 - **extension `DoubleExt`** - adds convenience behavior to an existing type
+- L33 - `double toPrecision(int fractionDigits) {` - performs one operation in its enclosing type or module
+- L38 - `bool equals(double other, [double epsilon = 1e-10]) =>` - performs one operation in its enclosing type or module
+- L41 - `double lerp(double a, double b) {` - performs one operation in its enclosing type or module
 
 ## `lib/utils/extension/rx_ext.dart`
 
@@ -15722,7 +15993,7 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 
 ## `lib/utils/extension/size_ext.dart`
 
-- L3 - **extension `SizeExt`** - adds convenience behavior to an existing type
+- L5 - **extension `SizeExt`** - adds convenience behavior to an existing type
 
 ## `lib/utils/extension/string_ext.dart`
 
@@ -15769,11 +16040,12 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L73 - `static void removeFontIfExists() {` - stops, releases, or resets state and resources
 - L80 - `static Future<void> _loadFont(` - performs one operation in its enclosing type or module
 - L90 - `static Future<Map<String, Uint8List>?> pickFonts() async {` - performs one operation in its enclosing type or module
-- L115 - `static Set<String> getFont() {` - reads, requests, or synchronizes data
-- L130 - `static int _enumFontCallback(` - performs one operation in its enclosing type or module
-- L143 - `static bool _initWindows() {` - performs one operation in its enclosing type or module
-- L167 - `static bool _initLinux() {` - performs one operation in its enclosing type or module
-- L217 - `static bool _initAndroid() {` - performs one operation in its enclosing type or module
+- L100 - `Future<void> loadFont(file) async {` - reads, requests, or synchronizes data
+- L116 - `static Set<String> getFont() {` - reads, requests, or synchronizes data
+- L131 - `static int _enumFontCallback(` - performs one operation in its enclosing type or module
+- L144 - `static bool _initWindows() {` - performs one operation in its enclosing type or module
+- L168 - `static bool _initLinux() {` - performs one operation in its enclosing type or module
+- L218 - `static bool _initAndroid() {` - performs one operation in its enclosing type or module
 
 ## `lib/utils/fontconfig.g.dart`
 
@@ -15813,6 +16085,9 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L8 - `void afterCoin(num coin) {` - performs one operation in its enclosing type or module
 - L21 - `GlobalData._();` - performs one operation in its enclosing type or module
 - L27 - `factory GlobalData() => _instance;` - performs one operation in its enclosing type or module
+- L30 - **extension `IterableExt`** - adds convenience behavior to an existing type
+- L31 - `Iterable<E> whereNotBlocked(Object? /* mid */ Function(E element) test) =>` - performs one operation in its enclosing type or module
+- L32 - `where((e) => !GlobalData().blackMids.contains(test(e)));` - performs one operation in its enclosing type or module
 
 ## `lib/utils/grid.dart`
 
@@ -15858,6 +16133,16 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L259 - `void add(String? url, [int quality = 1]) {` - updates, stores, or records state
 - L293 - `static Future<SaveResult?> saveByteImg({` - updates, stores, or records state
 - L333 - `static Future<void> saveFileImg({` - updates, stores, or records state
+
+## `lib/utils/ios/pip_helper.dart`
+
+- L8 - **class `IOSPipHelper`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L21 - `static Future<void> init() async {` - starts or initializes state and resources
+- L30 - `static Future<void> _onMethodCall(MethodCall call) async {` - performs one operation in its enclosing type or module
+- L68 - `static void enter(` - handles interaction, lifecycle, or playback events
+- L85 - `static void update(Map<String, Object> state) {` - updates, stores, or records state
+- L89 - `static void disableAutoEnter() {` - performs one operation in its enclosing type or module
+- L96 - `static void dispose() {` - stops, releases, or resets state and resources
 
 ## `lib/utils/json_file_handler.dart`
 
@@ -16004,18 +16289,18 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L198 - `static void enterPip({` - handles interaction, lifecycle, or playback events
 - L225 - `static Future<void> pushDynDetail(` - handles interaction, lifecycle, or playback events
 - L232 - `void push() {` - handles interaction, lifecycle, or playback events
-- L398 - `PageUtils.viewPugv(` - performs one operation in its enclosing type or module
-- L417 - `static void inAppWebview(` - performs one operation in its enclosing type or module
-- L433 - `static Future<void> launchURL(` - performs one operation in its enclosing type or module
-- L447 - `static Future<void> handleWebview(` - handles interaction, lifecycle, or playback events
-- L461 - `static Future<void>? showVideoBottomSheet(` - handles interaction, lifecycle, or playback events
-- L507 - `static void toLiveRoom(` - performs one operation in its enclosing type or module
-- L522 - `static Future<void>? toVideoPage({` - performs one operation in its enclosing type or module
-- L557 - `static bool viewPgcFromUri(` - performs one operation in its enclosing type or module
-- L589 - `static EpisodeItem findEpisode(` - predicate, validation, or lookup
-- L605 - `static Future<void> viewPgc({` - performs one operation in its enclosing type or module
-- L621 - `void viewSection(EpisodeItem episode) {` - performs one operation in its enclosing type or module
-- L706 - `static Future<void> viewPugv({` - performs one operation in its enclosing type or module
+- L400 - `PageUtils.viewPugv(` - performs one operation in its enclosing type or module
+- L419 - `static void inAppWebview(` - performs one operation in its enclosing type or module
+- L435 - `static Future<void> launchURL(` - performs one operation in its enclosing type or module
+- L449 - `static Future<void> handleWebview(` - handles interaction, lifecycle, or playback events
+- L463 - `static Future<void>? showVideoBottomSheet(` - handles interaction, lifecycle, or playback events
+- L509 - `static void toLiveRoom(` - performs one operation in its enclosing type or module
+- L524 - `static Future<void>? toVideoPage({` - performs one operation in its enclosing type or module
+- L559 - `static bool viewPgcFromUri(` - performs one operation in its enclosing type or module
+- L591 - `static EpisodeItem findEpisode(` - predicate, validation, or lookup
+- L607 - `static Future<void> viewPgc({` - performs one operation in its enclosing type or module
+- L623 - `void viewSection(EpisodeItem episode) {` - performs one operation in its enclosing type or module
+- L708 - `static Future<void> viewPugv({` - performs one operation in its enclosing type or module
 
 ## `lib/utils/parse_bool.dart`
 
@@ -16066,10 +16351,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/utils/recommend_filter.dart`
 
 - L4 - **class `RecommendFilter`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L16 - `static bool filter(BaseVideoItemModel videoItem) {` - performs one operation in its enclosing type or module
-- L24 - `static bool filterLikeRatio(int? like, int? view) {` - performs one operation in its enclosing type or module
-- L34 - `static bool filterTitle(String title) {` - performs one operation in its enclosing type or module
-- L38 - `static bool filterAll(BaseVideoItemModel videoItem) {` - performs one operation in its enclosing type or module
+- L17 - `static bool filterWithExempt(BaseVideoItemModel videoItem) {` - performs one operation in its enclosing type or module
+- L26 - `static bool filterLikeRatio(int? like, int? view) {` - performs one operation in its enclosing type or module
+- L37 - `static bool filterTitle(String title) {` - performs one operation in its enclosing type or module
+- L42 - `static bool filterDuration(int duration) {` - performs one operation in its enclosing type or module
+- L47 - `static bool filterAll(BaseVideoItemModel videoItem) {` - performs one operation in its enclosing type or module
 
 ## `lib/utils/reply_utils.dart`
 
@@ -16113,18 +16399,18 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/utils/storage_key.dart`
 
 - L3 - **class `SettingBoxKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L274 - **class `LocalCacheKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L283 - **class `VideoBoxKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L275 - **class `LocalCacheKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L284 - **class `VideoBoxKey`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
 
 ## `lib/utils/storage_pref.dart`
 
-- L52 - **class `Pref`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L70 - `static set blackMids(Set<int> blackMidsSet) =>` - performs one operation in its enclosing type or module
-- L78 - `static void setBlackMid(int mid) => _localCache.put(` - updates, stores, or records state
-- L83 - `static void removeBlackMid(int mid) => _localCache.put(` - stops, releases, or resets state and resources
-- L930 - `static Map<String, String> lowLatencyBufferOptions({` - performs one operation in its enclosing type or module
-- L954 - `static Map<String, String> initBuffer([` - starts or initializes state and resources
-- L978 - `static Map<String, String> initLiveBuffer() {` - starts or initializes state and resources
+- L53 - **class `Pref`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L71 - `static set blackMids(Set<int> blackMidsSet) =>` - performs one operation in its enclosing type or module
+- L79 - `static void setBlackMid(int mid) => _localCache.put(` - updates, stores, or records state
+- L84 - `static void removeBlackMid(int mid) => _localCache.put(` - stops, releases, or resets state and resources
+- L931 - `static Map<String, String> lowLatencyBufferOptions({` - performs one operation in its enclosing type or module
+- L955 - `static Map<String, String> initBuffer([` - starts or initializes state and resources
+- L979 - `static Map<String, String> initLiveBuffer() {` - starts or initializes state and resources
 
 ## `lib/utils/storage_utils.dart`
 
@@ -16203,12 +16489,11 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 ## `lib/utils/waterfall.dart`
 
 - L12 - **mixin `DynMixin`** - behavior shared by multiple classes
-- L14 - `SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(` - performs one operation in its enclosing type or module
-- L19 - `Widget buildPage(Widget child) {` - performs one operation in its enclosing type or module
-- L57 - **class `SliverWaterfallFlowDelegateWithMaxCrossAxisExtent`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
-- L64 - `SliverWaterfallFlowDelegateWithMaxCrossAxisExtent({` - performs one operation in its enclosing type or module
-- L91 - `int getCrossAxisCount(SliverConstraints constraints) {` - reads, requests, or synchronizes data
-- L103 - `bool shouldRelayout(SliverWaterfallFlowDelegate oldDelegate) {` - predicate, validation, or lookup
+- L17 - `Widget buildPage(Widget child) {` - performs one operation in its enclosing type or module
+- L56 - **class `SliverSimpleGridDelegateWithMaxCrossAxisExtent_`** - source type; see its file and CODEBASE_REFERENCE.md for boundaries
+- L62 - `SliverSimpleGridDelegateWithMaxCrossAxisExtent_({` - performs one operation in its enclosing type or module
+- L85 - `int getCrossAxisCount(` - reads, requests, or synchronizes data
+- L100 - `bool shouldRelayout(` - predicate, validation, or lookup
 
 ## `lib/utils/wbi_sign.dart`
 

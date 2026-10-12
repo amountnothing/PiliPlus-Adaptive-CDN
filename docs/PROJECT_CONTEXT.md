@@ -37,6 +37,7 @@
 - 自动播放的数据源在 `Player.open` 阶段直接启动，不再先以暂停状态打开并等待完整目标缓存回填；自适应模式把 MPV 前向队列限制在 1–4 MiB、时间前瞻限制在 4 秒（不再按 30 秒码率膨胀到 16–96 MiB），并使用 `cache-pause-initial=no`，限制首播/重新打开的预取。此配置不是首帧门槛，实际出帧仍受格式探测、关键帧和解码初始化影响，尚无真机首帧流量/延迟对照。显式 seek 会立即下发到 MPV，不再先等待不可重放的 `stream.buffer.first` 最多 2 秒，避免大跨度拖动期间旧位置继续下载。手动暂停代次仍可阻止迟到的自动播放。
 - 2026-09-09 已合并 PiliPlus 上游 `9730d29a8a34e0d07fec0afb06155711961a0509`；冲突采用“保留上游新 API/网络编码选择，同时保留 Adaptive CDN Relay、恢复检查点、播放意图和 seek 保护”的组合解。项目工具链基线随上游升级到 Flutter 3.47.2。
 - 2026-10-01 已合并 PiliPlus 上游 `a30fcc310`（Release 2.1.5，87 提交）；5 个冲突（pl_player/controller、member_home/video/season_series、settings.gradle.kts）按“保留我们全部修复 + 吸收上游 playerStatus/_updatePlaybackState/seek 重构”解决，AGP 9.1.1 + Kotlin 2.4.0。工具链升到 Flutter 3.47.5（`.tooling/flutter-3.47.5`，本地框架补丁与 material_ui 补丁已迁移），定向 analyze 0 issue、全项目 41→38（剩余为合并前既有）。详见 `docs/plans/2026-10-01-upstream-2.1.5-merge.md`。合并提交未推送（gh 令牌缺 `workflow` 作用域，推送前需 `gh auth refresh`）。
+- 2026-10-12 已合并 PiliPlus 上游 `56ad46af4`（Release 2.1.6，66 提交，merge-base `a30fcc310`）；2 个冲突（`README.md`、`lib/pages/setting/models/extra_settings.dart`）解决为“保留我们的仓库徽章/徽标链接与本地行为，吸收上游改动”，上游合并本身 210 文件（6531+/2690-），另含本次文档与索引更新。版本号随上游升到 `2.1.6+1`，工具链升到 Flutter 3.47.7（`.tooling/flutter-3.47.7`，本地框架 36 个已改文件与 material_ui 1.6.0 的 9 个补丁全部 reverse-check 通过）。验证：全项目 `flutter analyze` 38 issues（与基线一致）、定向 analyze 0 issue、全量 `flutter test` 106/106 通过。详见 `docs/plans/2026-10-12-upstream-2.1.6-merge.md`。合并提交未推送。
 - 处理过的误判：
   - 视频结尾没有新内容可下载不算 CDN 超时。
   - 片尾保护窗口对短视频按总时长缩小，不再用固定 5 秒覆盖短视频的启动阶段；新 CID 也不继承上一视频“播放完成”产生的暂停状态。推荐页连续打开视频时，只有最后一次媒体打开事务可以接管播放器，旧视频在替换期间迟到的 completed/paused/position/error 事件不得覆盖新视频的启播意图和状态。
@@ -336,6 +337,16 @@
 - **C 空关键词不吞弹幕**：`lib/pages/live_room/controller.dart:496` 改为 `_keywordList.any((k) => k.isNotEmpty && text.contains(k))`；`_shieldUids` 是 `Set<int>`，非 int uid 由类型检查天然排除。
 - **测试**：`test/live_fixes_test.dart` 9 项（A3/B4 含两项非 live 对照/C2），TDD 先 6 项 RED 再 9 项 GREEN；全量 `flutter test` 106 项通过（基线 97 + 新增 9，`cdn_relay_server_test` 时序 flake 单文件复跑通过）；定向 analyze 0 issue、全量 38 条与基线一致。该测试文件需 `.gitignore` 白名单 `!/test/live_fixes_test.dart`。
 - 症状/根因/未验证项详见 `docs/plans/2026-10-02-live-fixes.md`。
+
+### 2026-10-12 上游 2.1.6 同步验证
+
+- 范围：`git merge upstream/main`，上游 `a30fcc310..56ad46af4` 66 提交（Release 2.1.6），210 文件变更；2 个冲突已人工解决，工作树无残留冲突标记。下载页重构（`lib/pages/download/controller.dart`→`lib/pages/download/download/`）、我的页多 Tab（`mine/widgets/item.dart`→`fav_item.dart` 等）、iOS 画中画 `PipPlugin.swift`、OGV 迁移等均为上游改动。
+- 工具链：`.fvmrc` / `pubspec.yaml` 随上游 pin Flutter **3.47.7**（`.tooling/flutter-3.47.7`）；本地框架补丁（`lib/scripts/*.patch` 中 android/linux 适用的 24 个）与 material_ui **1.6.0** 的 9 个补丁均已正向应用并通过 `--dry-run -R` 反向核对；3 个 iOS 专用补丁按惯例未应用。
+- 依赖：`flutter pub get` 已按合并后的 `pubspec.lock` 同步（`cached_network_image_ce` 上游改回 `bggRGjQaUbCoE` ref `733d4aa`）。新增传递依赖 `cnativeapi 0.5.2` 带 native-assets build hook，Linux 上需要 clang——execution 容器内已 `apt install clang`；`flutter config` 的 `enable-native-assets` 保持默认 `Not set`（未改动，这是预期设置）。
+- 验证（2026-10-12，执行容器）：全项目 `flutter analyze` 92.6s / 38 issues（全部为合并前即存在的 vendored `lib/common/widgets/flutter/*` info、`package_names` 等）；`flutter analyze lib/pages/setting/models/extra_settings.dart` 0 issue；全量 `flutter test` **106/106 通过**（含 `cdn_relay_server_test` 时序用例与 `live_fixes_test`）。
+- 本地修复核对：`playbackRequested`/`WakelockHoldManager`（pl_player/controller）、`debugLoadStreamAndRules`（live_room）、`debugCheckCdnHealth`/`isLive` 早退（video/controller）、`cdn_relay_server.dart` 均在合并结果中，且合并 diff 未删除这些标记行。
+- 索引：`tool/generate_codebase_index.ps1` 已重建 `SOURCE_FILE_INDEX.md` / `SYMBOL_INDEX.md`（files=1672）。
+- 遗留：AGP 9.1.1 + Kotlin 2.4.0 组合仍未跑 Gradle 构建；未做 Android 真机验证；未推送（gh 令牌缺 `workflow` 作用域）。
 
 ### 继续项目时先做什么
 

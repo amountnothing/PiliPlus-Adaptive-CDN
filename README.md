@@ -17,7 +17,8 @@
 <div align="center">
     <h1>PiliPlus</h1>
 <div align="center">
-    
+中文 | [English](README.en.md)
+
 ![GitHub repo size](https://img.shields.io/github/repo-size/amountnothing/PiliPlus-Adaptive-CDN)
 ![GitHub Repo stars](https://img.shields.io/github/stars/amountnothing/PiliPlus-Adaptive-CDN)
 ![GitHub all releases](https://img.shields.io/github/downloads/amountnothing/PiliPlus-Adaptive-CDN/total)
@@ -223,7 +224,7 @@
 
 ## 下载
 
-可以通过右侧release进行下载或拉取代码到本地进行编译
+可以从 [Releases](https://github.com/amountnothing/PiliPlus-Adaptive-CDN/releases) 下载，或克隆仓库拉取代码后在本地编译。
 
 <br/>
 

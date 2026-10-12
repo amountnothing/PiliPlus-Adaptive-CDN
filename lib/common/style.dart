@@ -9,6 +9,7 @@ abstract final class Style {
   static const imgRadius = Radius.circular(10);
   static const aspectRatio = 16 / 10;
   static const aspectRatio16x9 = 16 / 9;
+  static const aspectRatio3x4 = 3 / 4;
   static const imgMaxRatio = 2.6;
   static const feedCacheExtent = ScrollCacheExtent.pixels(1000);
   static const bottomSheetRadius = BorderRadius.vertical(top: .circular(18));
