@@ -346,7 +346,8 @@
 - 验证（2026-10-12，执行容器）：全项目 `flutter analyze` 92.6s / 38 issues（全部为合并前即存在的 vendored `lib/common/widgets/flutter/*` info、`package_names` 等）；`flutter analyze lib/pages/setting/models/extra_settings.dart` 0 issue；全量 `flutter test` **106/106 通过**（含 `cdn_relay_server_test` 时序用例与 `live_fixes_test`）。
 - 本地修复核对：`playbackRequested`/`WakelockHoldManager`（pl_player/controller）、`debugLoadStreamAndRules`（live_room）、`debugCheckCdnHealth`/`isLive` 早退（video/controller）、`cdn_relay_server.dart` 均在合并结果中，且合并 diff 未删除这些标记行。
 - 索引：`tool/generate_codebase_index.ps1` 已重建 `SOURCE_FILE_INDEX.md` / `SYMBOL_INDEX.md`（files=1672）。
-- 遗留：AGP 9.1.1 + Kotlin 2.4.0 组合仍未跑 Gradle 构建；未做 Android 真机验证；未推送（gh 令牌缺 `workflow` 作用域）。
+- 遗留：未做 Android 真机验证；未推送（gh 令牌缺 `workflow` 作用域）。
+- 2026-10-13 执行容器编 APK 成功（AGP 9.1.1 + Kotlin 2.4.0 + Gradle 9.3.1 首次真实构建）。容器 cgroup 内存上限 3 GiB，`android/gradle.properties` 的 `-Xmx4G` 会 OOM 杀 daemon；不改仓库文件，在容器本地 `~/.gradle/gradle.properties` 设 `org.gradle.jvmargs=-Xmx1000m -XX:MaxMetaspaceSize=420m -XX:ReservedCodeCacheSize=192m`、`kotlin.compiler.execution.strategy=in-process`、`org.gradle.workers.max=2`，并把内存峰值串行化：先单独用 dartvm 调 `flutter_tools.snapshot --quiet assemble … android_aot_bundle_release_android-arm64` 完成 kernel/AOT（`--DartDefines` 必须用 gradle `-Pdart-defines` 的原始 base64 blob——`FLUTTER_GIT_URL=…/flutter.git` 带 `.git`，否则缓存不命中、Gradle 侧重跑 frontend_server 与 daemon 叠加超限），再跑完整 `flutter build apk --release --target-platform android-arm64 --split-per-abi --android-project-arg=kotlin.incremental=false --android-project-arg=kotlin.compiler.execution.strategy=in-process`，Gradle 侧 assemble 命中缓存。产物 `build/app/outputs/flutter-apk/app-arm64-v8a-release.apk`：24,451,359 字节，SHA-256 `c58f3fa07598d0a44ceebe7204b1e60f906b65c3316c15c55e02f6f193f5fc6c`，versionName 2.1.6 / versionCode 1 / minSdk 24 / targetSdk 37，debug 签名（仓库无 `key.properties`，按 `build.gradle.kts:65` 回退），含上游 `cnativeapi` native-assets 产物 `libcnativeapi.so`（构建环境需 clang 与 NDK）。
 
 ### 继续项目时先做什么
 
