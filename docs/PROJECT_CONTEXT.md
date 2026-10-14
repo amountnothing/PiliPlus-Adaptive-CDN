@@ -358,9 +358,11 @@
 - 产物：`dist/PiliPlus-Adaptive-CDN-Web.user.js` **0.2.20**，57,533 B，SHA-256 `5cf0045a6f81bfec8dd16968319e0f958f64bdf12df4cefa79823a78964d5316`；验收细节见 `browser-extension/RETRY-0.2.20.md`，探针与线上 JSON 在 `dist/.qa/online/`（gitignored）。
 - 遗留：未推送（gh 令牌缺 `workflow` 作用域）；2 个 NXDOMAIN 死域名是否从 `cdn_type.dart` 移除仍待用户确认。
 
+- 同日约定：`AGENTS.md` 的开工必读改为「新会话首次接管全读一次、后续按需读章节」，并新增大文件按需读取全局规则（禁止 `cat` 全文，>200 行/8KB 分段读，结论写回文档）；规则同时要求全局生效于 `~/.hermes/SOUL.md`，其待应用副本在宿主 `/shared/global-context-rules-SOUL.md`。
+
 ### 继续项目时先做什么
 
-1. 完整读取本文档和根目录 `AGENTS.md`。
+1. 新会话首次接管时完整读取本文档和根目录 `AGENTS.md` 一次，后续任务按需读取相关章节；大文件一律按 `AGENTS.md` 的「大文件按需读取」规则处理。
 2. 看 `git status --short`，确认用户未提交改动和当前工作树。
 3. 如果出现动画回归，先与 `30eac66c5` 对比相关文件，只改最小必要点。
 4. 改完跑：
