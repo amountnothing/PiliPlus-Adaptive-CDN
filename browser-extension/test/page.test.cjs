@@ -37,15 +37,38 @@ test('concurrent 403 ranges switch at 0/2/4s and share one generation',async()=>
  await h.tick(60000);assert.equal(calls.length,12);
  const status=h.messages.filter(m=>m.type==='status').at(-1).payload;assert.equal(status.switches,2);assert.equal(status.failedHosts.length,3);
 });
-test('silent candidates still wait full 15s windows (0/15/30)',async()=>{
+test('silent pre-first-byte candidates switch on the 5s attempt deadline (0/5/10)',async()=>{
  const calls=[];const h=harness((u,i)=>{calls.push({url:String(u),at:h.now()});return new Promise((r,j)=>i.signal.addEventListener('abort',()=>j(i.signal.reason),{once:true}));});h.register();
  const p=Promise.allSettled(Array.from({length:4},(_,i)=>h.window.fetch(A,{headers:{Range:`bytes=${i*10}-${i*10+9}`}})));
- await h.tick(14999);assert.equal(calls.length,4);await h.tick(1);assert.equal(calls.length,8);
- await h.tick(14999);assert.equal(calls.length,8);await h.tick(1);assert.equal(calls.length,12);
- assert.deepEqual(calls.map(x=>x.at),[...Array(4).fill(100000),...Array(4).fill(115000),...Array(4).fill(130000)]);
+ await h.tick(4999);assert.equal(calls.length,4);await h.tick(1);assert.equal(calls.length,8);
+ await h.tick(4999);assert.equal(calls.length,8);await h.tick(1);assert.equal(calls.length,12);
+ assert.deepEqual(calls.map(x=>x.at),[...Array(4).fill(100000),...Array(4).fill(105000),...Array(4).fill(110000)]);
  const results=await h.settle(p);assert.equal(results.length,4);
  await h.tick(60000);assert.equal(calls.length,12);
  const status=h.messages.filter(m=>m.type==='status').at(-1).payload;assert.equal(status.switches,2);
+});
+test('watchdog retires a byte-less candidate whose requests were all page-cancelled',async()=>{
+ const h=harness(()=>new Promise(()=>{}));h.register();
+ const x1=new h.ctx.XMLHttpRequest(),x2=new h.ctx.XMLHttpRequest();
+ x1.open('GET',A);x1.send();x1.abort(); // player cancels before any terminal event can arm recovery
+ x2.open('GET',A);x2.send();            // still in flight with zero bytes delivered
+ await h.tick(4999);h.intervals[2]();await h.tick(0);
+ assert.equal(x2.__piliAdaptiveResource.switchCount,0);
+ await h.tick(1);h.intervals[2]();await h.tick(0);
+ assert.equal(x2.__piliAdaptiveResource.switchCount,1);
+ await h.tick(80); // status emission is debounced by 80ms
+ const status=h.messages.filter(m=>m.type==='status').at(-1).payload;
+ assert.equal(status.switches,1);assert.equal(status.currentHosts.join(','),'b.bilivideo.com'); // join avoids cross-realm deepEqual
+});
+test('watchdog stays quiet for idle candidates and after the first byte',async()=>{
+ const h=harness(()=>new Promise(()=>{}));h.register();
+ const x=new h.ctx.XMLHttpRequest();x.open('GET',A);x.send();x.abort();
+ await h.tick(6000);h.intervals[2]();
+ assert.equal(x.__piliAdaptiveResource.switchCount,0);
+ const y=new h.ctx.XMLHttpRequest();y.open('GET',A);y.send();
+ y.readyState=4;y.status=206;y.dispatchEvent(new Event('readystatechange'));
+ await h.tick(6000);h.intervals[2]();
+ assert.equal(y.__piliAdaptiveResource.switchCount,0);
 });
 test('late old-generation response cannot trigger extra candidate advances',async()=>{
  let late;const calls=[];const h=harness(u=>{calls.push(String(u));if(calls.length===1)return new Promise(r=>late=r);return Promise.resolve(new Response(null,{status:403}));});h.register();
@@ -152,8 +175,9 @@ test('request attempt timeout is 5s before first byte',async()=>{
  const h=harness((u,i)=>{calls.push(String(u));return new Promise((r,j)=>{const slot=[String(u),null];abortedAt.push(slot);i.signal.addEventListener('abort',()=>{slot[1]=h.now();j(i.signal.reason);},{once:true});});});
  h.register();
  const p=h.window.fetch(A);p.catch(()=>{});
- await h.tick(4999);assert.equal(abortedAt[0][1],null);await h.tick(1);assert.equal(abortedAt[0][1],105000);
- await h.tick(9999);assert.equal(calls.length,1);await h.tick(1);assert.equal(calls[1],B); // candidate window still 15s
+ await h.tick(4999);assert.equal(abortedAt[0][1],null);assert.equal(calls.length,1);await h.tick(1);assert.equal(abortedAt[0][1],105000);
+ await h.tick(1);assert.equal(calls[1],B); // 0.2.20: a silent pre-first-byte candidate switches at the 5s attempt deadline, not t0+15s
+ assert.ok(h.now()<=105100);
 });
 test('request attempt timeout extends to 15s after first byte',async()=>{
  const abortedAt=[];const calls=[];

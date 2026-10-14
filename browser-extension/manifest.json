@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
   "name": "PiliPlus Adaptive CDN for Web",
-  "version": "0.2.19",
+  "version": "0.2.20",
   "description": "Adaptive CDN scoring, buffering monitor, and MSE-preserving source switching for bilibili web playback.",
-  "permissions": ["storage", "activeTab"],
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
   "host_permissions": [
     "*://*.bilibili.com/*",
     "*://*.bilivideo.com/*",
@@ -21,7 +24,10 @@
         "*://www.bilibili.com/video/*",
         "*://www.bilibili.com/bangumi/play/*"
       ],
-      "js": ["core.js", "page.js"],
+      "js": [
+        "core.js",
+        "page.js"
+      ],
       "run_at": "document_start",
       "world": "MAIN"
     },
@@ -30,7 +36,9 @@
         "*://www.bilibili.com/video/*",
         "*://www.bilibili.com/bangumi/play/*"
       ],
-      "js": ["bridge.js"],
+      "js": [
+        "bridge.js"
+      ],
       "run_at": "document_start"
     }
   ]

@@ -132,13 +132,16 @@ const fs=require('node:fs');const assert=require('node:assert/strict');const pat
     assert.equal(await page.evaluate(()=>window.done),0);await page.clock.runFor(4000);await settle(page,async()=>(await page.evaluate(()=>window.done))>=4);assert.equal(await page.evaluate(()=>window.done),4);
     await page.clock.runFor(60000);await flush();assert.equal(calls.length,12);
    }else{
-    // Silence still waits the full 15s observation window per candidate: 0/15/30s.
-    await page.clock.runFor(10000);await flush();assert.equal(calls.length,4);await page.clock.runFor(4999);assert.equal(calls.length,4);
+    // 0.2.20: a silent candidate never delivered a byte, so it is bounded by
+    // the 5s first-byte attempt budget instead of the full 15s observation
+    // window: switches at 5/10s, terminal failure after the 3rd candidate's
+    // own 5s budget. Same anchor style as the 403 branch (+1/-1 ticks).
+    await page.clock.runFor(4999);await flush();assert.equal(calls.length,4);
     await page.clock.runFor(2);await settle(page,()=>calls.length>=8);assert.equal(calls.length,8);assert.ok(calls.slice(4).every(c=>c.url.includes('b.bilivideo.com')));
     const anchorB=await page.evaluate(()=>Date.now());
-    await page.clock.runFor(14997);await flush();assert.equal(calls.length,8);
+    await page.clock.runFor(4997);await flush();assert.equal(calls.length,8);
     await page.clock.runFor(5);await settle(page,()=>calls.length>=12);assert.equal(calls.length,12);
-    assert.equal(await page.evaluate(()=>window.done),0);await page.clock.runFor(15001);await settle(page,async()=>(await page.evaluate(()=>window.done))>=4);await page.clock.runFor(2);await flush();assert.equal(await page.evaluate(()=>window.done),4);
+    assert.equal(await page.evaluate(()=>window.done),0);await page.clock.runFor(5002);await settle(page,async()=>(await page.evaluate(()=>window.done))>=4);await page.clock.runFor(2);await flush();assert.equal(await page.evaluate(()=>window.done),4);
     await page.clock.runFor(60000);await flush();assert.equal(calls.length,12);
    }
    if(action==='403'||action==='timeout')for(const offset of [4,8])assert.deepEqual(calls.slice(0,4).map(c=>c.range).sort(),calls.slice(offset,offset+4).map(c=>c.range).sort());

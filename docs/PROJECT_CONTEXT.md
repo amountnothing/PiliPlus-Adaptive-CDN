@@ -63,6 +63,7 @@
 - 支持评分、冷却、遍历候选、手动切换、首选编码。
 - 默认首选 HEVC；只有浏览器 `MediaSource.isTypeSupported` 表示支持时才调整编码顺序。
 - 画面停滞时回退到最后显示的视频帧并保持播放意图，让网页播放器进入 `seeking` / `waiting`；数据恢复后自动继续，并用缓冲观察时间抑制连续误切 CDN。
+- 启动快速失败（0.2.20）：候选 5 秒无任何字节即自动切换，且不依赖请求终态——即使播放器在超时前主动 abort 全部媒体请求，每秒看门狗也会按同一恢复事务提交切换。
 
 ### 自动构建 / Release
 
@@ -156,7 +157,7 @@
 
 - `browser-extension/core.js`
   - 评分、冷却、候选排序、编码族判断、参数校验。
-  - 当前版本 0.2.18；前向缓冲回填观察 5 秒、净增长不足 1 秒时申请切换，实际自动切换统一受网页 15 秒候选观察窗口约束，画面冻结观察 8 秒且要求至少 10 秒前向缓冲，故障 CDN 冷却 60 秒；疑似整体断网时暂停切换 20 秒。只有收到 `playing` 或首个视频帧后才开始卡顿观察，网页自身取消的 XHR 不计为 CDN 故障。
+  - 当前版本 0.2.20；前向缓冲回填观察 5 秒、净增长不足 1 秒时申请切换，实际自动切换受网页候选观察窗口约束（候选未收字节 5 秒快速失败并有每秒看门狗兜底，收过字节 15 秒观察），画面冻结观察 8 秒且要求至少 10 秒前向缓冲，故障 CDN 冷却 60 秒；疑似整体断网时暂停切换 20 秒。只有收到 `playing` 或首个视频帧后才开始卡顿观察，网页自身取消的 XHR 不计为 CDN 故障。
   - 后台标签页暂停健康检测，返回后重新建立画面帧观察基线；HTTP/网络失败在终态暴露前重试故障轨道的同一 Range，缓冲停滞中断并重试停滞的视频请求，保留另一轨和已有 MSE 缓冲，避免切屏误判及换源黑屏。画面帧冻结与 App 一样进入播放器恢复，不再消耗 CDN 切换次数。
 - `browser-extension/page.js`
   - 注入网页侧。
@@ -348,6 +349,14 @@
 - 索引：`tool/generate_codebase_index.ps1` 已重建 `SOURCE_FILE_INDEX.md` / `SYMBOL_INDEX.md`（files=1672）。
 - 遗留：未做 Android 真机验证；未推送（gh 令牌缺 `workflow` 作用域）。
 - 2026-10-13 执行容器编 APK 成功（AGP 9.1.1 + Kotlin 2.4.0 + Gradle 9.3.1 首次真实构建）。容器 cgroup 内存上限 3 GiB，`android/gradle.properties` 的 `-Xmx4G` 会 OOM 杀 daemon；不改仓库文件，在容器本地 `~/.gradle/gradle.properties` 设 `org.gradle.jvmargs=-Xmx1000m -XX:MaxMetaspaceSize=420m -XX:ReservedCodeCacheSize=192m`、`kotlin.compiler.execution.strategy=in-process`、`org.gradle.workers.max=2`，并把内存峰值串行化：先单独用 dartvm 调 `flutter_tools.snapshot --quiet assemble … android_aot_bundle_release_android-arm64` 完成 kernel/AOT（`--DartDefines` 必须用 gradle `-Pdart-defines` 的原始 base64 blob——`FLUTTER_GIT_URL=…/flutter.git` 带 `.git`，否则缓存不命中、Gradle 侧重跑 frontend_server 与 daemon 叠加超限），再跑完整 `flutter build apk --release --target-platform android-arm64 --split-per-abi --android-project-arg=kotlin.incremental=false --android-project-arg=kotlin.compiler.execution.strategy=in-process`，Gradle 侧 assemble 命中缓存。产物 `build/app/outputs/flutter-apk/app-arm64-v8a-release.apk`：24,451,359 字节，SHA-256 `c58f3fa07598d0a44ceebe7204b1e60f906b65c3316c15c55e02f6f193f5fc6c`，versionName 2.1.6 / versionCode 1 / minSdk 24 / targetSdk 37，debug 签名（仓库无 `key.properties`，按 `build.gradle.kts:65` 回退），含上游 `cnativeapi` native-assets 产物 `libcnativeapi.so`（构建环境需 clang 与 NDK）。
+
+### 2026-10-14 浏览器扩展 0.2.20：5 秒首字节快速失败与请求取消看门狗
+
+- 症状（VPS 无头 + live B 站实测）：播放极为容易卡住、无法开始播放。受控 A/B（路由静默阻断首候选）下 0.2.19 与修复前 0.2.20 都 90 秒不切换：B 站播放器启动期自行 abort 每条媒体 XHR（发送后 2.3–5.1 秒，栈在 `player/main/core.js`）轮换 host，脚本按设计把 abort 当 `cancelled` 释放 → `recoverCandidate` 从未进入；改写又把播放器发往备机的请求重写回首候选 → 死锁（备机 0 条请求、`loadstart` ×3、`web_videoload_fail code 4004`）。
+- 修复：`candidateDeadline()` 未收字节候选由 15 秒改为 5 秒首字节预算（`FIRST_BYTE_WINDOW_MS`，收过字节仍 15 秒）；新增 `armCandidateWatchdog`（每 1 秒）——未收字节、候选起始超 5 秒、该资源仍有活跃请求时后台 `recoverCandidate("candidate-timeout")`，复用全部既有闸门与一次性提交，不新增切换入口；空闲资源与已收字节资源不触发。
+- 测试：`node --test` **63/63**（原 61 + 新增 2 条看门狗回归）；`chromium.cjs` 源码 **34/34**、产物 **34/34**。线上受控 A/B：0.2.19 基线不开播，0.2.20 切到备机 `upos-sz-mirrorcosov.bilivideo.com` 后开播；无阻断回归 0 切换正常开播。`/*DBG*/`→`window.__piliDebug` 诊断插桩已全部回滚（源码 `grep DBG` = 0）。
+- 产物：`dist/PiliPlus-Adaptive-CDN-Web.user.js` **0.2.20**，57,533 B，SHA-256 `5cf0045a6f81bfec8dd16968319e0f958f64bdf12df4cefa79823a78964d5316`；验收细节见 `browser-extension/RETRY-0.2.20.md`，探针与线上 JSON 在 `dist/.qa/online/`（gitignored）。
+- 遗留：未推送（gh 令牌缺 `workflow` 作用域）；2 个 NXDOMAIN 死域名是否从 `cdn_type.dart` 移除仍待用户确认。
 
 ### 继续项目时先做什么
 

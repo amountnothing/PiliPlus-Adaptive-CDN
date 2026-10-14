@@ -50,13 +50,13 @@ for(const failure of [403,'timeout'])test(`XHR concurrent ${failure} emits one f
  const long=failure==='timeout';
  const h=harness(()=>failure),xs=[],seen=[];
  for(let i=0;i<4;i++){const x=new h.Xhr();x.open('GET',A);x.setRequestHeader('Range',`bytes=${i*10}-${i*10+9}`);x.onloadend=()=>seen.push(x.status);x.send();xs.push(x);}
- const [w1,w2,w3,w4]=long?[14999,1,14999,1]:[1999,1,1999,1];
+ const [w1,w2,w3,w4]=long?[4999,1,4999,1]:[1999,1,1999,1]; // 0.2.20: silent pre-first-byte candidates bound at 5s, not 15s
  await h.tick(w1);assert.equal(h.calls.length,4);await h.tick(w2);assert.equal(h.calls.length,8);
  await h.tick(w3);assert.equal(h.calls.length,8);await h.tick(w4);assert.equal(h.calls.length,12);assert.deepEqual(seen,[]);
- await h.tick(long?15000:2000); // exhaustion settle window
+ await h.tick(long?5000:2000); // exhaustion settle window
  assert.equal(seen.length,4);await h.tick(60000);assert.equal(h.calls.length,12);
  assert.deepEqual(h.calls.map(c=>c.at),long
-  ?[...Array(4).fill(100000),...Array(4).fill(115000),...Array(4).fill(130000)]
+  ?[...Array(4).fill(100000),...Array(4).fill(105000),...Array(4).fill(110000)]
   :[...Array(4).fill(100000),...Array(4).fill(102000),...Array(4).fill(104000)]);
  for(let i=0;i<4;i++)assert.equal(h.calls[i].headers.Range,h.calls[i+4].headers.Range);
  assert.equal(xs[0].__piliAdaptiveResource.switchCount,2);

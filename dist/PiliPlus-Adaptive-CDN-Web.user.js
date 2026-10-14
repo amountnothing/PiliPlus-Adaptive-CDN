@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PiliPlus Adaptive CDN for Web
 // @namespace    https://github.com/amountnothing/PiliPlus-Adaptive-CDN
-// @version      0.2.19
+// @version      0.2.20
 // @description  Adaptive CDN optimization for bilibili web video playback.
 // @match        *://www.bilibili.com/video/*
 // @match        *://www.bilibili.com/bangumi/play/*
@@ -678,6 +678,32 @@
     return active.length ? active : [...resources];
   }
 
+  function hasActiveRequest(resource) {
+    for (const xhr of activeXhrs) {
+      const state = xhr.__piliAdaptiveState;
+      if (state && state.resource === resource && !state.cancelled && !state.finished) return true;
+    }
+    for (const [controller, request] of activeFetches) {
+      if (request.resource === resource && !controller.signal.aborted) return true;
+    }
+    return false;
+  }
+
+  // A candidate that has delivered zero bytes for FIRST_BYTE_WINDOW_MS while the
+  // player is still asking for it must be retired even when every individual
+  // request was cancelled by the page before a terminal event could arm
+  // recovery (the player cancels media requests early to rotate hosts itself).
+  function armCandidateWatchdog() {
+    if (!settings.enabled || sessionPathKey() !== sessionPath) return;
+    const now = Date.now();
+    for (const resource of resources) {
+      if (resource.recovery || resource.firstByteAt !== null || resource.candidateStartedAt === null) continue;
+      if (now - resource.candidateStartedAt < FIRST_BYTE_WINDOW_MS) continue;
+      if (!hasActiveRequest(resource)) continue;
+      void recoverCandidate("candidate-timeout", resource, resource.generation);
+    }
+  }
+
   function switchCdn(reason, manual = false, failedHost = null, failedResource = null, coordinated = false) {
     if (!settings.enabled || !resources.size) return false;
     if (!manual && !coordinated) {
@@ -737,10 +763,14 @@
 
   function candidateDeadline(resource, reason) {
     const start = resource.candidateStartedAt ?? Date.now();
-    const windowMs = DEFINITIVE_FAILURE_REASONS.has(reason)
-      ? settings.failCooldownMs
-      : CANDIDATE_WINDOW_MS;
-    return start + windowMs;
+    if (DEFINITIVE_FAILURE_REASONS.has(reason)) return start + settings.failCooldownMs;
+    // 0.2.20 startup fast-fail: a candidate that has not delivered a single
+    // byte only gets the per-attempt first-byte budget (5s) instead of the
+    // full 15s observation window, so a silent first CDN no longer blocks
+    // playback from starting for 15s per candidate. Once bytes arrived the
+    // streaming candidate keeps the stable 15s observation window.
+    if (!resource.firstByteAt) return start + FIRST_BYTE_WINDOW_MS;
+    return start + CANDIDATE_WINDOW_MS;
   }
 
   // Wait until `deadline`, but let the wait be cut short: a wake() re-enters
@@ -1450,6 +1480,7 @@
     }
   }, 500);
   setInterval(monitorVideo, 1000);
+  setInterval(armCandidateWatchdog, 1000);
   post("ready", null);
 })();
 
