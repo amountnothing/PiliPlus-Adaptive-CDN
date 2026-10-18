@@ -20,22 +20,7 @@ test("uses only candidates returned by the web playurl response", () => {
   assert.deepEqual(Core.streamUrls(streams[1]), [AKAMAI, COS]);
 });
 
-test("expands a signed upgcxcode URL only to verified UPOS hosts", () => {
-  const expanded = Core.expandUposCandidates([COS, AKAMAI], true);
-  assert.equal(expanded.length, Core.KNOWN_UPOS_HOSTS.length);
-  assert.ok(expanded.some((url) => Core.hostOf(url) === "upos-sz-mirrorali.bilivideo.com"));
-  assert.ok(expanded.some((url) => Core.hostOf(url) === "upos-sz-mirrorhwo1.bilivideo.com"));
-  assert.ok(!expanded.some((url) => Core.hostOf(url) === "upos-sz-mirrorhwov.bilivideo.com"));
-  for (const url of expanded) {
-    assert.equal(new URL(url).pathname, "/upgcxcode/a/video.m4s");
-    assert.equal(new URL(url).search, "?deadline=1");
-  }
-});
 
-test("does not synthesize hosts for non-upgcxcode resources", () => {
-  const mcdn = "https://example.mcdn.bilivideo.cn/v1/resource/abc?token=1";
-  assert.deepEqual(Core.expandUposCandidates([mcdn], true), [mcdn]);
-});
 
 test("ranks by learned score and excludes failed or cooling hosts", () => {
   const scores = {
@@ -243,16 +228,6 @@ test("ignores request failures caused by an adaptive CDN abort", () => {
   assert.equal(Core.shouldSwitchForRequestFailure(null, true), false);
 });
 
-test("ignores a late failure from a CDN that is no longer current", () => {
-  assert.equal(
-    Core.isCurrentResourceFailure("https://new.example/video.m4s", "old.example"),
-    false,
-  );
-  assert.equal(
-    Core.isCurrentResourceFailure("https://new.example/video.m4s", "new.example"),
-    true,
-  );
-});
 
 test("pauses switching during a likely whole-network outage", () => {
   const state = Core.createNetworkGuardState();

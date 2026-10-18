@@ -21,23 +21,6 @@
     stableRewardSec: 30,
   });
 
-  // These hosts accept the same signed /upgcxcode/ path. Keep this bounded to
-  // nodes verified with HTTP 206 + Bilibili CORS instead of guessing domains.
-  const KNOWN_UPOS_HOSTS = Object.freeze([
-    "upos-sz-mirrorali.bilivideo.com",
-    "upos-sz-mirroralib.bilivideo.com",
-    "upos-sz-mirroralio1.bilivideo.com",
-    "upos-sz-mirrorcos.bilivideo.com",
-    "upos-sz-mirrorcosb.bilivideo.com",
-    "upos-sz-mirrorcoso1.bilivideo.com",
-    "upos-sz-mirrorhw.bilivideo.com",
-    "upos-sz-mirrorhwb.bilivideo.com",
-    "upos-sz-mirrorhwo1.bilivideo.com",
-    "upos-sz-mirroraliov.bilivideo.com",
-    "upos-sz-mirrorcosov.bilivideo.com",
-    "upos-hz-mirrorakam.akamaized.net",
-  ]);
-
   const NUMBER_RANGES = Object.freeze({
     targetBufferSec: [5, 120],
     segmentToleranceSec: [0, 30],
@@ -125,28 +108,6 @@
     return result;
   }
 
-  function expandUposCandidates(values, enabled = true) {
-    const source = uniqueUrls(values);
-    if (!enabled) return source;
-    const template = source.find((value) => {
-      try {
-        return new URL(value).pathname.startsWith("/upgcxcode/");
-      } catch (_) {
-        return false;
-      }
-    });
-    if (!template) return source;
-    const expanded = [...source];
-    for (const host of KNOWN_UPOS_HOSTS) {
-      const url = new URL(template);
-      url.hostname = host;
-      url.port = "";
-      url.protocol = "https:";
-      expanded.push(url.toString());
-    }
-    return uniqueUrls(expanded);
-  }
-
   function scoreOf(scores, urlOrHost) {
     const host = urlOrHost.includes?.("://") ? hostOf(urlOrHost) : urlOrHost;
     const value = Number(scores?.[host]);
@@ -201,10 +162,6 @@
     }
     walk(rootValue, 0);
     return streams;
-  }
-
-  function isAv1Codec(codec) {
-    return /^av01/i.test(String(codec || ""));
   }
 
   function codecFamily(codec) {
@@ -356,10 +313,6 @@
     return !aborted && (status == null || (status !== 200 && status !== 206));
   }
 
-  function isCurrentResourceFailure(currentUrl, failedHost) {
-    return !failedHost || hostOf(currentUrl) === failedHost;
-  }
-
   function createNetworkGuardState() {
     return { samples: [], pauseUntil: 0 };
   }
@@ -381,28 +334,24 @@
 
   return Object.freeze({
     DEFAULT_SETTINGS,
-    KNOWN_UPOS_HOSTS,
     normalizeSettings,
     hostOf,
     resourceKey,
     isMediaUrl,
     isPlayUrlApi,
     uniqueUrls,
-    expandUposCandidates,
     scoreOf,
     rankCandidates,
     streamUrls,
     streamKind,
     selectSwitchTargets,
     collectStreams,
-    isAv1Codec,
     codecFamily,
     reorderVideoArrays,
     createHealthState,
     evaluateHealth,
     shouldPauseForVideoFrameStall,
     shouldSwitchForRequestFailure,
-    isCurrentResourceFailure,
     createNetworkGuardState,
     shouldPauseNetworkSwitch,
   });

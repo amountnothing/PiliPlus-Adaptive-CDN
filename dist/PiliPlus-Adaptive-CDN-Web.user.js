@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PiliPlus Adaptive CDN for Web
 // @namespace    https://github.com/amountnothing/PiliPlus-Adaptive-CDN
-// @version      0.2.20
+// @version      0.2.21
 // @description  Adaptive CDN optimization for bilibili web video playback.
 // @match        *://www.bilibili.com/video/*
 // @match        *://www.bilibili.com/bangumi/play/*
@@ -9,6 +9,7 @@
 // @inject-into  page
 // @grant        none
 // ==/UserScript==
+
 (function (root, factory) {
   const api = factory();
   root.PiliPlusAdaptiveCdnCore = api;
@@ -31,23 +32,6 @@
     maxSwitches: 3,
     stableRewardSec: 30,
   });
-
-  // These hosts accept the same signed /upgcxcode/ path. Keep this bounded to
-  // nodes verified with HTTP 206 + Bilibili CORS instead of guessing domains.
-  const KNOWN_UPOS_HOSTS = Object.freeze([
-    "upos-sz-mirrorali.bilivideo.com",
-    "upos-sz-mirroralib.bilivideo.com",
-    "upos-sz-mirroralio1.bilivideo.com",
-    "upos-sz-mirrorcos.bilivideo.com",
-    "upos-sz-mirrorcosb.bilivideo.com",
-    "upos-sz-mirrorcoso1.bilivideo.com",
-    "upos-sz-mirrorhw.bilivideo.com",
-    "upos-sz-mirrorhwb.bilivideo.com",
-    "upos-sz-mirrorhwo1.bilivideo.com",
-    "upos-sz-mirroraliov.bilivideo.com",
-    "upos-sz-mirrorcosov.bilivideo.com",
-    "upos-hz-mirrorakam.akamaized.net",
-  ]);
 
   const NUMBER_RANGES = Object.freeze({
     targetBufferSec: [5, 120],
@@ -136,28 +120,6 @@
     return result;
   }
 
-  function expandUposCandidates(values, enabled = true) {
-    const source = uniqueUrls(values);
-    if (!enabled) return source;
-    const template = source.find((value) => {
-      try {
-        return new URL(value).pathname.startsWith("/upgcxcode/");
-      } catch (_) {
-        return false;
-      }
-    });
-    if (!template) return source;
-    const expanded = [...source];
-    for (const host of KNOWN_UPOS_HOSTS) {
-      const url = new URL(template);
-      url.hostname = host;
-      url.port = "";
-      url.protocol = "https:";
-      expanded.push(url.toString());
-    }
-    return uniqueUrls(expanded);
-  }
-
   function scoreOf(scores, urlOrHost) {
     const host = urlOrHost.includes?.("://") ? hostOf(urlOrHost) : urlOrHost;
     const value = Number(scores?.[host]);
@@ -212,10 +174,6 @@
     }
     walk(rootValue, 0);
     return streams;
-  }
-
-  function isAv1Codec(codec) {
-    return /^av01/i.test(String(codec || ""));
   }
 
   function codecFamily(codec) {
@@ -367,10 +325,6 @@
     return !aborted && (status == null || (status !== 200 && status !== 206));
   }
 
-  function isCurrentResourceFailure(currentUrl, failedHost) {
-    return !failedHost || hostOf(currentUrl) === failedHost;
-  }
-
   function createNetworkGuardState() {
     return { samples: [], pauseUntil: 0 };
   }
@@ -392,28 +346,24 @@
 
   return Object.freeze({
     DEFAULT_SETTINGS,
-    KNOWN_UPOS_HOSTS,
     normalizeSettings,
     hostOf,
     resourceKey,
     isMediaUrl,
     isPlayUrlApi,
     uniqueUrls,
-    expandUposCandidates,
     scoreOf,
     rankCandidates,
     streamUrls,
     streamKind,
     selectSwitchTargets,
     collectStreams,
-    isAv1Codec,
     codecFamily,
     reorderVideoArrays,
     createHealthState,
     evaluateHealth,
     shouldPauseForVideoFrameStall,
     shouldSwitchForRequestFailure,
-    isCurrentResourceFailure,
     createNetworkGuardState,
     shouldPauseNetworkSwitch,
   });
@@ -502,7 +452,6 @@
     for (const [host, until] of Object.entries(cooldowns)) {
       if (Number(until) <= now) delete cooldowns[host];
     }
-
   }
 
   function updateScore(host, delta) {
@@ -520,14 +469,29 @@
     post("cooldowns", cooldowns);
   }
 
+  // Per-video state is fresh: only hosts failed in the CURRENT video are
+  // excluded. Cross-video memory lives in scores (-28 sorts failed hosts
+  // last) and the soft cooldown ordering below — never a hard exclusion,
+  // or a new video opened inside the 60s window exhausts after one attempt.
+  const rankByScore = (list) => Core.rankCandidates(list, scores, null, null);
   function candidatesFor(resource, excludeFailed = true) {
     cleanExpiredState();
-    return Core.rankCandidates(
-      resource.urls,
-      scores,
-      resource.cooldowns,
-      excludeFailed ? resource.failedHosts : null,
-    );
+    if (!excludeFailed) return rankByScore(resource.urls);
+    return Core.rankCandidates(resource.urls, scores, null, resource.failedHosts);
+  }
+
+  // New video/resource: keep every candidate and try them one by one.
+  // Hosts still inside the cross-video cooldown window sort last
+  // (deprioritized, not excluded), each group ranked by score.
+  function orderFreshCandidates(urls) {
+    cleanExpiredState();
+    const now = Date.now();
+    const fresh = [];
+    const cooled = [];
+    for (const url of Core.uniqueUrls(urls)) {
+      (Number(cooldowns[Core.hostOf(url)] || 0) > now ? cooled : fresh).push(url);
+    }
+    return [...rankByScore(fresh), ...rankByScore(cooled)];
   }
 
   function setStreamUrls(stream, ordered) {
@@ -551,7 +515,7 @@
     // Signed host substitution is not evidence of availability. Use only API URLs.
     const urls = Core.streamUrls(stream);
     if (!urls.length) return;
-    const ordered = Core.rankCandidates(urls, scores, cooldowns, null);
+    const ordered = orderFreshCandidates(urls);
     const effective = ordered.length ? ordered : urls;
     setStreamUrls(stream, effective);
 
@@ -571,7 +535,6 @@
         firstByteAt: null,
         lastFailureReason: null,
         failedHosts: new Set(),
-        cooldowns: { ...cooldowns },
         recovery: null,
         exhausted: false,
         kind,
@@ -901,6 +864,8 @@
         "low-buffer": "缓冲降至阈值",
         "network-error": "网络请求失败",
         "http-error": "CDN 返回错误",
+        "candidate-timeout": "候选 CDN 长时间无响应",
+        "media-error": "播放器致命错误",
         manual: "手动切换",
       }[reason] || reason
     );

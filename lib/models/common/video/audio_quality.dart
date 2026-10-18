@@ -17,5 +17,14 @@ enum AudioQuality {
 
   static final _codeMap = {for (final i in values) i.code: i};
 
-  static AudioQuality fromCode(int code) => _codeMap[code]!;
+  // Same unknown-id tolerance as VideoQuality.fromCode.
+  static AudioQuality fromCode(int code) {
+    final exact = _codeMap[code];
+    if (exact != null) return exact;
+    AudioQuality fallback = k64;
+    for (final q in values) {
+      if (q.code <= code && q.code > fallback.code) fallback = q;
+    }
+    return fallback;
+  }
 }

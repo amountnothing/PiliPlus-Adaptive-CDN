@@ -111,6 +111,23 @@ test('pause no longer cancels a pending recovery; its wait continues to the dead
  const p=h.window.fetch(A);await h.tick(1000);video.paused=true;h.event('pause',video);
  await h.tick(1000);assert.deepEqual(calls,[A,B]);assert.equal((await p).status,206);
 });
+test('new video re-traverses every candidate by rank instead of inheriting cooldown exhaustion',async()=>{
+ const calls=[];const h=harness(async u=>{calls.push(String(u));return new Response(null,{status:403});});
+ h.register();
+ await h.settle(h.window.fetch(A));
+ assert.deepEqual(calls,[A,B,C]); // previous video exhausted all three into the 60s cooldown
+ h.ctx.location.pathname='/video/BV2'; // open a new video inside that cooldown window
+ const V=u=>u.replace('video.m4s','video2.m4s'),A2=V(A),B2=V(B),C2=V(C);
+ h.window.__playinfo__={dash:{video:[{baseUrl:A2,backupUrl:[B2,C2],mimeType:'video/mp4'}]}};
+ const res=await h.settle(h.window.fetch(A2));
+ assert.equal(res.status,403);
+ assert.deepEqual(calls.slice(3),[A2,B2,C2]); // ranked re-traversal, one by one, none skipped
+ await h.tick(80);
+ const status=h.messages.filter(m=>m.type==='status').at(-1).payload;
+ assert.equal(status.switches,2);
+ assert.ok(status.reason.includes('遍历完'));
+ assert.deepEqual([...status.failedHosts].sort(),['a.bilivideo.com','b.bilivideo.com','c.bilivideo.com']);
+});
 for(const action of ['reset'])test(`${action} cancels candidate wait immediately and leaves position unchanged`,async()=>{
  const calls=[];const h=harness(async u=>{calls.push(String(u));return new Response(null,{status:403});});h.register();
  const video={currentTime:73.5,paused:false};h.document.querySelector=()=>video;

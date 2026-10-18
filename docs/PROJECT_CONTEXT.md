@@ -360,6 +360,23 @@
 
 - 同日约定：`AGENTS.md` 的开工必读改为「新会话首次接管全读一次、后续按需读章节」，并新增大文件按需读取全局规则（禁止 `cat` 全文，>200 行/8KB 分段读，结论写回文档）；规则同时要求全局生效于 `~/.hermes/SOUL.md`，其待应用副本在宿主 `/shared/global-context-rules-SOUL.md`。
 
+### 2026-10-17 浏览器扩展 0.2.21：新视频按排名重新遍历全部候选
+
+- 症状：再打开一个新视频，10 秒内即显示“候选 CDN 已遍历完”，之后播放卡住。复现（确定性时钟）：旧视频把 A/B/C 全部失败进 60 秒冷却后，60 秒内打开 BV2（同主机、不同签名路径），新视频只发 1 次请求（2 秒确定失败等待后）即宣布遍历完成并永久 `exhausted`。
+- 根因：`registerStream` 给新资源快照继承全局 `cooldowns`（`cooldowns: {...cooldowns}`），`candidatesFor` 用该快照硬排除冷却主机；`cleanExpiredState` 只清理全局表，快照永不过期。跨视频冷却本意是“当前视频内排除”，实际变成了“60 秒内新视频也排除”，与“每次打开新视频按排名重新遍历、逐个尝试”的项目目的偏移。
+- 修复（`browser-extension/page.js`，只动扩展相关区域）：新资源不再继承冷却快照（字段删除），同视频排除只看本视频 `failedHosts`；新增 `orderFreshCandidates`——新视频/新资源保留全部候选并逐个尝试，仍在冷却窗口的主机按评分排最后（降级为排序影响，不再硬排除）。跨视频记忆保留在评分（失败 -28 分）和该排序里；`cooldownSec` 设置保留（仍记录/展示/持久化，控制软排序窗口）。
+- 测试：`node --test` **64/64**（原 63 + 新增 1 条新视频回归：BV1 全失败耗尽后切 BV2，断言新视频依次尝试 A2/B2/C2、2 次切换、最终才报遍历完）；Chromium 真实传输回归源码模式 34/34、油猴产物模式 34/34（`PLAYWRIGHT_BROWSERS_PATH=dist/.qa/browsers`）。
+- 产物：`manifest` 0.2.20→0.2.21，`browser-extension/README.md` 同步更新跨视频冷却语义；`dist/PiliPlus-Adaptive-CDN-Web.user.js` 已用 node 复刻 `package-userscript.ps1` 逻辑重新生成（57,533 B→56,880 B，SHA-256 `920af38e1430670131e4c0e8bd747ed4d1c125205be40f7e111327f823daa654`，bridge 尾部与旧产物逐字节一致、仅版本号与 core/page 变化）。线上完整 MSE 播放仍待真机/真实浏览器验收。
+- 遗留：未推送；`PiliPlus-Adaptive-CDN-Web-0.2.6.zip` 为历史产物，本次未重打（扩展 zip 命名停留在 0.2.6，与 manifest 版本无关）。
+- 0.2.21 清理（未改行为）：删除 `core.js` 中网页端零调用的 `KNOWN_UPOS_HOSTS`/`expandUposCandidates`/`isAv1Codec`/`isCurrentResourceFailure`（约 1.6KB）及对应 3 条单测；`page.js` 合并排序 helper、补齐 toast 文案。`docs/SYMBOL_INDEX.md` 仅删了对应 6 行，行号类索引以 `tool/generate_codebase_index.ps1`（需 pwsh）重建为准。
+
+### 2026-10-18 安卓番剧未知清晰度崩溃修复
+
+- 症状：动态/番剧下打开《凡人修仙传》（大会员账号）弹错 `Null check operator used on a null value`，栈顶 `VideoQuality.fromCode (video_quality.dart:25)` ← `VideoItem.fromJson (url.dart:333)`。
+- 根因已核实：不是账号/权限问题。B 站给该番剧下发了 dash 流 `id=100`（qn=100 “智能修复”，VIP 专享档）；本仓库基线（上游 2.1.6）的清晰度表没有 100，`_codeMap[100]!` 抛异常。上游在 2026-10-16 `refa video/audio/live quality`（936072449）已补 100 并把 `fromCode` 改为未知时动态兜底，本仓库合并基线早于该提交所以中招。上游音频表与本仓库一致，无新增音频 id。
+- 修复：`video_quality.dart` 补 `superResolution(100, '智能修复', '智能修复')`（112 与 80 之间，保持降序）；`VideoQuality/AudioQuality.fromCode` 未知 code 保留兜底（回落到小于等于该 code 的最近已知档，否则最低档），已知 code 行为不变。未照搬上游的 class 重构（本仓库多处按枚举使用），改动最小。
+- 测试：`test/media_quality_test.dart` 8 项（100 精确解析、未来未知 id 兜底、`VideoItem.fromJson` 不崩）；`.gitignore` 加白名单。全量 `flutter test` **114/114**（基线 106 + 新增 8），定向 `flutter analyze` 0 issue。APK 未构建，真机番剧播放待用户验收。
+
 ### 继续项目时先做什么
 
 1. 新会话首次接管时完整读取本文档和根目录 `AGENTS.md` 一次，后续任务按需读取相关章节；大文件一律按 `AGENTS.md` 的「大文件按需读取」规则处理。

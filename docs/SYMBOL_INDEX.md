@@ -75,7 +75,6 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L93 - `function isMediaUrl(value) {` - predicate, validation, or lookup
 - L103 - `function isPlayUrlApi(value) {` - predicate, validation, or lookup
 - L115 - `function uniqueUrls(values) {` - performs one operation in its enclosing type or module
-- L128 - `function expandUposCandidates(values, enabled = true) {` - performs one operation in its enclosing type or module
 - L150 - `function scoreOf(scores, urlOrHost) {` - performs one operation in its enclosing type or module
 - L156 - `function rankCandidates(values, scores, cooldowns, failedHosts, now = Date.now()) {` - performs one operation in its enclosing type or module
 - L167 - `function streamUrls(stream) {` - performs one operation in its enclosing type or module
@@ -83,7 +82,6 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L183 - `function selectSwitchTargets(resources, failedResource) {` - switches, recovers, or refreshes runtime state
 - L189 - `function collectStreams(rootValue) {` - performs one operation in its enclosing type or module
 - L192 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
-- L206 - `function isAv1Codec(codec) {` - predicate, validation, or lookup
 - L210 - `function codecFamily(codec) {` - performs one operation in its enclosing type or module
 - L218 - `function reorderVideoArrays(rootValue, preferredCodec, canPlayCodec) {` - performs one operation in its enclosing type or module
 - L222 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
@@ -92,7 +90,6 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L261 - `function evaluateHealth(state, sample, rawSettings, now) {` - performs one operation in its enclosing type or module
 - L339 - `function shouldPauseForVideoFrameStall(sample, now) {` - predicate, validation, or lookup
 - L355 - `function shouldSwitchForRequestFailure(status, aborted) {` - predicate, validation, or lookup
-- L359 - `function isCurrentResourceFailure(currentUrl, failedHost) {` - predicate, validation, or lookup
 - L363 - `function createNetworkGuardState() {` - performs one operation in its enclosing type or module
 - L367 - `function shouldPauseNetworkSwitch(state, sample, now) {` - predicate, validation, or lookup
 
@@ -163,7 +160,6 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L104 - `function isMediaUrl(value) {` - predicate, validation, or lookup
 - L114 - `function isPlayUrlApi(value) {` - predicate, validation, or lookup
 - L126 - `function uniqueUrls(values) {` - performs one operation in its enclosing type or module
-- L139 - `function expandUposCandidates(values, enabled = true) {` - performs one operation in its enclosing type or module
 - L161 - `function scoreOf(scores, urlOrHost) {` - performs one operation in its enclosing type or module
 - L167 - `function rankCandidates(values, scores, cooldowns, failedHosts, now = Date.now()) {` - performs one operation in its enclosing type or module
 - L178 - `function streamUrls(stream) {` - performs one operation in its enclosing type or module
@@ -171,7 +167,6 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L194 - `function selectSwitchTargets(resources, failedResource) {` - switches, recovers, or refreshes runtime state
 - L200 - `function collectStreams(rootValue) {` - performs one operation in its enclosing type or module
 - L203 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
-- L217 - `function isAv1Codec(codec) {` - predicate, validation, or lookup
 - L221 - `function codecFamily(codec) {` - performs one operation in its enclosing type or module
 - L229 - `function reorderVideoArrays(rootValue, preferredCodec, canPlayCodec) {` - performs one operation in its enclosing type or module
 - L233 - `function walk(value, depth) {` - performs one operation in its enclosing type or module
@@ -180,7 +175,6 @@ Handwritten sources include types and recognizable named functions/methods. Gene
 - L272 - `function evaluateHealth(state, sample, rawSettings, now) {` - performs one operation in its enclosing type or module
 - L350 - `function shouldPauseForVideoFrameStall(sample, now) {` - predicate, validation, or lookup
 - L366 - `function shouldSwitchForRequestFailure(status, aborted) {` - predicate, validation, or lookup
-- L370 - `function isCurrentResourceFailure(currentUrl, failedHost) {` - predicate, validation, or lookup
 - L374 - `function createNetworkGuardState() {` - performs one operation in its enclosing type or module
 - L378 - `function shouldPauseNetworkSwitch(state, sample, now) {` - predicate, validation, or lookup
 - L428 - `function markInstalled() {` - updates, stores, or records state
