@@ -1,0 +1,130 @@
+name: PR Check
+
+# Purpose: give every pull request into this fork a real, read-only gate.
+#
+#   pull_request  -> unit tests + advisory analyze + split APKs as artifacts
+#   workflow_dispatch -> same, for a manual re-run
+#
+# Design constraints (deliberate):
+#   * pull_request, never pull_request_target: PR code runs with a read-only
+#     token and no secrets are available to it.
+#   * permissions: contents: read only. This workflow cannot push, cannot
+#     create a release, and cannot touch signing keys. Release signing stays
+#     in adaptive_release.yml, which is workflow_dispatch-only.
+#   * no `paths` filter: a filtered-out run would leave the PR with zero check
+#     runs, which reads exactly like "CI never ran". Every PR runs.
+#   * the sync bridge only trusts a PR whose head commit has a green check run,
+#     so this workflow is what makes the automated sync able to succeed at all.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Analyze + unit tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      # Advisory only: this fork's full-project analyze baseline is not clean
+      # (pre-existing issues predate the adaptive changes). A red analyze here
+      # must not mask the real gate, so it reports without failing the job.
+      - name: Analyze (advisory)
+        continue-on-error: true
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      # The real gate: test/ is the fork's existing suite, run as-is. Nothing is
+      # generated, filtered or skipped here, so a red run means a real failure.
+      - name: Unit tests
+        run: flutter test --reporter expanded
+
+  android:
+    name: Build Android APK (dev)
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: |
+            android/*.gradle*
+            android/**/gradle-wrapper.properties
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      - name: Apply Android patch
+        shell: pwsh
+        run: lib/scripts/patch.ps1 android
+
+      # Same dev flavour the upstream PR build used (dev=1, no release signing,
+      # no key.properties): an installable build for review, not a release.
+      - name: Build split APKs
+        run: >-
+          flutter build apk --release --split-per-abi
+          --android-project-arg dev=1 --no-pub
+
+      - name: Upload arm64-v8a
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-apk-arm64-v8a
+          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload armeabi-v7a
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-apk-armeabi-v7a
+          path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload x86_64
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-apk-x86_64
+          path: build/app/outputs/flutter-apk/app-x86_64-release.apk
+          if-no-files-found: error
+          retention-days: 14

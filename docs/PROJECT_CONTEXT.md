@@ -67,9 +67,13 @@
 
 ### 自动构建 / Release
 
-- `.github/workflows/adaptive_release.yml` 定时检查上游 `bggRGjQaUbCoE/PiliPlus` 最新 release。
-- 发现新上游版本后尝试 merge，上游无变化则跳过。
-- 自动同步先用 `git merge-tree` 做无落盘预检；定时任务遇到真实冲突时以单条 warning 跳过，手动同步仍明确失败，避免同一冲突反复刷红 Actions。
+- `.github/workflows/pr-check.yml`：PR 只读门禁——`flutter test`（`test/` 下现有全部用例，不筛选）为必过项，
+  `flutter analyze` 为咨询性（全项目基线本就不干净），Android dev split APK 作为 artifact 上传。
+- `.github/workflows/adaptive_release.yml` 仅手动 `workflow_dispatch`；**没有定时任务**，
+  也没有任何 workflow 会 `git push` 到 `main`。release 构建你 dispatch 的那个提交。
+- 上游同步改为 PR 流程（`ops/piliplus-bridge` 在 VPS 上建 worktree/branch 交给 OpenCode，
+  再由人合并）；bridge 只认「open、base=main、head=本任务分支且 head sha=worktree HEAD、
+  check-runs 全绿」的 PR。详见 `docs/CI_AND_SYNC.md`。
 - GitHub release 构建 Android split APK，并把 Chromium/Edge ZIP 与 Tampermonkey `.user.js` 直接作为 Release 附件发布。
 - Release 构建要求稳定签名 secrets，并校验证书 SHA-256，避免普通安卓机安装时报签名问题。
 

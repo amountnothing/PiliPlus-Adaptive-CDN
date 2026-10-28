@@ -1,31 +1,26 @@
 name: Adaptive CDN Release
 
+# Manual release only.
+#
+# Deliberately NOT scheduled: the old "17 */6 * * *" run merged the latest
+# upstream release into main and pushed it with a bot identity. That bypassed
+# review and made main a moving target. Upstream sync now happens through a
+# pull request (see docs/CI_AND_SYNC.md); this workflow only builds and
+# publishes the commit you explicitly dispatch it on.
 on:
-  schedule:
-    - cron: "17 */6 * * *"
   workflow_dispatch:
     inputs:
-      mode:
-        description: "Build current code or sync the latest upstream release first"
-        required: true
-        default: current
-        type: choice
-        options:
-          - current
-          - sync_upstream
       release_tag:
-        description: "Optional release tag (current mode only)"
+        description: "Release tag (default: adaptive-current-<run number>)"
         required: false
         type: string
+
 permissions:
   contents: write
 
 concurrency:
   group: adaptive-cdn-release
   cancel-in-progress: false
-
-env:
-  UPSTREAM_REPOSITORY: bggRGjQaUbCoE/PiliPlus
 
 jobs:
   prepare:
@@ -34,98 +29,33 @@ jobs:
     outputs:
       should_build: ${{ steps.prepare.outputs.should_build }}
       release_tag: ${{ steps.prepare.outputs.release_tag }}
-      upstream_tag: ${{ steps.prepare.outputs.upstream_tag }}
     steps:
       - name: Checkout downstream
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Resolve version and sync upstream when requested
+      - name: Resolve release tag
         id: prepare
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          INPUT_MODE: ${{ inputs.mode }}
           INPUT_RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           set -euo pipefail
 
-          mode="${INPUT_MODE:-current}"
-          if [[ "${{ github.event_name }}" == "schedule" ]]; then
-            mode="sync_upstream"
+          release_tag="${INPUT_RELEASE_TAG:-}"
+          if [[ -z "$release_tag" ]]; then
+            release_tag="adaptive-current-${GITHUB_RUN_NUMBER}"
           fi
 
-          if [[ "$mode" == "sync_upstream" ]]; then
-            upstream_tag="$(gh api "repos/${UPSTREAM_REPOSITORY}/releases/latest" --jq '.tag_name')"
-            release_tag="adaptive-${upstream_tag}"
-            tracked_upstream_tag="$(cat .github/upstream-release.txt 2>/dev/null || true)"
-
-            if [[ "$upstream_tag" == "$tracked_upstream_tag" ]]; then
-              echo "Upstream release ${upstream_tag} is the recorded baseline."
-              echo "should_build=false" >> "$GITHUB_OUTPUT"
-              echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
-              echo "upstream_tag=${upstream_tag}" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-
-            if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${release_tag}" >/dev/null 2>&1; then
-              echo "Upstream release ${upstream_tag} was already published as ${release_tag}."
-              echo "should_build=false" >> "$GITHUB_OUTPUT"
-              echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
-              echo "upstream_tag=${upstream_tag}" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git remote add upstream "https://github.com/${UPSTREAM_REPOSITORY}.git"
-            git fetch upstream --tags --force
-
-            if ! merge_check="$(git merge-tree --write-tree HEAD "$upstream_tag" 2>&1)"; then
-              if [[ "${{ github.event_name }}" == "schedule" ]]; then
-                echo "::warning title=Upstream sync needs manual resolution::${upstream_tag} conflicts with the adaptive fork; scheduled build skipped."
-                echo "should_build=false" >> "$GITHUB_OUTPUT"
-                echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
-                echo "upstream_tag=${upstream_tag}" >> "$GITHUB_OUTPUT"
-                exit 0
-              fi
-              echo "::error title=Upstream merge conflict::${upstream_tag} requires manual conflict resolution."
-              echo "$merge_check"
-              exit 1
-            fi
-
-            git merge --no-edit "$upstream_tag"
-
-            printf '%s\n' "$upstream_tag" > .github/upstream-release.txt
-            git add .github/upstream-release.txt
-            if ! git diff --cached --quiet; then
-              git commit -m "ci: record upstream release ${upstream_tag}"
-            fi
-
-            if [[ -n "$(git status --porcelain)" ]]; then
-              echo "Unexpected uncommitted files after upstream merge."
-              git status --short
-              exit 1
-            fi
-
-            git push origin HEAD:main
-          else
-            upstream_tag=""
-            release_tag="${INPUT_RELEASE_TAG:-}"
-            if [[ -z "$release_tag" ]]; then
-              release_tag="adaptive-current-${GITHUB_RUN_NUMBER}"
-            fi
-
-            if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${release_tag}" >/dev/null 2>&1; then
-              echo "Release ${release_tag} already exists."
-              exit 1
-            fi
+          if gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${release_tag}" >/dev/null 2>&1; then
+            echo "::error title=Release already exists::${release_tag}"
+            exit 1
           fi
 
           echo "should_build=true" >> "$GITHUB_OUTPUT"
           echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
-          echo "upstream_tag=${upstream_tag}" >> "$GITHUB_OUTPUT"
 
   android:
     name: Build Android release
@@ -133,10 +63,9 @@ jobs:
     if: needs.prepare.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout prepared main branch
+      - name: Checkout dispatched commit
         uses: actions/checkout@v6
         with:
-          ref: main
           fetch-depth: 0
 
       - name: Set up Java
@@ -235,11 +164,11 @@ jobs:
         with:
           tag_name: ${{ needs.prepare.outputs.release_tag }}
           name: PiliPlus Adaptive CDN ${{ needs.prepare.outputs.release_tag }}
-          target_commitish: main
+          target_commitish: ${{ github.sha }}
           generate_release_notes: true
           body: |
             Adaptive CDN build based on PiliPlus.
-            Upstream release: ${{ needs.prepare.outputs.upstream_tag || 'current main' }}
+            Source commit: ${{ github.sha }}
 
             Includes configurable decode preference, adaptive buffering,
             automatic CDN failover, and per-video failed-CDN exclusion.
