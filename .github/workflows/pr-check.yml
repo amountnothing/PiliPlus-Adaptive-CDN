@@ -43,7 +43,7 @@ jobs:
       # cnativeapi builds native assets through pkg-config, so the Linux
       # GTK3/X11/Xi development headers must exist before `flutter test`.
       - name: Install Linux build deps for native assets
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config libgtk-3-dev libx11-dev libxi-dev
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config patch libgtk-3-dev libx11-dev libxi-dev
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -52,8 +52,44 @@ jobs:
           flutter-version-file: pubspec.yaml
           cache: true
 
+      # This fork compiles against a *patched* Flutter framework: lib/ uses
+      # framework APIs that only exist after lib/scripts/*.patch is applied to
+      # the SDK (StandardBottomSheet, TabBarState, IndicatorPainter, ...).
+      # A stock SDK cannot compile lib/ at all, so patch before compiling.
+      - name: Apply Flutter framework patches
+        run: |
+          set -euo pipefail
+          FLUTTER_ROOT="$(dirname "$(dirname "$(readlink -f "$(command -v flutter)")")")"
+          echo "FLUTTER_ROOT=$FLUTTER_ROOT"
+          n=0
+          for p in lib/scripts/*.patch; do
+            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            echo "== applying $p"
+            patch -p1 -d "$FLUTTER_ROOT" --batch < "$p"
+            n=$((n + 1))
+          done
+          echo "applied $n framework patches"
+
       - name: Resolve dependencies
         run: flutter pub get
+
+
+      # material_ui is a pub package this fork patches in place (9 non-iOS
+      # patches under lib/scripts/material/). Locate the resolved package dir in
+      # the pub cache instead of assuming a fixed version.
+      - name: Apply material_ui patches
+        run: |
+          set -euo pipefail
+          UI_DIR="$(ls -d "${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/material_ui-* 2>/dev/null | head -1)"
+          test -n "$UI_DIR"
+          test -d "$UI_DIR"
+          echo "material_ui dir: $UI_DIR"
+          grep -m1 '^version:' "$UI_DIR/pubspec.yaml" || true
+          for p in lib/scripts/material/*.patch; do
+            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            echo "== applying $p"
+            patch -p1 -d "$UI_DIR" --batch --forward < "$p"
+          done
 
       # Advisory only: this fork's full-project analyze baseline is not clean
       # (pre-existing issues predate the adaptive changes). A red analyze here
@@ -98,6 +134,32 @@ jobs:
 
       - name: Resolve dependencies
         run: flutter pub get
+
+      # Same toolchain requirement as the test job: lib/ only compiles against
+      # the patched Flutter framework plus the patched material_ui package.
+      - name: Apply Flutter framework patches
+        run: |
+          set -euo pipefail
+          FLUTTER_ROOT="$(dirname "$(dirname "$(readlink -f "$(command -v flutter)")")")"
+          echo "FLUTTER_ROOT=$FLUTTER_ROOT"
+          n=0
+          for p in lib/scripts/*.patch; do
+            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            patch -p1 -d "$FLUTTER_ROOT" --batch < "$p"
+            n=$((n + 1))
+          done
+          echo "applied $n framework patches"
+
+      - name: Apply material_ui patches
+        run: |
+          set -euo pipefail
+          UI_DIR="$(ls -d "${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/material_ui-* 2>/dev/null | head -1)"
+          test -n "$UI_DIR"
+          test -d "$UI_DIR"
+          for p in lib/scripts/material/*.patch; do
+            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            patch -p1 -d "$UI_DIR" --batch --forward < "$p"
+          done
 
       - name: Apply Android patch
         shell: pwsh
