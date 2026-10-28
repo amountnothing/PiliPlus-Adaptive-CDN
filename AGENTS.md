@@ -28,3 +28,14 @@
 - 日志模式保持可复制：禁止每帧、每秒或常规动画事件日志，只记录异常、切换与恢复摘要。
 - `docs/PROJECT_CONTEXT.md` 是当前权威项目文档；外层 `PiliPlus-Adaptive-CDN-handoff.md` 仅是 2026-06-29 的历史迁移快照。
 - 若任务改变长期行为、默认参数、构建位置或已确认基线，同步更新 `docs/PROJECT_CONTEXT.md`。
+
+## 跨会话记忆与 OpenCode 专用项目（2026-10-28 起，与上文必读清单同等有效）
+
+- 每次 session 开头，在上文必读清单之外**追加**读两个短文件：`docs/PROJECT_STATUS.md`（全文）
+  与 `docs/SESSION_LOG.md`（只读最近 3–5 条；完整历史用 `git log -- docs/SESSION_LOG.md`）。
+- 每次 session 结束必须向 `docs/SESSION_LOG.md` 追加一条：日期 / session ID（真实值，未知写
+  `pending`）/ 任务目标 / 修改范围 / 真实命令与 exit code / 测试与 CI 结果 + PR URL / 未做与风险 / 下一步。
+  禁止写 secret，禁止把没跑过的测试或失败的 CI 写成成功。
+- 项目身份、三种工作入口（定时同步 / 手工功能 / 文档维护）、worktree 与 session 约定见
+  `docs/OPENCODE_PROJECT.md`：手工任务新 worktree + 新 session；只有同一任务的多轮修复才续同一 session。
+- `docs/PROJECT_STATUS.md` 只保留当前真相，状态变化时**改写**它；历史由 git 保存。

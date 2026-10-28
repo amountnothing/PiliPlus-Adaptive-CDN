@@ -1,6 +1,6 @@
 # PiliPlus Adaptive CDN 项目上下文
 
-更新时间：2026-09-09
+更新时间：2026-10-28
 用途：给人和 Codex 快速恢复项目上下文，避免长对话压缩后丢失关键记忆。
 
 - 唯一源码基准：GitHub `amountnothing/PiliPlus-Adaptive-CDN` 的 `main` 分支。
@@ -407,3 +407,14 @@
   - Adaptive CDN 逻辑和 README 是否一致。
   - 浏览器扩展是否需要同步 App 端最新 CDN 策略。
   - GitHub Actions 签名 secrets 是否完整。
+
+## 6. 跨会话记忆与日志约定（2026-10-28）
+
+- 长期权威仍是本文档：改变长期行为、默认参数、构建位置或已确认基线时，必须同步更新本文。
+- 当前状态/风险/下一步写在 `docs/PROJECT_STATUS.md`（只保留当前真相，状态变化时改写）。
+- 每个 session 的流水写在 `docs/SESSION_LOG.md`（只追加；全文历史看 git）。
+  两者都是 GitHub 上的长期记忆，不依赖任何单机 memory。
+- 项目身份与入口：同一 git 仓库的 clone/worktree 在 OpenCode 里属于同一个 project
+  （id `5a699928…`，仓库级、非目录级）。手工任务在 `workspace/piliplus-maintenance` 上建新 worktree，
+  定时同步用 bridge 的 `task-*` worktree，分支前缀隔离（`sync/` 与其他）。详见 `docs/OPENCODE_PROJECT.md`。
+- 人工合并与 upstream sha ancestry 的要求不变：CI 绿只是必要条件，合并永远由人决定。
