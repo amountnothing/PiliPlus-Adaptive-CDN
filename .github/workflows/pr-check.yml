@@ -40,6 +40,11 @@ jobs:
         with:
           fetch-depth: 1
 
+      # cnativeapi builds native assets through pkg-config, so the Linux
+      # GTK3/X11/Xi development headers must exist before `flutter test`.
+      - name: Install Linux build deps for native assets
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config libgtk-3-dev libx11-dev libxi-dev
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
