@@ -1,6 +1,7 @@
 # 项目状态快照
 
-更新：2026-10-28（由部署 Agent 建立，不是 OpenCode 任务产物）
+更新：2026-10-29（OpenCode 维护 session `ses_e7b3bd9cbffeNXKaQ781PEJTGO` 实测追加；
+2026-10-28 由部署 Agent 建立，不是 OpenCode 任务产物）
 用途：任何 session 开工前 30 秒读完的「当前状态 / 风险 / 下一步」。**只保留当前真相**：
 历史看 `git log --follow -- docs/PROJECT_STATUS.md`，逐会话流水看 `docs/SESSION_LOG.md`。
 
@@ -42,3 +43,17 @@
 2. 派发后看 `bin/piliplus-bridge status` 的 state/error_class；`partial/awaiting_publish` 时在同一
    tick 内 `bin/piliplus-bridge publish <task-id>`；CI 绿也只算 `awaiting_merge`，合并仍要人做。
 3. 手工功能/修复按 `docs/OPENCODE_PROJECT.md`，在维护 clone 上新建 worktree + 新建 session。
+
+## 5. 本环境验证能力（2026-10-29 实测，非部署端复述）
+
+| 项 | 状态 |
+|---|---|
+| 可测 | 浏览器扩展单元测试，由 Node 内置 test runner 直接驱动 `browser-extension/test/*.test.cjs`，不依赖 npm 安装 |
+| 本次实测 | `cd browser-extension && /home/amountnothing/.hermes/node/bin/node --test test/core.test.cjs test/page.test.cjs test/xhr.test.cjs` → `tests 61` / `pass 61` / `fail 0`，`duration_ms 913.96`，exit 0 |
+| 可测 | `git diff --check` → 无输出，exit 0 |
+| 不可测/未验证 | Flutter `analyze`/`test` 与 APK 构建：本任务未运行，本环境没有已验证的 Flutter/Android 工具链，不能据此推断 CI 结果 |
+| 不可测/未验证 | 真实浏览器、B 站页面与 MSE 播放/换源行为 |
+| 不可测/未验证 | `browser-extension/test/chromium.cjs`：缺 playwright，按任务要求不安装、不运行 |
+| 历史记录（非本环境本次执行） | 部署端曾记录扩展单测约 **1.8s** 完成；那只是部署端历史记录，与本环境本次 `913.96ms` 不可互相替代 |
+
+本次仅覆盖文档维护 + 扩展单元测试读取路径；OpenCode 在本仓库修改 Flutter/Android 代码的能力仍未验证。
