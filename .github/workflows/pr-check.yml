@@ -65,6 +65,11 @@ jobs:
           for p in lib/scripts/*.patch; do
             case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
             echo "== applying $p"
+            if patch -p1 -R --dry-run --batch -d "$FLUTTER_ROOT" < "$p" >/dev/null 2>&1; then
+              echo "already applied (cache): $p"
+              n=$((n + 1))
+              continue
+            fi
             patch -p1 -d "$FLUTTER_ROOT" --batch < "$p"
             n=$((n + 1))
           done
@@ -88,6 +93,10 @@ jobs:
           for p in lib/scripts/material/*.patch; do
             case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
             echo "== applying $p"
+            if patch -p1 -R --dry-run --batch -d "$UI_DIR" < "$p" >/dev/null 2>&1; then
+              echo "already applied (cache): $p"
+              continue
+            fi
             patch -p1 -d "$UI_DIR" --batch --forward < "$p"
           done
 
@@ -145,6 +154,11 @@ jobs:
           n=0
           for p in lib/scripts/*.patch; do
             case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            if patch -p1 -R --dry-run --batch -d "$FLUTTER_ROOT" < "$p" >/dev/null 2>&1; then
+              echo "already applied (cache): $p"
+              n=$((n + 1))
+              continue
+            fi
             patch -p1 -d "$FLUTTER_ROOT" --batch < "$p"
             n=$((n + 1))
           done
@@ -158,6 +172,10 @@ jobs:
           test -d "$UI_DIR"
           for p in lib/scripts/material/*.patch; do
             case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            if patch -p1 -R --dry-run --batch -d "$UI_DIR" < "$p" >/dev/null 2>&1; then
+              echo "already applied (cache): $p"
+              continue
+            fi
             patch -p1 -d "$UI_DIR" --batch --forward < "$p"
           done
 
