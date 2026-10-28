@@ -1,0 +1,215 @@
+name: PR Check
+
+# Purpose: give every pull request into this fork a real, read-only gate.
+#
+#   pull_request  -> unit tests + advisory analyze + split APKs as artifacts
+#   workflow_dispatch -> same, for a manual re-run
+#
+# Design constraints (deliberate):
+#   * pull_request, never pull_request_target: PR code runs with a read-only
+#     token and no secrets are available to it.
+#   * permissions: contents: read only. This workflow cannot push, cannot
+#     create a release, and cannot touch signing keys. Release signing stays
+#     in adaptive_release.yml, which is workflow_dispatch-only.
+#   * no `paths` filter: a filtered-out run would leave the PR with zero check
+#     runs, which reads exactly like "CI never ran". Every PR runs.
+#   * the sync bridge only trusts a PR whose head commit has a green check run,
+#     so this workflow is what makes the automated sync able to succeed at all.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Analyze + unit tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      # cnativeapi builds native assets through pkg-config, so the Linux
+      # GTK3/X11/Xi development headers must exist before `flutter test`.
+      - name: Install Linux build deps for native assets
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config patch libgtk-3-dev libx11-dev libxi-dev
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      # This fork compiles against a *patched* Flutter framework: lib/ uses
+      # framework APIs that only exist after lib/scripts/*.patch is applied to
+      # the SDK (StandardBottomSheet, TabBarState, IndicatorPainter, ...).
+      # A stock SDK cannot compile lib/ at all, so patch before compiling.
+      - name: Apply Flutter framework patches
+        run: |
+          set -euo pipefail
+          FLUTTER_ROOT="$(dirname "$(dirname "$(readlink -f "$(command -v flutter)")")")"
+          echo "FLUTTER_ROOT=$FLUTTER_ROOT"
+          n=0
+          for p in lib/scripts/*.patch; do
+            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            echo "== applying $p"
+            if patch -p1 -R --dry-run --batch -d "$FLUTTER_ROOT" < "$p" >/dev/null 2>&1; then
+              echo "already applied (cache): $p"
+              n=$((n + 1))
+              continue
+            fi
+            patch -p1 -d "$FLUTTER_ROOT" --batch < "$p"
+            n=$((n + 1))
+          done
+          echo "applied $n framework patches"
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+
+      # material_ui is a pub package this fork patches in place (9 non-iOS
+      # patches under lib/scripts/material/). Locate the resolved package dir in
+      # the pub cache instead of assuming a fixed version.
+      - name: Apply material_ui patches
+        run: |
+          set -euo pipefail
+          UI_DIR="$(ls -d "${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/material_ui-* 2>/dev/null | head -1)"
+          test -n "$UI_DIR"
+          test -d "$UI_DIR"
+          echo "material_ui dir: $UI_DIR"
+          grep -m1 '^version:' "$UI_DIR/pubspec.yaml" || true
+          for p in lib/scripts/material/*.patch; do
+            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            echo "== applying $p"
+            if patch -p1 -R --dry-run --batch -d "$UI_DIR" < "$p" >/dev/null 2>&1; then
+              echo "already applied (cache): $p"
+              continue
+            fi
+            patch -p1 -d "$UI_DIR" --batch --forward < "$p"
+          done
+
+      # Advisory only: this fork's full-project analyze baseline is not clean
+      # (pre-existing issues predate the adaptive changes). A red analyze here
+      # must not mask the real gate, so it reports without failing the job.
+      - name: Analyze (advisory)
+        continue-on-error: true
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      # The real gate: test/ is the fork's existing suite, run as-is. Nothing is
+      # generated, filtered or skipped here, so a red run means a real failure.
+      - name: Unit tests
+        run: flutter test --reporter expanded
+
+  android:
+    name: Build Android APK (dev)
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: |
+            android/*.gradle*
+            android/**/gradle-wrapper.properties
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache: true
+
+      - name: Resolve dependencies
+        run: flutter pub get
+
+      # Same toolchain requirement as the test job: lib/ only compiles against
+      # the patched Flutter framework plus the patched material_ui package.
+      - name: Apply Flutter framework patches
+        run: |
+          set -euo pipefail
+          FLUTTER_ROOT="$(dirname "$(dirname "$(readlink -f "$(command -v flutter)")")")"
+          echo "FLUTTER_ROOT=$FLUTTER_ROOT"
+          n=0
+          for p in lib/scripts/*.patch; do
+            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            if patch -p1 -R --dry-run --batch -d "$FLUTTER_ROOT" < "$p" >/dev/null 2>&1; then
+              echo "already applied (cache): $p"
+              n=$((n + 1))
+              continue
+            fi
+            patch -p1 -d "$FLUTTER_ROOT" --batch < "$p"
+            n=$((n + 1))
+          done
+          echo "applied $n framework patches"
+
+      - name: Apply material_ui patches
+        run: |
+          set -euo pipefail
+          UI_DIR="$(ls -d "${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/material_ui-* 2>/dev/null | head -1)"
+          test -n "$UI_DIR"
+          test -d "$UI_DIR"
+          for p in lib/scripts/material/*.patch; do
+            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
+            if patch -p1 -R --dry-run --batch -d "$UI_DIR" < "$p" >/dev/null 2>&1; then
+              echo "already applied (cache): $p"
+              continue
+            fi
+            patch -p1 -d "$UI_DIR" --batch --forward < "$p"
+          done
+
+      - name: Apply Android patch
+        shell: pwsh
+        run: lib/scripts/patch.ps1 android
+
+      # Same dev flavour the upstream PR build used (dev=1, no release signing,
+      # no key.properties): an installable build for review, not a release.
+      - name: Build split APKs
+        run: >-
+          flutter build apk --release --split-per-abi
+          --android-project-arg dev=1 --no-pub
+
+      - name: Upload arm64-v8a
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-apk-arm64-v8a
+          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload armeabi-v7a
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-apk-armeabi-v7a
+          path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload x86_64
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-apk-x86_64
+          path: build/app/outputs/flutter-apk/app-x86_64-release.apk
+          if-no-files-found: error
+          retention-days: 14

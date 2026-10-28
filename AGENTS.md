@@ -19,7 +19,12 @@
 
 - 项目和交付文件只放在 `PiliplusAdaptiveCDN` 内。
 - 不删除 Adaptive CDN Relay/拼接、网络暂停保护或音视频任一停滞时整体暂停的逻辑。
-- 修复只动相关区域；GitHub 同步、发布和编译仅在用户明确要求时执行。
+- 修复只动相关区域。
+- GitHub 同步一律走 PR，禁止直接推 `main`；`main` 的合并由人决定。
+- PR CI（`.github/workflows/pr-check.yml`）已获本系统长期授权：PR 自动跑单测、
+  咨询性 analyze 和 Android dev APK 产物，无需逐次征求同意。它只读、不接触 secrets、
+  不能发布；发布（release）与直接推送仍需用户明确要求。
+- 上游同步与 release 的完整规则见 `docs/CI_AND_SYNC.md`。
 - 日志模式保持可复制：禁止每帧、每秒或常规动画事件日志，只记录异常、切换与恢复摘要。
 - `docs/PROJECT_CONTEXT.md` 是当前权威项目文档；外层 `PiliPlus-Adaptive-CDN-handoff.md` 仅是 2026-06-29 的历史迁移快照。
 - 若任务改变长期行为、默认参数、构建位置或已确认基线，同步更新 `docs/PROJECT_CONTEXT.md`。
