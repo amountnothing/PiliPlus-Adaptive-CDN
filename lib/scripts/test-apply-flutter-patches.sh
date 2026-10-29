@@ -233,6 +233,50 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+# Case 7: benign line offset -> still applied, offset accepted.
+#   Prepending unrelated lines moves the hunk, so GNU patch reports an offset
+#   while the context still matches exactly under --fuzz=0.
+#   The patch needs a hunk that does not start at line 1: GNU patch does not
+#   fall forward to a later match for a hunk anchored at the very first line.
+# ---------------------------------------------------------------------------
+echo "== case 7: line offset is accepted"
+mkdir -p "$WORK/offset-base/lib" "$WORK/offset-mod/lib" "$WORK/case7/lib"
+printf 'h1\nh2\nh3\nalpha\nbeta\ngamma\ndelta\n' >"$WORK/offset-base/lib/thing.txt"
+printf 'h1\nh2\nh3\nalpha\nbeta-patched\ngamma\ndelta\n' >"$WORK/offset-mod/lib/thing.txt"
+diff -u --label a/lib/thing.txt --label b/lib/thing.txt \
+  "$WORK/offset-base/lib/thing.txt" "$WORK/offset-mod/lib/thing.txt" \
+  >"$WORK/patches/offset.patch" || true
+{
+  for i in 1 2 3 4 5 6; do
+    echo "filler-$i"
+  done
+  cat "$WORK/offset-base/lib/thing.txt"
+} >"$WORK/case7/lib/thing.txt"
+
+out7="$WORK/case7.out"
+if PATCH_DIR="$WORK/patches" PATCH_GLOB='offset.patch' \
+  "$APPLY" custom "$WORK/case7" >"$out7" 2>&1; then
+  rc7=0
+else
+  rc7=$?
+fi
+count7="$(grep -c '^beta-patched$' "$WORK/case7/lib/thing.txt" 2>/dev/null || true)"
+first7="$(head -1 "$WORK/case7/lib/thing.txt")"
+
+ok=1
+assert_eq "exit code" "0" "$rc7" || ok=0
+assert_grep "tally" "$out7" "patches: total=1 applied=1 already_applied=0" || ok=0
+assert_grep "offset note" "$out7" "offset" || ok=0
+assert_grep "accepted note" "$out7" "line offset accepted" || ok=0
+assert_eq "patched line count" "1" "$count7" || ok=0
+assert_eq "prepended content preserved" "filler-1" "$first7" || ok=0
+if [ "$ok" -eq 1 ]; then
+  pass_case "case 7 benign line offset applied once"
+else
+  fail_case "case 7 benign line offset applied once"
+fi
+
+# ---------------------------------------------------------------------------
 echo
 echo "cases: $pass passed, $fail failed"
 if [ "$fail" -ne 0 ]; then

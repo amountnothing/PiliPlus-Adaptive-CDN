@@ -11,9 +11,10 @@ Branch: `fix/ci-flutter-patch-idempotence`
     forward dry-run OK = apply; forward fails + reverse (`-R --forward`) dry-run OK
     = already applied; anything else (including both succeeding) = incompatible,
     exit 1.
-  - Real applies use `--fuzz=0`; output containing `offset` or
-    `Hunk #... FAILED` fails the step. A real application is counted only when
-    patch prints `patching file`.
+  - Real applies use `--fuzz=0`; line offsets are accepted (benign line-number
+    drift, printed to the log). Only `Hunk #... FAILED`, a fuzz relaxation,
+    a nonzero apply rc or a missing `patching file` fails the step. A real
+    application is counted only when patch prints `patching file`.
   - Prints `total/applied/already_applied/skipped_ios` from classified patches,
     fails on `total == 0` or a tally mismatch, then asserts symbols.
   - `custom` mode plus `PATCH_DIR`/`PATCH_GLOB` allow SDK-free testing.
@@ -92,3 +93,55 @@ PASS
 - `cache-key` substitution names are used as documented by
   `subosito/flutter-action@v2`; their effect on GitHub's cache was not observed
   locally.
+
+## Round 2
+
+Real CI run 40808377212 (job `Analyze + unit tests`) proved the direction
+detection right: on a pristine SDK the step applied patches (`patching file`)
+instead of skipping them. It then failed because the script rejected a benign
+`Hunk #1 succeeded at 1463 (offset 51 lines).` report.
+
+Changes:
+
+- `lib/scripts/apply-flutter-patches.sh` now accepts line offsets: `--fuzz=0`
+  already forbids fuzzy context, so an offset means the exact context was found
+  at a drifted line. It prints `note: line offset accepted ...` and continues.
+  Only `Hunk #... FAILED`, `with fuzz`, a nonzero apply rc or a missing
+  `patching file` fail the step. Header comment updated.
+- `lib/scripts/test-apply-flutter-patches.sh`: added case 7 (pristine tree with
+  unrelated lines prepended -> offset apply; exit 0, `applied=1`, patched line
+  exactly once). The fixture hunk starts after line 1 because GNU patch will
+  not fall forward to a later match for a hunk anchored at the very first line.
+
+Round 2 command output:
+
+```
+$ bash -n lib/scripts/apply-flutter-patches.sh
+(no output, exit 0)
+
+$ bash -n lib/scripts/test-apply-flutter-patches.sh
+(no output, exit 0)
+
+$ bash lib/scripts/test-apply-flutter-patches.sh
+== case 1: old reverse dry-run gate false positive
+PASS: case 1 old gate exits 0 on a pristine tree (false positive documented)
+== case 2: pristine tree applies
+PASS: case 2 pristine tree applied once
+== case 3: second run is idempotent
+PASS: case 3 idempotent re-run (no double application)
+== case 4: partial tree (one applied, one pristine)
+PASS: case 4 partial tree completed correctly
+== case 5: incompatible tree fails closed
+PASS: case 5 incompatible tree exits 1
+== case 6: framework symbol assertion failure
+PASS: case 6 framework symbol assertion exits 1
+== case 7: line offset is accepted
+PASS: case 7 benign line offset applied once
+
+cases: 7 passed, 0 failed
+PASS
+```
+
+Still unverified: the real framework/material modes against an actual SDK (the
+real offset case was observed in CI, not locally), and a fresh CI run after
+this commit.

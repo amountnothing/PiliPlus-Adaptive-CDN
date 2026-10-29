@@ -36,9 +36,11 @@
 #   APPLIED     forward fails, reverse dry-run rc 0 -> skip
 #   otherwise   INCOMPATIBLE -> print the patch and the patch output, exit 1
 #
-# Real applies use --fuzz=0 and reject "offset"/"FAILED" output: strict hunks,
-# no guessing. The final tally is derived from classified patches, never from
-# loop iterations, and is cross-checked before the symbol assertions run.
+# Real applies use --fuzz=0, so context must match exactly; a line-number
+# offset is reported but accepted (offsets are normal drift for a pinned SDK).
+# Only a failed hunk, a fuzz relaxation or a nonzero apply rc is fatal. The
+# final tally is derived from classified patches, never from loop iterations,
+# and is cross-checked before the symbol assertions run.
 
 set -euo pipefail
 
@@ -150,8 +152,12 @@ for p in "${selected[@]}"; do
     if ! grep -qF 'patching file' "$apply_out"; then
       incompatible "$p" "real apply exited 0 without reporting 'patching file'"
     fi
-    if grep -qE 'offset|Hunk #[0-9]+ FAILED' "$apply_out"; then
-      incompatible "$p" "patch applied with fuzz/offset or a failed hunk"
+    # --fuzz=0 makes a fuzzy match impossible; line offsets are benign drift.
+    if grep -qE 'Hunk #[0-9]+ FAILED|with fuzz' "$apply_out"; then
+      incompatible "$p" "patch reported a failed hunk or a fuzz relaxation"
+    fi
+    if grep -qE '\(offset [0-9]+ line' "$apply_out"; then
+      echo "note: line offset accepted (context matched exactly, --fuzz=0): $p"
     fi
     applied=$((applied + 1))
   elif [ "$reverse_ok" -eq 1 ]; then
