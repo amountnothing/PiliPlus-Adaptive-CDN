@@ -51,6 +51,11 @@ jobs:
           channel: stable
           flutter-version-file: pubspec.yaml
           cache: true
+          # v2: the old cache key could restore an SDK that an earlier run had
+          # already patched, which hid a broken patch step. Correctness never
+          # depends on a cache hit; this only guarantees pristine-or-patched
+          # is decided by the patch step itself.
+          cache-key: "flutter-v2-:os:-:channel:-:version:-:arch:-:hash:"
 
       # This fork compiles against a *patched* Flutter framework: lib/ uses
       # framework APIs that only exist after lib/scripts/*.patch is applied to
@@ -61,19 +66,7 @@ jobs:
           set -euo pipefail
           FLUTTER_ROOT="$(dirname "$(dirname "$(readlink -f "$(command -v flutter)")")")"
           echo "FLUTTER_ROOT=$FLUTTER_ROOT"
-          n=0
-          for p in lib/scripts/*.patch; do
-            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
-            echo "== applying $p"
-            if patch -p1 -R --dry-run --batch -d "$FLUTTER_ROOT" < "$p" >/dev/null 2>&1; then
-              echo "already applied (cache): $p"
-              n=$((n + 1))
-              continue
-            fi
-            patch -p1 -d "$FLUTTER_ROOT" --batch < "$p"
-            n=$((n + 1))
-          done
-          echo "applied $n framework patches"
+          lib/scripts/apply-flutter-patches.sh framework "$FLUTTER_ROOT"
 
       - name: Resolve dependencies
         run: flutter pub get
@@ -90,15 +83,7 @@ jobs:
           test -d "$UI_DIR"
           echo "material_ui dir: $UI_DIR"
           grep -m1 '^version:' "$UI_DIR/pubspec.yaml" || true
-          for p in lib/scripts/material/*.patch; do
-            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
-            echo "== applying $p"
-            if patch -p1 -R --dry-run --batch -d "$UI_DIR" < "$p" >/dev/null 2>&1; then
-              echo "already applied (cache): $p"
-              continue
-            fi
-            patch -p1 -d "$UI_DIR" --batch --forward < "$p"
-          done
+          lib/scripts/apply-flutter-patches.sh material "$UI_DIR"
 
       # Advisory only: this fork's full-project analyze baseline is not clean
       # (pre-existing issues predate the adaptive changes). A red analyze here
@@ -140,6 +125,9 @@ jobs:
           channel: stable
           flutter-version-file: pubspec.yaml
           cache: true
+          # v2: see the test job. Never reuse a possibly pre-patched SDK cache
+          # entry from before the fail-closed patch step.
+          cache-key: "flutter-v2-:os:-:channel:-:version:-:arch:-:hash:"
 
       - name: Resolve dependencies
         run: flutter pub get
@@ -151,18 +139,7 @@ jobs:
           set -euo pipefail
           FLUTTER_ROOT="$(dirname "$(dirname "$(readlink -f "$(command -v flutter)")")")"
           echo "FLUTTER_ROOT=$FLUTTER_ROOT"
-          n=0
-          for p in lib/scripts/*.patch; do
-            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
-            if patch -p1 -R --dry-run --batch -d "$FLUTTER_ROOT" < "$p" >/dev/null 2>&1; then
-              echo "already applied (cache): $p"
-              n=$((n + 1))
-              continue
-            fi
-            patch -p1 -d "$FLUTTER_ROOT" --batch < "$p"
-            n=$((n + 1))
-          done
-          echo "applied $n framework patches"
+          lib/scripts/apply-flutter-patches.sh framework "$FLUTTER_ROOT"
 
       - name: Apply material_ui patches
         run: |
@@ -170,14 +147,8 @@ jobs:
           UI_DIR="$(ls -d "${PUB_CACHE:-$HOME/.pub-cache}"/hosted/pub.dev/material_ui-* 2>/dev/null | head -1)"
           test -n "$UI_DIR"
           test -d "$UI_DIR"
-          for p in lib/scripts/material/*.patch; do
-            case "$p" in *_ios*) echo "skip (iOS only): $p"; continue ;; esac
-            if patch -p1 -R --dry-run --batch -d "$UI_DIR" < "$p" >/dev/null 2>&1; then
-              echo "already applied (cache): $p"
-              continue
-            fi
-            patch -p1 -d "$UI_DIR" --batch --forward < "$p"
-          done
+          echo "material_ui dir: $UI_DIR"
+          lib/scripts/apply-flutter-patches.sh material "$UI_DIR"
 
       - name: Apply Android patch
         shell: pwsh
