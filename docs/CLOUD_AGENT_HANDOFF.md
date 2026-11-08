@@ -8,7 +8,7 @@
 - 默认分支：`main`
 - 上游：<https://github.com/bggRGjQaUbCoE/PiliPlus>
 - 当前上游 release 基线：`.github/upstream-release.txt`
-- Flutter 版本：`.fvmrc` 和 `pubspec.yaml`，当前为 `3.47.1`
+- Flutter 版本：以 `.fvmrc` 和 `pubspec.yaml` 为准（2026-11-08 为 `3.47.9`）
 - Java：17（与 `.github/workflows/adaptive_release.yml` 一致）
 
 首次接管按 `AGENTS.md`「开工」步骤读取文档。当前代码与测试是实现事实，文档与之冲突时先核实 Git 历史和调用链。
@@ -24,7 +24,7 @@ flutter --version
 flutter pub get
 ```
 
-环境至少需要 Flutter 3.47.1、Dart 3.13、JDK 17、Android SDK，以及 PowerShell 7（仓库维护和打包脚本是 `.ps1`）。本机的 `.tooling` 只是可重建缓存，不是项目依赖，不应上传。
+环境需要 `.fvmrc` 指定的 Flutter、JDK 17、Android SDK；`.ps1` 维护脚本需要 PowerShell 7。本机的 `.tooling` 只是可重建缓存，不是项目依赖，不应上传。
 
 Android 构建前沿用仓库脚本：
 
@@ -32,6 +32,17 @@ Android 构建前沿用仓库脚本：
 pwsh -File lib/scripts/patch.ps1 android
 pwsh -File lib/scripts/build.ps1 android
 flutter build apk --release --split-per-abi --dart-define-from-file=pili_release.json --pub
+```
+
+Linux 云端只跑 analyze/测试时（2026-11-08 实测可行，无需 pwsh）：
+
+```bash
+curl -s https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_<版本>-stable.tar.xz | tar -xJ
+apt-get install -y --no-install-recommends pkg-config libgtk-3-dev libx11-dev libxi-dev clang
+lib/scripts/apply-flutter-patches.sh framework <FLUTTER_ROOT>
+flutter pub get
+lib/scripts/apply-flutter-patches.sh material ~/.pub-cache/hosted/pub.dev/material_ui-<版本>
+flutter analyze --no-fatal-infos --no-fatal-warnings && flutter test
 ```
 
 若只需要可安装的正式包，优先让 `.github/workflows/adaptive_release.yml` 在 GitHub 执行，避免在云端服务器复制长期签名私钥。
