@@ -1,27 +1,28 @@
 # 项目执行约束
 
-每次开始任务前必须：
+## 开工
 
-1. 新环境或新会话**首次接管时**完整读取 `docs/PROJECT_CONTEXT.md` 一次；同一会话内的后续任务只按需读取相关章节，不重复全文读取。
-2. 新环境或新会话**首次接管时**完整读取 `docs/CODEBASE_REFERENCE.md` 一次；同一会话内的后续任务只按需读取相关章节，不重复全文读取。
-3. 执行 `git status --short`，保留用户已有未提交改动。
-4. 再读取任务涉及的当前代码；文档与代码冲突时先核实，不凭旧会话猜测。
+1. 执行 `git status --short`，保留用户已有未提交改动。
+2. 新会话首次接管时完整读一次 `docs/PROJECT_CONTEXT.md`（权威项目文档）和 `docs/PROJECT_STATUS.md`（当前状态）。
+3. 架构与定位按需查 `docs/CODEBASE_REFERENCE.md`、`docs/SOURCE_FILE_INDEX.md`、`docs/SYMBOL_INDEX.md`；新环境初始化见 `docs/CLOUD_AGENT_HANDOFF.md`。
+4. 读任务涉及的当前代码；文档与代码冲突时以代码和 Git 历史为准，先核实，不凭旧会话猜测。
 
-大文件按需读取（全局规则，任何环境、任何会话一律适用）：
+大文件（约 200 行或 8KB 以上）先用 `grep`/`rg` 定位再按行范围读；日志、诊断 JSON 先用 `jq`/`python` 过滤出结论字段。
 
-- 不把大文件整读进上下文：先用 `grep`/`rg` 定位、`wc -c` 看体量，再按行范围读取相关片段；禁止对源码、大 JSON、日志直接 `cat` 全文。
-- 单文件超过约 200 行或 8KB 即默认分段按需读取；诊断产物（JSON/日志）先用 `jq`/`python` 过滤出结论性字段再看。
-- 跨会话需要保留的结论写回本文档或 `docs/PROJECT_CONTEXT.md`，避免新会话为重建上下文而重读大文件。
+## 不可破坏的行为
 
-新环境或云端 Agent 首次接管时，先读取 `docs/CLOUD_AGENT_HANDOFF.md`，但仍以上述当前文档和代码为准。
-
-长期边界：
-
-- 项目和交付文件只放在 `PiliplusAdaptiveCDN` 内。
-- 不删除 Adaptive CDN Relay/拼接、网络暂停保护或音视频任一停滞时整体暂停的逻辑。
+- 不删除 Adaptive CDN Relay/拼接、网络暂停保护，以及音视频任一停滞时整体暂停的逻辑。
 - 修复只动相关区域。
-- GitHub 同步默认自动执行：无合并冲突时直接推送至 main；发生合并冲突时停止自动同步，由人工决定如何解决冲突及是否合并
-- 上游同步与 release 的完整规则见 `docs/CI_AND_SYNC.md`。
-- 日志模式保持可复制：禁止每帧、每秒或常规动画事件日志，只记录异常、切换与恢复摘要。
-- `docs/PROJECT_CONTEXT.md` 是当前权威项目文档；外层 `PiliPlus-Adaptive-CDN-handoff.md` 仅是 2026-06-29 的历史迁移快照。
-- 若任务改变长期行为、默认参数、构建位置或已确认基线，同步更新 `docs/PROJECT_CONTEXT.md`。
+- 日志保持可复制：不记每帧、每秒或常规动画事件，只记异常、切换与恢复摘要。
+
+## Git、CI 与发布
+
+- 改动无合并冲突时可直接推送到 `main`；发生冲突时停止，由人决定如何解决及是否合并。
+- 需要 CI 验证或 review 时可走 PR；PR CI（`pr-check.yml`）自动运行，无需逐次确认。
+- 正式 Release 只在用户明确要求时手动触发。
+- 细则见 `docs/CI_AND_SYNC.md`。
+
+## 文档维护
+
+- 改变长期行为、默认参数、构建位置或已确认基线时，同步更新 `docs/PROJECT_CONTEXT.md`。
+- 当前状态、风险和下一步写在 `docs/PROJECT_STATUS.md`，状态变化时改写而不是追加；历史由 Git 保存。

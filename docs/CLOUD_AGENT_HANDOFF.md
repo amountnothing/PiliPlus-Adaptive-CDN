@@ -11,16 +11,7 @@
 - Flutter 版本：`.fvmrc` 和 `pubspec.yaml`，当前为 `3.47.1`
 - Java：17（与 `.github/workflows/adaptive_release.yml` 一致）
 
-首次接管按以下顺序读取：
-
-1. `AGENTS.md`
-2. `docs/PROJECT_CONTEXT.md`
-3. `docs/CODEBASE_REFERENCE.md`
-4. `docs/SOURCE_FILE_INDEX.md`
-5. `docs/SYMBOL_INDEX.md`
-6. 当前任务涉及的源代码、测试和 `git status --short`
-
-文档记录产品约束和架构，当前代码与测试记录实现事实。发生冲突时先核实 Git 历史和调用链，不凭旧会话猜测。
+首次接管按 `AGENTS.md`「开工」步骤读取文档。当前代码与测试是实现事实，文档与之冲突时先核实 Git 历史和调用链。
 
 ## 2. 云端环境初始化
 

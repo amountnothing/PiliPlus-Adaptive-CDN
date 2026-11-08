@@ -1,65 +1,40 @@
 # CI 与上游同步规则
 
-本文档说明本 Fork 的 GitHub Actions 配置、CI 验证与发布流程。
-
-项目执行约束、上游同步权限及定制功能保护原则统一以 `AGENTS.md` 为准。
+推送与合并权限以 `AGENTS.md` 为准，本文只说明工作流和流程细节。
 
 ## 1. GitHub Actions 工作流
 
 | 文件 | 触发方式 | 权限 | 用途 |
 |---|---|---|---|
-| `.github/workflows/pr-check.yml` | `pull_request`、`workflow_dispatch` | `contents: read` | 单元测试、静态分析、Android dev split APK |
+| `.github/workflows/pr-check.yml` | `pull_request`、`workflow_dispatch` | `contents: read` | 单元测试、咨询性静态分析、Android dev split APK |
 | `.github/workflows/adaptive_release.yml` | `workflow_dispatch` | `contents: write` | 签名并发布 Android APK 与浏览器扩展 |
 
-原项目的 `build.yml`、`ios.yml`、`mac.yml`、`win_x64.yml`、`linux_x64.yml` 保持原有配置，除非任务明确要求修改。
+上游原有的 `build.yml`、`ios.yml`、`mac.yml`、`win_x64.yml`、`linux_x64.yml` 保持原样，除非任务明确要求修改。
 
-## 2. 上游同步与 CI
+## 2. 上游同步
 
-上游同步遵循 `AGENTS.md`：
+- 拉取 `upstream`（`bggRGjQaUbCoE/PiliPlus`）后合并到 `main`；无冲突直接推送，不要求 PR。
+- 有冲突时停止，由人决定解决方式及是否合并；重点检查 Adaptive CDN、播放器、动画和扩展边界。
+- 同步用 merge commit，不用 squash/rebase，保留上游提交的 ancestry。
+- 同步后更新 `.github/upstream-release.txt`（对应的上游 release 版本）。
 
-- 无合并冲突时，允许自动推送至 `main`。
-- 发生合并冲突时，由人工决定解决方式及是否合并。
-- 普通无冲突同步不要求创建 PR。
-
-CI 分为两种场景：
-
-**PR 检查**
-
-创建或更新 PR 时自动运行 `pr-check.yml`，用于验证代码修改，并提供测试 APK。
-
-**主分支同步**
-
-上游更新直接推送至 `main` 时，不依赖 PR CI。
-
-如需主分支更新后自动运行相同检查，应在对应 Workflow 中配置 `push: main` 触发器。
-
-CI 结果用于验证代码，不改变 `AGENTS.md` 定义的同步与合并权限。
+直接推到 `main` 不会触发 PR CI。需要验证时走 PR，或手动 `workflow_dispatch` 运行 `pr-check.yml`。
 
 ## 3. PR CI 检查内容
 
 - `flutter test`：必须通过。
-- `flutter analyze`：使用 `continue-on-error`，结果仅供参考，不阻断 CI。
-- Android dev split APK：构建并上传 Actions Artifact，供测试下载。
+- `flutter analyze`：`continue-on-error`，历史遗留问题较多，结果仅供参考。
+- Android dev split APK：构建并上传为 Actions Artifact，供测试下载。
 
-PR CI 不访问发布 Secrets，不执行 Release，不直接修改仓库代码。
-
-CI 已获长期执行授权，无需逐次确认。
+PR CI 不访问发布 Secrets，不执行 Release，不修改仓库。CI 失败应修复实际问题，不得删除必要检查来规避。
 
 ## 4. Release 发布
 
-正式发布由 `adaptive_release.yml` 负责。
+- 由 `adaptive_release.yml` 负责，仅能 `workflow_dispatch` 手动触发，且需要用户明确要求。
+- 构建指定提交的 Android APK 与浏览器扩展，签名 Secrets 只在该工作流中使用。
+- 上游同步与 PR CI 都不会自动触发 Release。
 
-- 仅允许通过 `workflow_dispatch` 手动触发。
-- 必须得到用户明确授权。
-- 构建指定提交对应的 Android APK 与浏览器扩展。
-- 签名所需 Secrets 仅在授权的发布工作流中使用。
-- 上游同步与 PR CI 均不得自动触发正式 Release。
+## 5. 已知事项
 
-## 5. 已知未验证项
-
-- `pr-check.yml` 尚未经过 GitHub Actions 实际运行验证。
-- Flutter Analyze 存在历史遗留问题，暂不作为强制通过条件。
-- Android 构建依赖 `cnativeapi` native-assets，可能涉及 Clang/NDK 环境配置。
-- 首次执行时应依据实际日志确认工作流及构建产物正常。
-
-CI 失败应优先修复实际问题，不得通过删除必要检查规避失败。
+- `pr-check.yml` 已在 PR #5（2026-11-08，run 42489771995）实际跑通两项 job。
+- Android 构建依赖 `cnativeapi` native-assets，换 runner 或 NDK 时注意 Clang/NDK 配置。

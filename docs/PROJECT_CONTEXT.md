@@ -1,7 +1,7 @@
 # PiliPlus Adaptive CDN 项目上下文
 
-更新时间：2026-10-28
-用途：给人和 Codex 快速恢复项目上下文，避免长对话压缩后丢失关键记忆。
+更新时间：2026-11-08
+用途：给人和 AI agent 快速恢复项目上下文，避免长对话压缩后丢失关键记忆。
 
 - 唯一源码基准：GitHub `amountnothing/PiliPlus-Adaptive-CDN` 的 `main` 分支。
 - 本机工作目录示例：`H:/kongbai/Documents/Codex/MiniProgramm/PiliplusAdaptiveCDN/PiliPlus-Adaptive-CDN-repo`；云端 clone 不依赖此绝对路径。
@@ -9,9 +9,9 @@
 - 云端迁移、环境初始化、私钥边界和本机目录清单见 `docs/CLOUD_AGENT_HANDOFF.md`。
 - 外层 `PiliPlus-Adaptive-CDN-handoff.md` 是历史迁移快照，不作为当前参数或版本依据。
 
-## 0. 每次任务必读的架构基准
+## 0. 架构基准
 
-- 读取本文后，继续读取 `docs/CODEBASE_REFERENCE.md`，再开始定位或修改代码。
+- 定位或修改代码前按需查阅 `docs/CODEBASE_REFERENCE.md`。
 - `CODEBASE_REFERENCE.md` 说明完整框架、模块边界、核心类职责、关键数据流和修改入口。
 - `docs/SOURCE_FILE_INDEX.md` 是全部受版本控制及非忽略项目文件的定位表。
 - `docs/SYMBOL_INDEX.md` 是手写源代码中类、函数和方法的定位表；生成代码只列顶层类型。
@@ -71,9 +71,7 @@
   `flutter analyze` 为咨询性（全项目基线本就不干净），Android dev split APK 作为 artifact 上传。
 - `.github/workflows/adaptive_release.yml` 仅手动 `workflow_dispatch`；**没有定时任务**，
   也没有任何 workflow 会 `git push` 到 `main`。release 构建你 dispatch 的那个提交。
-- 上游同步改为 PR 流程（`ops/piliplus-bridge` 在 VPS 上建 worktree/branch 交给 OpenCode，
-  再由人合并）；bridge 只认「open、base=main、head=本任务分支且 head sha=worktree HEAD、
-  check-runs 全绿」的 PR。详见 `docs/CI_AND_SYNC.md`。
+- 上游同步：无冲突直接 merge 并推送 `main`，有冲突由人决定。详见 `docs/CI_AND_SYNC.md`。
 - GitHub release 构建 Android split APK，并把 Chromium/Edge ZIP 与 Tampermonkey `.user.js` 直接作为 Release 附件发布。
 - Release 构建要求稳定签名 secrets，并校验证书 SHA-256，避免普通安卓机安装时报签名问题。
 
@@ -383,16 +381,15 @@
 
 ### 继续项目时先做什么
 
-1. 新会话首次接管时完整读取本文档和根目录 `AGENTS.md` 一次，后续任务按需读取相关章节；大文件一律按 `AGENTS.md` 的「大文件按需读取」规则处理。
-2. 看 `git status --short`，确认用户未提交改动和当前工作树。
-3. 如果出现动画回归，先与 `30eac66c5` 对比相关文件，只改最小必要点。
-4. 改完跑：
+1. 按 `AGENTS.md`「开工」步骤读取文档并检查工作树。
+2. 如果出现动画回归，先与 `30eac66c5` 对比相关文件，只改最小必要点。
+3. 改完跑：
 
 ```powershell
 ..\.tooling\flutter\bin\flutter.bat analyze lib\utils\page_utils.dart lib\pages\video\view.dart lib\pages\dynamics\widgets\dynamic_panel.dart
 ```
 
-5. 用户要测试包时编译：
+4. 用户要测试包时编译：
 
 ```powershell
 ..\.tooling\flutter\bin\flutter.bat build apk --release --target-platform android-arm64 --split-per-abi --android-project-arg=kotlin.incremental=false --android-project-arg=kotlin.compiler.execution.strategy=in-process
@@ -401,20 +398,15 @@
 ### 暂停期间不要忘记
 
 - 不要把临时动画测试 fork 当最终方案同步。
-- GitHub 同步/编译需要用户明确要求；用户多次说过“先别编译/先别同步”时要严格区分。
+- 本地编译和 Release 需要用户明确要求；用户说“先别编译/先别同步”时严格遵守，暂停默认的自动推送。
 - 如果要发布，先确认：
   - 当前动画是否已被用户认可。
   - Adaptive CDN 逻辑和 README 是否一致。
   - 浏览器扩展是否需要同步 App 端最新 CDN 策略。
   - GitHub Actions 签名 secrets 是否完整。
 
-## 6. 跨会话记忆与日志约定（2026-10-28）
+## 6. 跨会话记忆
 
-- 长期权威仍是本文档：改变长期行为、默认参数、构建位置或已确认基线时，必须同步更新本文。
-- 当前状态/风险/下一步写在 `docs/PROJECT_STATUS.md`（只保留当前真相，状态变化时改写）。
-- 每个 session 的流水写在 `docs/SESSION_LOG.md`（只追加；全文历史看 git）。
-  两者都是 GitHub 上的长期记忆，不依赖任何单机 memory。
-- 项目身份与入口：同一 git 仓库的 clone/worktree 在 OpenCode 里属于同一个 project
-  （id `5a699928…`，仓库级、非目录级）。手工任务在 `workspace/piliplus-maintenance` 上建新 worktree，
-  定时同步用 bridge 的 `task-*` worktree，分支前缀隔离（`sync/` 与其他）。详见 `docs/OPENCODE_PROJECT.md`。
-- 人工合并与 upstream sha ancestry 的要求不变：CI 绿只是必要条件，合并永远由人决定。
+- 长期权威是本文档：改变长期行为、默认参数、构建位置或已确认基线时同步更新。
+- 当前状态/风险/下一步写在 `docs/PROJECT_STATUS.md`（只保留当前真相，变化时改写）。
+- 过程历史看 Git 提交、PR 和 `docs/plans/`，不另设会话流水日志。
