@@ -11,7 +11,6 @@ import 'package:PiliPlus/common/widgets/select_mask.dart';
 import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/common/sponsor_block/segment_type.dart';
 import 'package:PiliPlus/models/common/video/source_type.dart';
-import 'package:PiliPlus/models/common/video/video_quality.dart';
 import 'package:PiliPlus/models_new/download/bili_download_entry_info.dart';
 import 'package:PiliPlus/pages/common/multi_select/base.dart';
 import 'package:PiliPlus/pages/download/downloading/view.dart';
@@ -74,6 +73,16 @@ class DetailItem extends StatelessWidget {
     ),
   );
 
+  Future<void> _onUpdate(Future<bool> Function() onUpdate) async {
+    Get.back();
+    final res = await onUpdate();
+    if (res) {
+      SmartDialog.showToast('更新成功');
+    } else {
+      SmartDialog.showToast('更新失败');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -97,22 +106,16 @@ class DetailItem extends StatelessWidget {
                       onConfirm: onDelete,
                     );
                   },
-                  child: const Text('删除', style: TextStyle(fontSize: 14)),
+                  child: const Text('删除'),
                 ),
                 DialogOption(
-                  onPressed: () async {
-                    Get.back();
-                    final res = await downloadService.downloadDanmaku(
+                  onPressed: () => _onUpdate(
+                    () => downloadService.downloadDanmaku(
                       entry: entry,
                       isUpdate: true,
-                    );
-                    if (res) {
-                      SmartDialog.showToast('更新成功');
-                    } else {
-                      SmartDialog.showToast('更新失败');
-                    }
-                  },
-                  child: const Text('更新弹幕', style: TextStyle(fontSize: 14)),
+                    ),
+                  ),
+                  child: const Text('更新弹幕'),
                 ),
                 if (entry.segments != null)
                   DialogOption(
@@ -122,19 +125,18 @@ class DetailItem extends StatelessWidget {
                     },
                     child: const Text('空降片段'),
                   ),
-                if (entry.isCompleted)
+                if (entry.isCompleted) ...[
                   DialogOption(
-                    onPressed: () async {
-                      Get.back();
-                      final res = await downloadService.updateSegments(entry);
-                      if (res) {
-                        SmartDialog.showToast('更新成功');
-                      } else {
-                        SmartDialog.showToast('更新失败');
-                      }
-                    },
+                    onPressed: () =>
+                        _onUpdate(() => downloadService.updateSegments(entry)),
                     child: const Text('更新空降片段'),
                   ),
+                  DialogOption(
+                    onPressed: () =>
+                        _onUpdate(() => downloadService.updatePlayInfo(entry)),
+                    child: const Text('更新字幕、分段信息'),
+                  ),
+                ],
               ],
             ),
           )
@@ -183,7 +185,7 @@ class DetailItem extends StatelessWidget {
                 downloadNext: false,
               );
             } else {
-              downloadService.startDownload(entry);
+              downloadService.queueDownload(entry);
             }
           }
         },
@@ -242,13 +244,7 @@ class DetailItem extends StatelessWidget {
                       },
                     ),
                   ),
-                  if (entry.videoQuality case final videoQuality?)
-                    PBadge(
-                      text: VideoQuality.fromCode(videoQuality).shortDesc,
-                      right: 6.0,
-                      top: 6.0,
-                      type: PBadgeType.gray,
-                    ),
+                  entry.qaBadge,
                   if (progress != null)
                     ListenableBuilder(
                       listenable: progress!,

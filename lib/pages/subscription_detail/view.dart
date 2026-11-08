@@ -4,7 +4,9 @@ import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/models_new/sub/sub/list.dart';
+import 'package:PiliPlus/models_new/sub/sub_detail/data.dart';
 import 'package:PiliPlus/models_new/sub/sub_detail/media.dart';
+import 'package:PiliPlus/pages/common/page_order/page_order_btn_mixin.dart';
 import 'package:PiliPlus/pages/subscription_detail/controller.dart';
 import 'package:PiliPlus/pages/subscription_detail/widget/sub_video_card.dart';
 import 'package:PiliPlus/utils/grid.dart';
@@ -35,13 +37,17 @@ class SubDetailPage extends StatefulWidget {
   }
 }
 
-class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
-  late final SubDetailController _subDetailController;
+class _SubDetailPageState extends State<SubDetailPage>
+    with
+        GridMixin,
+        PageOrderBtnMixin<SubDetailPage, SubDetailData, SubDetailItemModel> {
+  @override
+  late final SubDetailController controller;
 
   @override
   void initState() {
     super.initState();
-    _subDetailController = Get.put(
+    controller = Get.put(
       SubDetailController(),
       tag: Utils.makeHeroTag(Get.parameters['id']),
     );
@@ -54,10 +60,10 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
     return Material(
       color: theme.colorScheme.surface,
       child: refreshIndicator(
-        onRefresh: _subDetailController.onRefresh,
+        onRefresh: controller.onRefresh,
         child: CustomScrollView(
-          controller: _subDetailController.scrollController,
           scrollCacheExtent: Style.feedCacheExtent,
+          controller: controller.scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
             _appBar(theme, padding),
@@ -69,7 +75,7 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
                 bottom: padding.bottom + 100,
               ),
               sliver: Obx(
-                () => _buildBody(_subDetailController.loadingState.value),
+                () => _buildBody(controller.loadingState.value),
               ),
             ),
           ],
@@ -87,7 +93,7 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
                 gridDelegate: gridDelegate,
                 itemBuilder: (context, index) {
                   if (index == response.length - 1) {
-                    _subDetailController.onLoadMore();
+                    controller.onLoadMore();
                   }
                   return SubVideoCardH(
                     videoItem: response[index],
@@ -95,24 +101,24 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
                 },
                 itemCount: response.length,
               )
-            : HttpError(onReload: _subDetailController.onReload),
+            : HttpError(onReload: controller.onReload),
       Error(:final errMsg) => HttpError(
         errMsg: errMsg,
-        onReload: _subDetailController.onReload,
+        onReload: controller.onReload,
       ),
     };
   }
 
   Widget _appBar(ThemeData theme, EdgeInsets padding) {
-    final info = _subDetailController.subInfo;
+    final info = controller.subInfo;
     if (info != null) return _buildAppBar(theme, padding, info);
     return Obx(() {
-      return switch (_subDetailController.loadingState.value) {
+      return switch (controller.loadingState.value) {
         Loading() || Error() => const SliverAppBar(),
         Success() => _buildAppBar(
           theme,
           padding,
-          _subDetailController.subInfo!,
+          controller.subInfo!,
         ),
       };
     });
@@ -129,9 +135,9 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
       height: 110,
       src: info.cover,
     );
-    if (_subDetailController.heroTag != null) {
+    if (controller.heroTag != null) {
       cover = Hero(
-        tag: _subDetailController.heroTag!,
+        tag: controller.heroTag!,
         child: cover,
       );
     }
@@ -210,6 +216,7 @@ class _SubDetailPageState extends State<SubDetailPage> with GridMixin {
           ),
         ),
       ),
+      actions: [pageOrderBtn, const SizedBox(width: 10)],
     );
   }
 }
