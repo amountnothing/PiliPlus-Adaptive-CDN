@@ -367,7 +367,10 @@ abstract final class Pref {
 
   static CDNService get defaultCDNService {
     if (_setting.get(SettingBoxKey.CDNService) case final String cdnName) {
-      return CDNService.values.byName(cdnName);
+      // A stored CDN may have been removed (dead host); fall back silently.
+      for (final service in CDNService.values) {
+        if (service.name == cdnName) return service;
+      }
     }
     return CDNService.backupUrl;
   }
