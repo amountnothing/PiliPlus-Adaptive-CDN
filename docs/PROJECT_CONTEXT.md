@@ -358,7 +358,7 @@
 - 修复：`candidateDeadline()` 未收字节候选由 15 秒改为 5 秒首字节预算（`FIRST_BYTE_WINDOW_MS`，收过字节仍 15 秒）；新增 `armCandidateWatchdog`（每 1 秒）——未收字节、候选起始超 5 秒、该资源仍有活跃请求时后台 `recoverCandidate("candidate-timeout")`，复用全部既有闸门与一次性提交，不新增切换入口；空闲资源与已收字节资源不触发。
 - 测试：`node --test` **63/63**（原 61 + 新增 2 条看门狗回归）；`chromium.cjs` 源码 **34/34**、产物 **34/34**。线上受控 A/B：0.2.19 基线不开播，0.2.20 切到备机 `upos-sz-mirrorcosov.bilivideo.com` 后开播；无阻断回归 0 切换正常开播。`/*DBG*/`→`window.__piliDebug` 诊断插桩已全部回滚（源码 `grep DBG` = 0）。
 - 产物：`dist/PiliPlus-Adaptive-CDN-Web.user.js` **0.2.20**，57,533 B，SHA-256 `5cf0045a6f81bfec8dd16968319e0f958f64bdf12df4cefa79823a78964d5316`；验收细节见 `browser-extension/RETRY-0.2.20.md`，探针与线上 JSON 在 `dist/.qa/online/`（gitignored）。
-- 遗留：未推送（gh 令牌缺 `workflow` 作用域）；2 个 NXDOMAIN 死域名是否从 `cdn_type.dart` 移除仍待用户确认。
+- 遗留：NXDOMAIN 死域名已于 2026-11-08 移除（见下文 2026-11-08 节）。
 
 - 同日约定：`AGENTS.md` 的开工必读改为「新会话首次接管全读一次、后续按需读章节」，并新增大文件按需读取全局规则（禁止 `cat` 全文，>200 行/8KB 分段读，结论写回文档）；规则同时要求全局生效于 `~/.hermes/SOUL.md`，其待应用副本在宿主 `/shared/global-context-rules-SOUL.md`。
 
@@ -369,7 +369,7 @@
 - 修复（`browser-extension/page.js`，只动扩展相关区域）：新资源不再继承冷却快照（字段删除），同视频排除只看本视频 `failedHosts`；新增 `orderFreshCandidates`——新视频/新资源保留全部候选并逐个尝试，仍在冷却窗口的主机按评分排最后（降级为排序影响，不再硬排除）。跨视频记忆保留在评分（失败 -28 分）和该排序里；`cooldownSec` 设置保留（仍记录/展示/持久化，控制软排序窗口）。
 - 测试：`node --test` **64/64**（原 63 + 新增 1 条新视频回归：BV1 全失败耗尽后切 BV2，断言新视频依次尝试 A2/B2/C2、2 次切换、最终才报遍历完）；Chromium 真实传输回归源码模式 34/34、油猴产物模式 34/34（`PLAYWRIGHT_BROWSERS_PATH=dist/.qa/browsers`）。
 - 产物：`manifest` 0.2.20→0.2.21，`browser-extension/README.md` 同步更新跨视频冷却语义；`dist/PiliPlus-Adaptive-CDN-Web.user.js` 已用 node 复刻 `package-userscript.ps1` 逻辑重新生成（57,533 B→56,880 B，SHA-256 `920af38e1430670131e4c0e8bd747ed4d1c125205be40f7e111327f823daa654`，bridge 尾部与旧产物逐字节一致、仅版本号与 core/page 变化）。线上完整 MSE 播放仍待真机/真实浏览器验收。
-- 遗留：未推送；`PiliPlus-Adaptive-CDN-Web-0.2.6.zip` 为历史产物，本次未重打（扩展 zip 命名停留在 0.2.6，与 manifest 版本无关）。
+- 遗留：扩展 ZIP 已于 2026-11-08 按 0.2.21 重打（`dist/PiliPlus-Adaptive-CDN-Web-0.2.21.zip`），旧 0.2.6 ZIP 已删除。
 - 0.2.21 清理（未改行为）：删除 `core.js` 中网页端零调用的 `KNOWN_UPOS_HOSTS`/`expandUposCandidates`/`isAv1Codec`/`isCurrentResourceFailure`（约 1.6KB）及对应 3 条单测；`page.js` 合并排序 helper、补齐 toast 文案。`docs/SYMBOL_INDEX.md` 仅删了对应 6 行，行号类索引以 `tool/generate_codebase_index.ps1`（需 pwsh）重建为准。
 
 ### 2026-10-18 安卓番剧未知清晰度崩溃修复
@@ -378,6 +378,20 @@
 - 根因已核实：不是账号/权限问题。B 站给该番剧下发了 dash 流 `id=100`（qn=100 “智能修复”，VIP 专享档）；本仓库基线（上游 2.1.6）的清晰度表没有 100，`_codeMap[100]!` 抛异常。上游在 2026-10-16 `refa video/audio/live quality`（936072449）已补 100 并把 `fromCode` 改为未知时动态兜底，本仓库合并基线早于该提交所以中招。上游音频表与本仓库一致，无新增音频 id。
 - 修复：`video_quality.dart` 补 `superResolution(100, '智能修复', '智能修复')`（112 与 80 之间，保持降序）；`VideoQuality/AudioQuality.fromCode` 未知 code 保留兜底（回落到小于等于该 code 的最近已知档，否则最低档），已知 code 行为不变。未照搬上游的 class 重构（本仓库多处按枚举使用），改动最小。
 - 测试：`test/media_quality_test.dart` 8 项（100 精确解析、未来未知 id 兜底、`VideoItem.fromJson` 不崩）；`.gitignore` 加白名单。全量 `flutter test` **114/114**（基线 106 + 新增 8），定向 `flutter analyze` 0 issue。APK 未构建，真机番剧播放待用户验收。
+
+### 2026-11-08 上游 2.2.0.2+ 同步与 CDN 清理
+
+- 上游：合并 `bggRGjQaUbCoE/PiliPlus` main `4fce4bb5a`（2.2.0.2 之后，152 提交），Flutter 随上游升到 3.47.9。16 个文件冲突，
+  按「保留 fork 的 Adaptive CDN/Relay/暂停保护，接入上游新 API」解决：
+  - `video/controller`：保留 CDN 候选与 Relay 接线；上游多段 durl（EDL）路径禁用 CDN 候选，单段 durl 仍走 `_configureAdaptiveSources`。
+  - `pl_player/controller`：保留 fork 的 `seek/seekTo(isSeek)`、重建检查点、打开代次与 `startDuringOpen`；接入上游 `rotate`。
+  - `pl_player/view`：保留 fork 的后台暂停/恢复代次守卫。`audio_session`：采用上游实现，中断恢复仍要求 `playbackRequested`。
+  - `video_utils`：保留 `preferBackup` 排序，接入上游 Akamai 直通（Akamai 带独立签名，不再被改写为候选）。
+  - 清晰度模型采用上游重构（未知 qn 动态生成，覆盖 2026-10-18 的崩溃修复）；动态过滤设置迁到上游新的 `dyn_settings` 页。
+  - 修了两个在上游 main 上本身就失败的上游测试（`deleted_account_test` 初始化、`calcWindowOffset` 未按注释拉回工作区）。
+- CDN：删除 `08c`、`08h`、`hwov`、`hk_bcache`（2026-11-08 Cloudflare DoH 实测 NXDOMAIN；同族 `08ct/hw/hwo1` 正常）；
+  `Pref.defaultCDNService` 不再用 `byName`，已保存的被删 CDN 回落 `backupUrl`。
+- 验证：本地 `flutter test` 149/149；analyze 对改动文件 0 issue。Android 真机未验证；`SOURCE_FILE_INDEX`/`SYMBOL_INDEX` 未重建（需 pwsh）。
 
 ### 继续项目时先做什么
 

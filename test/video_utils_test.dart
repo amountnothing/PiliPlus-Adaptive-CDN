@@ -76,9 +76,22 @@ void main() {
       );
       expect(
         candidates.where((url) => url.contains('/upgcxcode/')),
+        // Akamai URLs carry their own signature, so getCdnUrl never rewrites
+        // another CDN's URL onto the Akamai host (it would 403).
         hasLength(
-          CDNService.values.where((service) => service.host != null).length,
+          CDNService.values
+              .where(
+                (service) =>
+                    service.host != null && service != CDNService.akamai,
+              )
+              .length,
         ),
+      );
+      expect(
+        candidates.any(
+          (url) => Uri.parse(url).host == CDNService.akamai.host,
+        ),
+        isFalse,
       );
       expect(candidates.toSet(), hasLength(candidates.length));
     });
@@ -810,15 +823,14 @@ void main() {
       Duration window = const Duration(seconds: 30),
       int minStalls = 3,
       Duration minTotalStall = const Duration(seconds: 3),
-    }) =>
-        AdaptivePlayback.shouldSwitchForFragmentedStalls(
-          stallStarts: startsOf(stalls),
-          stallDurations: durationsOf(stalls),
-          now: atNow ?? now,
-          window: window,
-          minStalls: minStalls,
-          minTotalStall: minTotalStall,
-        );
+    }) => AdaptivePlayback.shouldSwitchForFragmentedStalls(
+      stallStarts: startsOf(stalls),
+      stallDurations: durationsOf(stalls),
+      now: atNow ?? now,
+      window: window,
+      minStalls: minStalls,
+      minTotalStall: minTotalStall,
+    );
 
     test('three stalls totalling 3s inside 30s trigger a switch', () {
       expect(
@@ -831,7 +843,7 @@ void main() {
       );
       // Boundary: exactly 3 stalls and exactly 3s still triggers.
       expect(
-        decide([(4, 1), (10, 1), (20, 1)], atNow: at(4) ),
+        decide([(4, 1), (10, 1), (20, 1)], atNow: at(4)),
         isTrue,
       );
     });
@@ -845,8 +857,11 @@ void main() {
 
     test('three stalls with less than 3s total do not trigger', () {
       expect(
-        decide([(4, 1), (10, 1), (20, 1)],
-            minTotalStall: const Duration(seconds: 4)),
+        decide([
+          (4, 1),
+          (10, 1),
+          (20, 1),
+        ], minTotalStall: const Duration(seconds: 4)),
         isFalse,
       );
       expect(
@@ -892,13 +907,12 @@ void main() {
       bool isInBackground = false,
       bool continuePlayInBackground = false,
       bool onlyPlayAudio = false,
-    }) =>
-        AdaptivePlayback.shouldHoldWakelock(
-          playbackRequested: playbackRequested,
-          isInBackground: isInBackground,
-          continuePlayInBackground: continuePlayInBackground,
-          onlyPlayAudio: onlyPlayAudio,
-        );
+    }) => AdaptivePlayback.shouldHoldWakelock(
+      playbackRequested: playbackRequested,
+      isInBackground: isInBackground,
+      continuePlayInBackground: continuePlayInBackground,
+      onlyPlayAudio: onlyPlayAudio,
+    );
 
     test('foreground requested playback holds the wakelock', () {
       expect(hold(), isTrue);
@@ -921,8 +935,11 @@ void main() {
 
     test('audio-only background playback does not need the screen', () {
       expect(
-        hold(isInBackground: true, continuePlayInBackground: true,
-            onlyPlayAudio: true),
+        hold(
+          isInBackground: true,
+          continuePlayInBackground: true,
+          onlyPlayAudio: true,
+        ),
         isFalse,
       );
     });

@@ -197,7 +197,7 @@ Versioned and non-ignored project file count: 1673
 
 ## dist
 
-- `dist/PiliPlus-Adaptive-CDN-Web-0.2.6.zip`
+- `dist/PiliPlus-Adaptive-CDN-Web-0.2.21.zip`
 - `dist/PiliPlus-Adaptive-CDN-Web.user.js`
 
 ## distribute_options.yaml
