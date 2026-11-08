@@ -1,57 +1,65 @@
-# CI 与上游同步规则（下游定制）
+# CI 与上游同步规则
 
-本文件说明本 fork 的 CI/同步边界，供后续 Agent 与人类维护者共用。它与
-`AGENTS.md` 的长期边界一致，不覆盖原项目规则（先读 `docs/PROJECT_CONTEXT.md`
-与 `docs/CODEBASE_REFERENCE.md` 的要求仍然有效）。
+本文档说明本 Fork 的 GitHub Actions 配置、CI 验证与发布流程。
 
-## 1. 两个 workflow 的分工
+项目执行约束、上游同步权限及定制功能保护原则统一以 `AGENTS.md` 为准。
 
-| 文件 | 触发 | 权限 | 作用 |
+## 1. GitHub Actions 工作流
+
+| 文件 | 触发方式 | 权限 | 用途 |
 |---|---|---|---|
-| `.github/workflows/pr-check.yml` | `pull_request`（opened/synchronize/reopened/ready_for_review）、`workflow_dispatch` | `contents: read` | 单测 + 咨询性 analyze + Android dev split APK 产物 |
-| `.github/workflows/adaptive_release.yml` | 仅 `workflow_dispatch` | `contents: write` | 手动签名 release（Android APK + 浏览器扩展附件） |
+| `.github/workflows/pr-check.yml` | `pull_request`、`workflow_dispatch` | `contents: read` | 单元测试、静态分析、Android dev split APK |
+| `.github/workflows/adaptive_release.yml` | `workflow_dispatch` | `contents: write` | 签名并发布 Android APK 与浏览器扩展 |
 
-`build.yml` / `ios.yml` / `mac.yml` / `win_x64.yml` / `linux_x64.yml` 保持原样，
-不带 `pull_request` 触发，PR 上不会运行，也不会有 `write-all` 令牌落到 PR 代码上。
+原项目的 `build.yml`、`ios.yml`、`mac.yml`、`win_x64.yml`、`linux_x64.yml` 保持原有配置，除非任务明确要求修改。
 
-## 2. 为什么没有定时任务
+## 2. 上游同步与 CI
 
-旧版 `adaptive_release.yml` 带 `17 */6 * * *`：发现新上游 release 就在 Actions 里
-`git merge` 后 `git push origin HEAD:main`。这等于让机器人绕过评审直接改主干，且
-冲突时静默跳过，Actions 长期红/绿不可信。现已移除：
+上游同步遵循 `AGENTS.md`：
 
-- 没有任何 workflow 会 `git push` 到 `main`；
-- 上游同步必须走 PR（见下），由人合并；
-- release 只构建你显式 dispatch 的那个提交。
+- 无合并冲突时，允许自动推送至 `main`。
+- 发生合并冲突时，由人工决定解决方式及是否合并。
+- 普通无冲突同步不要求创建 PR。
 
-## 3. 上游同步怎么走
+CI 分为两种场景：
 
-同步由 `ops/piliplus-bridge`（运行在 VPS 上，与本仓库解耦）驱动：
+**PR 检查**
 
-1. `watch` 探测上游新提交 → 建 worktree/branch → 交给 OpenCode 在同一 worktree 内做**有界**单任务；
-2. OpenCode 只允许改代码、跑测试、`git commit`/`git push` 到自己的 `sync/*` 分支，不允许改 main；
-3. bridge 用 gh 校验：PR 必须是 **open、base=main、head=本任务分支、head sha=worktree HEAD**，
-   且该 head 的 check-runs 全绿，才算 `succeeded`。空检查列表、pending、闭 PR、陈旧 head 一律不算成功；
-4. `publish`（建 PR）由 `allow_publish` 单独开关，默认关闭；`allow_dispatch` 控制是否允许
-   调度器真正调用模型，默认关闭。
+创建或更新 PR 时自动运行 `pr-check.yml`，用于验证代码修改，并提供测试 APK。
 
-也就是说：**同步=PR；合并=人**。CI 绿是必要条件，不是合并许可。
+**主分支同步**
 
-## 4. 下游定制的保留点
+上游更新直接推送至 `main` 时，不依赖 PR CI。
 
-PR CI 只做构建与测试，不修改这些定制；同步合并时若上游改动触及它们，按“保留我们全部修复 +
-吸收上游结构”的既有原则处理：
+如需主分支更新后自动运行相同检查，应在对应 Workflow 中配置 `push: main` 触发器。
 
-- `lib/scripts/patch.ps1`（Android 补丁步骤，PR CI 与 release 都执行）；
-- `pili_release.json` / `--android-project-arg dev=1` 的 dev 口味构建；
-- Adaptive CDN Relay/拼接、网络暂停保护、音视频整体暂停逻辑（禁止删除）；
-- 浏览器扩展 `browser-extension/` 与 `dist/` 产物；
-- 日志策略：只记录异常/切换/恢复摘要。
+CI 结果用于验证代码，不改变 `AGENTS.md` 定义的同步与合并权限。
+
+## 3. PR CI 检查内容
+
+- `flutter test`：必须通过。
+- `flutter analyze`：使用 `continue-on-error`，结果仅供参考，不阻断 CI。
+- Android dev split APK：构建并上传 Actions Artifact，供测试下载。
+
+PR CI 不访问发布 Secrets，不执行 Release，不直接修改仓库代码。
+
+CI 已获长期执行授权，无需逐次确认。
+
+## 4. Release 发布
+
+正式发布由 `adaptive_release.yml` 负责。
+
+- 仅允许通过 `workflow_dispatch` 手动触发。
+- 必须得到用户明确授权。
+- 构建指定提交对应的 Android APK 与浏览器扩展。
+- 签名所需 Secrets 仅在授权的发布工作流中使用。
+- 上游同步与 PR CI 均不得自动触发正式 Release。
 
 ## 5. 已知未验证项
 
-- `pr-check.yml` 尚未在 GitHub 上真实跑过（本地无法安装 Flutter SDK，本轮只做静态校验）。
-- `flutter analyze` 设为 `continue-on-error`：本 fork 全项目 analyze 基线本就不干净
-  （合并前既有问题），因此它只作提示，真正的门是 `flutter test`。
-- Android 构建依赖 `cnativeapi` native-assets（需要 clang/NDK），首次真实运行可能暴露
-  环境差异；失败时以日志为准修 workflow，不要放宽测试门。
+- `pr-check.yml` 尚未经过 GitHub Actions 实际运行验证。
+- Flutter Analyze 存在历史遗留问题，暂不作为强制通过条件。
+- Android 构建依赖 `cnativeapi` native-assets，可能涉及 Clang/NDK 环境配置。
+- 首次执行时应依据实际日志确认工作流及构建产物正常。
+
+CI 失败应优先修复实际问题，不得通过删除必要检查规避失败。
