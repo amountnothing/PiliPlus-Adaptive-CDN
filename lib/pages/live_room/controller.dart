@@ -120,6 +120,11 @@ class LiveRoomController extends GetxController {
   bool autoScroll = true;
   LiveMessageStream? _msgStream;
 
+  /// True between startLiveMsg and closeLiveMsg: the page wants live danmaku.
+  bool _wantLiveMsg = false;
+  Timer? _msgReconnectTimer;
+  int _msgReconnectAttempt = 0;
+
   late final fsSC = Rxn<SuperChatItem>();
   late final enableFSSC = Pref.enableFullScreenSC;
   late final fsSCScale = Pref.fullScreenSCScale;
@@ -276,9 +281,7 @@ class LiveRoomController extends GetxController {
           codecIndex: codecIndex,
           liveUrlIndex: liveUrlIndex,
         ),
-        !isLoaded.value && Accounts.heartbeat.isLogin
-            ? _fetchBlockRules
-            : null,
+        !isLoaded.value && Accounts.heartbeat.isLogin ? _fetchBlockRules : null,
       );
     } else {
       _showDialog(res.toString());
@@ -418,8 +421,41 @@ class LiveRoomController extends GetxController {
   }
 
   void closeLiveMsg() {
+    _wantLiveMsg = false;
+    _msgReconnectTimer?.cancel();
+    _msgReconnectTimer = null;
     _msgStream?.close();
     _msgStream = null;
+  }
+
+  /// The danmaku socket dropped by itself (server/network). Without this the
+  /// dead stream stayed in [_msgStream] and startLiveMsg never reconnected,
+  /// so all danmaku stopped until the room was reopened.
+  void _onMsgStreamLost(LiveMessageStream stream, String reason) {
+    if (!identical(_msgStream, stream)) return;
+    _msgStream = null;
+    _scheduleMsgReconnect(reason);
+  }
+
+  void _scheduleMsgReconnect(String reason) {
+    if (!_wantLiveMsg || isClosed) {
+      Utils.reportLog(() => 'LiveDm: socket closed reason=$reason (inactive)');
+      return;
+    }
+    final attempt = ++_msgReconnectAttempt;
+    // Refresh the token/host list after repeated failures.
+    if (attempt >= 3) dmInfo = null;
+    final delay = Duration(seconds: math.min(30, 1 << math.min(attempt, 5)));
+    Utils.reportLog(
+      () =>
+          'LiveDm: socket lost reason=$reason; reconnect #$attempt in '
+          '${delay.inSeconds}s',
+    );
+    _msgReconnectTimer?.cancel();
+    _msgReconnectTimer = Timer(delay, () {
+      _msgReconnectTimer = null;
+      if (_wantLiveMsg && !isClosed) startLiveMsg();
+    });
   }
 
   @pragma('vm:notify-debugger-on-exception')
@@ -508,7 +544,8 @@ class LiveRoomController extends GetxController {
         getSuperChatMsg();
       }
     }
-    if (_msgStream != null) {
+    _wantLiveMsg = true;
+    if (_msgStream != null || _msgReconnectTimer != null) {
       return;
     }
     if (dmInfo != null) {
@@ -518,6 +555,8 @@ class LiveRoomController extends GetxController {
     LiveHttp.liveRoomGetDanmakuToken(roomId: roomId).then((res) {
       if (res case Success(:final response)) {
         initDm(dmInfo = response);
+      } else if (_msgReconnectAttempt > 0) {
+        _scheduleMsgReconnect('token-fetch-failed');
       }
     });
   }
@@ -577,9 +616,11 @@ class LiveRoomController extends GetxController {
 
   void initDm(LiveDmInfoData info) {
     if (info.hostList.isEmpty) {
+      if (_msgReconnectAttempt > 0) _scheduleMsgReconnect('empty-host-list');
       return;
     }
-    _msgStream =
+    late final LiveMessageStream stream;
+    stream = _msgStream =
         LiveMessageStream(
             streamToken: info.token,
             roomId: roomId,
@@ -587,14 +628,64 @@ class LiveRoomController extends GetxController {
             servers: info.hostList
                 .map((host) => 'wss://${host.host}:${host.wssPort}/sub')
                 .toList(),
+            onUnexpectedClose: (reason) => _onMsgStreamLost(stream, reason),
+            showConnectErrorToast: _msgReconnectAttempt == 0,
           )
           ..addEventListener(_danmakuListener)
           ..init();
   }
 
+  // ---- Diagnostics (log mode only): why the overlay shows no danmaku. ----
+  // Summarized per state change, never per message.
+  /// Current live layout, set by the view, e.g. `PP fs=false dm=false`.
+  String dmLayout = '';
+
+  /// The DanmakuScreen controller that is currently mounted, if any.
+  DanmakuController<DanmakuExtra>? mountedDmScreen;
+  String? _dmBlocker;
+  int _dmBlockedCount = 0;
+  DateTime? _dmBlockedSince;
+
+  String? _dmOverlayBlocker() {
+    if (!plPlayerController.showDanmaku) return 'app-background';
+    if (!plPlayerController.enableShowLiveDanmaku.value) return 'switch-off';
+    final ctr = danmakuController;
+    if (ctr == null) return 'no-screen';
+    if (!identical(ctr, mountedDmScreen)) return 'screen-not-mounted';
+    if (!ctr.running) return 'screen-paused';
+    return null;
+  }
+
+  void _noteDmOverlay(String? blocker) {
+    if (blocker == _dmBlocker) {
+      if (blocker != null) _dmBlockedCount++;
+      return;
+    }
+    if (_dmBlocker case final prev?) {
+      final count = _dmBlockedCount;
+      final ms = DateTime.now().difference(_dmBlockedSince!).inMilliseconds;
+      Utils.reportLog(
+        () =>
+            'LiveDm: overlay unblocked (was $prev, $count msgs, ${ms}ms) '
+            'layout=$dmLayout',
+      );
+    }
+    _dmBlocker = blocker;
+    _dmBlockedCount = blocker == null ? 0 : 1;
+    _dmBlockedSince = DateTime.now();
+    if (blocker != null) {
+      Utils.reportLog(
+        () =>
+            'LiveDm: overlay blocked reason=$blocker layout=$dmLayout '
+            'player=${plPlayerController.playerStatus.name}',
+      );
+    }
+  }
+
   void addDm(dynamic msg, [DanmakuContentItem<DanmakuExtra>? item]) {
     _trimDm();
 
+    if (item != null) _noteDmOverlay(_dmOverlayBlocker());
     if (plPlayerController.showDanmaku) {
       if (item != null && plPlayerController.enableShowLiveDanmaku.value) {
         danmakuController?.addDanmaku(item);
@@ -611,6 +702,13 @@ class LiveRoomController extends GetxController {
 
   @pragma('vm:notify-debugger-on-exception')
   void _danmakuListener(dynamic obj) {
+    if (_msgReconnectAttempt != 0) {
+      final attempts = _msgReconnectAttempt;
+      _msgReconnectAttempt = 0;
+      Utils.reportLog(
+        () => 'LiveDm: socket recovered after $attempts attempt(s)',
+      );
+    }
     try {
       // logger.i(' 原始弹幕消息 ======> ${jsonEncode(obj)}');
       switch (obj['cmd']) {

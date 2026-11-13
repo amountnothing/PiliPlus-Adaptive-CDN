@@ -201,6 +201,9 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
 
   Timer? _timer;
   StreamSubscription? _subForSeek;
+  // Diagnostics: log the first reported position after each VOD open.
+  int? _resumeProbeCid;
+  Duration? _resumeProbeTarget;
 
   Box setting = GStorage.setting;
 
@@ -797,6 +800,16 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     _setPendingResume(cid, resumeAt);
     _preserveRebuildPosition =
         resumeAt != null && resumeAt > Duration.zero && _rebuildCid == cid;
+    if (!isLive) {
+      _resumeProbeCid = cid;
+      _resumeProbeTarget = resumeAt;
+      Utils.reportLog(
+        () =>
+            'Resume: setDataSource cid=$cid requestedMs=${seekTo?.inMilliseconds} '
+            'checkpointCid=$_rebuildCid checkpointMs=${_rebuildPosition?.inMilliseconds} '
+            '-> resumeAtMs=${resumeAt?.inMilliseconds}',
+      );
+    }
     try {
       _processing = true;
       this.isLive = isLive;
@@ -1341,6 +1354,19 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
           _clearPendingResume();
         }
         final posInSeconds = effectivePosition.inSeconds;
+        if (_resumeProbeCid != null &&
+            _resumeProbeCid == cid &&
+            event > Duration.zero) {
+          // One summary per open: where playback actually started.
+          final target = _resumeProbeTarget;
+          _resumeProbeCid = null;
+          Utils.reportLog(
+            () =>
+                'Resume: first position cid=$cid reportedMs=${event.inMilliseconds} '
+                'effectiveMs=${effectivePosition.inMilliseconds} '
+                'targetMs=${target?.inMilliseconds}',
+          );
+        }
 
         if (posInSeconds != position.value) {
           if (!isSeeking.value) {
@@ -2224,6 +2250,11 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
             (durationInMilliseconds - positionInMilliseconds) <= 1000) {
           progress = -1;
         }
+        Utils.reportLog(
+          () =>
+              'Resume: heartbeat sent cid=${cid ?? this.cid} progress=$progress '
+              'manual=$isManual',
+        );
         return send();
     }
     return null;

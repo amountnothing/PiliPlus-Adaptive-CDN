@@ -1848,6 +1848,12 @@ class VideoDetailController extends GetxController
     Duration? seek = defaultST ?? playedTime;
     if (seek == .zero) seek = null;
     seek ??= getFirstSegment();
+    Utils.reportLog(
+      () =>
+          'Resume: playerInit cid=${cid.value} '
+          'defaultStMs=${defaultST?.inMilliseconds} '
+          'playedMs=${playedTime?.inMilliseconds} -> seekMs=${seek?.inMilliseconds}',
+    );
     final (playbackVideoUrl, playbackAudioUrl) = isFileSource
         ? (videoUrl ?? '', audioUrl)
         : await _relayPlaybackSources();
@@ -2025,6 +2031,12 @@ class VideoDetailController extends GetxController
         } else {
           defaultST = Duration(milliseconds: data.lastPlayTime);
         }
+        Utils.reportLog(
+          () =>
+              'Resume: open cid=${cid.value} routeProgressMs=$progress '
+              'serverLastPlayMs=${data.lastPlayTime} '
+              '-> startMs=${defaultST?.inMilliseconds}',
+        );
       }
 
       if (!isUgc && !fromReset && plPlayerController.enablePgcSkip) {
@@ -2384,6 +2396,14 @@ class VideoDetailController extends GetxController
   }
 
   void makeHeartBeat() {
+    Utils.reportLog(
+      () =>
+          'Resume: leave heartbeat cid=${cid.value} '
+          'playedMs=${playedTime?.inMilliseconds} '
+          'durationMs=${data.timeLength} '
+          'enabled=${plPlayerController.enableHeart} '
+          'completed=${plPlayerController.playerStatus.isCompleted}',
+    );
     if (plPlayerController.enableHeart &&
         !plPlayerController.playerStatus.isCompleted &&
         playedTime != null) {

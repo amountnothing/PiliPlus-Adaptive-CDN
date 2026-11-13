@@ -151,7 +151,15 @@ class LiveMessageStream {
     required this.roomId,
     required this.uid,
     required this.servers,
+    this.onUnexpectedClose,
+    this.showConnectErrorToast = true,
   });
+
+  /// Called once when the socket ends without [close] being called by the
+  /// owner (server/network drop, heartbeat send failure, connect failure).
+  /// The owner decides whether to reconnect.
+  final void Function(String reason)? onUnexpectedClose;
+  final bool showConnectErrorToast;
 
   static final _zlib = ZLibDecoder();
 
@@ -203,12 +211,13 @@ class LiveMessageStream {
       //   ..d('$logTag ===> 发送认证包');
       _socketSubscription = _channel?.stream.listen(
         onData,
-        onDone: close,
-        onError: (_) => close(),
+        onDone: () => _closeUnexpectedly('socket-done'),
+        onError: (e) => _closeUnexpectedly('socket-error: $e'),
       );
       _channel?.sink.add(authPackage.marshal());
     } catch (e) {
-      SmartDialog.showToast("弹幕地址链接失败: $e");
+      if (showConnectErrorToast) SmartDialog.showToast("弹幕地址链接失败: $e");
+      _closeUnexpectedly('connect-failed: $e');
     }
   }
 
@@ -263,8 +272,10 @@ class LiveMessageStream {
       );
       try {
         _channel?.sink.add(package.marshal());
-      } catch (_) {
+      } catch (e) {
         timer.cancel();
+        _closeUnexpectedly('heartbeat-send-failed: $e');
+        return;
       }
       heartBeatCount++;
     });
@@ -308,6 +319,12 @@ class LiveMessageStream {
         );
       } catch (_) {}
     }
+  }
+
+  void _closeUnexpectedly(String reason) {
+    if (!_active) return;
+    close();
+    onUnexpectedClose?.call(reason);
   }
 
   void close() {

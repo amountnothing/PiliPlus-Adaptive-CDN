@@ -48,7 +48,7 @@ import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/theme_utils.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:cached_network_image_ce/cached_network_image.dart';
-import 'package:canvas_danmaku/danmaku_screen.dart';
+import 'package:canvas_danmaku/canvas_danmaku.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
@@ -276,6 +276,19 @@ class _LiveRoomPageState extends State<LiveRoomPage>
       _liveRoomController.fsSC.value = null;
     }
     _liveRoomController.isFullScreen = isFullScreen;
+    final layout =
+        '${isPipMode
+            ? 'pip'
+            : !isPortrait
+            ? 'H'
+            : _liveRoomController.isPortrait.value
+            ? 'PP'
+            : 'PH'}'
+        ' fs=$isFullScreen dm=$needDm';
+    if (layout != _liveRoomController.dmLayout) {
+      _liveRoomController.dmLayout = layout;
+      Utils.reportLog(() => 'LiveDm: layout $layout');
+    }
     Widget player = Obx(
       key: playerKey,
       () {
@@ -1088,6 +1101,16 @@ class LiveDanmaku extends StatefulWidget {
 
 class _LiveDanmakuState extends State<LiveDanmaku> {
   PlPlayerController get plPlayerController => widget.plPlayerController;
+  DanmakuController<DanmakuExtra>? _screen;
+
+  @override
+  void dispose() {
+    if (identical(widget.liveRoomController.mountedDmScreen, _screen)) {
+      widget.liveRoomController.mountedDmScreen = null;
+      Utils.reportLog(() => 'LiveDm: screen disposed');
+    }
+    super.dispose();
+  }
 
   @override
   void didUpdateWidget(LiveDanmaku oldWidget) {
@@ -1111,8 +1134,15 @@ class _LiveDanmakuState extends State<LiveDanmaku> {
         duration: const Duration(milliseconds: 100),
         child: DanmakuScreen<DanmakuExtra>(
           createdController: (e) {
-            widget.liveRoomController.danmakuController =
-                plPlayerController.danmakuController = e;
+            widget.liveRoomController
+              ..danmakuController = e
+              ..mountedDmScreen = _screen = e;
+            plPlayerController.danmakuController = e;
+            Utils.reportLog(
+              () =>
+                  'LiveDm: screen created '
+                  'layout=${widget.liveRoomController.dmLayout}',
+            );
           },
           option: option,
           size: widget.size,
