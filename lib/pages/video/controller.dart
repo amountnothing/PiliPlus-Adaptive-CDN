@@ -2402,6 +2402,7 @@ class VideoDetailController extends GetxController
           'playedMs=${playedTime?.inMilliseconds} '
           'durationMs=${data.timeLength} '
           'enabled=${plPlayerController.enableHeart} '
+          'login=${Accounts.heartbeat.isLogin} historyPause=${Pref.historyPause} '
           'completed=${plPlayerController.playerStatus.isCompleted}',
     );
     if (plPlayerController.enableHeart &&

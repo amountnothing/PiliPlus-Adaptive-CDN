@@ -527,7 +527,11 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
       ? null
       : Pref.defaultVideoQa;
   late int cacheAudioQa = Pref.defaultAudioQa;
-  bool enableHeart = true;
+
+  /// Evaluated on every heartbeat instead of once per controller: the shared
+  /// controller can outlive a login, account switch or history-pause change,
+  /// and a stale `false` silently dropped all progress reports.
+  bool get enableHeart => Accounts.heartbeat.isLogin && !Pref.historyPause;
   late final String? hwdec = Pref.adaptivePlayback
       ? HwDecType.autoSafe.hwdec
       : Pref.enableHA
@@ -713,10 +717,6 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
             angleDegrees: Platform.isAndroid ? Pref.angleDegrees : null,
           )
           .listen(_onOrientationChanged);
-    }
-
-    if (!Accounts.heartbeat.isLogin || Pref.historyPause) {
-      enableHeart = false;
     }
 
     if (Platform.isAndroid && autoPiP) {
