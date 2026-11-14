@@ -393,6 +393,15 @@
   `Pref.defaultCDNService` 不再用 `byName`，已保存的被删 CDN 回落 `backupUrl`。
 - 验证：本地 `flutter test` 149/149；analyze 对改动文件 0 issue。Android 真机未验证；`SOURCE_FILE_INDEX`/`SYMBOL_INDEX` 未重建（需 pwsh）。
 
+### 2026-11-14 直播弹幕与续播进度（PR #7）
+
+- 直播弹幕全无：播放器在 `Player.open` 期间丢弃原生 playing 事件（`_isReplacingMedia`），直播边打开边播放，唯一的 playing=true 被丢，
+  直播间只靠该状态回调启动弹幕 socket，于是从不连接。修复：打开完成及自动播放初始化后，若原生在播但监听者未收到过开始事件，补发一次（日志 `Player: resync playing=true`）；只补开始，不补暂停。
+- 弹幕断线：`LiveMessageStream` 自行关闭后控制器仍持有死对象，`startLiveMsg` 永不重连。现在非主动关闭会回调，按 2s→30s 退避重连，连续 3 次失败后刷新 token。
+- 续播进度：`enableHeart` 原在共享 `PlPlayerController` 构造时算一次，登录/切号/暂停历史变化后会一直不上报。改为 `Accounts.canRecordHistory`（心跳账号已登录且未暂停历史）实时判断，视频心跳、直播进房记录、专栏历史共用。
+- 诊断日志（日志模式，仅状态切换摘要）：`LiveDm:`（布局、弹幕层创建/销毁、被阻断原因与条数、断线/重连）、`Resume:`（起播来源、seek、resumeAt、首个位置、离开心跳含 login/historyPause）。
+- 竖屏看竖屏直播（PP 布局、非全屏）按上游设计不挂滚动弹幕层，只显示左下聊天；如需显示需另改。
+
 ### 继续项目时先做什么
 
 1. 按 `AGENTS.md`「开工」步骤读取文档并检查工作树。

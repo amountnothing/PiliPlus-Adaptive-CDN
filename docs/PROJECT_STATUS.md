@@ -28,6 +28,8 @@
 
 ## 4. 下一步
 
+0. 真机确认 PR #7：直播进房几秒内出现弹幕（日志有 `Player: resync playing=true`）；续播若再丢，看 `Resume: leave heartbeat` 的 `login=`/`historyPause=`。
+
 1. 装 APK 真机回归播放器（PR #6 的 dev APK 在其 Actions artifact）。
 2. 有 pwsh 的环境重建代码索引。
 3. 需要时手动触发 `mac.yml` 验证 macOS 构建。
