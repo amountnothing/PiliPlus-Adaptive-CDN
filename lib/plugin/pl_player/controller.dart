@@ -531,7 +531,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   /// Evaluated on every heartbeat instead of once per controller: the shared
   /// controller can outlive a login, account switch or history-pause change,
   /// and a stale `false` silently dropped all progress reports.
-  bool get enableHeart => Accounts.heartbeat.isLogin && !Pref.historyPause;
+  bool get enableHeart => Accounts.canRecordHistory;
   late final String? hwdec = Pref.adaptivePlayback
       ? HwDecType.autoSafe.hwdec
       : Pref.enableHA

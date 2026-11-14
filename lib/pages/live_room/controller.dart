@@ -220,7 +220,7 @@ class LiveRoomController extends GetxController {
     mid = account.mid;
     queryLiveUrl(autoFullScreenFlag: true);
     queryLiveInfoH5();
-    if (Accounts.heartbeat.isLogin && !Pref.historyPause) {
+    if (Accounts.canRecordHistory) {
       VideoHttp.roomEntryAction(roomId: roomId);
     }
     if (showSuperChat) {

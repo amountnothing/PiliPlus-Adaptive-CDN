@@ -17,6 +17,11 @@ abstract final class Accounts {
   static Account get main => accountMode[AccountType.main.index];
   static Account get video => accountMode[AccountType.video.index];
   static Account get heartbeat => accountMode[AccountType.heartbeat.index];
+
+  /// Whether watch history / playback progress may be reported right now.
+  /// Read at the moment of reporting, never cached.
+  static bool get canRecordHistory => heartbeat.isLogin && !Pref.historyPause;
+
   static Account get history {
     final heartbeat = Accounts.heartbeat;
     if (heartbeat is AnonymousAccount) {
