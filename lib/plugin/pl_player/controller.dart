@@ -782,6 +782,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   }) async {
     _cancelPlaybackRecoveryWatch();
     final mediaOpenGeneration = ++_mediaOpenGeneration;
+    _lastNotifiedPlaying = null;
     _completionEventArmed = false;
     _hasStartedPlayback = false;
     final autoplayGeneration =
@@ -880,7 +881,9 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
         triggerFullScreen(status: true);
       }
 
+      _reconcileNativePlaying('open');
       await _initializePlayer(autoplayGeneration);
+      _reconcileNativePlaying('init');
       onInit?.call();
     } catch (err, stackTrace) {
       if (mediaOpenGeneration == _mediaOpenGeneration) {
@@ -1248,59 +1251,86 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     _updateIOSPip(position);
   }
 
+  /// Applies a native playing/paused change to [playerStatus] and notifies
+  /// status listeners.
+  bool? _lastNotifiedPlaying;
+
+  void _onNativePlayingChanged(bool playing) {
+    if (playing &&
+        !AdaptivePlayback.shouldAcceptNativePlayingEvent(
+          playbackRequested: playbackRequested.value,
+        )) {
+      // A late native/lifecycle event must never override an explicit
+      // pause. Keep the player and the public state aligned.
+      unawaited(_videoPlayerController?.pause());
+      _syncWakelock();
+      _disableAutoEnterPip();
+      playerStatus = .paused;
+      _updatePlaybackState(
+        position: currentPosition,
+        debugLabel: 'latePlayingRejected',
+      );
+      return;
+    }
+    if (_isReplacingMedia) return;
+    _syncWakelock();
+    if (playing) {
+      playerStatus = .playing;
+      _hasStartedPlayback = true;
+      _completionEventArmed = true;
+      _updatePlaybackState();
+      if (_isAutoEnterPip) {
+        if (_isCurrVideoPage) {
+          enterPip(autoEnter: true);
+        } else {
+          _disableAutoEnterPip();
+        }
+      }
+    } else {
+      playerStatus = .paused;
+      _updatePlaybackState(debugLabel: 'onVideoPaused');
+      _disableAutoEnterPip();
+      _updateIOSPip();
+    }
+
+    _lastNotifiedPlaying = playing;
+    for (final element in _statusListeners) {
+      element(playing ? .playing : .paused);
+    }
+
+    final seconds = videoPlayerController!.state.position.inSeconds;
+    if (seconds != 0) {
+      makeHeartBeat(seconds, type: .status);
+    }
+  }
+
+  /// Native playing events are ignored while [Player.open] replaces the media
+  /// (see [_isReplacingMedia]). Media that starts during open (live streams,
+  /// startDuringOpen) emits its only `playing=true` in that window, so status
+  /// listeners never heard of it: the live room never started its danmaku
+  /// socket. Re-sync once this open owns the player.
+  void _reconcileNativePlaying(String reason) {
+    final ctr = _videoPlayerController;
+    if (ctr == null || _isReplacingMedia) return;
+    final playing = ctr.state.playing;
+    // play() updates playerStatus without notifying listeners, so compare
+    // with what listeners last heard rather than with playerStatus.
+    // Only the dropped start matters; a dropped pause is left to the next
+    // real event to keep this change minimal.
+    if (!playing || _lastNotifiedPlaying == true) return;
+    Utils.reportLog(
+      () => 'Player: resync playing=$playing after $reason (event was dropped)',
+    );
+    _onNativePlayingChanged(playing);
+  }
+
   /// 播放事件监听
   void _startListeners(NativePlayer player) {
     assert(_subscriptions == null);
     final stream = player.stream;
     _subscriptions = [
       /// playing
-      stream.playing.listen((bool playing) {
-        if (playing &&
-            !AdaptivePlayback.shouldAcceptNativePlayingEvent(
-              playbackRequested: playbackRequested.value,
-            )) {
-          // A late native/lifecycle event must never override an explicit
-          // pause. Keep the player and the public state aligned.
-          unawaited(_videoPlayerController?.pause());
-          _syncWakelock();
-          _disableAutoEnterPip();
-          playerStatus = .paused;
-          _updatePlaybackState(
-            position: currentPosition,
-            debugLabel: 'latePlayingRejected',
-          );
-          return;
-        }
-        if (_isReplacingMedia) return;
-        _syncWakelock();
-        if (playing) {
-          playerStatus = .playing;
-          _hasStartedPlayback = true;
-          _completionEventArmed = true;
-          _updatePlaybackState();
-          if (_isAutoEnterPip) {
-            if (_isCurrVideoPage) {
-              enterPip(autoEnter: true);
-            } else {
-              _disableAutoEnterPip();
-            }
-          }
-        } else {
-          playerStatus = .paused;
-          _updatePlaybackState(debugLabel: 'onVideoPaused');
-          _disableAutoEnterPip();
-          _updateIOSPip();
-        }
-
-        for (final element in _statusListeners) {
-          element(playing ? .playing : .paused);
-        }
-
-        final seconds = videoPlayerController!.state.position.inSeconds;
-        if (seconds != 0) {
-          makeHeartBeat(seconds, type: .status);
-        }
-      }),
+      stream.playing.listen(_onNativePlayingChanged),
 
       ///completed
       stream.completed.listen((bool completed) {
