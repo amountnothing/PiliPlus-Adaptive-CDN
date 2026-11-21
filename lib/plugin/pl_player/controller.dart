@@ -1232,14 +1232,41 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   final Set<ValueChanged<Duration>> _positionListeners = {};
   final Set<ValueChanged<PlayerStatus>> _statusListeners = {};
 
+  bool _reportedTransientPause = false;
+
   void _updatePlaybackState({
     PlayerStatus? status,
     Duration? position,
     String? debugLabel,
   }) {
+    final effectiveStatus = status ?? playerStatus;
+    // A native pause while the user still wants playback (media reopen, CDN
+    // switch, stall) must not reach the media notification as "paused":
+    // androidStopForegroundOnPause would drop the foreground service, and
+    // Android does not let a backgrounded app start it again, so background
+    // playback stalled or was killed. Report it as buffering instead.
+    // Explicit pauses clear playbackRequested first; lifecycle/audio-focus
+    // interrupts set _temporarilyPaused; both still report paused.
+    final transientPause =
+        effectiveStatus == .paused &&
+        playbackRequested.value &&
+        !_temporarilyPaused;
+    if (transientPause != _reportedTransientPause) {
+      _reportedTransientPause = transientPause;
+      if (_isInBackground) {
+        final what = transientPause
+            ? 'paused while playback requested; notification kept as buffering'
+            : 'transient pause ended';
+        Utils.reportLog(
+          () =>
+              'Background: native $what '
+              'positionMs=${currentPosition.inMilliseconds}',
+        );
+      }
+    }
     videoPlayerServiceHandler?.onUpdateState(
-      status ?? playerStatus,
-      isBuffering.value,
+      effectiveStatus,
+      isBuffering.value || transientPause,
       isLive,
       position:
           position ??
@@ -1456,7 +1483,10 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
             event.startsWith("Failed to open file")) {
           return;
         }
-        if (_isBackgroundNetworkError(event)) {
+        // With adaptive playback mpv only talks to the local Relay, which
+        // retries and switches CDNs itself; reopening on its transient errors
+        // interrupted that recovery. The sustained-stall check still applies.
+        if (!_adaptiveOwnsRecovery && _isBackgroundNetworkError(event)) {
           _backgroundReconnectNow('error: $event');
         }
         if (isLive) {
@@ -1524,6 +1554,14 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
         state == AppLifecycleState.hidden;
     if (_isInBackground == inBackground) return;
     _isInBackground = inBackground;
+    Utils.reportLog(
+      () =>
+          'Background: ${inBackground ? 'enter' : 'exit'} state=${state.name} '
+          'requested=${playbackRequested.value} '
+          'continue=${continuePlayInBackground.value} '
+          'adaptive=$_adaptiveOwnsRecovery '
+          'positionMs=${currentPosition.inMilliseconds}',
+    );
     if (inBackground) {
       _wasPlayingOnEnterBackground = playbackRequested.value;
       _lastBackgroundReconnectPosition = currentPosition;
@@ -1725,8 +1763,17 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
         hasStartedPlayback: _hasStartedPlayback,
       );
 
+  /// Adaptive VOD: the CDN health monitor and the Relay already handle short
+  /// stalls and network errors (and keep running in background playback).
+  bool get _adaptiveOwnsRecovery =>
+      Pref.adaptivePlayback && !isLive && dataSource is NetworkSource;
+
+  /// Consecutive 8 s background checks without progress.
+  int _backgroundStallChecks = 0;
+
   void _startBackgroundReconnectTimer() {
     _backgroundReconnectTimer?.cancel();
+    _backgroundStallChecks = 0;
     if (!_canReconnectInBackground) return;
     _backgroundReconnectTimer = Timer.periodic(
       const Duration(seconds: 8),
@@ -1738,21 +1785,35 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     _backgroundReconnectTimer?.cancel();
     _backgroundReconnectTimer = null;
     _backgroundReconnectRefreshing = false;
+    _backgroundStallChecks = 0;
   }
 
   void _checkBackgroundReconnect() {
     if (!_canReconnectInBackground || processing) return;
     final last = _lastBackgroundReconnectPosition;
-    _lastBackgroundReconnectPosition = currentPosition;
+    final now = currentPosition;
+    _lastBackgroundReconnectPosition = now;
+    // VOD: progress is the truth; buffering while the clock advances is fine.
     final stalled = isLive
         ? isBuffering.value || !playerStatus.isPlaying
-        : currentPosition <= last + const Duration(milliseconds: 500);
-    if (dataStatus.error ||
-        isBuffering.value ||
-        !playerStatus.isPlaying ||
-        stalled) {
-      _backgroundReconnectNow('background stall');
+        : now <= last + const Duration(milliseconds: 500);
+    if (!dataStatus.error && !stalled) {
+      _backgroundStallChecks = 0;
+      return;
     }
+    _backgroundStallChecks++;
+    // A full reopen discards the demuxer cache and races an in-flight CDN
+    // switch. With adaptive playback it is only a last resort after ~24 s
+    // without progress; otherwise keep the original single-check behavior.
+    final required = _adaptiveOwnsRecovery && !dataStatus.error ? 3 : 1;
+    if (_backgroundStallChecks < required) return;
+    _backgroundStallChecks = 0;
+    _backgroundReconnectNow(
+      'background stall error=${dataStatus.error} '
+      'positionMs=${now.inMilliseconds} '
+      'bufferedMs=${currentBuffered.inMilliseconds} '
+      'buffering=${isBuffering.value} playing=${playerStatus.isPlaying}',
+    );
   }
 
   void _backgroundReconnectNow(String reason) {
