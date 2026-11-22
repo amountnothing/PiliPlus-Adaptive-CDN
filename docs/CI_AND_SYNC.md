@@ -24,7 +24,7 @@
 
 - `flutter test`：必须通过。
 - `flutter analyze`：`continue-on-error`，历史遗留问题较多，结果仅供参考。
-- Android dev split APK：构建并上传为 Actions Artifact，供测试下载。
+- Android split APK：与正式版同包名（`com.example.piliplus`）、同 versionCode 规则（提交数，`build.ps1`），上传为 Actions Artifact，可直接覆盖正式版测试。不接触 Secrets，用调试签名，覆盖安装正式版需在设备上绕过签名校验（维护者手机已 root）。
 
 PR CI 不访问发布 Secrets，不执行 Release，不修改仓库。CI 失败应修复实际问题，不得删除必要检查来规避。
 

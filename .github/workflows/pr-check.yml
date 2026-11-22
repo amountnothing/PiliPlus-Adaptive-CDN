@@ -107,7 +107,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          fetch-depth: 1
+          # Full history: build.ps1 derives versionCode from the commit count,
+          # the same rule the release build uses.
+          fetch-depth: 0
 
       - name: Set up Java
         uses: actions/setup-java@v5
@@ -154,12 +156,19 @@ jobs:
         shell: pwsh
         run: lib/scripts/patch.ps1 android
 
-      # Same dev flavour the upstream PR build used (dev=1, no release signing,
-      # no key.properties): an installable build for review, not a release.
+      # Same package id and versionCode rule as the release build, so the test
+      # APK installs over the user's release app instead of beside it. Still no
+      # secrets: it is signed with the debug key, so replacing the release app
+      # needs signature verification bypassed on the device (owner's rooted
+      # phone). Not a release.
+      - name: Generate build metadata
+        shell: pwsh
+        run: lib/scripts/build.ps1 android
+
       - name: Build split APKs
         run: >-
           flutter build apk --release --split-per-abi
-          --android-project-arg dev=1 --no-pub
+          --dart-define-from-file=pili_release.json --no-pub
 
       - name: Upload arm64-v8a
         uses: actions/upload-artifact@v7
